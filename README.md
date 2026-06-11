@@ -1,6 +1,6 @@
-# LiteRealm
+# OMRiUS-seminar
 
-> **LiteRealm** is an AI-agent workspace template for academic work — seminars, theses, papers and assignments — that writes, cites and compiles **LaTeX** for you.
+> **OMRiUS-seminar** — an AI-agent academic workspace, initialized from the [LiteRealm](https://github.com/KxHartl/LiteRealm) template.
 
 [![Made with LiteRealm](https://img.shields.io/badge/template-LiteRealm-6f42c1)](https://github.com/KxHartl/LiteRealm)
 [![LaTeX · Tectonic](https://img.shields.io/badge/LaTeX-Tectonic-008080)](https://tectonic-typesetting.github.io/)

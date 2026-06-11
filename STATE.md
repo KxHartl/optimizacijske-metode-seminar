@@ -2,9 +2,9 @@
 
 ## Projekt
 
-- **Naziv**: _TBD_
+- **Naziv**: OMRiUS-seminar
 - **Tip**: Seminar | Zadaća | Thesis
-- **Kolegij**: _TBD_
+- **Kolegij**: OMRiUS-seminar
 - **LaTeX format**: FSB Seminar
 
 ## Trenutni fokus
