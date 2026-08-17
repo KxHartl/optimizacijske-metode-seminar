@@ -231,15 +231,26 @@ fig, ax = plt.subplots(figsize=(7.5, 4.8))
 V_t = np.array([x_vec @ P @ x_vec for x_vec in x_cl])
 
 ax.semilogy(t_cl, V_t, color=COLORS['dark_blue'], linewidth=2.2, label=r'Energija $V(x(t)) = x(t)^T P x(t)$')
-alpha_decay = 0.85
+
+# Exact theoretical minimum dissipation rate beta = min(-lambda_max(P^-1/2 M_i P^-1/2))
+P_sqrt = la.sqrtm(P)
+P_inv_sqrt = la.inv(P_sqrt)
+N1 = P_inv_sqrt @ M1_check @ P_inv_sqrt
+N2 = P_inv_sqrt @ M2_check @ P_inv_sqrt
+beta1 = -np.max(la.eigvals(N1).real)
+beta2 = -np.max(la.eigvals(N2).real)
+beta_min = min(beta1, beta2)
+print(f"Theoretical dissipation rate: beta_min = {beta_min:.4f} (Mode 1: {beta1:.4f}, Mode 2: {beta2:.4f})")
+
 V0 = x0 @ P @ x0
-envelope = V0 * np.exp(-alpha_decay * t_cl)
-ax.semilogy(t_cl, envelope, '--', color=COLORS['accent_red'], linewidth=1.8, label=rf'Eksponencijalna ovojnica $V_0 e^{{-\alpha t}}$ ($\alpha = {alpha_decay}$)')
+envelope_theory = V0 * np.exp(-beta_min * t_cl)
+ax.semilogy(t_cl, envelope_theory, '--', color=COLORS['accent_red'], linewidth=1.8, 
+            label=rf'Teorijska ovojnica $V_0 e^{{-\beta t}}$ ($\beta = {beta_min:.4f}$)')
 
 ax.set_xlim([0, 10])
 ax.set_xlabel(r'Vrijeme $t$ [s]')
 ax.set_ylabel(r'Funkcija Ljapunova $V(x(t))$ (logaritamska skala)')
-ax.set_title(r'Zadatak 4: Stroga disipacija energije Ljapunova duž trajektorije zatvorenog kruga')
+ax.set_title(r'Zadatak 4: Disipacija energije Ljapunova duž trajektorije zatvorenog kruga')
 ax.legend(loc='upper right', framealpha=0.92)
 save_figure(fig, 'fig4_3_lyapunov_decay')
 plt.close(fig)

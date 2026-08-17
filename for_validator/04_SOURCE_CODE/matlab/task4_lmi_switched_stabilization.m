@@ -61,5 +61,7 @@ end
 % 5. Closed-Loop Eigenvalues
 Acl_even = A_even + B * K;
 Acl_odd  = A_odd + B * K;
-fprintf('Closed-loop Mode 1 Eigenvalues: %.4f +/- %.4fj\n', real(eig(Acl_even(1))), imag(eig(Acl_even(1))));
-fprintf('Closed-loop Mode 2 Eigenvalues: %.4f +/- %.4fj\n', real(eig(Acl_odd(1))), imag(eig(Acl_odd(1))));
+ev_even = eig(Acl_even);
+ev_odd  = eig(Acl_odd);
+fprintf('Closed-loop Mode 1 Eigenvalues: %.4f +/- %.4fj\n', real(ev_even(1)), imag(ev_even(1)));
+fprintf('Closed-loop Mode 2 Eigenvalues: %.4f +/- %.4fj\n', real(ev_odd(1)), imag(ev_odd(1)));

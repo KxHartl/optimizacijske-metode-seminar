@@ -41,36 +41,36 @@ Budući da je realni dio svih svojstvenih vrijednosti strogo negativan:
 \begin{equation}
 \mathrm{Re}(\lambda_{1,2}(A_{\mathrm{parno}})) = -1 < 0, \quad \mathrm{Re}(\lambda_{1,2}(A_{\mathrm{neparno}})) = -1 < 0,
 \end{equation}
-obje matrice su **Hurwitzove**, što znači da je svaki mod u autonomnom radu ($u(t) \equiv 0$) **strogo asimptotski stabilan** kada nema prespajanja.
+obje matrice su \textbf{Hurwitzove}, što znači da je svaki mod u autonomnom radu ($u(t) \equiv 0$) \textbf{strogo asimptotski stabilan} kada nema prespajanja.
 
 \subsection{Mehanizam destabilizacije i analiza monodromijske matrice}
 
-Jedan od najintrigantnijih fenomena u teoriji hibridnih sustava jest da prespajanje između dva stabilna LTI podsustava može generirati nestabilan sustav~\cite{liberzon2003switching}.
+U teoriji hibridnih sustava poznato je da prespajanje između dva stabilna LTI podsustava može generirati nestabilan sustav~\cite{liberzon2003switching}.
 
 Za analizu stabilnosti periodički sklopnog autonomnog sustava promatramo operatorske matrice prijelaza stanja za vrijeme trajanja pojedinog moda ($\Delta t = 1 \text{ s}$):
 \begin{equation}
 \Phi_{\mathrm{parno}} = e^{A_{\mathrm{parno}} \cdot 1}, \quad \Phi_{\mathrm{neparno}} = e^{A_{\mathrm{neparno}} \cdot 1}.
 \end{equation}
-Matrica prijelaza stanja preko jednog punog perioda prespajanja $T = 2 \text{ s}$ naziva se **monodromijska matrica**:
+Matrica prijelaza stanja preko jednog punog perioda prespajanja $T = 2 \text{ s}$ naziva se \textbf{monodromijska matrica}:
 \begin{equation}
 \Phi_{\mathrm{cycle}} = \Phi_{\mathrm{neparno}} \cdot \Phi_{\mathrm{parno}} = e^{A_{\mathrm{neparno}} \cdot 1} \cdot e^{A_{\mathrm{parno}} \cdot 1}.
 \end{equation}
-Numeričkim izračunom eksponencijala matrica dobivamo:
+Analitičkim i numeričkim izračunom eksponencijala matrica dobivamo:
 \begin{equation}
-\Phi_{\mathrm{parno}} \approx \begin{bmatrix} 0.0000 & -0.2122 \\ 1.9099 & 0.0000 \end{bmatrix}, \quad \Phi_{\mathrm{neparno}} \approx \begin{bmatrix} 0.0000 & -1.9099 \\ 0.2122 & 0.0000 \end{bmatrix},
+\Phi_{\mathrm{parno}} = e^{-1} \begin{bmatrix} 0 & -\frac{1}{3} \\ 3 & 0 \end{bmatrix} \approx \begin{bmatrix} 0.0000 & -0.1226 \\ 1.1036 & 0.0000 \end{bmatrix}, \quad \Phi_{\mathrm{neparno}} = e^{-1} \begin{bmatrix} 0 & -3 \\ \frac{1}{3} & 0 \end{bmatrix} \approx \begin{bmatrix} 0.0000 & -1.1036 \\ 0.1226 & 0.0000 \end{bmatrix},
 \end{equation}
 \begin{equation}
-\Phi_{\mathrm{cycle}} = \Phi_{\mathrm{neparno}} \Phi_{\mathrm{parno}} \approx \begin{bmatrix} -3.6476 & 0.0000 \\ 0.0000 & -0.0450 \end{bmatrix}.
+\Phi_{\mathrm{cycle}} = \Phi_{\mathrm{neparno}} \Phi_{\mathrm{parno}} = e^{-2} \begin{bmatrix} -9 & 0 \\ 0 & -\frac{1}{9} \end{bmatrix} \approx \begin{bmatrix} -1.2180 & 0.0000 \\ 0.0000 & -0.0150 \end{bmatrix}.
 \end{equation}
-Svojstvene vrijednosti monodromijske matrice iznose:
+Determinanta monodromijske matrice iznosi $\det(\Phi_{\mathrm{cycle}}) = e^{-4} \approx 0.01832$, a svojstvene vrijednosti odgovaraju dijagonalnim elementima:
 \begin{equation}
-\lambda_1(\Phi_{\mathrm{cycle}}) \approx -1.2180, \quad \lambda_2(\Phi_{\mathrm{cycle}}) \approx -0.0150.
+\lambda_1(\Phi_{\mathrm{cycle}}) = -9 e^{-2} \approx -1.2180, \quad \lambda_2(\Phi_{\mathrm{cycle}}) = -\frac{1}{9} e^{-2} \approx -0.0150.
 \end{equation}
 Spektralni radijus monodromijske matrice je:
 \begin{equation}
 \rho(\Phi_{\mathrm{cycle}}) = \max_i |\lambda_i(\Phi_{\mathrm{cycle}})| = 1.2180 > 1.
 \end{equation}
-Budući da je $\rho(\Phi_{\mathrm{cycle}}) > 1$, sustav u diskretnim točkama $t_k = 2k$ zadovoljava relaciju $x(2(k+1)) = \Phi_{\mathrm{cycle}} x(2k)$, što znači da norma stanja raste po geometrijskoj progresiji s faktorom $1.2180$ u svakom ciklusu.
+Budući da je $\rho(\Phi_{\mathrm{cycle}}) > 1$, sustav u diskretnim stroboskopskim točkama $t_k = 2k$ zadovoljava relaciju $x(2(k+1)) = \Phi_{\mathrm{cycle}} x(2k)$, što znači da norma stanja duž dominantnog smjera raste po geometrijskoj progresiji s faktorom $1.2180$ u svakom ciklusu.
 
 \begin{figure}[H]
     \centering
@@ -79,7 +79,7 @@ Budući da je $\rho(\Phi_{\mathrm{cycle}}) > 1$, sustav u diskretnim točkama $t
     \label{fig:open_loop_div}
 \end{figure}
 
-Slika~\ref{fig:open_loop_div} zorno prikazuje nestabilnost otvorenog kruga za početni uvjet $x(0) = [1, 0]^T$: unatoč prigušenju unutar svakog moda, promjena smjera vektorskog polja u trenucima $t = 1, 2, 3, \dots$ ubacuje energiju u sustav te trajektorija eksponencijalno ekspandira.
+Slika~\ref{fig:open_loop_div} prikazuje nestabilnost otvorenog kruga za početni uvjet $x(0) = [1, 0]^T$: unatoč asimptotskoj stabilnosti svakog pojedinog moda, skokovita promjena dinamike u trenucima $t = 1, 2, 3, \dots$ unosi energiju u sustav te trajektorija eksponencijalno divergira.
 
 \subsection{Zajednička funkcija Ljapunova (CQLF) i LMI formulacija}
 
@@ -141,17 +141,15 @@ Budući da je presjek LMI ograničenja konveksan skup po matricama $(Q, Y)$, pro
 
 \subsection{Numerička sinteza regulatora u SDP okruženju}
 
-LMI sustav~\eqref{eq:lmi_system} riješen je u programskom paketu MATLAB (YALMIP + SDPT3) te u Pythonu (CVXPY + CLARABEL).
-
-Rješenjem LMI problema dobivena je pozitivno definitna matrica Ljapunova $P \succ 0$ i optimalni vektor pojačanja stanjskog regulatora $K$:
+LMI problem dopustivosti~\eqref{eq:lmi_system} nema jedinstveno rješenje, već definira konveksni skup (stožac dopustivosti) parova matrica $(Q, Y)$. U ovom radu za sintezu regulatora i generiranje simulacija korišteno je rješenje dobiveno u programskom paketu Python (CVXPY + CLARABEL), kojim se minimizira norma upravljačkog pojačanja:
 \begin{equation}
 P = \begin{bmatrix} 0.8870 & 0.1305 \\ 0.1305 & 0.8492 \end{bmatrix} \succ 0, \qquad K = \begin{bmatrix} -2.7120 & 0.0926 \end{bmatrix}.
 \end{equation}
-(Referentno YALMIP pojačanje iznosi $K = [-3.7097, 0.0000]$, koje također u potpunosti zadovoljava LMI sustav).
+\noindent\textbf{Napomena:} Alternativno rješenje dobiveno u programskom paketu MATLAB (YALMIP + SDPT3) iznosi $K = [-3.7097, 0.0000]$ uz $P_{\mathrm{YALMIP}} \succ 0$, što također u potpunosti zadovoljava LMI sustav~\eqref{eq:lmi_system} i osigurava stabilnost zatvorenog kruga.
 
 \subsubsection{Provjera svojstvenih vrijednosti zatvorenog kruga}
 
-Matrice dinamike zatvorenog kruga u oba moda iznose:
+Matrice dinamike zatvorenog kruga za sintetizirani regulator $K = [-2.7120, 0.0926]$ u oba moda iznose:
 \begin{equation}
 A_{\mathrm{cl,parno}} = A_{\mathrm{parno}} + B K = \begin{bmatrix} -3.7120 & -0.4309 \\ 4.7124 & -1.0000 \end{bmatrix},
 \end{equation}
@@ -162,22 +160,25 @@ Svojstvene vrijednosti zatvorenog kruga glase:
 \begin{equation}
 \lambda(A_{\mathrm{cl,parno}}) = -2.3560 \pm 0.4387j, \quad \lambda(A_{\mathrm{cl,neparno}}) = -2.3560 \pm 0.7617j.
 \end{equation}
-Oba moda imaju strogo negativan realni dio ($\mathrm{Re}(\lambda) = -2.356 < 0$), sa znatno povećanim prigušenjem u odnosu na otvoreni krug.
+Oba moda imaju strogo negativan realni dio ($\mathrm{Re}(\lambda) = -2.356 < 0$).
 
-Maksimalne svojstvene vrijednosti Ljapunovih derivacija iznose:
+Za matrice derivacije funkcije Ljapunova $M_i = A_{\mathrm{cl},i}^T P + P A_{\mathrm{cl},i}$ maksimalne svojstvene vrijednosti iznose:
 \begin{equation}
-\lambda_{\max}(A_{\mathrm{cl,parno}}^T P + P A_{\mathrm{cl,parno}}) = -9.498 \times 10^{-2} < 0,
+\lambda_{\max}(M_{\mathrm{parno}}) = -9.498 \times 10^{-2} < 0, \quad \lambda_{\max}(M_{\mathrm{neparno}}) = -5.492 \times 10^{-2} < 0,
 \end{equation}
+što dokazuje da funkcija $V(x) = x^T P x$ strogo pada duž svih trajektorija.
+
+Nadalje, minimalna stopa disipacije energije unutar svakog moda iznosi $\beta_i = -\lambda_{\max}(P^{-1/2} M_i P^{-1/2})$, pri čemu je $\beta_1 = 0.0978 \text{ s}^{-1}$ za parni mod te $\beta_2 = 0.0742 \text{ s}^{-1}$ za neparni mod. Minimalna zajamčena stopa disipacije za proizvoljno prespajanje iznosi:
 \begin{equation}
-\lambda_{\max}(A_{\mathrm{cl,neparno}}^T P + P A_{\mathrm{cl,neparno}}) = -5.492 \times 10^{-2} < 0,
+\beta = \min(\beta_1, \beta_2) = 0.0742 \text{ s}^{-1},
 \end{equation}
-što matematički dokazuje da funkcija $V(x) = x^T P x$ strogo pada duž trajektorija bez obzira na zakon prespajanja.
+što definira teorijsku eksponencijalnu ovojnicu $V(x(t)) \leq V(x(0)) e^{-\beta t}$.
 
 Također, spektralni radijus zatvorene monodromijske matrice iznosi:
 \begin{equation}
 \rho(\Phi_{\mathrm{cl,cycle}}) = 0.1320 \ll 1,
 \end{equation}
-što potvrđuje brzu eksponencijalnu kontrakciju stanja u svakom ciklusu.
+što potvrđuje brzu kontrakciju stanja u svakom ciklusu.
 
 \subsection{Simulacija zatvorenog kruga i dokaz eksponencijalne stabilnosti}
 
@@ -190,13 +191,13 @@ Za početni uvjet $x(0) = [1, 0]^T$ provedena je simulacija zatvorenog sustava m
     \label{fig:closed_loop_stab}
 \end{figure}
 
-Kao što je prikazano na slici~\ref{fig:closed_loop_stab}, stanja $x_1(t)$ i $x_2(t)$ brzo i glatko konvergiraju prema ishodištu unutar prvih $\approx 3 \text{ s}$. Fazni portret pokazuje da trajektorija kontinuirano siječe nivo-elipse funkcije Ljapunova prema unutrašnjosti bez ikakvih oscilacija ili divergencije.
+Kao što je prikazano na slici~\ref{fig:closed_loop_stab}, stanja $x_1(t)$ i $x_2(t)$ konvergiraju prema ishodištu unutar prvih $\approx 3 \text{ s}$. Fazni portret pokazuje da trajektorija kontinuirano siječe nivo-elipse funkcije Ljapunova prema unutrašnjosti.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.82\textwidth]{figures/fig4_3_lyapunov_decay.pdf}
-    \caption{Vremenska disipacija energije zajedničke funkcije Ljapunova $V(x(t))$ u logaritamskom mjerilu uz usporedbu s teorijskom eksponencijalnom ovojnicom.}
+    \caption{Vremenska disipacija energije zajedničke funkcije Ljapunova $V(x(t))$ u logaritamskom mjerilu uz usporedbu s teorijskom eksponencijalnom ovojnicom $V_0 e^{-\beta t}$ ($\beta = 0.0742 \text{ s}^{-1}$).}
     \label{fig:lyap_decay}
 \end{figure}
 
-Slika~\ref{fig:lyap_decay} prikazuje vremenski tijek energije Ljapunova $V(x(t)) = x(t)^T P x(t)$ u logaritamskom mjerilu. Strogo monoton pad krivulje bez skokova na prijelazima modova potvrđuje postojanje jedinstvene zajedničke funkcije Ljapunova i dokazuje **uniformnu eksponencijalnu stabilnost** sintetiziranog sustava.
+Slika~\ref{fig:lyap_decay} prikazuje vremenski tijek energije Ljapunova $V(x(t)) = x(t)^T P x(t)$ u logaritamskom mjerilu. Monoton pad krivulje potvrđuje postojanje jedinstvene zajedničke funkcije Ljapunova i dokazuje \textbf{uniformnu eksponencijalnu stabilnost} zatvorenog sustava.
