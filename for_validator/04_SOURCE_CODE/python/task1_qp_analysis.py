@@ -187,6 +187,7 @@ ax.plot(x_case1[0], x_case1[1], marker='o', markersize=8, color=COLORS['slate_gr
 # Gradients at x*
 grad_f_val = grad_f(x_case2)
 grad_g1_val = np.array([-1.0, -1.0])
+grad_g2_val = np.array([1.0, -1.0])
 scale_g = 1.8
 scale_f = 0.25
 
@@ -195,7 +196,10 @@ ax.quiver(x_case2[0], x_case2[1], grad_f_val[0]*scale_f, grad_f_val[1]*scale_f,
           width=0.008, label=r'$\nabla f(x^*)$')
 ax.quiver(x_case2[0], x_case2[1], grad_g1_val[0]*scale_g, grad_g1_val[1]*scale_g,
           angles='xy', scale_units='xy', scale=1, color=COLORS['accent_red'],
-          width=0.008, label=r'$\nabla g_1(x^*)$ (kolineran s $-\nabla f$)')
+          width=0.008, label=r'$\nabla g_1(x^*)$ (aktivno, $\mu_1^* = 12.242$)')
+ax.quiver(x_case2[0], x_case2[1], grad_g2_val[0]*scale_g, grad_g2_val[1]*scale_g,
+          angles='xy', scale_units='xy', scale=1, color=COLORS['forest_green'],
+          width=0.008, label=r'$\nabla g_2(x^*)$ (neaktivno, $\mu_2^* = 0$)')
 
 ax.set_xlim([0, 10])
 ax.set_ylim([0, 10])

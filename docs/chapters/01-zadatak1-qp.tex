@@ -221,19 +221,19 @@ Na slici~\ref{fig:qp_primal} prikazana je geometrija QP problema u ravnini $(x_1
     \label{fig:qp_primal}
 \end{figure}
 
-U optimalnoj točki $x^* = (5.758, 4.242)$ gradijent funkcije cilja i gradijent aktivnog ograničenja iznose:
+U optimalnoj točki $x^* = (5.758, 4.242)$ gradijent funkcije cilja te gradijenti ograničenja iznose:
 \begin{equation}
-\nabla f(x^*) = \begin{bmatrix} 12.242424 \\ 12.242424 \end{bmatrix}, \quad \nabla g_1(x^*) = \begin{bmatrix} -1 \\ -1 \end{bmatrix}.
+\nabla f(x^*) = \begin{bmatrix} 12.242424 \\ 12.242424 \end{bmatrix}, \quad \nabla g_1(x^*) = \begin{bmatrix} -1 \\ -1 \end{bmatrix}, \quad \nabla g_2(x^*) = \begin{bmatrix} 1 \\ -1 \end{bmatrix}.
 \end{equation}
-Uočava se savršena kolinearnost suprotnog smjera:
+Uvjet stacionarnosti Lagrangeove funkcije u točki $x^*$ glasi:
 \begin{equation}
-\nabla f(x^*) + \mu_1^* \nabla g_1(x^*) = \begin{bmatrix} 12.242424 \\ 12.242424 \end{bmatrix} + 12.242424 \begin{bmatrix} -1 \\ -1 \end{bmatrix} = \begin{bmatrix} 0 \\ 0 \end{bmatrix}.
+\nabla f(x^*) + \mu_1^* \nabla g_1(x^*) + \mu_2^* \nabla g_2(x^*) = \begin{bmatrix} 12.242424 \\ 12.242424 \end{bmatrix} + 12.242424 \begin{bmatrix} -1 \\ -1 \end{bmatrix} + 0 \cdot \begin{bmatrix} 1 \\ -1 \end{bmatrix} = \begin{bmatrix} 0 \\ 0 \end{bmatrix}.
 \end{equation}
-Fizička interpretacija ovog uvjeta odgovara ravnoteži sila: gradijent funkcije cilja $\nabla f(x^*)$ teži pomaknuti točku prema unutrašnjosti (nesputanom minimumu $x_0$), no nailazi na reakciju veze (graničnu silu) normalnog vektora $\nabla g_1(x^*)$ proporcionalnu intenzitetu Lagrangeovog množitelja $\mu_1^* = 12.2424$.
+Budući da je drugo ograničenje strogo neaktivno ($g_2(x^*) = 5.757576 - 4.242424 - 3 = -1.484848 < 0$), iz uvjeta komplementarnosti slijedi $\mu_2^* = 0$. Vektor $\nabla g_2(x^*)$ usmjeren je prema nedopustivom poluprostoru drugog ograničenja i ne sudjeluje u ravnoteži sila. Ravnotežu u potpunosti ostvaruje aktivno ograničenje $g_1$: gradijent funkcije cilja $\nabla f(x^*)$ teži pomaknuti točku prema nesputanom minimumu $x_0$, čemu se suprotstavlja normalni vektor $\nabla g_1(x^*)$ intenzitetom $\mu_1^* = 12.2424$.
 
 \subsection{Numerička verifikacija u programskim paketima}
 
-Problem je numerički verificiran u programskim alatima MATLAB (\texttt{quadprog}, YALMIP) i Python (\texttt{scipy.optimize}, \texttt{cvxpy}). U tablici~\ref{tab:qp_comparison} prikazana je usporedba analitičkih i numeričkih rezultata.
+Problem je numerički verificiran u programskim alatima MATLAB (\texttt{quadprog}, \texttt{fmincon}) i Python (\texttt{scipy.optimize}, \texttt{cvxpy}). U tablici~\ref{tab:qp_comparison} prikazana je usporedba analitičkih i numeričkih rezultata.
 
 \begin{table}[H]
 \centering
