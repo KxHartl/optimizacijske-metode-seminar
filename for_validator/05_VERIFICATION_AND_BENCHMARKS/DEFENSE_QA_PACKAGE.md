@@ -11,8 +11,8 @@
 Hurwitz property of individual dynamic matrices $A_{\mathrm{even}}$ and $A_{\mathrm{odd}}$ guarantees asymptotic convergence to the origin if and only if the system resides indefinitely in one isolated mode. However, each mode defines a different vector field and a distinct set of elliptic Lyapunov level curves. 
 
 Under periodic switching (every $\Delta t = 1\text{ s}$), the state transitions to a geometric configuration where the subsequent mode's vector field has a net outward expansion component before the oscillatory damping phase takes effect. By computing the **monodromy matrix** across one full periodic cycle ($T = 2\text{ s}$):
-$$\Phi_{\mathrm{cycle}} = e^{A_{\mathrm{odd}} \cdot 1} e^{A_{\mathrm{even}} \cdot 1} \approx \begin{bmatrix} -3.6476 & 0.0000 \\ 0.0000 & -0.0450 \end{bmatrix},$$
-its spectral radius is $\rho(\Phi_{\mathrm{cycle}}) = 1.2180 > 1$. Because discrete stroboscopic state points satisfy $x(2(k+1)) = \Phi_{\mathrm{cycle}} x(2k)$, energy is pumped into the system in every cycle, resulting in exponential spiral divergence.
+$$\Phi_{\mathrm{cycle}} = e^{A_{\mathrm{odd}} \cdot 1} e^{A_{\mathrm{even}} \cdot 1} = e^{-2}\begin{bmatrix} -9 & 0 \\ 0 & -\frac{1}{9} \end{bmatrix} \approx \begin{bmatrix} -1.2180 & 0.0000 \\ 0.0000 & -0.0150 \end{bmatrix},$$
+its spectral radius is $\rho(\Phi_{\mathrm{cycle}}) = 1.2180 > 1$ (with $\det(\Phi_{\mathrm{cycle}}) = e^{-4} \approx 0.01832$). Because discrete stroboscopic state points satisfy $x(2(k+1)) = \Phi_{\mathrm{cycle}} x(2k)$, energy is pumped along the first principal axis in every cycle, resulting in exponential spiral divergence.
 
 ---
 

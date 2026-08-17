@@ -61,4 +61,4 @@ All analytical results derived in the report have been verified across numerical
 * Congruence transformation ($Q = P^{-1} \succ 0, Y = KQ$):
   $$A_i Q + Q A_i^T + B Y + Y^T B^T \prec 0, \quad i \in \{\mathrm{even}, \mathrm{odd}\}$$
 * Monodromy Matrix:
-  $$\Phi_{\mathrm{cycle}} = e^{A_{\mathrm{odd}} \cdot 1} e^{A_{\mathrm{even}} \cdot 1}, \quad \rho(\Phi_{\mathrm{cycle}}) = \max_i |\lambda_i(\Phi_{\mathrm{cycle}})|$$
+  $$\Phi_{\mathrm{cycle}} = e^{A_{\mathrm{odd}} \cdot 1} e^{A_{\mathrm{even}} \cdot 1} = e^{-2}\begin{bmatrix} -9 & 0 \\ 0 & -\frac{1}{9} \end{bmatrix}, \quad \rho(\Phi_{\mathrm{cycle}}) = 9e^{-2} \approx 1.2180$$

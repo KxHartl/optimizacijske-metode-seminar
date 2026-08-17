@@ -81,7 +81,8 @@ plot(x_opt(1), x_opt(2), 'rp', 'MarkerSize', 14, 'MarkerFaceColor', 'r', 'Displa
 % Gradients
 grad_f = Q * x_opt + c;
 quiver(x_opt(1), x_opt(2), 0.25*grad_f(1), 0.25*grad_f(2), 0, 'b', 'LineWidth', 2, 'DisplayName', '\nabla f(x^*)');
-quiver(x_opt(1), x_opt(2), -1.8, -1.8, 0, 'r', 'LineWidth', 2, 'DisplayName', '\nabla g_1(x^*)');
+quiver(x_opt(1), x_opt(2), -1.8, -1.8, 0, 'r', 'LineWidth', 2, 'DisplayName', '\nabla g_1(x^*) (\mu_1^* = 12.242)');
+quiver(x_opt(1), x_opt(2), 1.8, -1.8, 0, 'g--', 'LineWidth', 2, 'DisplayName', '\nabla g_2(x^*) (\mu_2^* = 0)');
 
 xlim([0, 10]); ylim([0, 10]);
 xlabel('x_1'); ylabel('x_2');
