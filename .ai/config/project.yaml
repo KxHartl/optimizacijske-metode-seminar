@@ -15,7 +15,7 @@ professor_name: "Andrej Jokić"           # Ime i prezime profesora
 
 # --- Build & page limit ---
 max_pages: 45                # build skripta upozorava ako PDF premašuje N stranica
-dist_version: "dev"          # build piše PDF u dist/<dist_version>/ (npr. "v1.0" za predaju)
+dist_version: "v1.0"         # build piše PDF u dist/<dist_version>/ (npr. "v1.0" za predaju)
 
 # --- Opcijski popisi (latex_architect uključuje ako je true) ---
 include_lof: true           # \listoffigures
