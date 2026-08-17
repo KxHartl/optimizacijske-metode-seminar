@@ -6,10 +6,15 @@
 
 ## 1. PROAKTIVNI GIT (CRITICAL)
 
-- Nakon **SVAKE logičke cjeline** (poglavlje napisano, bug popravljen, izvori preuzeti):
+- Nakon **SVAKE logičke cjeline** (poglavlje napisano, bug popravljen, izvori preuzeti, testovi dodani):
   odmah `git add` + `git commit`. **Ne čekaj kraj zadatka i ne čekaj korisnika.**
-- Format poruke: Conventional Commits + prefiks `🤖 [AI]` — npr. `feat: 🤖 [AI] add uvod chapter`.
-- Najlakše jednim pozivom: `.\.ai\scripts\helpers\checkpoint.ps1 "feat: opis"` (bash: `checkpoint.sh`).
+- **Format poruke**: Smisleni, inženjerski precizni Conventional Commits (npr. `feat(latex): ...`, `fix(solver): ...`, `docs(kkt): ...`).
+- **Oznaka `🤖 [AI]` pravilo**:
+  - **Autonomni AI rad**: Kada AI agent samostalno/autonomno provodi zadatak i stvara commit, OBAVEZNO dodaje prefiks `🤖 [AI]` (npr. `feat(latex): 🤖 [AI] add uvod chapter`).
+  - **Korisnički vođen / Asistirani rad**: Kada korisnik eksplicitno traži commit vlastitog rada ili promjena na kojima je korisnik radio uz asistenciju AI-ja, **NE dodaje se** `🤖 [AI]` oznaka — koristi se čisti Conventional Commit (npr. `feat(model): add road discretization calculation`).
+- **Checkpoint skripte**:
+  - Autonomni poziv: `.\.ai\scripts\helpers\checkpoint.ps1 "feat(scope): description"` (bash: `checkpoint.sh`)
+  - Korisnički poziv: `.\.ai\scripts\helpers\checkpoint.ps1 -UserDriven "feat(scope): description"` (bash: `checkpoint.sh --user "feat: ..."`)
 - Male prepravke → izravno na `main`. Veće strukturne promjene → grana `ai/<feature>` + PR.
 - **Samoprovjera prije završetka odgovora**: `git status --porcelain` mora biti prazan.
 
