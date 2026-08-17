@@ -2,6 +2,10 @@
 # Installed automatically by bootstrap.
 
 python-dotenv
+numpy
+scipy
+matplotlib
+cvxpy
 
 # --- RAG dependencies (NOT installed per-project) ---
 # These live once in ~/.agentbrain/.venv; RAG always runs through AgentBrain.

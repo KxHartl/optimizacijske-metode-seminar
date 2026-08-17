@@ -1,64 +1,55 @@
-# OMRiUS-seminar
+# OMRiUS — Seminarski rad
 
-> **OMRiUS-seminar** — an AI-agent academic workspace, initialized from the [LiteRealm](https://github.com/KxHartl/LiteRealm) template.
+> **Optimizacijske metode u razvoju i upravljanju sustava (OMRiUS)**
+> Fakultet strojarstva i brodogradnje, Sveučilište u Zagrebu
+> **Student:** Krešimir Hartl | **Mentor:** Prof. dr. sc. Andrej Jokić
 
 [![Made with LiteRealm](https://img.shields.io/badge/template-LiteRealm-6f42c1)](https://github.com/KxHartl/LiteRealm)
 [![LaTeX · Tectonic](https://img.shields.io/badge/LaTeX-Tectonic-008080)](https://tectonic-typesetting.github.io/)
-[![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-3776AB)](https://www.python.org/)
+[![Python 3.14+](https://img.shields.io/badge/Python-3.14%2B-3776AB)](https://www.python.org/)
+[![MATLAB R2025b](https://img.shields.io/badge/MATLAB-R2025b-orange)](https://www.mathworks.com/)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-blue)](LICENSE)
-
-LiteRealm is the **per-project** half of a two-part system. All the heavy, reusable
-machinery — LaTeX templates, AI agent definitions, RAG scripts and learned lessons —
-lives once on your machine in **[AgentBrain](https://github.com/KxHartl/AgentBrain)**
-(`~/.agentbrain`). Each new project stays tiny and focused; the brain is shared.
-
-```
-   ┌─────────────────────────┐         ┌──────────────────────────────┐
-   │  LiteRealm  (this repo)  │         │  AgentBrain  (~/.agentbrain)  │
-   │  · one per project       │ ◀────▶  │  · one per machine, shared    │
-   │  · your text, data, PDFs │  uses   │  · templates · agents         │
-   │  · config + state        │         │  · RAG scripts · gotchas      │
-   └─────────────────────────┘         └──────────────────────────────┘
-```
 
 ---
 
-## 🚀 Quick Start
+## 🎯 Pregled zadataka seminara
 
-### Option A — GitHub Codespaces (zero setup)
+1. **Zadatak 1. (QP, konveksnost, KKT, dualnost, osjetljivost)**
+   - Ispitivanje konveksnosti preko Hessian matrice ($H \succ 0$) i linearnih ograničenja.
+   - Analitičko postavljanje i rješavanje Karush-Kuhn-Tucker (KKT) uvjeta.
+   - Grafički prikaz dozvoljenog područja, nivo-krivulja funkcije cilja i gradijenata u točki optimuma.
+   - Numeričko rješavanje u MATLAB-u (`quadprog` / YALMIP) i usporedba primarnih i dualnih varijabli.
+   - Lagrangeov dualni problem ($\max g(\lambda)$) i verifikacija jake dualnosti ($p^* = d^*$).
+   - Analiza osjetljivosti optimalne vrijednosti na perturbacije ograničenja ($\frac{\partial p^*}{\partial b_i} = -\lambda_i^*$).
 
-1. Click **`Use this template`** → **`Create a new repository`**.
-2. Wait ~30 s: the **Initialize from Template** workflow renames every placeholder to your repo name and commits the result.
-3. Click **`Code`** → **`Codespaces`** → **`Create codespace`**.
-   The dev container runs `bootstrap --auto` for you — environment ready, brain cloned, done.
+2. **Zadatak 2. (Robustan QP s intervalnom nesigurnošću)**
+   - Modeliranje nesigurnosti koeficijenata matrice ograničenja $a_{ij} \in [0.85 a_{ij}, 1.15 a_{ij}]$.
+   - Formulacija robusnog pandana (worst-case optimizacija) prema 8. predavanju.
+   - Svođenje na deterministički QP s poliedarskim ograničenjima najgoreg slučaja.
+   - Grafički prikaz Monte Carlo realizacija slučajnih koeficijenata i robusnog optimuma.
 
-### Option B — Local machine
+3. **Zadatak 3. (Optimizacijska nivelacija ceste s ograničenjima — LP)**
+   - Formulacija minimizacije troškova iskopa/nasipavanja $\min \sum |y_i - h(x_i)|$.
+   - Svođenje na linearni program (LP) uvođenjem pomoćnih varijabli za apsolutnu vrijednost.
+   - Uvođenje ograničenja na nagib (1. derivacija) i promjenu nagiba (2. derivacija) te rubne uvjete.
+   - Rješavanje i grafički prikaz za 4 slučaja (Slučaj A i B za $N=20$ i $N=100$).
 
-1. **`Use this template`** → **`Create a new repository`** (same auto-init as above).
-2. Clone and bootstrap. The script reads your project name from `project.yaml` automatically — no need to type it again:
+4. **Zadatak 4. (Robusna stabilizacija vremenski promjenjivog switching sustava)**
+   - Analiza stabilnosti pojedinačnih dinamičkih modova ($A_{\text{parno}}$ i $A_{\text{neparno}}$ — Hurwitz).
+   - Simulacija otvorenog kruga i demonstracija nestabilnosti uslijed prekapčanja.
+   - Dizajn statičkog regulatora povratne veze stanja $u(t) = K x(t)$ preko LMI / zajedničke Lyapunove funkcije $V(x) = x^T P x$.
+   - Simulacija zatvorenog kruga i verifikacija eksponencijalne stabilnosti.
 
-   **Windows (PowerShell):**
-   ```powershell
-   git clone <YOUR_NEW_REPO_URL>; cd <YOUR_FOLDER>
-   .\.ai\scripts\bootstrap.ps1 -Auto
-   ```
-   **Linux / macOS (Bash):**
-   ```bash
-   git clone <YOUR_NEW_REPO_URL> && cd <YOUR_FOLDER>
-   ./.ai/scripts/bootstrap.sh --auto
-   ```
+---
 
-### Then — start writing
+## 🛠️ Struktura repozitorija i radni alati
 
-Fill in the four required fields in [`.ai/config/project.yaml`](.ai/config/project.yaml)
-(author, course, title, professor), then tell your AI agent:
-
-```
-počni pisati
-```
-
-The **`latex_architect`** agent copies the right LaTeX template into `docs/`, compiles it to
-prove it works, and hands off to the **`writer`** agent. You write prose; the agents handle LaTeX.
+- **`docs/`**: LaTeX projekt izrađen prema FSB seminar predlošku (`main.tex`, `chapters/`, `figures/`).
+  - Build: `.\.ai\scripts\helpers\build-docs.ps1` (generira PDF u `dist/dev/`).
+- **`src/`**: MATLAB (`.m`) i Python (`.py`) skripte za numeričko rješavanje i generiranje grafova.
+- **`TASK/`**: Službena specifikacija zadatka ([TASK/zadatak_omrius.md](TASK/zadatak_omrius.md)).
+- **`data/sources/`**: Indeksirana literatura (predavanja 01–08, vježbe 1–5, referentni seminar) povezana s RAG sustavom.
+- **RAG pretraživanje**: `.\.ai\scripts\helpers\rag.ps1 query "<upit>"` pretražuje lokalnu LanceDB bazu.
 
 ---
 
