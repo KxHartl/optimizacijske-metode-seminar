@@ -78,6 +78,14 @@ f_rob_analyt = objective(np.array([x1_rob_analyt, x2_rob_analyt]))
 print(f"Analytical Robust x*    = [{x1_rob_analyt:.6f}, {x2_rob_analyt:.6f}], f(x_rob*) = {f_rob_analyt:.6f}")
 print(f"Discrepancy (analytical vs numerical): {np.linalg.norm(x_rob - np.array([x1_rob_analyt, x2_rob_analyt])):.2e}")
 
+# KKT verification for robust solution
+grad_f_rob = Q @ np.array([x1_rob_analyt, x2_rob_analyt]) + c
+A_act = np.array([[-0.85, -0.85], [1.15, -0.85]])
+mu_rob = np.linalg.solve(A_act.T, -grad_f_rob)
+print(f"Robust KKT Multipliers: mu1* = {mu_rob[0]:.6f}, mu2* = {mu_rob[1]:.6f} (Strictly positive: {np.all(mu_rob > 0)})")
+slacks = b_rob - A_rob @ np.array([x1_rob_analyt, x2_rob_analyt])
+print(f"Min slack across inactive vertices: {np.min(slacks[slacks > 1e-6]):.6f} > 0")
+
 price_of_robustness = f_rob - f_nom
 perc_increase = (price_of_robustness / f_nom) * 100.0
 print(f"Price of Robustness: Delta f* = {price_of_robustness:.6f} (+{perc_increase:.2f}%)")

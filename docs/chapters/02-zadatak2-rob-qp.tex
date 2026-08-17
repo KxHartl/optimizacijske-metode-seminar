@@ -118,11 +118,20 @@ Vrijednost funkcije cilja u robusnom optimumu iznosi:
 f(x_{\mathrm{rob}}^*) &= 6.5^2 + 2\left(\frac{179}{34}\right)^2 - 0.3(6.5)\left(\frac{179}{34}\right) + 2(6.5) - 3\left(\frac{179}{34}\right) \nonumber \\
 &= \frac{978253}{11560} \approx 84.623962.
 \end{align}
+
+\subsubsection{KKT verifikacija za sustav od 8 vrhova}
+
+U točki $x_{\mathrm{rob}}^*$ gradijent funkcije cilja iznosi $\nabla f(x_{\mathrm{rob}}^*) = [13.420588, 16.108824]^T$. Uvjet stacionarnosti uz dva aktivna vrha ($g_1^{\mathrm{wc}}$ i $g_2^{\mathrm{wc}}$) glasi:
+\begin{equation}
+\nabla f(x_{\mathrm{rob}}^*) + \mu_1^* \begin{bmatrix} -0.85 \\ -0.85 \end{bmatrix} + \mu_2^* \begin{bmatrix} 1.15 \\ -0.85 \end{bmatrix} = \begin{bmatrix} 0 \\ 0 \end{bmatrix} \implies \begin{bmatrix} \mu_1^* \\ \mu_2^* \end{bmatrix} \approx \begin{bmatrix} 17.607439 \\ 1.344118 \end{bmatrix} > 0.
+\end{equation}
+Budući da su Lagrangeovi množitelji $\mu_1^* > 0$ i $\mu_2^* > 0$, dualna dopustivost je strogo zadovoljena. Uvrštavanjem točke $x_{\mathrm{rob}}^*$ u preostalih 6 nejednakosti~\eqref{eq:rob_v1}--\eqref{eq:rob_v8} potvrđuje se stroga primarna dopustivost (npr. za vrh $(-1.15, -1.15)$ vrijedi $-1.15(6.5) - 1.15(5.2647) = -13.5294 \leq -10$, uz slack $3.5294 > 0$). Time je dokazano da je $x_{\mathrm{rob}}^*$ jedinstveni globalni optimum robusnog problema.
+
 Numeričko rješavanje pomoću MATLAB funkcije \texttt{quadprog} i Python modula \texttt{scipy.optimize} potvrđuje analitičko rješenje uz odstupanje manje od $7.05 \times 10^{-9}$.
 
 \subsection{Monte Carlo analiza dopustivosti i vizualizacija}
 
-Kako bi se empirijski verificirala robusnost predloženog rješenja, provedena je Monte Carlo simulacija s $N_{\mathrm{MC}} = 100$ slučajnih realizacija matrica ograničenja $A^{(k)}$, gdje su elementi jednoliko distribuirani:
+Kako bi se empirijski verificirala robusnost predloženog rješenja, provedena je Monte Carlo simulacija s $N_{\mathrm{MC}} = 100$ slučajnih realizacija matrica ograničenja $A^{(k)}$ (uz fiksirani seed generatora slučaja $\mathrm{seed} = 42$), gdje su elementi jednoliko distribuirani:
 \begin{equation}
 a_{ij}^{(k)} \sim \mathcal{U}(0.85 a_{ij}^0, \; 1.15 a_{ij}^0), \quad k = 1, \dots, 100.
 \end{equation}
@@ -147,19 +156,19 @@ Rezultati Monte Carlo provjere dopustivosti prikazani su u tablici~\ref{tab:mc_a
 
 \begin{table}[H]
 \centering
-\caption{Monte Carlo provjera dopustivosti nominalnog i robusnog optimuma ($N = 100$).}
+\caption{Monte Carlo provjera dopustivosti nominalnog i robusnog optimuma ($N = 100$, $\mathrm{seed} = 42$).}
 \label{tab:mc_audit}
 \begin{tabular}{lccc}
 \toprule
 \textbf{Optimum} & \textbf{Broj kršenja ograničenja} & \textbf{Stopa nedopustivosti} & \textbf{Robusni status} \\
 \midrule
-Nominalni $x_{\mathrm{nom}}^*$ & 57 / 100 & $57.0\%$ & \textbf{Rizično} (često nedopustivo) \\
-Robusni $x_{\mathrm{rob}}^*$ & 0 / 100 & $0.0\%$ & \textbf{100\% Dopustivo (Zajamčeno)} \\
+Nominalni $x_{\mathrm{nom}}^*$ & 57 / 100 & $57.0\%$ & Nedopustivo u 57\% realizacija \\
+Robusni $x_{\mathrm{rob}}^*$ & 0 / 100 & $0.0\%$ & Dopustivo za sve realizacije \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-Uočava se da nominalno rješenje $x_{\mathrm{nom}}^*$ krši ograničenja u čak $57\%$ slučajnih realizacija jer leži točno na nominalnoj granici. Suprotno tome, robusno rješenje $x_{\mathrm{rob}}^*$ leži unutar presjeka svih mogućih dopustivih skupova te posjeduje $100\%$ pouzdanost.
+U provedenom uzorku od 100 realizacija nema kršenja ograničenja za točku $x_{\mathrm{rob}}^*$. Robusna dopustivost za sve točke skupa $\mathcal{U}$ matematički je zajamčena zadovoljenjem svih 8 vršnih nejednakosti determinističkog robusnog ekvivalenta. Suprotno tome, nominalno rješenje $x_{\mathrm{nom}}^*$ krši ograničenja u čak $57\%$ slučajnih realizacija jer leži na nominalnoj granici.
 
 \subsection{Cijena robusnosti (\textit{Price of Robustness})}
 
@@ -178,4 +187,4 @@ Uvođenje zahtjeva za robusnošću neumitno povlači određenu konzervativnost, 
     \label{fig:price_of_robustness}
 \end{figure}
 
-Slika~\ref{fig:price_of_robustness} prikazuje pomak točke optimuma sa $x_{\mathrm{nom}}^*$ na $x_{\mathrm{rob}}^*$. Povećanje troška od $39.63\%$ predstavlja inženjersku premiju osiguranja koja jamči apsolutnu operativnu sigurnost i izostanak kršenja ograničenja pod svim mogućim varijacijama parametara unutar definiranog $\pm 15\%$ koridora nesigurnosti.
+Slika~\ref{fig:price_of_robustness} prikazuje pomak točke optimuma sa $x_{\mathrm{nom}}^*$ na $x_{\mathrm{rob}}^*$. Povećanje vrijednosti funkcije cilja za $39.63\%$ predstavlja cijenu robusnosti kojom se osigurava dopustivost rješenja za sve parametarske realizacije unutar zadanog $\pm 15\%$ intervala nesigurnosti.
