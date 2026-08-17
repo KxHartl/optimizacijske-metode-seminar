@@ -1,0 +1,49 @@
+\section{Zaključak i sinteza rezultata}
+
+U ovom seminarskom radu provedena je sveobuhvatna matematička, teorijska i numerička analiza četiri fundamentalna problema suvremene teorije optimizacije i upravljanja sustavima.
+
+\subsection{Sinteza rezultata po optimizacijskim zadacima}
+
+\begin{enumerate}
+    \item \textbf{Kvadratno programiranje (Zadatak 1)}:
+    \begin{itemize}
+        \item Dokazana je stroga konveksnost funkcije cilja preko pozitivne definitnosti Hesseove matrice ($\lambda_1 \approx 1.956, \lambda_2 \approx 4.044 > 0$).
+        \item Provedena je iscrpna analitička analiza svih 4 kombinacije aktivnih skupova KKT sustava, čime je egzaktno određen jedinstveni globalni optimum $x^* = (5.758, 4.242)$ s Lagrangeovim množiteljem $\mu_1^* = 12.242$ i optimalnim troškom $p^* = 60.606$.
+        \item Izvedena je konkavna Lagrangeova dualna funkcija $g(\mu)$ te je potvrđena jaka dualnost ($p^* = d^*$, nulti dualni procjep).
+        \item Teorem o osjetljivosti potvrdio je fizikalno značenje cijene u sjeni ($\frac{\partial p^*}{\partial b_1} = -\mu_1^* = -12.242$).
+    \end{itemize}
+    
+    \item \textbf{Robusno kvadratno programiranje (Zadatak 2)}:
+    \begin{itemize}
+        \item Formuliran je robusni ekvivalent za intervalnu nesigurnost koeficijenata od $\pm 15\%$ primjenom teorije najgoreg slučaja nad poliedarskim skupovima nesigurnosti (8 vrhova).
+        \item Analitički i numerički određen je robusni optimum $x_{\mathrm{rob}}^* = (6.500, 5.265)$ s troškom $f(x_{\mathrm{rob}}^*) = 84.624$.
+        \item Monte Carlo simulacija sa 100 slučajnih realizacija dokazala je da nominalno rješenje krši ograničenja u $57\%$ slučajeva, dok robusno rješenje osigurava $100\%$ pouzdanost.
+        \item Kvantificirana je cijena robusnosti od $+39.63\%$ ($+24.018$).
+    \end{itemize}
+    
+    \item \textbf{Nivelacija ceste linearnim programiranjem (Zadatak 3)}:
+    \begin{itemize}
+        \item Postavljen je kontinuirani varijacijski problem minimizacije volumena zemljanih radova uz ograničenja nagiba i zakrivljenosti.
+        \item Diskretizacijom konačnim razlikama i primjenom epigrafskih varijabli $z_i \geq |y_i - h_i|$ problem je preveden u linearni program (LP) s $6N$ nejednakosti.
+        \item Rješavanjem za 4 slučaja ($N=20, 100$, Slučaj A i B) dokazana je asimptotska konvergencija prema kontinuiranom rješenju ($\approx 1.966 \text{ m}^2$ za Slučaj A i $\approx 2.506 \text{ m}^2$ za Slučaj B) te je analiziran inženjerski kompromis između udobnosti vožnje i volumena zemljanih radova.
+    \end{itemize}
+    
+    \item \textbf{Robusna stabilizacija sklopnog sustava pomoću LMI-ja (Zadatak 4)}:
+    \begin{itemize}
+        \item Spektralnom analizom potvrđeno je da su oba pojedinačna moda strogo Hurwitzova ($\lambda = -1 \pm 1.571j$).
+        \item Analizom monodromijske matrice ($\rho(\Phi_{\mathrm{cycle}}) = 1.218 > 1$) dokazan je mehanizam destabilizacije periodičkim prespajanjem u otvorenom krugu.
+        \item Primjenom zajedničke funkcije Ljapunova (CQLF) i kongruentne transformacije sa supstitucijom $Q = P^{-1}, Y = KQ$ nelinearni uvjeti stabilnosti prevedeni su u linearne matrične nejednakosti (LMI).
+        \item Semidefinitnim programiranjem sintetiziran je robusni regulator stanja $u = Kx$, a numerička simulacija zatvorenog kruga potvrdila je brzu eksponencijalnu konvergenciju trajektorija i strogu disipaciju energije Ljapunova.
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Komparativni osvrt i smjernice za inženjersku praksu}
+
+Rad demonstrira snagu i fleksibilnost konveksne optimizacije u inženjerskom modeliranju i vođenju sustava. Uspješna transformacija fizikalnih i geometrijskih zahtjeva u standardne oblike (LP, QP, LMI/SDP) omogućuje primjenu numerički pouzdanih rješavača koji jamče globalnu konvergenciju u polinomijalnom vremenu.
+
+Kao logičan nastavak ovog rada u inženjerskoj praksi predlaže se:
+\begin{itemize}
+    \item Primjena formuliranih QP algoritama u okviru \textbf{modelskog prediktivnog upravljanja} (MPC) u stvarnom vremenu.
+    \item Proširenje robusnog pristupa na \textbf{cijevno robusno prediktivno upravljanje} (engl. \textit{Tube MPC}) s neizvjesnim dinamičkim modelima.
+    \item Sinteza nelinearnih i adaptivnih LMI regulatora za sustave s promjenjivim vremenskim kašnjenjem i zasićenjem aktuatora.
+\end{itemize}
