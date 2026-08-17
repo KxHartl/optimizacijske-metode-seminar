@@ -1,5 +1,5 @@
 %% Task 1: Quadratic Programming (QP) Analysis in MATLAB
-% Solves primal QP, 4-case KKT resolution, Lagrange dual, and sensitivity analysis
+% Solves primal QP, 4-case KKT resolution, Lagrange dual, sensitivity analysis, and generates plots
 
 clear; close all; clc;
 config_plot();
@@ -27,7 +27,6 @@ fprintf('Optimal cost p* = %.6f\n', f_opt);
 fprintf('Lagrange multipliers mu* = [%.6f; %.6f]\n', lambda_qp.ineqlin(1), lambda_qp.ineqlin(2));
 
 % 4. Analytical KKT Solution (Case 2: g1 active, g2 inactive)
-% System: [2 -0.3 -1; -0.3 4 -1; -1 -1 0] * [x1; x2; mu1] = [-2; 3; -10]
 M_kkt = [2.0, -0.3, -1.0; -0.3, 4.0, -1.0; -1.0, -1.0, 0.0];
 rhs_kkt = [-2.0; 3.0; -10.0];
 sol_kkt = M_kkt \ rhs_kkt;
@@ -41,7 +40,6 @@ fprintf('Analytical mu1* = %.6f\n', mu1_analytical);
 fprintf('Analytical p* = %.6f\n', p_analytical);
 
 % 5. Dual Problem Maximization
-% g(mu) = -0.5 * (c + A'*mu)' * inv(Q) * (c + A'*mu) - b'*mu
 Q_inv = inv(Q);
 dual_obj = @(mu) -(-0.5 * (c + A'*mu)' * Q_inv * (c + A'*mu) - b'*mu);
 mu0 = [1.0; 1.0];
@@ -63,3 +61,31 @@ fprintf('\n--- Sensitivity Results ---\n');
 fprintf('Numerical dp*/db1 = %.6f\n', dp_db1_num);
 fprintf('Analytical -mu1*  = %.6f\n', -mu1_analytical);
 fprintf('Absolute difference = %.2e\n', abs(dp_db1_num - (-mu1_analytical)));
+
+% 7. MATLAB Plotting & Figure Export
+fig_dir = fullfile('docs', 'figures');
+if ~exist(fig_dir, 'dir'), mkdir(fig_dir); end
+
+% Fig 1.1: Primal Geometry
+figure('Position', [100, 100, 700, 600], 'Visible', 'off');
+[X1, X2] = meshgrid(linspace(0, 10, 300), linspace(0, 10, 300));
+Z = 0.5*(Q(1,1)*X1.^2 + 2*Q(1,2)*X1.*X2 + Q(2,2)*X2.^2) + c(1)*X1 + c(2)*X2;
+contour(X1, X2, Z, 25, 'LineWidth', 1.2); hold on;
+
+% Boundaries
+x1_v = linspace(0, 10, 300);
+plot(x1_v, 10 - x1_v, 'r-', 'LineWidth', 2.0, 'DisplayName', 'g_1(x) = 0');
+plot(x1_v, x1_v - 3, 'g-', 'LineWidth', 2.0, 'DisplayName', 'g_2(x) = 0');
+plot(x_opt(1), x_opt(2), 'rp', 'MarkerSize', 14, 'MarkerFaceColor', 'r', 'DisplayName', 'x^*');
+
+% Gradients
+grad_f = Q * x_opt + c;
+quiver(x_opt(1), x_opt(2), 0.25*grad_f(1), 0.25*grad_f(2), 0, 'b', 'LineWidth', 2, 'DisplayName', '\nabla f(x^*)');
+quiver(x_opt(1), x_opt(2), -1.8, -1.8, 0, 'r', 'LineWidth', 2, 'DisplayName', '\nabla g_1(x^*)');
+
+xlim([0, 10]); ylim([0, 10]);
+xlabel('x_1'); ylabel('x_2');
+title('Zadatak 1: Geometrija QP problema i KKT ravnoteža gradijenata (MATLAB)');
+legend('Location', 'northeast'); grid on;
+exportgraphics(gcf, fullfile(fig_dir, 'fig1_1_qp_primal_geometry_matlab.png'), 'Resolution', 300);
+close(gcf);
