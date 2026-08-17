@@ -1,4 +1,181 @@
-\section{Robusno kvadratno programiranje uz intervalnu nesigurnost}
-\label{sec:zadatak2}
+\section{Robusno kvadratno programiranje pod intervalnom nesigurnošću}
 
-U ovom poglavlju formulira se i rješava robusni problem kvadratnog programiranja u kojem koeficijenti matrice ograničenja podliježu intervalnoj nesigurnosti od $\pm 15\%$. Sukladno teoriji robusnog optimiranja, izvodi se deterministički ekvivalent najgoreg slučaja (\textit{worst-case}) te se provodi numerička i Monte Carlo verifikacija.
+\subsection{Koncept robusne optimizacije i definicija skupa nesigurnosti}
+
+U stvarnim inženjerskim primjenama parametri optimizacijskog modela (koeficijenti modela procesa, fizičke konstante, otpori, koeficijenti matrice ograničenja) rijetko su egzaktno poznati. Oni podliježu mjernim pogreškama, tolerancijama izrade i promjenama radnih uvjeta. U klasičnoj (nominalnoj) optimizaciji pretpostavlja se da su parametri deterministički fiksirani, što može rezultirati rješenjima koja su izrazito osjetljiva na poremećaje te postaju nedopustiva već pri minimalnim odstupanjima parametara~\cite{bental2009robust,jokic2024predavanja}.
+
+Robusna optimizacija pristupa ovom problemu formuliranjem zahtjeva da optimalno rješenje mora zadovoljiti sva ograničenja za \textbf{sve} moguće realizacije nesigurnih parametara unutar unaprijed definiranog skupa nesigurnosti $\mathcal{U}$ (koncept najgoreg slučaja -- engl. \textit{worst-case approach})~\cite{bental2009robust}.
+
+Za optimizacijski problem iz Zadatka 1 pretpostavljamo da su koeficijenti matrice ograničenja $a_{ij}$, $i, j \in \{1, 2\}$, nesigurni te da se njihove stvarne vrijednosti nalaze u intervalu od $\pm 15\%$ oko nominalnih vrijednosti:
+\begin{equation}
+a_{ij,\mathrm{stvarno}} \in [0.85 \cdot a_{ij}^0, \; 1.15 \cdot a_{ij}^0], \quad \forall i, j \in \{1, 2\}.
+\label{eq:uncertainty_interval}
+\end{equation}
+Za pojedina ograničenja nominalni koeficijenti i pripadajući intervali nesigurnosti glase:
+\begin{itemize}
+    \item \textbf{Prvo ograničenje} ($a_{11}^0 = -1, a_{12}^0 = -1, b_1 = -10$):
+    \begin{equation}
+    a_{11} \in [-1.15, -0.85], \quad a_{12} \in [-1.15, -0.85],
+    \end{equation}
+    što definira pravokutni skup nesigurnosti $\mathcal{U}_1 \subset \mathbb{R}^2$:
+    \begin{equation}
+    \mathcal{U}_1 = \{a_1 \in \mathbb{R}^2 \mid -1.15 \leq a_{11} \leq -0.85, \; -1.15 \leq a_{12} \leq -0.85\}.
+    \end{equation}
+    \item \textbf{Drugo ograničenje} ($a_{21}^0 = 1, a_{22}^0 = -1, b_2 = 3$):
+    \begin{equation}
+    a_{21} \in [0.85, 1.15], \quad a_{22} \in [-1.15, -0.85],
+    \end{equation}
+    što definira skup nesigurnosti $\mathcal{U}_2 \subset \mathbb{R}^2$:
+    \begin{equation}
+    \mathcal{U}_2 = \{a_2 \in \mathbb{R}^2 \mid 0.85 \leq a_{21} \leq 1.15, \; -1.15 \leq a_{22} \leq -0.85\}.
+    \end{equation}
+\end{itemize}
+
+\subsection{Egzaktna derivacija determinističkog robusnog ekvivalenta}
+
+Polazni robusni problem kvadratnog programiranja formulira se kao semi-beskonačni optimizacijski problem:
+\begin{equation}
+\min_{x \in \mathbb{R}^2} \quad \frac{1}{2} x^T Q x + c^T x
+\label{eq:rob_qp_semiinf}
+\end{equation}
+uz ograničenja:
+\begin{align}
+\max_{a_1 \in \mathcal{U}_1} \; (a_{11} x_1 + a_{12} x_2) &\leq -10, \label{eq:rob_g1_max} \\
+\max_{a_2 \in \mathcal{U}_2} \; (a_{21} x_1 + a_{22} x_2) &\leq 3. \label{eq:rob_g2_max}
+\end{align}
+
+Prema teoriji robusne konveksne optimizacije~\cite{bental2009robust,jokic2024predavanja}, za poliedarski (intervalni) skup nesigurnosti $\mathcal{U}_i = \mathrm{conv}(\{v_{i}^{(1)}, \dots, v_{i}^{(K)}\})$, maksimalna vrijednost linearne funkcije $a_i^T x$ po konveksnom poliedru $\mathcal{U}_i$ uvijek se postiže u jednom od njegovih ekstremnih vrhova (\textit{vertices}):
+\begin{equation}
+\max_{a_i \in \mathcal{U}_i} a_i^T x = \max_{k \in \{1, \dots, K\}} (v_i^{(k)})^T x.
+\end{equation}
+Stoga je semi-beskonačno ograničenje $\max_{a_i \in \mathcal{U}_i} a_i^T x \leq b_i$ \textbf{egzaktno ekvivalentno} sustavu od $K$ konačnih linearnih nejednakosti:
+\begin{equation}
+(v_i^{(k)})^T x \leq b_i, \quad \forall k \in \{1, \dots, K\}.
+\end{equation}
+Za svaki od 2D pravokutnika $\mathcal{U}_1$ i $\mathcal{U}_2$ imamo po $2^2 = 4$ vrha, što ukupno daje $4 + 4 = 8$ determinističkih linearnih nejednakosti:
+
+\begin{enumerate}
+    \item \textbf{Vrhovi skupa nesigurnosti $\mathcal{U}_1$ (prvo ograničenje)}:
+    \begin{align}
+    -1.15 x_1 - 1.15 x_2 &\leq -10, \label{eq:rob_v1} \\
+    -1.15 x_1 - 0.85 x_2 &\leq -10, \label{eq:rob_v2} \\
+    -0.85 x_1 - 1.15 x_2 &\leq -10, \label{eq:rob_v3} \\
+    -0.85 x_1 - 0.85 x_2 &\leq -10. \label{eq:rob_v4}
+    \end{align}
+    \item \textbf{Vrhovi skupa nesigurnosti $\mathcal{U}_2$ (drugo ograničenje)}:
+    \begin{align}
+    0.85 x_1 - 1.15 x_2 &\leq 3, \label{eq:rob_v5} \\
+    0.85 x_1 - 0.85 x_2 &\leq 3, \label{eq:rob_v6} \\
+    1.15 x_1 - 1.15 x_2 &\leq 3, \label{eq:rob_v7} \\
+    1.15 x_1 - 0.85 x_2 &\leq 3. \label{eq:rob_v8}
+    \end{align}
+\end{enumerate}
+
+Matrični oblik determinističkog robusnog ekvivalenta glasi:
+\begin{equation}
+\min_{x \in \mathbb{R}^2} \quad \frac{1}{2} x^T Q x + c^T x \quad \text{uz} \quad A_{\mathrm{rob}} x \leq b_{\mathrm{rob}},
+\label{eq:rob_qp_matrix}
+\end{equation}
+gdje je $A_{\mathrm{rob}} \in \mathbb{R}^{8 \times 2}$ matrica sastavljena od svih 8 vektora vrhova, a $b_{\mathrm{rob}} = [-10, -10, -10, -10, 3, 3, 3, 3]^T \in \mathbb{R}^8$.
+
+\subsection{Analitičko rješenje robusnog QP-a}
+
+Za područje pozitivnog kvadranta ($x_1 \geq 0, x_2 \geq 0$), najrestriktivnije (najgore) nejednakosti među vrhovima određuju se analizom predznaka:
+\begin{itemize}
+    \item Za prvo ograničenje: budući da su koeficijenti negativni, najmanje negativan izraz na lijevoj strani postiže se za $a_{11} = -0.85$ i $a_{12} = -0.85$:
+    \begin{equation}
+    -0.85 x_1 - 0.85 x_2 \leq -10 \iff x_1 + x_2 \geq \frac{10}{0.85} = \frac{200}{17} \approx 11.764706.
+    \label{eq:rob_act1}
+    \end{equation}
+    \item Za drugo ograničenje: najgori slučaj maksimizira $a_{21} x_1 + a_{22} x_2$, što se postiže za maksimalni koeficijent $a_{21} = 1.15$ i najmanje negativan $a_{22} = -0.85$:
+    \begin{equation}
+    1.15 x_1 - 0.85 x_2 \leq 3.
+    \label{eq:rob_act2}
+    \end{equation}
+\end{itemize}
+
+U optimalnoj točki robusnog problema oba najgora ograničenja~\eqref{eq:rob_act1} i~\eqref{eq:rob_act2} postaju aktivna na granici. Postavljanjem sustava jednadžbi:
+\begin{equation}
+\begin{cases}
+0.85 x_1 + 0.85 x_2 = 10 \\
+1.15 x_1 - 0.85 x_2 = 3
+\end{cases}
+\end{equation}
+Zbrajanjem jednadžbi eliminira se varijabla $x_2$:
+\begin{equation}
+(0.85 + 1.15) x_1 = 10 + 3 \iff 2.0 x_1 = 13 \implies x_{1,\mathrm{rob}}^* = \frac{13}{2} = 6.500000.
+\end{equation}
+Uvrštavanjem u prvu jednadžbu izračunava se $x_{2,\mathrm{rob}}^*$:
+\begin{equation}
+0.85(6.5) + 0.85 x_2 = 10 \iff 5.525 + 0.85 x_2 = 10 \iff 0.85 x_2 = 4.475 \implies x_{2,\mathrm{rob}}^* = \frac{4.475}{0.85} = \frac{179}{34} \approx 5.264706.
+\end{equation}
+Optimalna robusna točka u zatvorenom analitičkom obliku iznosi:
+\begin{equation}
+x_{\mathrm{rob}}^* = \begin{bmatrix} 6.500000 \\ \frac{179}{34} \end{bmatrix} \approx \begin{bmatrix} 6.500000 \\ 5.264706 \end{bmatrix}.
+\end{equation}
+Vrijednost funkcije cilja u robusnom optimumu iznosi:
+\begin{align}
+f(x_{\mathrm{rob}}^*) &= 6.5^2 + 2\left(\frac{179}{34}\right)^2 - 0.3(6.5)\left(\frac{179}{34}\right) + 2(6.5) - 3\left(\frac{179}{34}\right) \nonumber \\
+&= \frac{978253}{11560} \approx 84.623962.
+\end{align}
+Numeričko rješavanje pomoću MATLAB funkcije \texttt{quadprog} i Python modula \texttt{scipy.optimize} potvrđuje analitičko rješenje uz odstupanje manje od $7.05 \times 10^{-9}$.
+
+\subsection{Monte Carlo analiza dopustivosti i vizualizacija}
+
+Kako bi se empirijski verificirala robusnost predloženog rješenja, provedena je Monte Carlo simulacija s $N_{\mathrm{MC}} = 100$ slučajnih realizacija matrica ograničenja $A^{(k)}$, gdje su elementi jednoliko distribuirani:
+\begin{equation}
+a_{ij}^{(k)} \sim \mathcal{U}(0.85 a_{ij}^0, \; 1.15 a_{ij}^0), \quad k = 1, \dots, 100.
+\end{equation}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{figures/fig2_1_robust_envelope_monte_carlo.pdf}
+    \caption{Robusni dopustivi skup, nominalne granice i Monte Carlo ovojnica dobivena iz 100 slučajnih realizacija parametara nesigurnosti.}
+    \label{fig:rob_monte_carlo}
+\end{figure}
+
+Slika~\ref{fig:rob_monte_carlo} prikazuje geometrijski odnos:
+\begin{itemize}
+    \item Tanke sive linije prikazuju granice ograničenja za 100 slučajnih realizacija.
+    \item Isprekidane plave linije prikazuju nominalna ograničenja ($g_1^0, g_2^0$).
+    \item Puna crvena linija označava ovojnicu najgoreg slučaja (robusne granice).
+    \item Plavi krug označava nominalno rješenje $x_{\mathrm{nom}}^* = (5.758, 4.242)$.
+    \item Crvena zvjezdica označava robusno rješenje $x_{\mathrm{rob}}^* = (6.500, 5.265)$.
+\end{itemize}
+
+Rezultati Monte Carlo provjere dopustivosti prikazani su u tablici~\ref{tab:mc_audit}.
+
+\begin{table}[H]
+\centering
+\caption{Monte Carlo provjera dopustivosti nominalnog i robusnog optimuma ($N = 100$).}
+\label{tab:mc_audit}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Optimum} & \textbf{Broj kršenja ograničenja} & \textbf{Stopa nedopustivosti} & \textbf{Robusni status} \\
+\midrule
+Nominalni $x_{\mathrm{nom}}^*$ & 57 / 100 & $57.0\%$ & \textbf{Rizično} (često nedopustivo) \\
+Robusni $x_{\mathrm{rob}}^*$ & 0 / 100 & $0.0\%$ & \textbf{100\% Dopustivo (Zajamčeno)} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Uočava se da nominalno rješenje $x_{\mathrm{nom}}^*$ krši ograničenja u čak $57\%$ slučajnih realizacija jer leži točno na nominalnoj granici. Suprotno tome, robusno rješenje $x_{\mathrm{rob}}^*$ leži unutar presjeka svih mogućih dopustivih skupova te posjeduje $100\%$ pouzdanost.
+
+\subsection{Cijena robusnosti (\textit{Price of Robustness})}
+
+Uvođenje zahtjeva za robusnošću neumitno povlači određenu konzervativnost, što se u teoriji optimizacije naziva \textbf{cijenom robusnosti} (\textit{Price of Robustness})~\cite{bental2009robust}. Ona se definira kao apsolutni i relativni porast optimalne vrijednosti funkcije cilja:
+\begin{equation}
+\Delta f^* = f(x_{\mathrm{rob}}^*) - f(x_{\mathrm{nom}}^*) = 84.623962 - 60.606061 = 24.017901,
+\end{equation}
+\begin{equation}
+\Delta f^*_{\%} = \frac{f(x_{\mathrm{rob}}^*) - f(x_{\mathrm{nom}}^*)}{f(x_{\mathrm{nom}}^*)} \cdot 100\% = +39.63\%.
+\end{equation}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.82\textwidth]{figures/fig2_2_price_of_robustness.pdf}
+    \caption{Nivo-krivulje funkcije cilja, pomak točke optimuma i geometrijska vizualizacija cijene robusnosti $\Delta f^*$.}
+    \label{fig:price_of_robustness}
+\end{figure}
+
+Slika~\ref{fig:price_of_robustness} prikazuje pomak točke optimuma sa $x_{\mathrm{nom}}^*$ na $x_{\mathrm{rob}}^*$. Povećanje troška od $39.63\%$ predstavlja inženjersku premiju osiguranja koja jamči apsolutnu operativnu sigurnost i izostanak kršenja ograničenja pod svim mogućim varijacijama parametara unutar definiranog $\pm 15\%$ koridora nesigurnosti.
