@@ -13,6 +13,7 @@
 
 - [x] Inicijalizacija repozitorija, okruženja i RAG baze podataka.
 - [x] Transkripcija i analiza specifikacije zadataka (`TASK/zadatak_omrius.md`).
+- [x] Kreiranje sveobuhvatnog inženjerskog plana i radnog registra (`TODO.md`).
 - [ ] Postavljanje kostura LaTeX dokumenta u `docs/` (`latex_architect`).
 - [ ] Implementacija i verifikacija numeričkih i analitičkih rješenja u `src/`:
   - Zadatak 1: QP, konveksnost, KKT, grafički prikaz, dualnost, osjetljivost.
