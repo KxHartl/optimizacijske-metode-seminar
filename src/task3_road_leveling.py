@@ -173,9 +173,9 @@ ax.plot(x_dense, h_dense, color=COLORS['dark_blue'], linewidth=2.2, label=r'Prir
 res_a20 = results['A_N20']
 res_a100 = results['A_N100']
 ax.plot(res_a20['x'], res_a20['y'], 's--', color=COLORS['amber_orange'], markersize=5,
-        label=rf'Nivelacija $y(x)$, Slučaj A ($N=20$, $J^* = {res_a20["cost"]:.2f}$)')
+        label=rf'Nivelacija $y(x)$, Slučaj A ($N=20$, $J^* = {res_a20["cost"]:.2f}\ \mathrm{{m}}^2$)')
 ax.plot(res_a100['x'], res_a100['y'], '-', color=COLORS['accent_red'], linewidth=2.0,
-        label=rf'Nivelacija $y(x)$, Slučaj A ($N=100$, $J^* = {res_a100["cost"]:.2f}$)')
+        label=rf'Nivelacija $y(x)$, Slučaj A ($N=100$, $J^* = {res_a100["cost"]:.2f}\ \mathrm{{m}}^2$)')
 
 # Fill cut and fill area for N=100
 ax.fill_between(res_a100['x'], res_a100['h'], res_a100['y'],
@@ -188,7 +188,7 @@ ax.fill_between(res_a100['x'], res_a100['h'], res_a100['y'],
 ax.set_xlim([0, 10])
 ax.set_xlabel(r'Udaljenost $x$ [m]')
 ax.set_ylabel(r'Nadmorska visina $y, h$ [m]')
-ax.set_title(r'Zadatak 3: Optimalni uzdužni profil ceste — Slučaj A ($b_1 = 0.5, b_2 = 0.5$)')
+ax.set_title(r'Zadatak 3: Optimalni uzdužni profil ceste — Slučaj A ($b_1 = 0.5$, $b_2 = 0.5\ \mathrm{m}^{-1}$)')
 ax.legend(loc='upper left', framealpha=0.92)
 save_figure(fig, 'fig3_1_road_case_A')
 plt.close(fig)
@@ -200,9 +200,9 @@ ax.plot(x_dense, h_dense, color=COLORS['dark_blue'], linewidth=2.2, label=r'Prir
 res_b20 = results['B_N20']
 res_b100 = results['B_N100']
 ax.plot(res_b20['x'], res_b20['y'], 'd--', color=COLORS['purple'], markersize=5,
-        label=rf'Nivelacija $y(x)$, Slučaj B ($N=20$, $J^* = {res_b20["cost"]:.2f}$)')
+        label=rf'Nivelacija $y(x)$, Slučaj B ($N=20$, $J^* = {res_b20["cost"]:.2f}\ \mathrm{{m}}^2$)')
 ax.plot(res_b100['x'], res_b100['y'], '-', color=COLORS['accent_red'], linewidth=2.0,
-        label=rf'Nivelacija $y(x)$, Slučaj B ($N=100$, $J^* = {res_b100["cost"]:.2f}$)')
+        label=rf'Nivelacija $y(x)$, Slučaj B ($N=100$, $J^* = {res_b100["cost"]:.2f}\ \mathrm{{m}}^2$)')
 
 ax.fill_between(res_b100['x'], res_b100['h'], res_b100['y'],
                 where=(res_b100['y'] < res_b100['h']),
@@ -214,7 +214,7 @@ ax.fill_between(res_b100['x'], res_b100['h'], res_b100['y'],
 ax.set_xlim([0, 10])
 ax.set_xlabel(r'Udaljenost $x$ [m]')
 ax.set_ylabel(r'Nadmorska visina $y, h$ [m]')
-ax.set_title(r'Zadatak 3: Optimalni uzdužni profil ceste — Slučaj B ($b_1 = 0.5, b_2 = 0.2$)')
+ax.set_title(r'Zadatak 3: Optimalni uzdužni profil ceste — Slučaj B ($b_1 = 0.5$, $b_2 = 0.2\ \mathrm{m}^{-1}$)')
 ax.legend(loc='upper left', framealpha=0.92)
 save_figure(fig, 'fig3_2_road_case_B')
 plt.close(fig)
@@ -223,13 +223,13 @@ plt.close(fig)
 fig, ax = plt.subplots(figsize=(8, 4.5))
 ax.plot(res_a100['x_slopes'], res_a100['slopes'], color=COLORS['primary_blue'], linewidth=1.8, label=r'Nagib $y^\prime(x)$ (Slučaj A, $N=100$)')
 ax.plot(res_b100['x_slopes'], res_b100['slopes'], color=COLORS['accent_red'], linewidth=1.8, label=r'Nagib $y^\prime(x)$ (Slučaj B, $N=100$)')
-ax.axhline(0.5, color='black', linestyle='--', linewidth=1.5, label=r'Maksimalni dozvoljeni nagib $\pm b_1 = \pm 0.5$')
+ax.axhline(0.5, color='black', linestyle='--', linewidth=1.5, label=r'Maksimalni dozvoljeni nagib $\pm b_1 = \pm 0.5$ [-]')
 ax.axhline(-0.5, color='black', linestyle='--', linewidth=1.5)
 
 ax.set_xlim([0, 10])
 ax.set_ylim([-0.65, 0.65])
 ax.set_xlabel(r'Udaljenost $x$ [m]')
-ax.set_ylabel(r'Nagib ceste $y^\prime(x)$ [m/m]')
+ax.set_ylabel(r'Nagib ceste $y^\prime(x)$ [-]')
 ax.set_title(r'Zadatak 3: Provjera ograničenja prvog reda (nagib ceste)')
 ax.legend(loc='lower left', framealpha=0.92)
 save_figure(fig, 'fig3_3_road_slope_profile')
@@ -237,17 +237,17 @@ plt.close(fig)
 
 # Figure 3.4: Curvature Profile |y''(x)| vs Limit b2
 fig, ax = plt.subplots(figsize=(8, 4.5))
-ax.plot(res_a100['x_curv'], res_a100['curvatures'], color=COLORS['primary_blue'], linewidth=1.6, label=r'Zakrivljenost $y^{\prime\prime}(x)$ (Slučaj A)')
-ax.plot(res_b100['x_curv'], res_b100['curvatures'], color=COLORS['accent_red'], linewidth=1.6, label=r'Zakrivljenost $y^{\prime\prime}(x)$ (Slučaj B)')
-ax.axhline(0.5, color=COLORS['primary_blue'], linestyle=':', linewidth=1.4, label=r'Granica $b_2 = 0.5$ (Slučaj A)')
+ax.plot(res_a100['x_curv'], res_a100['curvatures'], color=COLORS['primary_blue'], linewidth=1.6, label=r'Druga derivacija $y^{\prime\prime}(x)$ (Slučaj A)')
+ax.plot(res_b100['x_curv'], res_b100['curvatures'], color=COLORS['accent_red'], linewidth=1.6, label=r'Druga derivacija $y^{\prime\prime}(x)$ (Slučaj B)')
+ax.axhline(0.5, color=COLORS['primary_blue'], linestyle=':', linewidth=1.4, label=r'Granica $b_2 = 0.5\ \mathrm{m}^{-1}$ (Slučaj A)')
 ax.axhline(-0.5, color=COLORS['primary_blue'], linestyle=':', linewidth=1.4)
-ax.axhline(0.2, color=COLORS['accent_red'], linestyle='--', linewidth=1.4, label=r'Granica $b_2 = 0.2$ (Slučaj B)')
+ax.axhline(0.2, color=COLORS['accent_red'], linestyle='--', linewidth=1.4, label=r'Granica $b_2 = 0.2\ \mathrm{m}^{-1}$ (Slučaj B)')
 ax.axhline(-0.2, color=COLORS['accent_red'], linestyle='--', linewidth=1.4)
 
 ax.set_xlim([0, 10])
 ax.set_ylim([-0.6, 0.6])
 ax.set_xlabel(r'Udaljenost $x$ [m]')
-ax.set_ylabel(r'Zakrivljenost ceste $y^{\prime\prime}(x)$ [1/m]')
+ax.set_ylabel(r'Aproksimacija zakrivljenosti $y^{\prime\prime}(x)$ [$\mathrm{m}^{-1}$]')
 ax.set_title(r'Zadatak 3: Provjera ograničenja drugog reda (zakrivljenost / udobnost vožnje)')
 ax.legend(loc='lower left', framealpha=0.92)
 save_figure(fig, 'fig3_4_road_curvature_profile')

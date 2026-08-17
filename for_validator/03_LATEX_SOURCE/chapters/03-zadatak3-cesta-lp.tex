@@ -2,9 +2,9 @@
 
 \subsection{Kontinuirana varijacijska formulacija problema}
 
-U građevinarstvu i prometnom inženjerstvu projektiranje uzdužnog profila prometnice predstavlja temeljni optimizacijski zadatak. Cilj je odrediti visinsku trasu ceste $y(x)$ koja minimizira ukupne zemljane radove (volumen iskopa i nasipa), uz istovremeno strogo zadovoljavanje prometno-tehničkih standarda: maksimalnog uzdužnog nagiba (sposobnost savladavanja uspona vozila) i maksimalne zakrivljenosti trase (udobnost vožnje i ograničenje vertikalnih akceleracija)~\cite{jokic2024predavanja}.
+U građevinarstvu i prometnom inženjerstvu projektiranje uzdužnog profila prometnice predstavlja temeljni optimizacijski zadatak. Cilj je odrediti visinsku trasu ceste $y(x)$ koja minimizira ukupne zemljane radove (volumen iskopa i nasipa), uz istovremeno zadovoljavanje prometno-tehničkih standarda: maksimalnog uzdužnog nagiba i maksimalne zakrivljenosti trase (udobnost vožnje i ograničenje vertikalnih akceleracija)~\cite{jokic2024predavanja}.
 
-Neka je $L$ horizontalna duljina dionice ceste ($x \in [0, L]$), a $h(x)$ poznata prirodna visina terena. Problem se kontinuirano formulira kao varijacijski optimizacijski problem:
+Neka je $L$ horizontalna duljina dionice ceste ($x \in [0, L]$), a $h(x)$ poznata prirodna visina terena. Uz pretpostavku jedinične širine poprečnog presjeka ceste ($w = 1\text{ m}$), ukupni volumen zemljanih radova $[\text{m}^3]$ izravno odgovara površini uzdužnog presjeka $[\text{m}^2]$ između nivelete ceste $y(x)$ i prirodnog terena $h(x)$. Problem se kontinuirano formulira kao varijacijski optimizacijski problem:
 \begin{equation}
 \min_{y(x)} \quad J[y] = \int_0^L |y(x) - h(x)| \, dx
 \label{eq:road_continuous}
@@ -25,8 +25,8 @@ a = h(0) = 1 \text{ m}, \quad b = h(L) = 4 \text{ m}.
 \end{equation}
 Razmatraju se dva skupa parametara:
 \begin{itemize}
-    \item \textbf{Slučaj A}: $b_1 = 0.5$ (maksimalni nagib), $b_2 = 0.5 \text{ m}^{-1}$ (maksimalna zakrivljenost).
-    \item \textbf{Slučaj B}: $b_1 = 0.5$ (maksimalni nagib), $b_2 = 0.2 \text{ m}^{-1}$ (stroži uvjet udobnosti vožnje).
+    \item \textbf{Slučaj A}: $b_1 = 0.5$ (maksimalni nagib $[\text{m/m}]$), $b_2 = 0.5 \text{ m}^{-1}$ (maksimalna zakrivljenost).
+    \item \textbf{Slučaj B}: $b_1 = 0.5$ (maksimalni nagib $[\text{m/m}]$), $b_2 = 0.2 \text{ m}^{-1}$ (stroži uvjet zakrivljenosti / udobnosti vožnje).
 \end{itemize}
 
 \subsection{Diskretizacija konačnim razlikama}
@@ -46,7 +46,7 @@ Prema uputama zadatka, nagib ceste u čvorovima aproksimira se prvom unazadnom p
 y'(x_i) \approx \nabla y_i = \frac{y_i - y_{i-1}}{\Delta x}, \quad i = 1, \dots, N.
 \label{eq:diff_first}
 \end{equation}
-Brzina promjene nagiba (zakrivljenost) aproksimira se drugom podijeljenom razlikom:
+Brzina promjene nagiba (druga podijeljena razlika / aproksimacija vertikalne zakrivljenosti za male nagibe, $y''$) aproksimira se drugom podijeljenom razlikom:
 \begin{equation}
 y''(x_i) \approx \nabla^2 y_i = \frac{\nabla y_i - \nabla y_{i-1}}{\Delta x} = \frac{y_i - 2y_{i-1} + y_{i-2}}{\Delta x^2}, \quad i = 2, \dots, N.
 \label{eq:diff_second}
@@ -80,9 +80,12 @@ D_2 = \frac{1}{\Delta x^2} \begin{bmatrix}
 
 Diskretizirani integralni kriterij glasi:
 \begin{equation}
-J_{\mathrm{disc}}[y] = \Delta x \sum_{i=0}^N |y_i - h_i|.
+J_{\mathrm{disc}}[y] = \Delta x \sum_{i=0}^N |y_i - h_i|,
+\label{eq:road_disc_obj}
 \end{equation}
-Zbog prisutnosti nelinearnog operatora apsolutne vrijednosti ($|y_i - h_i|$), problem se ne može direktno rješavati linearnim metodama. Međutim, primjenom metode epigrafskih pomoćnih varijabli (engl. \textit{slack variables}) $z_i \geq |y_i - h_i|$, problem se egzaktno prevodi u standardni linearni program (LP)~\cite{boyd2004convex,nocedal2006numerical}.
+pri čemu $\Delta x$ predstavlja korak pravokutne numeričke integracije (Riemannova suma) površine uzdužnog presjeka.
+
+Zbog prisutnosti nelinearnog operatora apsolutne vrijednosti ($|y_i - h_i|$), problem se prevodi u linearni program primjenom metode epigrafskih pomoćnih varijabli $z_i \geq |y_i - h_i|$~\cite{boyd2004convex,nocedal2006numerical}.
 
 Za svaki čvor $i = 0, \dots, N$ nejednakost $z_i \geq |y_i - h_i|$ ekvivalentna je paru linearnih nejednakosti:
 \begin{align}
@@ -134,12 +137,12 @@ Donja granica za varijable je $z_i \geq 0$, dok su varijable $y_i$ slobodne ($-\
 
 \subsection{Numerički rezultati za četiri ispitna slučaja}
 
-Problem je riješen primjenom optimizacijskog algoritma dupleksnog simpleksa (\texttt{linprog} s opcijom \texttt{dual-simplex} i \texttt{highs}) za četiri zahtijevana scenarija:
+Problem je riješen primjenom optimizacijskog algoritma dualnog simpleksa (\texttt{linprog} s opcijom \texttt{dual-simplex} i \texttt{highs}) za četiri zahtijevana scenarija:
 \begin{enumerate}
-    \item \textbf{Slučaj A, $N=20$}: $b_1 = 0.5, b_2 = 0.5, \Delta x = 0.5 \text{ m}$ ($42$ varijable, $120$ nejednakosti).
-    \item \textbf{Slučaj A, $N=100$}: $b_1 = 0.5, b_2 = 0.5, \Delta x = 0.1 \text{ m}$ ($202$ varijable, $600$ nejednakosti).
-    \item \textbf{Slučaj B, $N=20$}: $b_1 = 0.5, b_2 = 0.2, \Delta x = 0.5 \text{ m}$ ($42$ varijable, $120$ nejednakosti).
-    \item \textbf{Slučaj B, $N=100$}: $b_1 = 0.5, b_2 = 0.2, \Delta x = 0.1 \text{ m}$ ($202$ varijable, $600$ nejednakosti).
+    \item \textbf{Slučaj A, $N=20$}: $b_1 = 0.5$, $b_2 = 0.5 \text{ m}^{-1}$, $\Delta x = 0.5 \text{ m}$ ($42$ varijable, $120$ nejednakosti).
+    \item \textbf{Slučaj A, $N=100$}: $b_1 = 0.5$, $b_2 = 0.5 \text{ m}^{-1}$, $\Delta x = 0.1 \text{ m}$ ($202$ varijable, $600$ nejednakosti).
+    \item \textbf{Slučaj B, $N=20$}: $b_1 = 0.5$, $b_2 = 0.2 \text{ m}^{-1}$, $\Delta x = 0.5 \text{ m}$ ($42$ varijable, $120$ nejednakosti).
+    \item \textbf{Slučaj B, $N=100$}: $b_1 = 0.5$, $b_2 = 0.2 \text{ m}^{-1}$, $\Delta x = 0.1 \text{ m}$ ($202$ varijable, $600$ nejednakosti).
 \end{enumerate}
 
 Sintetički prikaz optimalnih rezultata dan je u tablici~\ref{tab:road_results}.
@@ -176,14 +179,14 @@ B & 100 & 0.1 & 2.506047 & 0.2645 & 2.2416 & 0.2000 \\
 
 \subsection{Analiza utjecaja gustoće diskretizacije i parametara ograničenja}
 
-Usporedba grafova na slikama~\ref{fig:road_case_a} i~\ref{fig:road_case_b} te provjere derivacija na slikama~\ref{fig:road_slope} i~\ref{fig:road_curv} otkrivaju ključne fizikalne i numeričke zakonitosti:
+Usporedba grafova na slikama~\ref{fig:road_case_a} i~\ref{fig:road_case_b} te provjere derivacija na slikama~\ref{fig:road_slope} i~\ref{fig:road_curv} pokazuju sljedeće zakonitosti:
 
 \begin{enumerate}
     \item \textbf{Utjecaj gustoće diskretizacije ($N = 20$ vs $N = 100$)}:
-    Povećanjem broja diskretizacijskih točaka s $N=20$ na $N=100$, diskretni integral $J_{\mathrm{disc}}$ asimptotski konvergira prema točnom kontinuiranom integralu $\int_0^L |y(x)-h(x)|dx$. Za Slučaj A vrijednost raste s $1.9162$ na $1.9659 \text{ m}^2$ ($+2.59\%$), dok za Slučaj B raste s $2.4537$ na $2.5060 \text{ m}^2$ ($+2.13\%$). Fina mreža omogućuje vjernije praćenje lokalnih promjena bez numeričkog "peglanja" na gruboj skali.
+    Povećanjem broja diskretizacijskih točaka s $N=20$ na $N=100$, diskretni integral $J_{\mathrm{disc}}$ asimptotski konvergira prema kontinuiranom integralu $\int_0^L |y(x)-h(x)|dx$. Za Slučaj A vrijednost raste s $1.9162$ na $1.9659 \text{ m}^2$ ($+2.59\%$), dok za Slučaj B raste s $2.4537$ na $2.5060 \text{ m}^2$ ($+2.13\%$). Fina mreža omogućuje vjernije praćenje promjena profila bez numeričkog izglađivanja.
     
     \item \textbf{Utjecaj ograničenja zakrivljenosti ($b_2 = 0.5$ vs $b_2 = 0.2$)}:
-    Smanjenje dozvoljene zakrivljenosti s $b_2 = 0.5$ (Slučaj A) na $b_2 = 0.2$ (Slučaj B) zahtijeva znatno glađu trasu ceste kako bi se osigurala udobnost vožnje pri višim brzinama. Posljedično, cesta ne može pratiti prirodne pregibe terena, što povećava ukupni volumen zemljanih radova s $1.9659 \text{ m}^2$ na $2.5060 \text{ m}^2$ ($+27.47\%$).
+    Smanjenje dozvoljene zakrivljenosti s $b_2 = 0.5 \text{ m}^{-1}$ (Slučaj A) na $b_2 = 0.2 \text{ m}^{-1}$ (Slučaj B) zahtijeva znatno glađu trasu ceste. Posljedično, niveleta ne može pratiti prirodne pregibe terena, što povećava ukupni volumen zemljanih radova s $1.9659 \text{ m}^2$ na $2.5060 \text{ m}^2$ ($+27.47\%$).
 \end{enumerate}
 
 \begin{figure}[H]
@@ -200,4 +203,4 @@ Usporedba grafova na slikama~\ref{fig:road_case_a} i~\ref{fig:road_case_b} te pr
     \label{fig:road_curv}
 \end{figure}
 
-Kao što je vidljivo na slici~\ref{fig:road_curv}, zakrivljenost $y''(x)$ u Slučaju B doseže točno ekstremne vrijednosti $\pm 0.2 \text{ m}^{-1}$, potvrđujući da su ograničenja drugog reda aktivna duž značajnih segmenata trase.
+Na slici~\ref{fig:road_curv}, numerička aproksimacija druge derivacije $y''(x)$ u Slučaju B doseže točno ekstremne vrijednosti $\pm 0.2 \text{ m}^{-1}$, potvrđujući da su ograničenja drugog reda aktivna duž značajnih segmenata trase.
