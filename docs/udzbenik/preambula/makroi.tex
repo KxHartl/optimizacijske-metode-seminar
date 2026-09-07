@@ -1,0 +1,36 @@
+% ============================================================================
+%  makroi.tex — notation macros. One definition per concept so the whole book
+%  stays consistent with the professor's notation (Gx - h <= 0, theta(mu), v).
+% ============================================================================
+
+\providecommand{\coloneqq}{\mathrel{\vcentcolon=}}
+
+\newcommand{\R}{\mathbb{R}}                      % real numbers
+\newcommand{\Rn}[1]{\mathbb{R}^{#1}}
+\newcommand{\Sym}[1]{\mathbb{S}^{#1}}            % symmetric matrices
+\newcommand{\trans}{^{\mathsf{T}}}               % transpose
+\newcommand{\grad}{\nabla}
+\newcommand{\Lag}{\mathcal{L}}                   % Lagrangian
+\newcommand{\dual}{\theta}                       % dual function theta(mu)
+\newcommand{\feas}{\mathcal{F}}                  % feasible set
+\newcommand{\popt}{p^{\star}}                    % optimal primal value
+\newcommand{\dopt}{d^{\star}}                    % optimal dual value
+\newcommand{\xopt}{x^{\star}}
+\newcommand{\muopt}{\mu^{\star}}
+\newcommand{\psd}{\succeq}                       % positive semidefinite
+\newcommand{\pd}{\succ}                          % positive definite
+\newcommand{\nsd}{\preceq}
+\newcommand{\nd}{\prec}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert}
+\newcommand{\inner}[2]{\left\langle #1,\, #2 \right\rangle}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\eig}{\operatorname{eig}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\Real}{\operatorname{Re}}
+\newcommand{\dom}{\operatorname{dom}}
+\newcommand{\subjto}{\text{uz ograničenja}}
+
+% Reference to a page in Part 0 where a symbol is introduced.
+\newcommand{\vidi}[1]{\textcolor{tihasiva}{\footnotesize(vidi str.~\pageref{#1})}}

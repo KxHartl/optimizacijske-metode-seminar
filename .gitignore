@@ -59,3 +59,8 @@ TestRealm/
 
 # Claude Code git worktrees — runtime, never tracked
 .claude/worktrees/
+
+# Udzbenik: slide/scan images are DERIVED from data/sources + docs/zadatak.
+# The manifests are tracked; run `python src/extract_slides.py` to regenerate.
+docs/udzbenik/slides/*.png
+docs/udzbenik/zadatak/*.png

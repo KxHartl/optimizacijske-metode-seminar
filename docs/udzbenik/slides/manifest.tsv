@@ -1,0 +1,34 @@
+# Lecture/exercise slides quoted verbatim by the textbook.
+# `page` is the PDF page, NOT the slide number printed on the slide:
+# beamer overlays make the two differ (e.g. Vjezbe 3 p23 = slajd 18/36).
+# Rendered by: python src/extract_slides.py
+# id<TAB>pdf basename in data/sources/lectures<TAB>page<TAB>crop or -
+p02-gradijent-def	02_Definicije_klasifikacija_konveksnost	34	-
+p02-gradijent-okomit	02_Definicije_klasifikacija_konveksnost	38	-
+p02-psd-svojstvene	02_Definicije_klasifikacija_konveksnost	47	-
+p02-psd-determinante	02_Definicije_klasifikacija_konveksnost	50	-
+p02-konveksan-skup	02_Definicije_klasifikacija_konveksnost	56	-
+p02-presjek-konveksnih	02_Definicije_klasifikacija_konveksnost	59	-
+p02-konveksna-funkcija	02_Definicije_klasifikacija_konveksnost	61	-
+p02-poluprostor	02_Definicije_klasifikacija_konveksnost	66	-
+p02-uvjeti-drugog-reda	02_Definicije_klasifikacija_konveksnost	70	-
+p02-konveksan-problem	02_Definicije_klasifikacija_konveksnost	71	-
+p03-kkt-teorem	03_Uvjeti_optimalnosti	59	-
+p03-kkt-preko-lagrangiana	03_Uvjeti_optimalnosti	61	-
+p04-lagrangian-i-dual	04_Lagrangeova_dualnost	10	-
+p04-jaka-dualnost	04_Lagrangeova_dualnost	16	-
+p04-kkt-konveksni	04_Lagrangeova_dualnost	23	-
+p04-perturbirani-problem	04_Lagrangeova_dualnost	31	-
+p04-globalna-osjetljivost	04_Lagrangeova_dualnost	33	-
+p04-lokalna-osjetljivost	04_Lagrangeova_dualnost	34	-
+p05-qp	05_LP_QP	33	-
+v3-primjer2-zadatak	Vjezbe 3	20	-
+v3-primjer2-konveksnost	Vjezbe 3	22	-
+v3-primjer2-kkt	Vjezbe 3	23	-
+v3-primjer2-tablica	Vjezbe 3	24	-
+v3-primjer2-slucaj10	Vjezbe 3	25	-
+v3-primjer2-slucaj6	Vjezbe 3	26	-
+v3-primjer2-quadprog	Vjezbe 3	30	-
+v3-primjer2-yalmip	Vjezbe 3	33	-
+v3-primjer2-dual-izvod	Vjezbe 3	37	-
+v3-primjer2-osjetljivost	Vjezbe 3	41	-

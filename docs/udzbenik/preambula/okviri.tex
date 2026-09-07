@@ -1,0 +1,138 @@
+% ============================================================================
+%  okviri.tex — the box system.
+%
+%  DESIGN RULE: colour marks PROVENANCE only — where the text came from.
+%    red   = professor's lecture / exercise slide, verbatim
+%    grey  = the assignment text, verbatim, nothing added
+%    blue  = the seminar v1.2 solution, verbatim
+%    yellow= a definition or formula worth memorising
+%  Everything else (derivation steps, traps, exam questions) stays QUIET:
+%  a thin rule, no fill. Otherwise the page turns into a colour salad and the
+%  reader loses the one signal that matters — "is this mine or the professor's?"
+% ============================================================================
+
+\usepackage[most]{tcolorbox}
+\tcbuselibrary{skins,breakable}
+
+\newcommand{\okvirnaslov}[2]{\textcolor{#1}{\textbf{\footnotesize\MakeUppercase{#2}}}}
+
+% --- RED: verbatim from the lecture / exercise slides ------------------------
+% #1 = precise reference, e.g. "Vježbe 3, slajd 18/36 (PDF str. 23)"
+\newtcolorbox{izvor}[1]{
+  breakable, enhanced,
+  colback=izvorcrvena!3, colframe=izvorcrvena,
+  boxrule=1.1pt, arc=1.5pt, left=8pt, right=8pt, top=7pt, bottom=7pt,
+  title={\footnotesize\bfseries S PREDAVANJA / VJEŽBI \;—\; #1},
+  fonttitle=\color{white}, coltitle=white,
+  attach boxed title to top left={xshift=8pt, yshift=-9pt},
+  boxed title style={colback=izvorcrvena, boxrule=0pt, arc=1pt}
+}
+
+% --- GREY: verbatim assignment text. Nothing derived may enter this box. -----
+\newtcolorbox{zadatak}[1]{
+  breakable, enhanced,
+  colback=black!4, colframe=zadatsiva,
+  boxrule=1.1pt, arc=1.5pt, left=8pt, right=8pt, top=7pt, bottom=7pt,
+  title={\footnotesize\bfseries IZVORNI TEKST ZADATKA \;—\; #1},
+  coltitle=white,
+  attach boxed title to top left={xshift=8pt, yshift=-9pt},
+  boxed title style={colback=zadatsiva, boxrule=0pt, arc=1pt}
+}
+
+% --- BLUE: verbatim from the seminar v1.2 ------------------------------------
+\newtcolorbox{seminar}[1]{
+  breakable, enhanced,
+  colback=seminarplava!4, colframe=seminarplava,
+  boxrule=1.1pt, arc=1.5pt, left=8pt, right=8pt, top=7pt, bottom=7pt,
+  title={\footnotesize\bfseries KAKO JE RIJEŠENO U SEMINARU \;—\; #1},
+  coltitle=white,
+  attach boxed title to top left={xshift=8pt, yshift=-9pt},
+  boxed title style={colback=seminarplava, boxrule=0pt, arc=1pt}
+}
+
+% --- YELLOW: definitions and formulas to memorise ----------------------------
+\newtcolorbox[auto counter, number within=chapter]{pojam}[1]{
+  breakable, enhanced,
+  colback=yellow!8, colframe=pojamzuta,
+  boxrule=1.1pt, arc=1.5pt, left=8pt, right=8pt, top=7pt, bottom=7pt,
+  title={\footnotesize\bfseries DEFINICIJA \thetcbcounter \;—\; #1},
+  coltitle=white,
+  attach boxed title to top left={xshift=8pt, yshift=-9pt},
+  boxed title style={colback=pojamzuta, boxrule=0pt, arc=1pt}
+}
+\newtcolorbox[auto counter, number within=chapter]{formula}[1]{
+  breakable, enhanced,
+  colback=yellow!8, colframe=pojamzuta,
+  boxrule=1.1pt, arc=1.5pt, left=8pt, right=8pt, top=7pt, bottom=7pt,
+  title={\footnotesize\bfseries FORMULA \thetcbcounter \;—\; #1},
+  coltitle=white,
+  attach boxed title to top left={xshift=8pt, yshift=-9pt},
+  boxed title style={colback=pojamzuta, boxrule=0pt, arc=1pt}
+}
+
+% ============================================================================
+%  QUIET elements — no fill, thin rule on the left only.
+% ============================================================================
+
+% What you must already know before reading on.
+\newtcolorbox{predznanje}{
+  breakable, enhanced, colback=white, colframe=white,
+  borderline west={2pt}{0pt}{tihasiva},
+  boxrule=0pt, sharp corners, left=10pt, right=0pt, top=4pt, bottom=4pt,
+  before upper={\textcolor{tihasiva}{\footnotesize\bfseries ŠTO MORAŠ ZNATI PRIJE}\par\smallskip}
+}
+
+% One numbered step of a derivation, or a run of them.
+\newtcolorbox{korak}[1][Izvod korak po korak]{
+  breakable, enhanced, colback=white, colframe=white,
+  borderline west={2pt}{0pt}{fsbplava!45},
+  boxrule=0pt, sharp corners, left=10pt, right=0pt, top=4pt, bottom=4pt,
+  before upper={\textcolor{fsbplava}{\footnotesize\bfseries\MakeUppercase{#1}}\par\smallskip}
+}
+
+% A mistake that is actually made, and why it is wrong.
+\newtcolorbox{zamka}[1][Zamka]{
+  breakable, enhanced, colback=white, colframe=white,
+  borderline west={2pt}{0pt}{zamkanarancasta},
+  boxrule=0pt, sharp corners, left=10pt, right=0pt, top=4pt, bottom=4pt,
+  before upper={\textcolor{zamkanarancasta}{\footnotesize\bfseries\MakeUppercase{#1}}\par\smallskip}
+}
+
+% Examiner's question + model answer.
+\newtcolorbox{pitanje}[1]{
+  breakable, enhanced, colback=white, colframe=black!35,
+  boxrule=0.5pt, sharp corners, left=8pt, right=8pt, top=6pt, bottom=6pt,
+  before upper={\textbf{Pitanje.} \emph{#1}\par\smallskip}
+}
+
+% How to draw it on the blackboard, by hand, in front of the examiner.
+\newtcolorbox{ploca}[1][Crtanje na ploči — korak po korak]{
+  breakable, enhanced, colback=white, colframe=white,
+  borderline west={2pt}{0pt}{teal!60},
+  boxrule=0pt, sharp corners, left=10pt, right=0pt, top=4pt, bottom=4pt,
+  before upper={\textcolor{teal!70!black}{\footnotesize\bfseries\MakeUppercase{#1}}\par\smallskip}
+}
+
+% What to say out loud. Verbatim sentences.
+\newtcolorbox{izgovor}[1][Kako to reći naglas]{
+  breakable, enhanced, colback=white, colframe=white,
+  borderline west={2pt}{0pt}{violet!50},
+  boxrule=0pt, sharp corners, left=10pt, right=0pt, top=4pt, bottom=4pt,
+  before upper={\textcolor{violet!70!black}{\footnotesize\bfseries\MakeUppercase{#1}}\par\smallskip}
+}
+
+% ============================================================================
+%  Helpers
+% ============================================================================
+% \slajd{id}{width fraction} — inserts a rendered slide page from slides/.
+\newcommand{\slajd}[2][0.92]{%
+  \begin{center}%
+    \fbox{\includegraphics[width=#1\linewidth]{slides/#2.png}}%
+  \end{center}%
+}
+% \skenzad{id} — a rendered page/crop of the original assignment scan.
+\newcommand{\skenzad}[2][0.92]{%
+  \begin{center}%
+    \fbox{\includegraphics[width=#1\linewidth]{zadatak/#2.png}}%
+  \end{center}%
+}

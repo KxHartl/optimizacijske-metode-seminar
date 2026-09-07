@@ -1,0 +1,574 @@
+
+## 01_Uvod
+
+- p  1 | slajd    1/46 | Optimizacijske metode u razvoju i upravljanju sustava
+- p  2 | slajd    2/46 | Optimizacija (eng. Optimization)
+- p  3 | slajd    2/46 | Optimizacija (eng. Optimization)
+- p  4 | slajd    2/46 | Optimizacija (eng. Optimization)
+- p  5 | slajd    2/46 | Optimizacija (eng. Optimization)
+- p  6 | slajd    2/46 | Optimizacija (eng. Optimization)
+- p  7 | slajd    2/46 | Optimizacija (eng. Optimization)
+- p  8 | slajd    3/46 | Optimizacijski problem
+- p  9 | slajd    4/46 | Optimizacijski problem
+- p 10 | slajd    5/46 | Primjer
+- p 11 | slajd    5/46 | Primjer
+- p 12 | slajd    5/46 | Primjer
+- p 13 | slajd    6/46 | Primjer
+- p 14 | slajd    7/46 | Primjer
+- p 15 | slajd    8/46 | Primjer
+- p 16 | slajd    9/46 | Optimiranje: gdje i zasto?
+- p 17 | slajd   10/46 | Optimiranje: gdje i zasto?
+- p 18 | slajd   11/46 | Sadrzaj kolegija i ishodi ucenja
+- p 19 | slajd   11/46 | Sadrzaj kolegija i ishodi ucenja
+- p 20 | slajd   11/46 | Sadrzaj kolegija i ishodi ucenja
+- p 21 | slajd   11/46 | Sadrzaj kolegija i ishodi ucenja
+- p 22 | slajd   11/46 | Sadrzaj kolegija i ishodi ucenja
+- p 23 | slajd   11/46 | Sadrzaj kolegija i ishodi ucenja
+- p 24 | slajd   11/46 | Sadrzaj kolegija i ishodi ucenja
+- p 25 | slajd   11/46 | Sadrzaj kolegija i ishodi ucenja
+- p 26 | slajd   11/46 | Sadrzaj kolegija i ishodi ucenja
+- p 27 | slajd   11/46 | Sadrzaj kolegija i ishodi ucenja
+- p 28 | slajd   11/46 | Sadrzaj kolegija i ishodi ucenja
+- p 29 | slajd   11/46 | Sadrzaj kolegija i ishodi ucenja
+- p 30 | slajd   11/46 | Sadrzaj kolegija i ishodi ucenja
+- p 31 | slajd   11/46 | Sadrzaj kolegija i ishodi ucenja
+- p 32 | slajd   11/46 | Sadrzaj kolegija i ishodi ucenja
+- p 33 | slajd   12/46 | Primjer: Planiranje proizvodnje u elektro energetskoj mrezi
+- p 34 | slajd   13/46 | Primjer: Planiranje proizvodnje u elektro energetskoj mrezi
+- p 35 | slajd   14/46 | Primjer: Upravljanje tokovima snage i energijom u hibridnom automobilu
+- p 36 | slajd   15/46 | Primjer: Prediktivno upravljanje dinamickim sustavima
+- p 37 | slajd   16/46 | Primjer: Prediktivno upravljanje dinamickim sustavima
+- p 38 | slajd   17/46 | Primjer: Optimalno upravljanje
+- p 39 | slajd   18/46 | Primjeri: Ravnotezni polozaj sustava u potencijalnom polju
+- p 40 | slajd   19/46 | Primjeri: Ravnotezni polozaj sustava u potencijalnom polju
+- p 41 | slajd   20/46 | Primjeri: iz prirode
+- p 42 | slajd   21/46 | Primjeri: Raspodjela vjetro turbina u vjetro parku
+- p 43 | slajd   22/46 | Primjeri: Raspodjela vjetro turbina u vjetro parku
+- p 44 | slajd   23/46 | Primjer: Problem proizvodnje i distribucije robe
+- p 45 | slajd   24/46 | Primjer: Problem proizvodnje i distribucije robe
+- p 46 | slajd   25/46 | Primjer: optimalno iskoristavanje materijala
+- p 47 | slajd   26/46 | Primjer: optimalno iskoristavanje materijala
+- p 48 | slajd   27/46 | Primjer: minimizacija troskova izgradnje
+- p 49 | slajd   28/46 | Primjer: maksimizacija volumena lijevka I
+- p 50 | slajd   29/46 | Primjer: maksimizacija volumena lijevka II
+- p 51 | slajd   30/46 | Primjer: dimenzioniranje otvora vrata
+- p 52 | slajd   31/46 | Primjer: optimalna ograda
+- p 53 | slajd   32/46 | Vrste optimizacije konstrukcija
+- p 54 | slajd   33/46 | Vrste optimizacije konstrukcija
+- p 55 | slajd   34/46 | Vrste optimizacije konstrukcija
+- p 56 | slajd   35/46 | Vrste optimizacije konstrukcija
+- p 57 | slajd   36/46 | Postavka problema
+- p 58 | slajd   37/46 | Postavka problema
+- p 59 | slajd   38/46 | Slijed projektiranja
+- p 60 | slajd   39/46 | Strukturalna sinteza
+- p 61 | slajd   40/46 | Cilj projektiranja?
+- p 62 | slajd   40/46 | Cilj projektiranja?
+- p 63 | slajd   40/46 | Cilj projektiranja?
+- p 64 | slajd   40/46 | Cilj projektiranja?
+- p 65 | slajd   40/46 | Cilj projektiranja?
+- p 66 | slajd   40/46 | Cilj projektiranja?
+- p 67 | slajd   40/46 | Cilj projektiranja?
+- p 68 | slajd   41/46 | Proces projektiranja
+- p 69 | slajd   42/46 | Elementi optimizacijskog modela
+- p 70 | slajd   43/46 | Projektni parametri i projektne varijable
+- p 71 | slajd   44/46 | Optimizacijski model
+- p 72 | slajd   44/46 | Optimizacijski model
+- p 73 | slajd   44/46 | Optimizacijski model
+- p 74 | slajd   44/46 | Optimizacijski model
+- p 75 | slajd   44/46 | Optimizacijski model
+- p 76 | slajd   44/46 | Optimizacijski model
+- p 77 | slajd   44/46 | Optimizacijski model
+- p 78 | slajd   45/46 | Optimizacijski problem
+- p 79 | slajd   46/46 | Neki korisni "trikovi"
+
+## 02_Definicije_klasifikacija_konveksnost
+
+- p  1 | slajd    1/71 | Optimizacijske metode u razvoju i upravljanju sustava
+- p  2 | slajd    2/71 | Outline
+- p  3 | slajd    3/71 | Optimizacijski problem
+- p  4 | slajd    4/71 | Neki korisni "trikovi"
+- p  5 | slajd    4/71 | Neki korisni "trikovi"
+- p  6 | slajd    5/71 | Outline
+- p  7 | slajd    6/71 | Neke klasifikacije optimizacijskijh problema
+- p  8 | slajd    7/71 | Neke klasifikacije optimizacijskijh problema
+- p  9 | slajd    8/71 | Neke klasifikacije optimizacijskijh problema
+- p 10 | slajd    9/71 | Neke klasifikacije optimizacijskijh problema
+- p 11 | slajd   10/71 | Neke klasifikacije optimizacijskijh problema
+- p 12 | slajd   11/71 | Primjeri
+- p 13 | slajd   12/71 | Primjeri
+- p 14 | slajd   13/71 | Primjer I
+- p 15 | slajd   14/71 | Primjer II
+- p 16 | slajd   15/71 | Primjeri
+- p 17 | slajd   16/71 | Primjeri
+- p 18 | slajd   17/71 | Primjeri
+- p 19 | slajd   18/71 | Primjeri
+- p 20 | slajd   19/71 | Primjeri
+- p 21 | slajd   20/71 | Primjeri
+- p 22 | slajd   21/71 | Outline
+- p 23 | slajd   22/71 | Rjesenje optimizacijskog problema
+- p 24 | slajd   23/71 | Rjesenje optimizacijskog problema
+- p 25 | slajd   24/71 | Rjesenje optimizacijskog problema
+- p 26 | slajd   25/71 | Rjesenje optimizacijskog problema
+- p 27 | slajd   26/71 | Rjesenje optimizacijskog problema
+- p 28 | slajd   27/71 | Outline
+- p 29 | slajd   28/71 | Derivacije, Jakobijan, Gradijent, Hessian
+- p 30 | slajd   29/71 | Derivacije, Jakobijan, Gradijent, Hessian
+- p 31 | slajd   30/71 | Derivacije, Jakobijan, Gradijent, Hessian
+- p 32 | slajd   31/71 | Derivacije, Jakobijan, Gradijent, Hessian
+- p 33 | slajd   32/71 | Gradijent
+- p 34 | slajd   33/71 | Gradijent
+- p 35 | slajd   34/71 | Derivacije, Jakobijan, Gradijent, Hessian
+- p 36 | slajd   35/71 | Derivacije, Jakobijan, Gradijent, Hessian
+- p 37 | slajd   36/71 | Derivacije, Jakobijan, Gradijent, Hessian
+- p 38 | slajd   37/71 | Gradijent
+- p 39 | slajd   38/71 | Gradijent
+- p 40 | slajd   39/71 | Derivacije, Jakobijan, Gradijent, Hessian
+- p 41 | slajd   40/71 | Hessian
+- p 42 | slajd   41/71 | Derivacije, Jakobijan, Gradijent, Hessian
+- p 43 | slajd   42/71 | Derivacije, Jakobijan, Gradijent, Hessian
+- p 44 | slajd   43/71 | Derivacije, Jakobijan, Gradijent, Hessian
+- p 45 | slajd   44/71 | Derivacije, Jakobijan, Gradijent, Hessian
+- p 46 | slajd   45/71 | Derivacije, Jakobijan, Gradijent, Hessian
+- p 47 | slajd   46/71 | Derivacije, Jakobijan, Gradijent, Hessian
+- p 48 | slajd   47/71 | Derivacije, Jakobijan, Gradijent, Hessian
+- p 49 | slajd   48/71 | Derivacije, Jakobijan, Gradijent, Hessian
+- p 50 | slajd   49/71 | Derivacije, Jakobijan, Gradijent, Hessian
+- p 51 | slajd   50/71 | Outline
+- p 52 | slajd   51/71 | Konveksno optimiranje
+- p 53 | slajd   52/71 | Konveksno optimiranje
+- p 54 | slajd   53/71 | Konveksno optimiranje
+- p 55 | slajd   54/71 | Afin skup
+- p 56 | slajd   55/71 | Konveksno optimiranje
+- p 57 | slajd   56/71 | Konveksan skup
+- p 58 | slajd   57/71 | Konveksan skup
+- p 59 | slajd   58/71 | Konveksan skup
+- p 60 | slajd   59/71 | Konveksno optimiranje
+- p 61 | slajd   60/71 | Konveksno optimiranje
+- p 62 | slajd   61/71 | Konveksno optimiranje
+- p 63 | slajd   62/71 | Konveksno optimiranje
+- p 64 | slajd   63/71 | Konveksno optimiranje
+- p 65 | slajd   64/71 | Konveksno optimiranje
+- p 66 | slajd   65/71 | Konveksno optimiranje
+- p 67 | slajd   66/71 | Konveksno optimiranje
+- p 68 | slajd   67/71 | Konveksno optimiranje
+- p 69 | slajd   68/71 | Konveksno optimiranje
+- p 70 | slajd   69/71 | Konveksno optimiranje
+- p 71 | slajd   70/71 | Konveksno optimiranje
+- p 72 | slajd   71/71 | Konveksno optimiranje
+
+## 03_Uvjeti_optimalnosti
+
+- p  1 | slajd    1/49 | Optimizacijske metode u razvoju i upravljanju sustava
+- p  2 | slajd    2/49 | Optimizacijski problem sa ogranicenjima
+- p  3 | slajd    3/49 | Nuzni uvjeti optimalnosti za probleme sa ogranicenjima
+- p  4 | slajd    4/49 | Uvjeti optimalnosti za probleme sa ogranicenjima
+- p  5 | slajd    4/49 | Uvjeti optimalnosti za probleme sa ogranicenjima
+- p  6 | slajd    4/49 | Uvjeti optimalnosti za probleme sa ogranicenjima
+- p  7 | slajd    4/49 | Uvjeti optimalnosti za probleme sa ogranicenjima
+- p  8 | slajd    5/49 | Uvjeti optimalnosti za probleme sa ogranicenjima
+- p  9 | slajd    6/49 | Nuzni uvjeti optimalnosti prvog reda
+- p 10 | slajd    7/49 | Nuzni uvjeti optimalnosti prvog reda
+- p 11 | slajd    7/49 | Nuzni uvjeti optimalnosti prvog reda
+- p 12 | slajd    7/49 | Nuzni uvjeti optimalnosti prvog reda
+- p 13 | slajd    7/49 | Nuzni uvjeti optimalnosti prvog reda
+- p 14 | slajd    8/49 | Nuzni uvjeti optimalnosti prvog reda
+- p 15 | slajd    8/49 | Nuzni uvjeti optimalnosti prvog reda
+- p 16 | slajd    8/49 | Nuzni uvjeti optimalnosti prvog reda
+- p 17 | slajd    8/49 | Nuzni uvjeti optimalnosti prvog reda
+- p 18 | slajd    8/49 | Nuzni uvjeti optimalnosti prvog reda
+- p 19 | slajd    9/49 | Problemi sa ogranicenjem (jednim ogr.) jednakosti
+- p 20 | slajd   10/49 | Problemi sa ogranicenjem (jednim ogr.) jednakosti
+- p 21 | slajd   10/49 | Problemi sa ogranicenjem (jednim ogr.) jednakosti
+- p 22 | slajd   10/49 | Problemi sa ogranicenjem (jednim ogr.) jednakosti
+- p 23 | slajd   11/49 | Problemi sa ogranicenjem (jednim ogr.) jednakosti
+- p 24 | slajd   12/49 | Problemi sa ogranicenjem (jednim ogr.) jednakosti
+- p 25 | slajd   13/49 | Problemi sa ogranicenjem (jednim ogr.) jednakosti
+- p 26 | slajd   14/49 | Problemi sa ogranicenjem (jednim ogr.) jednakosti
+- p 27 | slajd   15/49 | Problemi sa ogranicenjem (jednim ogr.) jednakosti
+- p 28 | slajd   16/49 | Problemi sa ogranicenjem (jednim ogr.) jednakosti
+- p 29 | slajd   16/49 | Problemi sa ogranicenjem (jednim ogr.) jednakosti
+- p 30 | slajd   16/49 | Problemi sa ogranicenjem (jednim ogr.) jednakosti
+- p 31 | slajd   16/49 | Problemi sa ogranicenjem (jednim ogr.) jednakosti
+- p 32 | slajd   17/49 | Problemi sa ogranicenjem (jednim ogr.) jednakosti
+- p 33 | slajd   18/49 | Problemi sa ogranicenjima jednakosti: sustavno rjesenje?
+- p 34 | slajd   18/49 | Problemi sa ogranicenjima jednakosti: sustavno rjesenje?
+- p 35 | slajd   19/49 | Problemi sa vise ogranicenja jednakosti
+- p 36 | slajd   20/49 | Problemi sa vise ogranicenja jednakosti
+- p 37 | slajd   21/49 | Problemi sa vise ogranicenja jednakosti
+- p 38 | slajd   22/49 | Problemi sa vise ogranicenja jednakosti
+- p 39 | slajd   23/49 | Problemi sa vise ogranicenja jednakosti
+- p 40 | slajd   24/49 | Problemi sa vise ogranicenja jednakosti
+- p 41 | slajd   25/49 | Problem sa ogranicenjem nejednakosti
+- p 42 | slajd   26/49 | Problem sa ogranicenjem nejednakosti
+- p 43 | slajd   26/49 | Problem sa ogranicenjem nejednakosti
+- p 44 | slajd   27/49 | Problem sa ogranicenjem nejednakosti
+- p 45 | slajd   27/49 | Problem sa ogranicenjem nejednakosti
+- p 46 | slajd   28/49 | Problem sa ogranicenjem nejednakosti
+- p 47 | slajd   28/49 | Problem sa ogranicenjem nejednakosti
+- p 48 | slajd   29/49 | Problem sa ogranicenjem nejednakosti
+- p 49 | slajd   30/49 | Problem sa ogranicenjem nejednakosti
+- p 50 | slajd   31/49 | Problem sa ogranicenjem nejednakosti
+- p 51 | slajd   32/49 | Problem sa ogranicenjem nejednakosti
+- p 52 | slajd   33/49 | Problem sa vise ogranicenja nejednakosti
+- p 53 | slajd   34/49 | Problem sa vise ogranicenja nejednakosti
+- p 54 | slajd   35/49 | Problem sa vise ogranicenja nejednakosti
+- p 55 | slajd   36/49 | Problem sa vise ogranicenja nejednakosti
+- p 56 | slajd   37/49 | Problem sa vise ogranicenja nejednakosti
+- p 57 | slajd   38/49 | Problem sa vise ogranicenja nejednakosti
+- p 58 | slajd   39/49 | Nuzi uvjeti optimalnosti: openit slucaj
+- p 59 | slajd   40/49 | Nuzi uvjeti optimalnosti: openit slucaj
+- p 60 | slajd   41/49 | Nuzi uvjeti optimalnosti: openit slucaj
+- p 61 | slajd   42/49 | Nuzi uvjeti optimalnosti: openit slucaj
+- p 62 | slajd   43/49 | Cestica u potencijalnom polju
+- p 63 | slajd   44/49 | Cestica u potencijalnom polju
+- p 64 | slajd   45/49 | Ravnotezni polozaj preko minimizacije potencijalne energije
+- p 65 | slajd   46/49 | Ravnotezni polozaj preko minimizacije potencijalne energije
+- p 66 | slajd   47/49 | Ravnotezni polozaj preko minimizacije potencijalne energije
+- p 67 | slajd   48/49 | Ravnotezni polozaj preko minimizacije potencijalne energije
+- p 68 | slajd   49/49 | Ravnotezni polozaj preko minimizacije potencijalne energije
+
+## 04_Lagrangeova_dualnost
+
+- p  1 | slajd    1/26 | Optimizacijske metode u razvoju i upravljanju sustava
+- p  2 | slajd    2/26 | Outline
+- p  3 | slajd    3/26 | Outline
+- p  4 | slajd    4/26 | Lagrangeova dualnost
+- p  5 | slajd    4/26 | Lagrangeova dualnost
+- p  6 | slajd    4/26 | Lagrangeova dualnost
+- p  7 | slajd    4/26 | Lagrangeova dualnost
+- p  8 | slajd    5/26 | Lagrangeova dualnost
+- p  9 | slajd    5/26 | Lagrangeova dualnost
+- p 10 | slajd    6/26 | Lagrangeova dualnost
+- p 11 | slajd    7/26 | Lagrangeova dualnost
+- p 12 | slajd    8/26 | Lagrangeova dualnost
+- p 13 | slajd    8/26 | Lagrangeova dualnost
+- p 14 | slajd    9/26 | Lagrangeova dualnost
+- p 15 | slajd   10/26 | Lagrangeova dualnost
+- p 16 | slajd   11/26 | Jaka dulanost
+- p 17 | slajd   11/26 | Jaka dulanost
+- p 18 | slajd   12/26 | Lagrangeova dualnost
+- p 19 | slajd   13/26 | Outline
+- p 20 | slajd   14/26 | Karush-Khun-Tucker (KKT) uvjeti (jos jednom)
+- p 21 | slajd   15/26 | Karush-Khun-Tucker (KKT) uvjeti (jos jednom)
+- p 22 | slajd   16/26 | Karush-Khun-Tucker (KKT) uvjeti (jos jednom)
+- p 23 | slajd   17/26 | Karush-Khun-Tucker (KKT) uvjeti (jos jednom)
+- p 24 | slajd   18/26 | Distribuirano rjesavanje opt. problema - dualna dekompozicija
+- p 25 | slajd   19/26 | Distribuirano rjesavanje opt. problema - dualna dekompozicija
+- p 26 | slajd   19/26 | Distribuirano rjesavanje opt. problema - dualna dekompozicija
+- p 27 | slajd   20/26 | Distribuirano rjesavanje opt. problema - dualna dekompozicija
+- p 28 | slajd   21/26 | Outline
+- p 29 | slajd   22/26 | Analiza osjetljivosti
+- p 30 | slajd   22/26 | Analiza osjetljivosti
+- p 31 | slajd   23/26 | Analiza osjetljivosti
+- p 32 | slajd   24/26 | Analiza osjetljivosti
+- p 33 | slajd   25/26 | Analiza osjetljivosti
+- p 34 | slajd   26/26 | Lokalna osjetljivost
+
+## 05_LP_QP
+
+- p  1 | slajd    1/34 | Optimizacijske metode u razvoju i upravljanju sustava
+- p  2 | slajd    2/34 | Outline
+- p  3 | slajd    3/34 | Outline
+- p  4 | slajd    4/34 | Linearno programiranje (Linear programming (LP))
+- p  5 | slajd    5/34 | Linearno programiranje (Linear programming (LP))
+- p  6 | slajd    6/34 | Linearno programiranje (Linear programming (LP))
+- p  7 | slajd    7/34 | Linearno programiranje (Linear programming (LP))
+- p  8 | slajd    8/34 | Linearno programiranje (Linear programming (LP))
+- p  9 | slajd    9/34 | Linearno programiranje (Linear programming (LP))
+- p 10 | slajd   10/34 | Linearno programiranje (Linear programming (LP))
+- p 11 | slajd   11/34 | Linearno programiranje (Linear programming (LP))
+- p 12 | slajd   12/34 | Linearno programiranje (Linear programming (LP))
+- p 13 | slajd   13/34 | Linearno programiranje (Linear programming (LP))
+- p 14 | slajd   14/34 | Linearno programiranje (Linear programming (LP))
+- p 15 | slajd   15/34 | Linearno programiranje (Linear programming (LP))
+- p 16 | slajd   16/34 | Linearno programiranje (Linear programming (LP))
+- p 17 | slajd   17/34 | Linearno programiranje (Linear programming (LP))
+- p 18 | slajd   18/34 | Linearno programiranje (Linear programming (LP))
+- p 19 | slajd   19/34 | Linearno programiranje (Linear programming (LP))
+- p 20 | slajd   20/34 | Linearno programiranje (Linear programming (LP))
+- p 21 | slajd   21/34 | Linearno programiranje (Linear programming (LP))
+- p 22 | slajd   22/34 | Linearno programiranje (Linear programming (LP))
+- p 23 | slajd   23/34 | Linearno programiranje (Linear programming (LP))
+- p 24 | slajd   23/34 | Linearno programiranje (Linear programming (LP))
+- p 25 | slajd   23/34 | Linearno programiranje (Linear programming (LP))
+- p 26 | slajd   24/34 | Linearno programiranje (Linear programming (LP))
+- p 27 | slajd   24/34 | Linearno programiranje (Linear programming (LP))
+- p 28 | slajd   25/34 | Linearno programiranje (Linear programming (LP))
+- p 29 | slajd   25/34 | Linearno programiranje (Linear programming (LP))
+- p 30 | slajd   26/34 | Kvadratno programiranje (Quadratic Programming (QP))
+- p 31 | slajd   27/34 | Kvadratno programiranje (Quadratic Programming (QP))
+- p 32 | slajd   28/34 | Kvadratno programiranje (Quadratic Programming (QP))
+- p 33 | slajd   29/34 | Kvadratno programiranje (Quadratic Programming (QP))
+- p 34 | slajd   30/34 | Kvadratno programiranje (Quadratic Programming (QP))
+- p 35 | slajd   31/34 | Kvadratno programiranje (Quadratic Programming (QP))
+- p 36 | slajd   31/34 | Kvadratno programiranje (Quadratic Programming (QP))
+- p 37 | slajd   32/34 | Kvadratno programiranje (Quadratic Programming (QP))
+- p 38 | slajd   32/34 | Kvadratno programiranje (Quadratic Programming (QP))
+- p 39 | slajd   33/34 | Kvadratno programiranje (Quadratic Programming (QP))
+- p 40 | slajd   34/34 | Kvadratno programiranje (Quadratic Programming (QP))
+
+## 06_QCP_SDP
+
+- p  1 | slajd    1/30 | Optimizacijske metode u razvoju i upravljanju sustava
+- p  2 | slajd    2/30 | Outline
+- p  3 | slajd    3/30 | Outline
+- p  4 | slajd    4/30 | Generalizirane nejednakosti i konicni problemi
+- p  5 | slajd    5/30 | Generalizirane nejednakosti i konicni problemi
+- p  6 | slajd    6/30 | Generalizirane nejednakosti i konicni problemi
+- p  7 | slajd    7/30 | Generalizirane nejednakosti i konicni problemi
+- p  8 | slajd    8/30 | Generalizirane nejednakosti i konicni problemi
+- p  9 | slajd    9/30 | Generalizirane nejednakosti i konicni problemi
+- p 10 | slajd   10/30 | Outline
+- p 11 | slajd   11/30 | Konicno kvadratno programiranje (CQP)
+- p 12 | slajd   12/30 | Konicno kvadratno programiranje (CQP)
+- p 13 | slajd   13/30 | Konicno kvadratno programiranje (CQP)
+- p 14 | slajd   14/30 | Konicno kvadratno programiranje (CQP)
+- p 15 | slajd   15/30 | Konicno kvadratno programiranje (CQP)
+- p 16 | slajd   16/30 | Outline
+- p 17 | slajd   17/30 | Semidefinitno programiranje (SDP)
+- p 18 | slajd   18/30 | Semidefinitno programiranje (SDP)
+- p 19 | slajd   19/30 | Semidefinitno programiranje (SDP)
+- p 20 | slajd   19/30 | Semidefinitno programiranje (SDP)
+- p 21 | slajd   20/30 | Semidefinitno programiranje (SDP)
+- p 22 | slajd   21/30 | Semidefinitno programiranje (SDP)
+- p 23 | slajd   22/30 | Semidefinitno programiranje (SDP)
+- p 24 | slajd   23/30 | Semidefinitno programiranje (SDP)
+- p 25 | slajd   24/30 | Semidefinitno programiranje (SDP)
+- p 26 | slajd   25/30 | Semidefinitno programiranje (SDP)
+- p 27 | slajd   26/30 | Semidefinitno programiranje (SDP)
+- p 28 | slajd   27/30 | Semidefinitno programiranje (SDP)
+- p 29 | slajd   28/30 | Semidefinitno programiranje (SDP)
+- p 30 | slajd   29/30 | Semidefinitno programiranje (SDP)
+- p 31 | slajd   30/30 | Semidefinitno programiranje (SDP)
+
+## 07_Dinamicki_sustavi_Ljapunov_disipativnost
+
+- p  1 | slajd    1/37 | Optimizacijske metode u razvoju i upravljanju sustava
+- p  2 | slajd    2/37 | Outline
+- p  3 | slajd    3/37 | Outline
+- p  4 | slajd    4/37 | Stabilnost
+- p  5 | slajd    5/37 | Stabilnost
+- p  6 | slajd    5/37 | Stabilnost
+- p  7 | slajd    6/37 | Stabilnost
+- p  8 | slajd    6/37 | Stabilnost
+- p  9 | slajd    6/37 | Stabilnost
+- p 10 | slajd    6/37 | Stabilnost
+- p 11 | slajd    7/37 | Stabilnost
+- p 12 | slajd    8/37 | Stabilnost
+- p 13 | slajd    9/37 | Generiranje slike
+- p 14 | slajd   10/37 | Stabilnost
+- p 15 | slajd   10/37 | Stabilnost
+- p 16 | slajd   10/37 | Stabilnost
+- p 17 | slajd   11/37 | Stabilnost
+- p 18 | slajd   11/37 | Stabilnost
+- p 19 | slajd   11/37 | Stabilnost
+- p 20 | slajd   12/37 | Stabilnost
+- p 21 | slajd   12/37 | Stabilnost
+- p 22 | slajd   12/37 | Stabilnost
+- p 23 | slajd   13/37 | Stabilnost
+- p 24 | slajd   14/37 | Outline
+- p 25 | slajd   15/37 | Robusna stabilnost
+- p 26 | slajd   16/37 | Robusna stabilnost
+- p 27 | slajd   17/37 | Sinteza
+- p 28 | slajd   18/37 | Sinteza
+- p 29 | slajd   18/37 | Sinteza
+- p 30 | slajd   18/37 | Sinteza
+- p 31 | slajd   18/37 | Sinteza
+- p 32 | slajd   18/37 | Sinteza
+- p 33 | slajd   19/37 | Sinteza
+- p 34 | slajd   20/37 | Sinteza
+- p 35 | slajd   21/37 | Outline
+- p 36 | slajd   22/37 | Disipativnost
+- p 37 | slajd   23/37 | Disipativnost
+- p 38 | slajd   24/37 | Disipativnost
+- p 39 | slajd   25/37 | Disipativnost
+- p 40 | slajd   26/37 | Disipativnost
+- p 41 | slajd   27/37 | Disipativnost
+- p 42 | slajd   28/37 | Disipativnost
+- p 43 | slajd   29/37 | Disipativnost
+- p 44 | slajd   30/37 | Disipativnost
+- p 45 | slajd   31/37 | Disipativnost
+- p 46 | slajd   31/37 | Disipativnost
+- p 47 | slajd   32/37 | Disipativnost
+- p 48 | slajd   32/37 | Disipativnost
+- p 49 | slajd   32/37 | Disipativnost
+- p 50 | slajd   32/37 | Disipativnost
+- p 51 | slajd   33/37 | Disipativnost
+- p 52 | slajd   34/37 | Disipativnost
+- p 53 | slajd   35/37 | Disipativnost
+- p 54 | slajd   36/37 | Disipativnost
+- p 55 | slajd   37/37 | Disipativnost
+
+## 08_Robusno_optimiranje
+
+- p  1 | slajd    1/21 | Optimizacijske metode u razvoju i upravljanju sustava
+- p  2 | slajd    2/21 | Robusan LP - poliedarske nesigurnosti
+- p  3 | slajd    3/21 | Robusan LP - poliedarske nesigurnosti
+- p  4 | slajd    4/21 | Robusan LP - poliedarske nesigurnosti
+- p  5 | slajd    5/21 | Robusan LP - poliedarske nesigurnosti
+- p  6 | slajd    6/21 | Primjer 1
+- p  7 | slajd    7/21 | Primjer 1
+- p  8 | slajd    8/21 | Primjer 1
+- p  9 | slajd    9/21 | Primjer 1
+- p 10 | slajd   10/21 | Primjer 1
+- p 11 | slajd   11/21 | Primjer 2
+- p 12 | slajd   12/21 | Primjer 2
+- p 13 | slajd   13/21 | Primjer 2
+- p 14 | slajd   14/21 | Primjer 2
+- p 15 | slajd   15/21 | Primjer 2
+- p 16 | slajd   16/21 | Primjer 2
+- p 17 | slajd   17/21 | Primjer 2
+- p 18 | slajd   18/21 | Primjer 2
+- p 19 | slajd   19/21 | Primjer 2
+- p 20 | slajd   20/21 | Robusan LP - elipsoidne nesigurnosti
+- p 21 | slajd   21/21 | Robusan LP - elipsoidne nesigurnosti
+
+## Vjezbe 1
+
+- p  1 | slajd    1/25 | Optimizacijske metode u razvoju i upravljanju sustava
+- p  2 | slajd    2/25 | Vektori, matrice
+- p  3 | slajd    2/25 | Vektori, matrice
+- p  4 | slajd    3/25 | Funkcije
+- p  5 | slajd    4/25 | Funkcije
+- p  6 | slajd    4/25 | Funkcije
+- p  7 | slajd    5/25 | Linearne funkcije
+- p  8 | slajd    5/25 | Linearne funkcije
+- p  9 | slajd    6/25 | Linearne funkcije
+- p 10 | slajd    7/25 | Linearne funkcije
+- p 11 | slajd    7/25 | Linearne funkcije
+- p 12 | slajd    8/25 | Linearne funkcije
+- p 13 | slajd    8/25 | Linearne funkcije
+- p 14 | slajd    8/25 | Linearne funkcije
+- p 15 | slajd    8/25 | Linearne funkcije
+- p 16 | slajd    8/25 | Linearne funkcije
+- p 17 | slajd    8/25 | Linearne funkcije
+- p 18 | slajd    9/25 | Linearne i afine funkcije
+- p 19 | slajd   10/25 | Linearne i afine funkcije
+- p 20 | slajd   11/25 | Zadatak 1: Linearne funkcije ("superpozicja")
+- p 21 | slajd   12/25 | Intermezzo: Nivo krivulje
+- p 22 | slajd   13/25 | Zadatak 2: nivo krivulje linearnih funkcija
+- p 23 | slajd   14/25 | Skalarni produkt vektora
+- p 24 | slajd   15/25 | Skalarni produkt vektora
+- p 25 | slajd   16/25 | Skalarni produkt vektora
+- p 26 | slajd   17/25 | Hiperravnine i poluprostori
+- p 27 | slajd   18/25 | Zadatak 2 (ponovljen): nivo krivulje linearnih funkcija
+- p 28 | slajd   19/25 | Hiperravnine i poluprostori
+- p 29 | slajd   20/25 | Zadatak 3: poluprostor
+- p 30 | slajd   21/25 | Poliedar i politop
+- p 31 | slajd   22/25 | Zadatak 4: politop
+- p 32 | slajd   23/25 | Vektorske norme
+- p 33 | slajd   24/25 | Vektorske norme
+- p 34 | slajd   25/25 | Vektorske norme
+
+## Vjezbe 2
+
+- p  1 | slajd    1/11 | Optimizacijske metode u razvoju i upravljanju sustava
+- p  2 | slajd    2/11 | Konveksan optimizacijski problem
+- p  3 | slajd    3/11 | Konveksan optimizacijski problem
+- p  4 | slajd    4/11 | Primjer 1
+- p  5 | slajd    5/11 | Primjer 1
+- p  6 | slajd    6/11 | Vektorske norme - konveksne funkcije
+- p  7 | slajd    7/11 | Vektorske norme - konveksne funkcije
+- p  8 | slajd    8/11 | Vektorske norme - konveksne funkcije
+- p  9 | slajd    9/11 | Minimizacija norme kao konveksan opt. problem; prakticne reformulacije
+- p 10 | slajd   10/11 | Minimizacija norme kao konveksan opt. problem; prakticne reformulacije
+- p 11 | slajd   11/11 | Minimizacija norme kao konveksan opt. problem; prakticne reformulacije
+
+## Vjezbe 3
+
+- p  1 | slajd    1/36 | Optimizacijske metode u razvoju i upravljanju sustava
+- p  2 | slajd    2/36 | Outline
+- p  3 | slajd    3/36 | Outline
+- p  4 | slajd    4/36 | Primjer 1: Trziste i formiranje cijena
+- p  5 | slajd    5/36 | Primjer 1: Trziste i formiranje cijena
+- p  6 | slajd    5/36 | Primjer 1: Trziste i formiranje cijena
+- p  7 | slajd    6/36 | Primjer 1: Trziste i formiranje cijena
+- p  8 | slajd    6/36 | Primjer 1: Trziste i formiranje cijena
+- p  9 | slajd    6/36 | Primjer 1: Trziste i formiranje cijena
+- p 10 | slajd    7/36 | Primjer 1: Trziste i formiranje cijena
+- p 11 | slajd    8/36 | Primjer 1: Trziste i formiranje cijena
+- p 12 | slajd    9/36 | Primjer 1: Trziste i formiranje cijena
+- p 13 | slajd   10/36 | Primjer 1: Trziste i formiranje cijena
+- p 14 | slajd   10/36 | Primjer 1: Trziste i formiranje cijena
+- p 15 | slajd       - | (prazno)
+- p 16 | slajd       - | (prazno)
+- p 17 | slajd   13/36 | Primjer 1: Trziste i formiranje cijena
+- p 18 | slajd   14/36 | Primjer 1: Trziste i formiranje cijena
+- p 19 | slajd   15/36 | Outline
+- p 20 | slajd   16/36 | Primjer 2: Dualnost, KKT, osjetljivost
+- p 21 | slajd   17/36 | Primjer 2: Dualnost, KKT, osjetljivost
+- p 22 | slajd   17/36 | Primjer 2: Dualnost, KKT, osjetljivost
+- p 23 | slajd   18/36 | Primjer 2: Dualnost, KKT, osjetljivost
+- p 24 | slajd   19/36 | Primjer 2: Dualnost, KKT, osjetljivost
+- p 25 | slajd   20/36 | Primjer 2: Dualnost, KKT, osjetljivost
+- p 26 | slajd   21/36 | Primjer 2: Dualnost, KKT, osjetljivost
+- p 27 | slajd   22/36 | Primjer 2: Dualnost, KKT, osjetljivost
+- p 28 | slajd   23/36 | Primjer 2: Dualnost, KKT, osjetljivost
+- p 29 | slajd   24/36 | Primjer 2: Dualnost, KKT, osjetljivost
+- p 30 | slajd   25/36 | Primjer 2: Dualnost, KKT, osjetljivost
+- p 31 | slajd   26/36 | Primjer 2: Dualnost, KKT, osjetljivost
+- p 32 | slajd   27/36 | Primjer 2: Dualnost, KKT, osjetljivost
+- p 33 | slajd   28/36 | Primjer 2: Dualnost, KKT, osjetljivost
+- p 34 | slajd   29/36 | Primjer 2: Dualnost, KKT, osjetljivost
+- p 35 | slajd   29/36 | Primjer 2: Dualnost, KKT, osjetljivost
+- p 36 | slajd   29/36 | Primjer 2: Dualnost, KKT, osjetljivost
+- p 37 | slajd   30/36 | Primjer 2: Dualnost, KKT, osjetljivost
+- p 38 | slajd   31/36 | Primjer 2: Dualnost, KKT, osjetljivost
+- p 39 | slajd   32/36 | Primjer 2: Dualnost, KKT, osjetljivost
+- p 40 | slajd   33/36 | Primjer 2: Dualnost, KKT, osjetljivost
+- p 41 | slajd   34/36 | Primjer 2: Dualnost, KKT, osjetljivost
+- p 42 | slajd   35/36 | Primjer 2: Dualnost, KKT, osjetljivost
+
+## Vjezbe 4
+
+- p  1 | slajd    1/40 | Optimizacijske metode u razvoju i upravljanju sustava
+- p  2 | slajd    2/40 | Outline
+- p  3 | slajd    3/40 | Outline
+- p  4 | slajd    4/40 | Aproksimacije
+- p  5 | slajd    5/40 | Aproksimacije
+- p  6 | slajd    6/40 | Aproksimacije
+- p  7 | slajd    7/40 | Aproksimacije
+- p  8 | slajd    8/40 | Aproksimacije
+- p  9 | slajd    9/40 | Aproksimacije
+- p 10 | slajd   10/40 | Aproksimacije
+- p 11 | slajd   11/40 | Aproksimacije
+- p 12 | slajd   12/40 | Aproksimacije
+- p 13 | slajd   13/40 | Aproksimacije
+- p 14 | slajd   14/40 | Aproksimacije
+- p 15 | slajd   15/40 | Aproksimacije
+- p 16 | slajd   16/40 | Aproksimacije
+- p 17 | slajd   17/40 | Aproksimacije
+- p 18 | slajd   18/40 | Outline
+- p 19 | slajd   19/40 | Regularizirana aproksimacija
+- p 20 | slajd   20/40 | Regularizirana aproksimacija
+- p 21 | slajd   21/40 | Regularizirana aproksimacija
+- p 22 | slajd   22/40 | Regularizirana aproksimacija
+- p 23 | slajd   23/40 | Regularizirana aproksimacija
+- p 24 | slajd   24/40 | Regularizirana aproksimacija
+- p 25 | slajd   25/40 | Regularizirana aproksimacija
+- p 26 | slajd   26/40 | Regularizirana aproksimacija
+- p 27 | slajd   27/40 | Regularizirana aproksimacija
+- p 28 | slajd   28/40 | Regularizirana aproksimacija
+- p 29 | slajd   29/40 | Regularizirana aproksimacija
+- p 30 | slajd   30/40 | Regularizirana aproksimacija
+- p 31 | slajd   31/40 | Outline
+- p 32 | slajd   32/40 | Geometrijski problemi
+- p 33 | slajd   33/40 | Geometrijski problemi
+- p 34 | slajd   34/40 | Geometrijski problemi
+- p 35 | slajd   34/40 | Geometrijski problemi
+- p 36 | slajd   35/40 | Geometrijski problemi
+- p 37 | slajd   36/40 | Geometrijski problemi
+- p 38 | slajd   37/40 | Geometrijski problemi
+- p 39 | slajd   38/40 | Geometrijski problemi
+- p 40 | slajd   39/40 | Geometrijski problemi
+- p 41 | slajd   40/40 | Geometrijski problemi
+
+## Vjezbe 5
+
+- p  1 | slajd     1/7 | Optimizacijske metode u razvoju i upravljanju sustava
+- p  2 | slajd     2/7 | Zadatak 1: optimiranje proizvodnje i tokova u mrezi
+- p  3 | slajd     3/7 | Zadatak 1: optimiranje proizvodnje i tokova u mrezi
+- p  4 | slajd     4/7 | Zadatak 1: optimiranje proizvodnje i tokova u mrezi
+- p  5 | slajd     5/7 | Zadatak 2: Robusna stabilizacija
+- p  6 | slajd     6/7 | Zadatak 2: Robusna stabilizacija
+- p  7 | slajd     7/7 | Zadatak 2: Robusna stabilizacija

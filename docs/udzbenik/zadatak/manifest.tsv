@@ -1,0 +1,10 @@
+# Crops of the original assignment scan (docs/zadatak/zadatak_sken.pdf).
+# Rendered by: python src/extract_slides.py
+# id<TAB>pdf (path from repo root)<TAB>page<TAB>crop x,y,w,h as page fractions
+sken-str1	docs/zadatak/zadatak_sken.pdf	1	-
+sken-str2	docs/zadatak/zadatak_sken.pdf	2	-
+z1-original	docs/zadatak/zadatak_sken.pdf	1	0.06,0.154,0.90,0.328
+z2-original	docs/zadatak/zadatak_sken.pdf	1	0.06,0.487,0.90,0.088
+z3-original-a	docs/zadatak/zadatak_sken.pdf	1	0.06,0.573,0.90,0.348
+z3-original-b	docs/zadatak/zadatak_sken.pdf	2	0.06,0.086,0.90,0.150
+z4-original	docs/zadatak/zadatak_sken.pdf	2	0.06,0.273,0.90,0.452

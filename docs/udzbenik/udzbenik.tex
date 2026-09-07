@@ -1,0 +1,75 @@
+% ============================================================================
+%  OMRiUS — udžbenik za pripremu obrane seminara i usmenog ispita
+%  Krešimir Hartl, FSB, mentor prof. dr. sc. Andrej Jokić
+%
+%  Build:  python src/build_udzbenik.py     (Tectonic / XeTeX)
+%  Boxes:  see preambula/okviri.tex — colour marks provenance only.
+% ============================================================================
+\documentclass[11pt,a4paper,oneside]{report}
+
+\input{preambula/stil}
+\input{preambula/okviri}
+\input{preambula/makroi}
+
+\usepackage[hidelinks,unicode]{hyperref}
+\hypersetup{
+  pdftitle={OMRiUS — udžbenik za pripremu obrane seminara},
+  pdfauthor={Krešimir Hartl},
+  bookmarksnumbered=true
+}
+
+\graphicspath{{./}{figures/}{../figures/}}
+
+\begin{document}
+
+% ---------------------------------------------------------------- title page
+\begin{titlepage}
+\centering
+\vspace*{1.5cm}
+{\large Sveučilište u Zagrebu\par\smallskip Fakultet strojarstva i brodogradnje\par}
+\vspace{2.5cm}
+{\Huge\bfseries\color{fsbplava} OPTIMIZACIJSKE METODE\par\vspace{0.3cm}
+ U RAZVOJU I UPRAVLJANJU SUSTAVA\par}
+\vspace{1.2cm}
+{\LARGE Udžbenik za pripremu obrane seminarskog rada\par}
+\vspace{0.6cm}
+{\large\itshape Zadatak po zadatak, od nule, s izvorima uz svaku tvrdnju\par}
+\vspace{2.5cm}
+\begin{tabular}{rl}
+\textbf{Student:} & Krešimir Hartl \\[4pt]
+\textbf{Mentor:} & Prof.\ dr.\ sc.\ Andrej Jokić \\[4pt]
+\textbf{Temelj:} & Seminarski rad v1.2 \\[4pt]
+\textbf{Izvori:} & Predavanja 1--8, Vježbe 1--5 \\
+\end{tabular}
+\vfill
+{\large Zagreb, \today\par}
+\end{titlepage}
+
+% ---------------------------------------------------------------------- toc
+\pagenumbering{roman}
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+
+% ------------------------------------------------------------------- part 0
+\part*{Dio 0 — prije nego išta počneš računati}
+\addcontentsline{toc}{part}{Dio 0 — prije nego išta počneš računati}
+\input{dio0/00-kako-koristiti}
+\input{dio0/01-rjecnik}
+\input{dio0/02-alat}
+\input{dio0/03-kako-citati-graf}
+
+% ------------------------------------------------------------------ zadatak 1
+\part*{Zadatak 1 — kvadratni program, KKT, dualnost, osjetljivost}
+\addcontentsline{toc}{part}{Zadatak 1 — kvadratni program, KKT, dualnost, osjetljivost}
+\input{z1/00-zadatak}
+\input{z1/01-formulacija}
+\input{z1/02-a-konveksnost}
+\input{z1/03-b-kkt}
+\input{z1/04-c-graficki}
+\input{z1/05-d-matlab}
+\input{z1/06-e-dual}
+\input{z1/07-f-osjetljivost}
+\input{z1/08-obrana}
+
+\end{document}

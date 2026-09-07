@@ -1,0 +1,126 @@
+\chapter{Kako se ovaj udžbenik koristi}
+\label{ch:kako-koristiti}
+
+\section{Čemu ovaj udžbenik služi}
+
+Ovaj udžbenik ima jedan zadatak: da s minimalnim predznanjem možeš u cijelosti
+razumjeti i obraniti seminarski rad iz kolegija \emph{Optimizacijske metode u razvoju i
+upravljanju sustava}. Ne pretpostavlja da već znaš što je euklidski prostor, što znači
+$\langle x, y \rangle$ ili zašto se piše $\coloneqq$ umjesto $=$. Sve se to definira
+prije prve upotrebe, u Poglavlju~\ref{ch:rjecnik}.
+
+Građen je \textbf{po zadacima}, ne po temama. Ideš zadatak po zadatak, podzadatak po
+podzadatak, točno onim redom kojim ćeš ih morati izložiti na obrani. Teorija ulazi
+onda kad zatreba i tamo gdje zatreba --- ne prije.
+
+\section{Četiri boje: odakle koji tekst dolazi}
+
+Najveći problem pri učenju iz vlastitih bilježaka jest da se poslije ne zna
+\emph{tko je što rekao}: je li ovo profesorova definicija, je li ovo bio dio zadatka,
+ili sam to sâm zaključio. Zato u ovom udžbeniku \textbf{boja označava isključivo
+podrijetlo teksta}, ništa drugo.
+
+\begin{izvor}{Predavanje 2 --- Definicije, klasifikacija, konveksnost, slajd 60/71 (PDF str.~61)}
+Crveni okvir je doslovno ono što piše na profesorovu slajdu. Stranica slajda umeće se
+kao slika, pa ispod nje slijedi pretipkani sadržaj s objašnjenjem svakog simbola.
+Referenca uvijek ima \emph{dva} broja: broj slajda ispisan u podnožju samog slajda i
+broj stranice u PDF-u. Ta se dva broja razlikuju, jer beamer svaki slajd s postupnim
+otkrivanjem sprema kao više PDF stranica.
+
+\slajd{p02-konveksna-funkcija}
+\end{izvor}
+
+\begin{zadatak}{Zadatak 1, uvodna formulacija}
+Sivi okvir je doslovni tekst zadatka --- izravno sa skena koji je profesor potpisao.
+Unutar sivog okvira \textbf{nema} ničega što je netko poslije dodao, zaključio ili
+protumačio. Ako nešto u zadatku nije rečeno, u sivom okviru toga neće biti.
+\skenzad[0.98]{z1-original}
+\end{zadatak}
+
+\begin{seminar}{Seminar v1.2, §1.1}
+Plavi okvir je doslovni izvadak iz predanog seminarskog rada v1.2 --- ista notacija,
+iste jednadžbe, isti brojevi kao u PDF-u koji je predan. Tako uvijek znaš što točno
+braniš.
+\end{seminar}
+
+\begin{pojam}{Konveksna funkcija}
+Žuti okvir je definicija ili formula koju treba znati napamet. Numeriran je, pa se na
+njega poslije referira brojem.
+
+Funkcija $f: S \to \R$ je \textbf{konveksna} ako je $S$ konveksan skup i ako za sve
+$x_1, x_2 \in S$ te za svaki $\alpha$, $0 < \alpha < 1$, vrijedi
+\begin{equation}
+f\bigl(\alpha x_1 + (1-\alpha) x_2\bigr) \;\leq\; \alpha f(x_1) + (1-\alpha) f(x_2).
+\end{equation}
+\end{pojam}
+
+\section{Tihi elementi}
+
+Sve što nije jedan od ta četiri okvira nema ispunu ni boju --- samo tanku crtu s lijeve
+strane. To je namjerno: da četiri boje ostanu jedini glasan signal na stranici.
+
+\begin{predznanje}
+\begin{itemize}[nosep,leftmargin=*]
+  \item Popis simbola i pojmova koje moraš znati prije nego kreneš dalje.
+  \item Uz svaki stoji stranica na kojoj je objašnjen.
+\end{itemize}
+\end{predznanje}
+
+\begin{korak}
+Numerirani izvod. Svaki korak imenuje simbole koje uvodi; nijedan algebarski korak se
+ne preskače uz \emph{očito slijedi}.
+\begin{enumerate}[nosep,leftmargin=*]
+  \item Zapiši ono što znaš.
+  \item Uvrsti.
+  \item Zaključi, i reci \emph{zašto} smiješ zaključiti.
+\end{enumerate}
+\end{korak}
+
+\begin{zamka}
+Greška koja se stvarno radi, i objašnjenje zašto je pogrešna. Nije popis općenitih
+savjeta nego konkretan promašaj koji te na obrani može stajati ocjene.
+\end{zamka}
+
+\begin{ploca}
+Kako nacrtati sliku rukom, na ploči, bez računala: koje osi, kojim redom, koje točke
+označiti i što napisati uz njih.
+\end{ploca}
+
+\begin{izgovor}
+Doslovne rečenice koje možeš izgovoriti pred ispitivačem. Nisu parafraza --- napisane
+su tako da ih se može reći od riječi do riječi.
+\end{izgovor}
+
+\begin{pitanje}{Zašto je Hesseova matrica ovdje konstantna?}
+Okvir s pitanjem ispitivača, a odmah ispod modelski odgovor.
+
+\textbf{Odgovor.} Jer je funkcija cilja kvadratna: druge parcijalne derivacije
+kvadratne funkcije su konstante, pa Hesseova matrica ne ovisi o $x$.
+\end{pitanje}
+
+\section{Ritam svakog podzadatka}
+
+Svaki podzadatak --- 1a, 1b, \dots, 4c --- ide istim redom od devet koraka. Kad se
+navikneš na taj ritam, znaš gdje ćeš što naći bez traženja.
+
+\begin{enumerate}[leftmargin=*]
+  \item \textbf{Što se traži} --- jedna rečenica, bez žargona.
+  \item \textbf{Sivi okvir} --- izvorni tekst zadatka.
+  \item \textbf{Predznanje} --- što moraš znati prije, sa stranicama.
+  \item \textbf{Crveni okvir} --- slajd s predavanja ili vježbi, pa transkripcija.
+  \item \textbf{Žuti okviri} --- definicije i formule koje se koriste.
+  \item \textbf{Izvod korak po korak} --- bez preskakanja.
+  \item \textbf{Plavi okvir} --- kako je riješeno u seminaru.
+  \item \textbf{Graf} --- slika, čitanje slike, crtanje rukom.
+  \item \textbf{MATLAB i stvarni ispis} --- kod i doslovni ispis programa.
+\end{enumerate}
+
+Na kraju svakog zadatka slijedi modul za obranu: pitanja, zamke i modelski odgovori.
+
+\section{Jedno upozorenje o izvornom tekstu zadatka}
+
+Uz zadatak u repozitoriju postoji i prijepis
+(\texttt{TASK/zadatak\_omrius.md}) u kojem uz svaki podzadatak stoji i numerirani popis
+\emph{Koraka rješavanja}. Ti koraci \textbf{nisu} profesorov tekst --- dopisani su
+naknadno kao pomoć pri radu. U ovom udžbeniku oni nikad ne ulaze u sivi okvir. Kad se
+koriste, izričito su označeni kao izvedena uputa, a ne kao dio zadatka.
