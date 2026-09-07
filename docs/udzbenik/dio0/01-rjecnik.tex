@@ -1,1 +1,336 @@
-% placeholder
+\chapter{Rječnik: svaki znak, kako se čita i što znači}
+\label{ch:rjecnik}
+
+Ovo poglavlje postoji zato što se u matematičkom tekstu ništa ne smije
+podrazumijevati. Svaki znak koji se pojavljuje bilo gdje u ovom udžbeniku, u
+seminaru ili na predavanjima ovdje ima svoj redak: kako se piše, \textbf{kako se
+čita naglas}, što znači i gdje ga prvi put susrećeš.
+
+Čitanje naglas nije ukras. Na usmenoj obrani ne pokazuješ prstom u simbol nego
+ga izgovaraš, i ispitivač po tome odmah čuje razumiješ li ga ili si ga zapamtio
+kao sliku.
+
+\section{Znakovi kojima se nešto definira ili tvrdi}
+\label{sec:znakovi-logike}
+
+\begin{longtable}{@{}p{0.13\linewidth} p{0.27\linewidth} p{0.52\linewidth}@{}}
+\toprule
+\textbf{Zapis} & \textbf{Kako se čita} & \textbf{Što znači} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Zapis} & \textbf{Kako se čita} & \textbf{Što znači} \\
+\midrule
+\endhead
+$\coloneqq$ & ,,definira se kao`` & Lijeva strana je \emph{novo ime} koje ovime uvodimo za ono što piše desno. Nije tvrdnja da su dvije poznate stvari jednake, nego uvođenje oznake. Piše se dvotočka pa znak jednakosti. \\[4pt]
+$=$ & ,,jednako je`` & Tvrdnja da dvije već poznate veličine imaju istu vrijednost. \\[4pt]
+$\equiv$ & ,,identički je jednako`` & Jednakost koja vrijedi za \emph{svaku} vrijednost varijable, ne samo za neke. \\[4pt]
+$\implies$ & ,,povlači``, ,,slijedi`` & Ako vrijedi lijevo, onda nužno vrijedi i desno. \\[4pt]
+$\iff$ & ,,ako i samo ako`` & Vrijedi u oba smjera: lijevo povlači desno \emph{i} desno povlači lijevo. \\[4pt]
+$\forall$ & ,,za svaki`` & Tvrdnja vrijedi za sve elemente nekog skupa bez iznimke. \\[4pt]
+$\exists$ & ,,postoji`` & Postoji barem jedan element s traženim svojstvom. \\[4pt]
+$\in$ & ,,je element skupa``, kraće ,,pripada`` & $x \in S$: objekt $x$ je jedan od članova skupa $S$. \\[4pt]
+$\subset$ & ,,je podskup od`` & Svaki element lijevog skupa je i element desnog. \\[4pt]
+$\cap$ & ,,presjek`` & Skup onih elemenata koji su u \emph{oba} skupa istovremeno. \\[4pt]
+$\cup$ & ,,unija`` & Skup onih elemenata koji su u barem jednom od skupova. \\[4pt]
+$\{x \mid P(x)\}$ & ,,skup svih $x$ takvih da vrijedi $P$ od $x$`` & Uspravna crta se čita ,,takav da``. Ovako se zapisuju svi dopustivi skupovi u ovom kolegiju. \\
+\bottomrule
+\end{longtable}
+
+\begin{zamka}[Zamka: $\coloneqq$ nasuprot $=$]
+Studenti često pišu $=$ tamo gdje bi trebalo $\coloneqq$ i obrnuto. Razlika je
+sadržajna, ne kozmetička. Kad napišeš
+\[
+\Lag(x,\mu) \coloneqq f(x) + \mu\trans\bigl(Gx - h\bigr),
+\]
+ti \emph{uvodiš} Lagrangeovu funkciju --- prije te rečenice ona ne postoji. Kad
+poslije napišeš $\grad_x \Lag(x,\mu) = 0$, to je \emph{uvjet} koji tražiš da bude
+zadovoljen. Ako oboje napišeš s $=$, iz zapisa se više ne vidi što je definicija,
+a što tvrdnja koju treba dokazati.
+\end{zamka}
+
+\section{Brojevi, prostori i skupovi}
+\label{sec:prostori}
+
+\begin{longtable}{@{}p{0.15\linewidth} p{0.30\linewidth} p{0.47\linewidth}@{}}
+\toprule
+\textbf{Zapis} & \textbf{Kako se čita} & \textbf{Što znači} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Zapis} & \textbf{Kako se čita} & \textbf{Što znači} \\
+\midrule
+\endhead
+$\R$ & ,,er`` ili ,,skup realnih brojeva`` & Svi realni brojevi: cijeli, razlomci i iracionalni, od $-\infty$ do $+\infty$. \\[4pt]
+$\R^n$ & ,,er na en`` & Skup svih uređenih $n$-torki realnih brojeva. Element od $\R^2$ je par $(x_1, x_2)$, npr.\ točka u ravnini. \\[4pt]
+$\R^{n \times m}$ & ,,er na en puta em`` & Skup svih matrica s $n$ redaka i $m$ stupaca, s realnim elementima. \\[4pt]
+$\Sym{n}$ & ,,es na en``, ,,skup simetričnih matrica reda en`` & Sve realne kvadratne matrice $n \times n$ koje su simetrične, $M = M\trans$. Hesseova matrica uvijek pripada ovom skupu. \\[4pt]
+$\R_{+}$ & ,,er plus`` & Nenegativni realni brojevi, $\{x \in \R \mid x \geq 0\}$. Lagrangeovi množitelji nejednakosti žive ovdje. \\[4pt]
+$[0, L]$ & ,,zatvoreni interval od nula do el`` & Svi realni brojevi između $0$ i $L$, \emph{uključivo} s rubovima. Uglata zagrada znači da je rub uključen. \\[4pt]
+$\emptyset$ & ,,prazan skup`` & Skup bez ijednog elementa. Ako je dopustivi skup prazan, problem nema rješenja. \\[4pt]
+$\feas$ & ,,ef``, ,,dopustivi skup`` & Skup svih $x$ koji zadovoljavaju sva ograničenja problema. \\
+\bottomrule
+\end{longtable}
+
+\subsection{Što je zapravo euklidski prostor}
+\label{sec:euklidski}
+
+Izraz ,,euklidski prostor`` u udžbenicima se često baci bez objašnjenja, pa ga
+ovdje razlažemo do kraja.
+
+\begin{korak}[Od skupa do euklidskog prostora]
+\begin{enumerate}[leftmargin=*]
+  \item Kreni od skupa $\R^n$. To je zasad samo \emph{popis} $n$-torki brojeva:
+        $(1,\,2)$, $(-3,\,0{,}5)$ i tako dalje. Ništa u tom popisu još ne govori
+        o duljini, kutu ili udaljenosti.
+  \item Dodaj \textbf{zbrajanje} i \textbf{množenje skalarom}, oboje po
+        komponentama:
+        $x + y = (x_1+y_1, \dots, x_n+y_n)$ i $\alpha x = (\alpha x_1, \dots, \alpha x_n)$.
+        Time $\R^n$ postaje \emph{vektorski prostor}: elementi se mogu zbrajati i
+        rastezati, pa ih zovemo vektorima.
+  \item Dodaj \textbf{skalarni produkt} $\inner{x}{y} = \sum_{i=1}^{n} x_i y_i$.
+        Tek s njim možeš izraziti duljinu, $\norm{x} = \sqrt{\inner{x}{x}}$, i kut
+        između dva vektora.
+  \item Vektorski prostor $\R^n$ opremljen upravo tim skalarnim produktom zove se
+        \textbf{euklidski prostor}. ,,Euklidski`` znači da u njemu vrijedi
+        uobičajena geometrija iz škole: Pitagorin poučak, pravci, kutovi, okomitost.
+\end{enumerate}
+\end{korak}
+
+\begin{izgovor}
+,,Projektne varijable su vektor iz $\R^2$, dakle iz dvodimenzionalnog euklidskog
+prostora --- to je obična ravnina sa standardnim skalarnim produktom, pa smijem
+crtati dopustivi skup i nivo-krivulje u koordinatnom sustavu i sve što na slici
+vidim kao okomitost stvarno jest okomitost.``
+\end{izgovor}
+
+\begin{pojam}{Skalarni produkt}
+Za $x, y \in \R^n$ \textbf{skalarni produkt} je broj
+\begin{equation}
+\inner{x}{y} \;\coloneqq\; x\trans y \;=\; \sum_{i=1}^{n} x_i y_i .
+\label{eq:skalarni-produkt}
+\end{equation}
+Čita se: ,,skalarni produkt od $x$ i $y$``, ili ,,iks transponirano ipsilon``.
+Rezultat je \emph{jedan broj}, ne vektor --- odatle naziv ,,skalarni``.
+
+Tri stvari koje iz njega slijede i koje se koriste kroz cijeli kolegij:
+\begin{itemize}[nosep,leftmargin=*]
+  \item \textbf{duljina}: $\norm{x} = \sqrt{\inner{x}{x}}$;
+  \item \textbf{okomitost}: $x \perp y$ točno kad je $\inner{x}{y} = 0$;
+  \item \textbf{projekcija i kut}: $\inner{x}{y} = \norm{x}\,\norm{y}\cos\varphi$,
+        gdje je $\varphi$ kut između $x$ i $y$.
+\end{itemize}
+\end{pojam}
+
+Zašto je to važno baš ovdje: ograničenje $a\trans x \leq b$ je izjava o skalarnom
+produktu. Skup točaka za koje je $a\trans x = b$ je pravac (u ravnini) ili
+hiperravnina (općenito), a vektor $a$ je na taj pravac \emph{okomit}. Zato se
+gradijenti ograničenja na slici uvijek crtaju kao strelice okomite na pripadni
+rubni pravac.
+
+\section{Vektori i matrice}
+\label{sec:vektori-matrice}
+
+\begin{longtable}{@{}p{0.15\linewidth} p{0.30\linewidth} p{0.47\linewidth}@{}}
+\toprule
+\textbf{Zapis} & \textbf{Kako se čita} & \textbf{Što znači} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Zapis} & \textbf{Kako se čita} & \textbf{Što znači} \\
+\midrule
+\endhead
+$x$ & ,,iks``, ,,vektor iks`` & Vektor projektnih (odlučivačkih) varijabli. U ovom kolegiju uvijek \emph{stupčani} vektor. \\[4pt]
+$x_i$ & ,,iks i-ti`` & $i$-ta komponenta vektora $x$, dakle jedan broj. \\[4pt]
+$x\trans$ & ,,iks transponirano`` & Stupac pretvoren u redak. Potreban da bi umnožak $x\trans y$ bio broj. \\[4pt]
+$\inner{x}{y}$ & ,,skalarni produkt iks i ipsilon`` & Isto što i $x\trans y$; vidi \eqref{eq:skalarni-produkt}. \\[4pt]
+$\norm{x}$ & ,,norma od iks`` & Duljina vektora. Bez indeksa podrazumijeva se euklidska norma $\norm{x}_2$. \\[4pt]
+$\norm{x}_1$ & ,,el jedan norma od iks`` & Zbroj apsolutnih vrijednosti, $\sum_i \abs{x_i}$. Ovo je funkcija cilja u Zadatku 3. \\[4pt]
+$I$ & ,,jedinična matrica`` & Kvadratna matrica s jedinicama na dijagonali i nulama izvan nje. \\[4pt]
+$Q, G, A, B$ & ,,ku``, ,,ge``, ,,a``, ,,be`` & Matrice; velika slova. $Q$ je matrica kvadratnog člana, $G$ matrica ograničenja, $A$ i $B$ matrice dinamike sustava. \\[4pt]
+$\det(M)$ & ,,determinanta od em`` & Broj pridružen kvadratnoj matrici. $\det(M) = 0$ znači da je matrica singularna, tj.\ da njen inverz ne postoji. \\[4pt]
+$M^{-1}$ & ,,em inverz`` & Matrica za koju je $M M^{-1} = I$. Postoji točno kad je $\det(M) \neq 0$. \\[4pt]
+$\eig(M)$ & ,,svojstvene vrijednosti od em`` & Brojevi $\lambda$ za koje $\det(\lambda I - M) = 0$. Za simetrične matrice uvijek realni. \\[4pt]
+$\lambda_i$ & ,,lambda i-ta`` & $i$-ta svojstvena vrijednost. \\[4pt]
+$\tr(M)$ & ,,trag od em`` & Zbroj dijagonalnih elemenata; ujedno zbroj svih svojstvenih vrijednosti. \\[4pt]
+$\diag(v)$ & ,,dijagonalna matrica od ve`` & Matrica kojoj su na dijagonali komponente vektora $v$, a svugdje drugdje nule. \\
+\bottomrule
+\end{longtable}
+
+\subsection{Uspoređivanje: četiri različita znaka za ,,manje``}
+\label{sec:relacije}
+
+Ovo je mjesto gdje se najviše griješi, jer četiri vizualno slična znaka znače
+četiri različite stvari.
+
+\begin{longtable}{@{}p{0.13\linewidth} p{0.30\linewidth} p{0.49\linewidth}@{}}
+\toprule
+\textbf{Zapis} & \textbf{Kako se čita} & \textbf{Što znači} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Zapis} & \textbf{Kako se čita} & \textbf{Što znači} \\
+\midrule
+\endhead
+$a \leq b$ & ,,a manje ili jednako be`` & Usporedba \emph{dva broja}. \\[4pt]
+$x \leq y$ (vektori) & ,,iks manje ili jednako ipsilon, po komponentama`` & Vrijedi $x_i \leq y_i$ za \emph{svaki} $i$. Tako se čita $Gx - h \leq 0$: svaki redak posebno. \\[4pt]
+$M \psd 0$ & ,,em je pozitivno semidefinitna`` & $M$ je simetrična i sve su joj svojstvene vrijednosti $\geq 0$. Ekvivalentno: $z\trans M z \geq 0$ za svaki $z$. \\[4pt]
+$M \pd 0$ & ,,em je pozitivno definitna`` & Sve svojstvene vrijednosti strogo $> 0$; ekvivalentno $z\trans M z > 0$ za svaki $z \neq 0$. \\[4pt]
+$M \nd 0$ & ,,em je negativno definitna`` & Sve svojstvene vrijednosti strogo $< 0$. Ovako se zapisuju Ljapunovljeve nejednakosti u Zadatku 4. \\
+\bottomrule
+\end{longtable}
+
+\begin{zamka}[Zamka: $\psd$ nije $\geq$ po elementima]
+$M \psd 0$ \emph{ne} znači da su svi elementi matrice nenegativni. Matrica
+\[
+Q = \begin{bmatrix} 2 & -0.3 \\ -0.3 & 4 \end{bmatrix}
+\]
+iz Zadatka 1 ima negativan element $-0{,}3$, a ipak je pozitivno definitna, jer
+su joj obje svojstvene vrijednosti pozitivne. Profesor to izričito naglašava na
+slajdu: ,,Pozitivno definitne matrice mogu imati negativne elemente!``\ Obrnuto
+također vrijedi --- matrica sa samim pozitivnim elementima može biti
+indefinitna.
+\end{zamka}
+
+\begin{izvor}{Predavanje 2 --- Definicije, klasifikacija, konveksnost, slajd 46/71 (PDF str.~47)}
+\slajd[0.86]{p02-psd-svojstvene}
+
+\textbf{Što ovdje piše, redak po redak:}
+\begin{itemize}[nosep,leftmargin=*]
+  \item Simetrične matrice nužno imaju samo realne svojstvene vrijednosti ---
+        zato kod provjere definitnosti nikad ne moraš računati s kompleksnim
+        brojevima.
+  \item $H \psd 0$ ako i samo ako su sve svojstvene vrijednosti nenegativne;
+        $H \pd 0$ ako i samo ako su sve strogo pozitivne; analogno za
+        $\nsd$ i $\nd$ s nepozitivnima i negativnima.
+  \item Dvije napomene koje profesor posebno ističe: ako matrica nije pozitivno
+        semidefinitna, to \emph{ne} znači da je negativno definitna (može biti
+        ni jedno ni drugo, tzv.\ indefinitna); i --- pozitivno definitne matrice
+        smiju imati negativne elemente.
+\end{itemize}
+\end{izvor}
+
+\section{Derivacije, gradijent i Hesseova matrica}
+\label{sec:derivacije-oznake}
+
+\begin{longtable}{@{}p{0.17\linewidth} p{0.30\linewidth} p{0.45\linewidth}@{}}
+\toprule
+\textbf{Zapis} & \textbf{Kako se čita} & \textbf{Što znači} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Zapis} & \textbf{Kako se čita} & \textbf{Što znači} \\
+\midrule
+\endhead
+$\frac{\partial f}{\partial x_i}$ & ,,parcijalna derivacija ef po iks i-tom`` & Derivacija po jednoj varijabli, dok se sve ostale drže konstantnima. \\[4pt]
+$\grad f(x)$ & ,,gradijent od ef u točki iks``, ili ,,nabla ef`` & Stupčani vektor svih prvih parcijalnih derivacija. Pokazuje smjer najbržeg rasta funkcije. \\[4pt]
+$\grad^2 f(x)$ & ,,Hesseova matrica`` ili ,,nabla kvadrat ef`` & Matrica svih drugih parcijalnih derivacija. Za dva puta neprekidno derivabilne funkcije je simetrična. \\[4pt]
+$\grad_x \Lag$ & ,,gradijent Lagrangiana po iks`` & Gradijent uzet samo po varijablama $x$, dok se $\mu$ drži fiksnim. Indeks govori po čemu se derivira. \\[4pt]
+$\dot{x}(t)$ & ,,iks točka od te`` & Derivacija po vremenu, $\mathrm{d}x/\mathrm{d}t$. Točka iznad slova \emph{uvijek} znači derivaciju po vremenu. \\[4pt]
+$\lfloor t \rfloor$ & ,,najveće cijelo od te`` & Najveći cijeli broj koji nije veći od $t$: $\lfloor 2{,}7 \rfloor = 2$. Ovime se u Zadatku 4 zadaje trenutak preklapanja. \\
+\bottomrule
+\end{longtable}
+
+\section{Oznake optimizacijskog problema}
+\label{sec:oznake-optimizacije}
+
+\begin{longtable}{@{}p{0.14\linewidth} p{0.30\linewidth} p{0.48\linewidth}@{}}
+\toprule
+\textbf{Zapis} & \textbf{Kako se čita} & \textbf{Što znači} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Zapis} & \textbf{Kako se čita} & \textbf{Što znači} \\
+\midrule
+\endhead
+$f(x)$ & ,,funkcija cilja`` & Ono što minimiziramo. \\[4pt]
+$g_j(x) \leq 0$ & ,,ge je-to ograničenje nejednakosti`` & Ograničenje tipa nejednakosti. U ovom kolegiju uvijek se piše tako da desno stoji nula. \\[4pt]
+$h_i(x) = 0$ & ,,ha i-to ograničenje jednakosti`` & Ograničenje tipa jednakosti. \\[4pt]
+$\min_x f(x)$ & ,,minimiziraj ef od iks po iks`` & Traži se \emph{najmanja vrijednost} funkcije. \\[4pt]
+$\arg\min_x f(x)$ & ,,argument minimuma`` & Traži se \emph{točka} u kojoj se minimum postiže, a ne sama vrijednost. \\[4pt]
+$\inf$, $\sup$ & ,,infimum``, ,,supremum`` & Najveća donja i najmanja gornja granica. Koriste se umjesto $\min$ i $\max$ kad nije unaprijed sigurno da se ekstrem \emph{postiže}. \\[4pt]
+$\xopt$ & ,,iks optimalno``, ,,iks sa zvjezdicom`` & Optimalna točka. \\[4pt]
+$\popt$ & ,,pe optimalno`` & Optimalna vrijednost \emph{primarnog} problema, $\popt = f(\xopt)$. \\[4pt]
+$\dopt$ & ,,de optimalno`` & Optimalna vrijednost \emph{dualnog} problema. \\[4pt]
+$\mu$ & ,,mi`` & Lagrangeov množitelj (dualna varijabla) pridružen ograničenju \emph{nejednakosti}. Uvijek $\mu \geq 0$. \\[4pt]
+$\lambda$ & ,,lambda`` & Lagrangeov množitelj pridružen ograničenju \emph{jednakosti}. Predznak nije ograničen. \\[4pt]
+$\Lag(x,\mu)$ & ,,Lagranžijan``, ,,Lagrangeova funkcija`` & $f(x) + \mu\trans g(x)$: funkcija cilja proširena ograničenjima. \\[4pt]
+$\dual(\mu)$ & ,,teta od mi``, ,,dualna funkcija`` & $\dual(\mu) = \inf_x \Lag(x,\mu)$. Za svaki $\mu \geq 0$ daje donju granicu na $\popt$. \\[4pt]
+$v$ & ,,ve``, ,,perturbacijski vektor`` & Vektor kojim se pomiču desne strane ograničenja: $g(x) \leq v$. Koristi se u analizi osjetljivosti. \\
+\bottomrule
+\end{longtable}
+
+\begin{zamka}[Zamka: $\lambda$ ima dva različita značenja]
+U ovom kolegiju $\lambda$ se koristi i za \emph{svojstvenu vrijednost} matrice i
+za \emph{Lagrangeov množitelj ograničenja jednakosti}. To su potpuno nepovezane
+stvari; razlikuju se isključivo po kontekstu. U Zadatku 1 nema ograničenja
+jednakosti, pa je ondje svaki $\lambda$ svojstvena vrijednost, a svi množitelji
+su $\mu$. Na obrani to izgovori eksplicitno --- ,,ovdje lambda označava svojstvenu
+vrijednost Hesseove matrice`` --- i uklonio si mogućnost nesporazuma.
+\end{zamka}
+
+\section{Oznake dinamičkih sustava (Zadatak 4)}
+\label{sec:oznake-dinamika}
+
+\begin{longtable}{@{}p{0.16\linewidth} p{0.30\linewidth} p{0.46\linewidth}@{}}
+\toprule
+\textbf{Zapis} & \textbf{Kako se čita} & \textbf{Što znači} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Zapis} & \textbf{Kako se čita} & \textbf{Što znači} \\
+\midrule
+\endhead
+$x(t)$ & ,,vektor stanja u trenutku te`` & Trenutno stanje sustava; ovdje $x(t) \in \R^2$. \\[4pt]
+$u(t)$ & ,,upravljački signal`` & Ulaz kojim djelujemo na sustav. \\[4pt]
+$A(t)$ & ,,matrica dinamike`` & Određuje kako se stanje mijenja samo od sebe. Ovisnost o $t$ znači da se sustav preklapa između dva moda. \\[4pt]
+$K$ & ,,matrica pojačanja regulatora`` & Iz $u(t) = Kx(t)$; ono što u Zadatku 4c treba izračunati. \\[4pt]
+$V(x) = x\trans P x$ & ,,Ljapunovljeva funkcija`` & Skalarna mjera ,,energije`` stanja. Ako duž trajektorije pada, sustav je stabilan. \\[4pt]
+$P \pd 0$ & ,,pe pozitivno definitna`` & Uvjet da $V(x)$ bude prava mjera energije: pozitivna svugdje osim u ishodištu. \\[4pt]
+LMI & ,,linearna matrična nejednakost`` & Uvjet oblika $M(z) \nd 0$ gdje $M$ ovisi \emph{linearno} o nepoznanicama $z$. Rješava se numerički, kao konveksan problem. \\[4pt]
+Hurwitz & ,,Hurwitzova matrica`` & Matrica kojoj sve svojstvene vrijednosti imaju strogo negativan realni dio; pripadni linearni sustav je stabilan. \\
+\bottomrule
+\end{longtable}
+
+\section{Kako izgovoriti cijelu formulu}
+\label{sec:izgovor-formula}
+
+Poznavati pojedinačne znakove nije dovoljno --- na obrani formulu treba
+\emph{pročitati u jednom dahu}. Evo šest formula iz ovog seminara i njihov
+doslovni izgovor.
+
+\begin{izgovor}[Šest formula, naglas]
+\begin{enumerate}[leftmargin=*]
+  \item $f(x) = \tfrac{1}{2}x\trans Q x + c\trans x$ \\
+        ,,Ef od iks jednako je jedna polovina, iks transponirano, ku, iks, plus ce
+        transponirano iks.``
+  \item $Gx - h \leq 0$ \\
+        ,,Ge iks minus ha manje ili jednako nuli, po komponentama --- dakle svaki
+        redak ograničenja posebno.``
+  \item $\grad f(\xopt) + \sum_j \mu_j^{\star}\,\grad g_j(\xopt) = 0$ \\
+        ,,Gradijent funkcije cilja u optimumu plus suma po je, mi je-to optimalno
+        puta gradijent je-tog ograničenja u optimumu, jednako je nul-vektoru.``
+  \item $\mu_j^{\star} g_j(\xopt) = 0$ \\
+        ,,Uvjet komplementarnosti: umnožak množitelja i vrijednosti ograničenja u
+        optimumu je nula --- dakle ili je ograničenje aktivno, ili mu je množitelj
+        nula.``
+  \item $\dual(\mu) \coloneqq \inf_x \Lag(x,\mu)$ \\
+        ,,Teta od mi definira se kao infimum po iks Lagranžijana od iks i mi.``
+  \item $\dfrac{\partial \popt(0)}{\partial v_j} = -\mu_j^{\star}$ \\
+        ,,Parcijalna derivacija optimalne vrijednosti po je-toj perturbaciji, u
+        nuli, jednaka je minus je-tom optimalnom množitelju.``
+\end{enumerate}
+\end{izgovor}
+
+\begin{izgovor}[Pravila koja vrijede uvijek]
+\begin{itemize}[nosep,leftmargin=*]
+  \item Indeks se čita kao redni broj: $x_1$ je ,,iks prvi``, $g_2$ je ,,ge drugo``.
+  \item Zvjezdica se čita ,,optimalno``, ne ,,zvjezdica``: $\xopt$ je ,,iks optimalno``.
+  \item Transponiranje se izgovara prije onoga na što djeluje:
+        $x\trans Q x$ je ,,iks transponirano ku iks``.
+  \item Kad izgovoriš simbol prvi put u odgovoru, odmah reci i što je:
+        ,,\dots{} gdje je $\mu$ vektor Lagrangeovih množitelja pridruženih
+        ograničenjima nejednakosti``. Time ispitivaču pokazuješ da znaš, a sebi
+        kupuješ vrijeme za sljedeću rečenicu.
+\end{itemize}
+\end{izgovor}
