@@ -1,26 +1,15 @@
 \section{Uvod}
 
-Matematičko optimiranje i teorija sustava čine temelj suvremenog inženjerskog projektiranja, optimalnog vođenja industrijskih procesa te analize i sinteze složenih dinamičkih sustava~\cite{boyd2004convex,nocedal2006numerical}. U inženjerskoj praksi projektant se kontinuirano susreće sa zahtjevima minimizacije troškova, mase, utroška energije ili odstupanja od željenih radnih stanja, uz istovremeno strogo poštivanje fizičkih, tehnoloških i sigurnosnih ograničenja.
+U ovom seminarskom radu rješavaju se četiri zadatka iz kolegija \textit{Optimizacijske metode u razvoju i upravljanju sustava}. Redom su to: kvadratni program s dva ograničenja nejednakosti, njegova robusna inačica uz intervalnu nesigurnost koeficijenata, formulacija nivelacije uzdužnog profila ceste kao linearnog programa te sinteza regulatora po varijablama stanja za sklopni linearni sustav pomoću linearnih matričnih nejednakosti.
 
-S povijesnog i teorijskog stajališta, razvoj optimizacijskih metoda doživio je ključnu promjenu paradigme. Dok se u klasičnoj optimizaciji granica rješivosti povlačila između linearnih i nelinearnih problema, suvremena teorija postavlja temeljnu distinkciju između \textbf{konveksnih} i \textbf{nekonveksnih} problema~\cite{boyd2004convex,jokic2024predavanja}. Kod konveksnih optimizacijskih problema svaki lokalni minimum ujedno je i globalni minimum, a postojanje nužnih i dovoljnih uvjeta optimalnosti (KKT uvjeti) omogućuje razvoj iznimno efikasnih, polinomijalno složenih algoritama unutrašnje točke (\textit{interior-point methods}).
+Zajednička nit svih zadataka je konveksnost: nakon što se problem zapiše u standardnom obliku (LP, QP ili SDP), lokalni optimum je ujedno globalan, a KKT uvjeti odnosno linearne matrične nejednakosti daju provjerljiv certifikat optimalnosti ili stabilnosti~\cite{boyd2004convex,jokic2024predavanja}.
 
-\subsection{Taksonomija konveksnih optimizacijskih problema}
+Svi proračuni provedeni su u MATLAB-u (verzija R2025b): \texttt{quadprog} za kvadratne programe u zadacima 1 i 2, \texttt{linprog} za linearni program u zadatku 3 te YALMIP sa rješavačem SDPT3 za semidefinitni program u zadatku 4. Skripte se nalaze u prilogu; svaka brojka i svaka slika u radu proizlazi iz jednog pokretanja tih skripti.
 
-U okviru ovog seminarskog rada analiziraju se četiri reprezentativne klase optimizacijskih problema i metoda:
-\begin{enumerate}
-    \item \textbf{Linearno programiranje (LP)}: Minimizacija linearne funkcije cilja nad konveksnim poliedrom definiranom linearnim nejednakostima i jednakostima. Koristi se u strukturiranim problemima raspodjele resursa i diskretiziranim varijacijskim zadaćama.
-    \item \textbf{Kvadratno programiranje (QP)}: Minimizacija konveksne kvadratne funkcije cilja uz linearna ograničenja. Predstavlja osnovu za algoritme slijednog kvadratnog programiranja (SQP) i modelsko prediktivno upravljanje (MPC).
-    \item \textbf{Robusna optimizacija}: Deterministički pristup rješavanju optimizacijskih problema u prisutnosti parametarske nesigurnosti, gdje se zahtijeva dopustivost rješenja za sve moguće realizacije parametara unutar zadanog skupa nesigurnosti (najgori slučaj)~\cite{bental2009robust}.
-    \item \textbf{Semidefinitno programiranje (SDP) i linearne matrične nejednakosti (LMI)}: Minimizacija linearne funkcije nad presjekom afinih podprostora i stošca pozitivno semidefinitnih matrica. U teoriji automatskog upravljanja LMI pruža moćan matematički aparat za sintezu robusnih regulatora i dokazivanje stabilnosti sklopnih i nelinearnih sustava primjenom teorije Ljapunova~\cite{boyd1994lmi,liberzon2003switching}.
-\end{enumerate}
-
-\subsection{Struktura seminarskog rada}
-
-Rad je strukturiran kroz četiri samostalne, matematički i numerički rigorozno obrađene inženjerske cjeline:
+Poglavlja slijede numeraciju zadataka:
 \begin{itemize}
-    \item \textbf{Poglavlje 2 (Zadatak 1)} obrađuje problem kvadratnog programiranja s dva ograničenja nejednakosti. Provodi se provjera stroge konveksnosti preko Hesseove matrice, postavlja se Karush-Kuhn-Tuckerov (KKT) sustav te se analitički rješavaju sve 4 kombinacije aktivnih skupova. Također se izvodi Lagrangeova dualna funkcija, dokazuje jaka dualnost te se analizira osjetljivost optimalne vrijednosti na perturbacije ograničenja (cijene u sjeni).
-    \item \textbf{Poglavlje 3 (Zadatak 2)} proširuje analizu na robusno kvadratno programiranje pod pretpostavkom intervalne nesigurnosti koeficijenata matrice ograničenja od $\pm 15\%$. Izvodi se egzaktni deterministički robusni ekvivalent na temelju teorije najgoreg slučaja iz 8. predavanja~\cite{jokic2024predavanja}, rješava se dobiveni prošireni QP te se provodi Monte Carlo verifikacija na 100 slučajnih realizacija.
-    \item \textbf{Poglavlje 4 (Zadatak 3)} postavlja varijacijski problem optimalne nivelacije uzdužnog profila ceste uz minimizaciju iskopa i nasipa te ograničenja na maksimalni nagib i maksimalnu zakrivljenost (brzinu promjene nagiba). Diskretizacijom konačnim razlikama i uvođenjem epigrafskih varijabli problem se prevodi u standardni LP oblik te se rješava za četiri različita scenarija ($N=20, 100$, Slučaj A i B).
-    \item \textbf{Poglavlje 5 (Zadatak 4)} bavi se hibridnim sklopnim sustavom s dva stabilna (Hurwitzova) moda. Dokazuje se otvoreni mehanizam destabilizacije uslijed periodičkog prespajanja dinamika preko monodromijske matrice. Zatim se formulira problem sinteze robusnog stanjskog regulatora putem zajedničke kvadratne funkcije Ljapunova (CQLF) i kongruentne transformacije u LMI formu, a dobiveni zatvoreni krug se verificira numeričkom simulacijom.
-    \item \textbf{Poglavlje 6 (Zaključak)} daje sintezu dobivenih rezultata i komparativni osvrt na primijenjene optimizacijske metodologije.
+    \item \textbf{Poglavlje 2} --- Zadatak 1: konveksnost, KKT uvjeti, \texttt{quadprog}, Lagrangeov dualni problem i osjetljivost optimalne vrijednosti.
+    \item \textbf{Poglavlje 3} --- Zadatak 2: robusni ekvivalent uz nesigurnost koeficijenata od $\pm 15\%$ i usporedba s nominalnim rješenjem.
+    \item \textbf{Poglavlje 4} --- Zadatak 3: diskretizacija konačnim razlikama, LP formulacija i rješenja za četiri zadana slučaja.
+    \item \textbf{Poglavlje 5} --- Zadatak 4: stabilnost pojedinih modova, simulacija sklopnog sustava i LMI sinteza stabilizirajućeg regulatora.
 \end{itemize}

@@ -1,164 +1,160 @@
-\section{Optimizacijska nivelacija uzdužnog profila ceste primjenom linearnog programiranja}
+\section{Zadatak 3: nivelacija ceste kao problem linearnog programiranja}
 
-\subsection{Kontinuirana varijacijska formulacija problema}
+\subsection{(a) Formulacija problema i klasa kojoj pripada}
 
-U građevinarstvu i prometnom inženjerstvu projektiranje uzdužnog profila prometnice predstavlja temeljni optimizacijski zadatak. Cilj je odrediti visinsku trasu ceste $y(x)$ koja minimizira ukupne zemljane radove (volumen iskopa i nasipa), uz istovremeno zadovoljavanje prometno-tehničkih standarda: maksimalnog uzdužnog nagiba i maksimalne zakrivljenosti trase (udobnost vožnje i ograničenje vertikalnih akceleracija)~\cite{jokic2024predavanja}.
+Trošak izrade ceste proporcionalan je količini materijala koji se otkopava ili nasipa, dakle površini između nivelete ceste $y(x)$ i prirodnog terena $h(x)$. Uz pretpostavku jedinične širine trase ($w = 1$ m) volumen zemljanih radova brojčano je jednak toj površini, izraženoj u $\mathrm{m}^2$. Iskop i nasip ulaze u trošak s jednakim ponderom.
 
-Neka je $L$ horizontalna duljina dionice ceste ($x \in [0, L]$), a $h(x)$ poznata prirodna visina terena. Uz pretpostavku jedinične širine poprečnog presjeka ceste ($w = 1\text{ m}$), ukupni volumen zemljanih radova $[\text{m}^3]$ izravno odgovara površini uzdužnog presjeka $[\text{m}^2]$ između nivelete ceste $y(x)$ i prirodnog terena $h(x)$. Problem se kontinuirano formulira kao varijacijski optimizacijski problem:
+Problem se zapisuje kao
 \begin{equation}
-\min_{y(x)} \quad J[y] = \int_0^L |y(x) - h(x)| \, dx
-\label{eq:road_continuous}
+\min_{y(\cdot)} \ J[y] = \int_0^L \big| y(x) - h(x) \big| \, \mathrm{d}x
+\label{eq:cesta_kont}
 \end{equation}
-uz ograničenja:
-\begin{align}
-|y'(x)| &\leq b_1, \quad \forall x \in [0, L], \label{eq:road_slope_cont} \\
-|y''(x)| &\leq b_2, \quad \forall x \in [0, L], \label{eq:road_curv_cont} \\
-y(0) &= a, \quad y(L) = b. \label{eq:road_bc_cont}
-\end{align}
-
-Zadani parametri modela su:
+uz ograničenja
 \begin{equation}
-L = 10 \text{ m}, \quad h(x) = 0.0053 x^4 - 0.095 x^3 + 0.48 x^2 - 0.3 x + 1,
+|y'(x)| \leq b_1, \qquad |y''(x)| \leq b_2, \qquad y(0) = a, \quad y(L) = b .
+\label{eq:cesta_kont_ogr}
+\end{equation}
+Zadani su podaci
+\begin{equation}
+L = 10 \ \mathrm{m}, \qquad h(x) = 0.0053 x^4 - 0.095 x^3 + 0.48 x^2 - 0.3 x + 1,
 \end{equation}
 \begin{equation}
-a = h(0) = 1 \text{ m}, \quad b = h(L) = 4 \text{ m}.
+a = h(0) = 1 \ \mathrm{m}, \qquad b = h(L) = 4 \ \mathrm{m},
 \end{equation}
-Razmatraju se dva skupa parametara:
-\begin{itemize}
-    \item \textbf{Slučaj A}: $b_1 = 0.5$ (maksimalni nagib $[\text{m/m}]$), $b_2 = 0.5 \text{ m}^{-1}$ (maksimalna zakrivljenost).
-    \item \textbf{Slučaj B}: $b_1 = 0.5$ (maksimalni nagib $[\text{m/m}]$), $b_2 = 0.2 \text{ m}^{-1}$ (stroži uvjet zakrivljenosti / udobnosti vožnje).
-\end{itemize}
+te dva skupa parametara: \textbf{slučaj A} s $b_1 = 0.5$, $b_2 = 0.5\ \mathrm{m}^{-1}$ i \textbf{slučaj B} s $b_1 = 0.5$, $b_2 = 0.2\ \mathrm{m}^{-1}$. Veličina $b_1$ ograničava nagib nivelete (bezdimenzijski, m/m), a $b_2$ brzinu promjene nagiba, tj.\ drugu derivaciju nivelete; pri malim nagibima ona je aproksimacija vertikalne zakrivljenosti trase.
+
+Nakon diskretizacije i uklanjanja apsolutne vrijednosti (potpoglavlja 4.2 i 4.3) funkcija cilja i sva ograničenja postaju linearni u optimizacijskim varijablama, pa problem pripada klasi \textbf{linearnog programiranja (LP)}. Riječ je o aproksimaciji u normi $\ell_1$ s dodatnim linearnim ograničenjima, u obliku obrađenom na vježbama~\cite{jokic2024predavanja}: minimizacija $\|Ax - b\|_1$ svodi se na LP uvođenjem pomoćnog vektora $z$ i ograničenja $-z \leq Ax - b \leq z$.
 
 \subsection{Diskretizacija konačnim razlikama}
 
-Područje $[0, L]$ diskretizira se s $N$ jednakih podintervala duljine $\Delta x = L/N$, čime se dobiva mreža od $N+1$ čvorova:
+Interval $[0, L]$ dijeli se na $N$ jednakih podintervala duljine $\Delta x = L/N$, čime nastaje mreža od $N+1$ čvorova
 \begin{equation}
-x_i = i \cdot \Delta x, \quad i = 0, 1, \dots, N, \quad \text{pri čemu je } x_0 = 0, \; x_N = L.
+x_i = i \, \Delta x, \quad i = 0, 1, \dots, N, \qquad x_0 = 0, \ x_N = L .
 \end{equation}
-Vektor visina terena u čvorovima označavamo s $h = [h_0, h_1, \dots, h_N]^T \in \mathbb{R}^{N+1}$, gdje je $h_i = h(x_i)$.
+Visine terena u čvorovima su $h_i = h(x_i)$, a nepoznanice su visine nivelete $y = [y_0, y_1, \dots, y_N]^{\mathsf{T}}$.
 
-Vektor nepoznatih visina nivelete ceste u diskretnim čvorovima je $y = [y_0, y_1, \dots, y_N]^T \in \mathbb{R}^{N+1}$.
-
-\subsubsection{Aproksimacija prve i druge derivacije}
-
-Prema uputama zadatka, nagib ceste u čvorovima aproksimira se prvom unazadnom podijeljenom razlikom:
+Prema uputama zadatka nagib se aproksimira prvom podijeljenom razlikom, a brzina promjene nagiba drugom:
 \begin{equation}
-y'(x_i) \approx \nabla y_i = \frac{y_i - y_{i-1}}{\Delta x}, \quad i = 1, \dots, N.
-\label{eq:diff_first}
+\nabla y_i = \frac{y_i - y_{i-1}}{\Delta x}, \quad i = 1, \dots, N, \qquad
+\nabla^2 y_i = \frac{\nabla y_i - \nabla y_{i-1}}{\Delta x} = \frac{y_i - 2y_{i-1} + y_{i-2}}{\Delta x^2}, \quad i = 2, \dots, N .
 \end{equation}
-Brzina promjene nagiba (druga podijeljena razlika / aproksimacija vertikalne zakrivljenosti za male nagibe, $y''$) aproksimira se drugom podijeljenom razlikom:
+U matričnom zapisu je $\nabla y = D_1 y$ i $\nabla^2 y = D_2 y$, gdje su
 \begin{equation}
-y''(x_i) \approx \nabla^2 y_i = \frac{\nabla y_i - \nabla y_{i-1}}{\Delta x} = \frac{y_i - 2y_{i-1} + y_{i-2}}{\Delta x^2}, \quad i = 2, \dots, N.
-\label{eq:diff_second}
+D_1 = \frac{1}{\Delta x}
+\begin{bmatrix}
+-1 & 1 & & & \\
+& -1 & 1 & & \\
+& & \ddots & \ddots & \\
+& & & -1 & 1
+\end{bmatrix} \in \mathbb{R}^{N \times (N+1)}, \quad
+D_2 = \frac{1}{\Delta x^2}
+\begin{bmatrix}
+1 & -2 & 1 & & \\
+& 1 & -2 & 1 & \\
+& & \ddots & \ddots & \ddots \\
+& & & 1 & -2 & 1
+\end{bmatrix} \in \mathbb{R}^{(N-1) \times (N+1)} .
 \end{equation}
 
-U matričnom zapisu diferencijalni operatori glase:
+\subsection{Prijelaz na standardni oblik linearnog programa}
+
+Integral~\eqref{eq:cesta_kont} aproksimira se sumom po čvorovima
 \begin{equation}
-\nabla y = D_1 y \in \mathbb{R}^N, \quad \nabla^2 y = D_2 y \in \mathbb{R}^{N-1},
+J_{\mathrm{disc}}(y) = \Delta x \sum_{i=0}^{N} |y_i - h_i| .
+\label{eq:cesta_disc}
 \end{equation}
-gdje su matrice konačnih razlika $D_1 \in \mathbb{R}^{N \times (N+1)}$ i $D_2 \in \mathbb{R}^{(N-1) \times (N+1)}$ definirane kao:
+Faktor $\Delta x$ daje kriteriju dimenziju površine $[\mathrm{m}^2]$; kako je riječ o pozitivnoj konstanti, on ne mijenja minimizator, nego samo mjerilo kriterija.
+
+Apsolutna vrijednost uklanja se uvođenjem pomoćnih varijabli $z_i \geq |y_i - h_i|$, što je ekvivalentno paru linearnih nejednakosti
 \begin{equation}
-D_1 = \frac{1}{\Delta x} \begin{bmatrix}
--1 & 1 & 0 & \dots & 0 & 0 \\
-0 & -1 & 1 & \dots & 0 & 0 \\
-\vdots & \vdots & \ddots & \ddots & \vdots & \vdots \\
-0 & 0 & \dots & -1 & 1 & 0 \\
-0 & 0 & \dots & 0 & -1 & 1
+y_i - z_i \leq h_i, \qquad -y_i - z_i \leq -h_i, \qquad i = 0, \dots, N .
+\end{equation}
+U optimumu je $z_i = |y_i - h_i|$ jer se $z_i$ minimizira. Vektor optimizacijskih varijabli je
+\begin{equation}
+\vartheta = \begin{bmatrix} y \\ z \end{bmatrix} \in \mathbb{R}^{2(N+1)},
+\end{equation}
+a linearni program glasi
+\begin{equation}
+\min_{\vartheta} \ \begin{bmatrix} \mathbf{0}^{\mathsf{T}} & \Delta x \, \mathbf{1}^{\mathsf{T}} \end{bmatrix} \vartheta
+\quad \text{uz} \quad A \vartheta \leq \beta, \quad A_{\mathrm{eq}} \vartheta = \beta_{\mathrm{eq}}, \quad z \geq 0,
+\label{eq:cesta_lp}
+\end{equation}
+gdje matrica nejednakosti objedinjuje tri skupine ograničenja:
+\begin{equation}
+A = \begin{bmatrix}
+I & -I \\
+-I & -I \\
+D_1 & 0 \\
+-D_1 & 0 \\
+D_2 & 0 \\
+-D_2 & 0
+\end{bmatrix}, \qquad
+\beta = \begin{bmatrix}
+h \\ -h \\
+b_1 \mathbf{1}_N \\ b_1 \mathbf{1}_N \\
+b_2 \mathbf{1}_{N-1} \\ b_2 \mathbf{1}_{N-1}
 \end{bmatrix},
 \end{equation}
+a rubni uvjeti $y_0 = a$ i $y_N = b$ čine dvije jednakosti. Ukupan broj nejednakosti iznosi
 \begin{equation}
-D_2 = \frac{1}{\Delta x^2} \begin{bmatrix}
-1 & -2 & 1 & 0 & \dots & 0 & 0 \\
-0 & 1 & -2 & 1 & \dots & 0 & 0 \\
-\vdots & \vdots & \ddots & \ddots & \ddots & \vdots & \vdots \\
-0 & 0 & \dots & 1 & -2 & 1 & 0 \\
-0 & 0 & \dots & 0 & 1 & -2 & 1
-\end{bmatrix}.
+2(N+1) + 2N + 2(N-1) = 6N .
 \end{equation}
+Varijable $y_i$ su slobodne, dok je za $z_i$ donja granica nula.
 
-\subsection{Transformacija u standardni oblik linearnog programa (LP)}
+\subsection{(b) Rješenja za četiri zadana slučaja}
 
-Diskretizirani integralni kriterij glasi:
-\begin{equation}
-J_{\mathrm{disc}}[y] = \Delta x \sum_{i=0}^N |y_i - h_i|,
-\label{eq:road_disc_obj}
-\end{equation}
-pri čemu $\Delta x$ predstavlja korak pravokutne numeričke integracije (Riemannova suma) površine uzdužnog presjeka.
+Linearni program~\eqref{eq:cesta_lp} rješava se funkcijom \texttt{linprog} uz algoritam dualnog simpleksa, u petlji po četiri tražena slučaja.
 
-Zbog prisutnosti nelinearnog operatora apsolutne vrijednosti ($|y_i - h_i|$), problem se prevodi u linearni program primjenom metode epigrafskih pomoćnih varijabli $z_i \geq |y_i - h_i|$~\cite{boyd2004convex,nocedal2006numerical}.
+\begin{lstlisting}
+L = 10;
+hfun = @(x) 0.0053*x.^4 - 0.095*x.^3 + 0.48*x.^2 - 0.3*x + 1;
+opts = optimoptions('linprog', 'Algorithm', 'dual-simplex', 'Display', 'none');
 
-Za svaki čvor $i = 0, \dots, N$ nejednakost $z_i \geq |y_i - h_i|$ ekvivalentna je paru linearnih nejednakosti:
-\begin{align}
-y_i - z_i &\leq h_i, \label{eq:lp_slack1} \\
--y_i - z_i &\leq -h_i. \label{eq:lp_slack2}
-\end{align}
-Prošireni vektor optimizacijskih varijabli $\theta \in \mathbb{R}^{2N+2}$ definira se kao:
-\begin{equation}
-\theta = \begin{bmatrix} y \\ z \end{bmatrix} = \begin{bmatrix} y_0 & y_1 & \dots & y_N & z_0 & z_1 & \dots & z_N \end{bmatrix}^T.
-\end{equation}
+dx = L/N;  x = linspace(0, L, N+1)';  hv = hfun(x);  n = N+1;
+f  = [zeros(n,1); dx*ones(n,1)];              % cilj: dx * sum(z)
 
-Funkcija cilja linearnog programa glasi:
-\begin{equation}
-\min_{\theta \in \mathbb{R}^{2N+2}} \quad f_{\mathrm{LP}}^T \theta = \Delta x \sum_{i=0}^N z_i = \begin{bmatrix} \mathbf{0}_{1 \times (N+1)} & \Delta x \cdot \mathbf{1}_{1 \times (N+1)} \end{bmatrix} \begin{bmatrix} y \\ z \end{bmatrix}.
-\end{equation}
+I  = eye(n);
+D1 = (diag(-ones(n,1)) + diag(ones(n-1,1), 1));  D1 = D1(1:N, :)/dx;
+D2 = zeros(N-1, n);
+for i = 1:N-1
+    D2(i, i) = 1;  D2(i, i+1) = -2;  D2(i, i+2) = 1;
+end
+D2 = D2/dx^2;
+Zn = zeros(N, n);  Zc = zeros(N-1, n);
 
-\subsubsection{Struktura matrice nejednakosti $A_{\mathrm{ineq}} \theta \leq b_{\mathrm{ineq}}$}
+A = [ I, -I;  -I, -I;  D1, Zn;  -D1, Zn;  D2, Zc;  -D2, Zc];
+b = [hv;  -hv;  b1*ones(N,1); b1*ones(N,1); b2*ones(N-1,1); b2*ones(N-1,1)];
 
-Sustav linearnih nejednakosti objedinjuje tri grupe fizikalnih ograničenja:
-\begin{enumerate}
-    \item \textbf{Epigrafska ograničenja apsolutnog odstupanja} ($2(N+1)$ nejednakosti):
-    \begin{equation}
-    \begin{bmatrix} I_{N+1} & -I_{N+1} \\ -I_{N+1} & -I_{N+1} \end{bmatrix} \begin{bmatrix} y \\ z \end{bmatrix} \leq \begin{bmatrix} h \\ -h \end{bmatrix}.
-    \end{equation}
-    \item \textbf{Ograničenja nagiba} ($2N$ nejednakosti):
-    \begin{equation}
-    \begin{bmatrix} D_1 & \mathbf{0}_{N \times (N+1)} \\ -D_1 & \mathbf{0}_{N \times (N+1)} \end{bmatrix} \begin{bmatrix} y \\ z \end{bmatrix} \leq \begin{bmatrix} b_1 \mathbf{1}_N \\ b_1 \mathbf{1}_N \end{bmatrix}.
-    \end{equation}
-    \item \textbf{Ograničenja zakrivljenosti} ($2(N-1)$ nejednakosti):
-    \begin{equation}
-    \begin{bmatrix} D_2 & \mathbf{0}_{(N-1) \times (N+1)} \\ -D_2 & \mathbf{0}_{(N-1) \times (N+1)} \end{bmatrix} \begin{bmatrix} y \\ z \end{bmatrix} \leq \begin{bmatrix} b_2 \mathbf{1}_{N-1} \\ b_2 \mathbf{1}_{N-1} \end{bmatrix}.
-    \end{equation}
-\end{enumerate}
-Ukupan broj linearnih nejednakosti u matrici $A_{\mathrm{ineq}}$ iznosi:
-\begin{equation}
-N_{\mathrm{ineq}} = 2(N+1) + 2N + 2(N-1) = 6N.
-\end{equation}
+Aeq = zeros(2, 2*n);  Aeq(1,1) = 1;  Aeq(2,N+1) = 1;
+beq = [hv(1); hv(end)];               % rubni uvjeti y0 = a, yN = b
+lb  = [-inf(n,1); zeros(n,1)];        % y slobodan, z >= 0
 
-\subsubsection{Struktura matričnih jednakosti $A_{\mathrm{eq}} \theta = b_{\mathrm{eq}}$}
+[v, J, ef] = linprog(f, A, b, Aeq, beq, lb, [], opts);
+y = v(1:n);
+\end{lstlisting}
 
-Rubni uvjeti u točkama $x=0$ i $x=L$ zapisuju se kao sustav od 2 linearne jednakosti:
-\begin{equation}
-\begin{bmatrix}
-1 & 0 & \dots & 0 & \mathbf{0}_{1 \times (N+1)} \\
-0 & \dots & 0 & 1 & \mathbf{0}_{1 \times (N+1)}
-\end{bmatrix} \begin{bmatrix} y \\ z \end{bmatrix} = \begin{bmatrix} 1 \\ 4 \end{bmatrix}.
-\end{equation}
-Donja granica za varijable je $z_i \geq 0$, dok su varijable $y_i$ slobodne ($-\infty < y_i < \infty$).
+\begin{lstlisting}[style=outputstyle]
+ Slucaj |   N |   dx  |   J* [m^2] | max|Dy| | max|D2y| | var | nejed. | exitflag
+   A    |  20 |  0.50 |   1.916180 |  0.5000 |   0.5000 |  42 |    120 | 1
+   A    | 100 |  0.10 |   1.965940 |  0.5000 |   0.5000 | 202 |    600 | 1
+   B    |  20 |  0.50 |   2.453727 |  0.5000 |   0.2000 |  42 |    120 | 1
+   B    | 100 |  0.10 |   2.506047 |  0.5000 |   0.2000 | 202 |    600 | 1
+\end{lstlisting}
 
-\subsection{Numerički rezultati za četiri ispitna slučaja}
-
-Problem je riješen primjenom optimizacijskog algoritma dualnog simpleksa (\texttt{linprog} s opcijom \texttt{dual-simplex} i \texttt{highs}) za četiri zahtijevana scenarija:
-\begin{enumerate}
-    \item \textbf{Slučaj A, $N=20$}: $b_1 = 0.5$, $b_2 = 0.5 \text{ m}^{-1}$, $\Delta x = 0.5 \text{ m}$ ($42$ varijable, $120$ nejednakosti).
-    \item \textbf{Slučaj A, $N=100$}: $b_1 = 0.5$, $b_2 = 0.5 \text{ m}^{-1}$, $\Delta x = 0.1 \text{ m}$ ($202$ varijable, $600$ nejednakosti).
-    \item \textbf{Slučaj B, $N=20$}: $b_1 = 0.5$, $b_2 = 0.2 \text{ m}^{-1}$, $\Delta x = 0.5 \text{ m}$ ($42$ varijable, $120$ nejednakosti).
-    \item \textbf{Slučaj B, $N=100$}: $b_1 = 0.5$, $b_2 = 0.2 \text{ m}^{-1}$, $\Delta x = 0.1 \text{ m}$ ($202$ varijable, $600$ nejednakosti).
-\end{enumerate}
-
-Sintetički prikaz optimalnih rezultata dan je u tablici~\ref{tab:road_results}.
+Rezultati su sažeti u tablici~\ref{tab:cesta_rezultati}. U sva četiri slučaja oba ograničenja dosežu svoju granicu, tj.\ i ograničenje nagiba i ograničenje brzine promjene nagiba su aktivna.
 
 \begin{table}[H]
 \centering
-\caption{Numerički rezultati optimalne nivelacije ceste za Slučaje A i B.}
-\label{tab:road_results}
+\caption{Rezultati optimalne nivelacije za četiri zadana slučaja.}
+\label{tab:cesta_rezultati}
 \begin{tabular}{lcccccc}
 \toprule
-\textbf{Slučaj} & $N$ & $\Delta x$ [m] & \textbf{Ukupni trošak $J^*$ [$\text{m}^2$]} & \textbf{Iskop [$\text{m}^2$]} & \textbf{Nasip [$\text{m}^2$]} & $\max |y''|$ [$\text{m}^{-1}$] \\
+\textbf{Slučaj} & $N$ & $\Delta x$ [m] & $J^*$ [$\mathrm{m}^2$] & $\max_i |\nabla y_i|$ & $\max_i |\nabla^2 y_i|$ & \textbf{varijable / nejed.} \\
 \midrule
-A & 20 & 0.5 & 1.916180 & 0.0877 & 1.8285 & 0.5000 \\
-A & 100 & 0.1 & 1.965940 & 0.1287 & 1.8372 & 0.5000 \\
-B & 20 & 0.5 & 2.453727 & 0.3026 & 2.1511 & 0.2000 \\
-B & 100 & 0.1 & 2.506047 & 0.2645 & 2.2416 & 0.2000 \\
+A ($b_2 = 0.5$) & 20  & 0.50 & $1.916180$ & $0.5000$ & $0.5000$ & 42 / 120 \\
+A ($b_2 = 0.5$) & 100 & 0.10 & $1.965940$ & $0.5000$ & $0.5000$ & 202 / 600 \\
+B ($b_2 = 0.2$) & 20  & 0.50 & $2.453727$ & $0.5000$ & $0.2000$ & 42 / 120 \\
+B ($b_2 = 0.2$) & 100 & 0.10 & $2.506047$ & $0.5000$ & $0.2000$ & 202 / 600 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -166,41 +162,33 @@ B & 100 & 0.1 & 2.506047 & 0.2645 & 2.2416 & 0.2000 \\
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.88\textwidth]{figures/fig3_1_road_case_A.pdf}
-    \caption{Optimalni uzdužni profil ceste $y(x)$ za Slučaj A ($b_1 = 0.5, b_2 = 0.5$) s označenim zonama iskopa i nasipa.}
-    \label{fig:road_case_a}
+    \caption{Slučaj A ($b_1 = 0.5$, $b_2 = 0.5\ \mathrm{m}^{-1}$): teren $h(x)$ i optimalna niveleta $y(x)$ za $N = 20$ i $N = 100$.}
+    \label{fig:cesta_a}
 \end{figure}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.88\textwidth]{figures/fig3_2_road_case_B.pdf}
-    \caption{Optimalni uzdužni profil ceste $y(x)$ za Slučaj B ($b_1 = 0.5, b_2 = 0.2$) uz strože ograničenje zakrivljenosti.}
-    \label{fig:road_case_b}
+    \caption{Slučaj B ($b_1 = 0.5$, $b_2 = 0.2\ \mathrm{m}^{-1}$): teren $h(x)$ i optimalna niveleta $y(x)$ za $N = 20$ i $N = 100$.}
+    \label{fig:cesta_b}
 \end{figure}
 
-\subsection{Analiza utjecaja gustoće diskretizacije i parametara ograničenja}
+\subsection{Analiza utjecaja parametara}
 
-Usporedba grafova na slikama~\ref{fig:road_case_a} i~\ref{fig:road_case_b} te provjere derivacija na slikama~\ref{fig:road_slope} i~\ref{fig:road_curv} pokazuju sljedeće zakonitosti:
+\paragraph{Zašto niveleta odstupa od terena}
+Nagib terena prelazi dopuštenih $b_1 = 0.5$ na dionicama oko $x \approx 2\text{--}3$ m i, znatno jače, na kraju trase, gdje između $x = 9$ i $x = 10$ teren raste za $1.30$ m. Kako je $y(10) = 4$ m zadano, a nagib nivelete ograničen na $0.5$, mora vrijediti $y(9) \geq 3.5$ i $y(8) \geq 3.0$, dok je $h(9) = 2.698$ m i $h(8) = 2.389$ m. Zbog toga se najveći dio troška javlja kao nasip na dionici $x \in [7, 10]$, što se vidi na slikama~\ref{fig:cesta_a} i~\ref{fig:cesta_b}.
 
-\begin{enumerate}
-    \item \textbf{Utjecaj gustoće diskretizacije ($N = 20$ vs $N = 100$)}:
-    Povećanjem broja diskretizacijskih točaka s $N=20$ na $N=100$, diskretni integral $J_{\mathrm{disc}}$ asimptotski konvergira prema kontinuiranom integralu $\int_0^L |y(x)-h(x)|dx$. Za Slučaj A vrijednost raste s $1.9162$ na $1.9659 \text{ m}^2$ ($+2.59\%$), dok za Slučaj B raste s $2.4537$ na $2.5060 \text{ m}^2$ ($+2.13\%$). Fina mreža omogućuje vjernije praćenje promjena profila bez numeričkog izglađivanja.
-    
-    \item \textbf{Utjecaj ograničenja zakrivljenosti ($b_2 = 0.5$ vs $b_2 = 0.2$)}:
-    Smanjenje dozvoljene zakrivljenosti s $b_2 = 0.5 \text{ m}^{-1}$ (Slučaj A) na $b_2 = 0.2 \text{ m}^{-1}$ (Slučaj B) zahtijeva znatno glađu trasu ceste. Posljedično, niveleta ne može pratiti prirodne pregibe terena, što povećava ukupni volumen zemljanih radova s $1.9659 \text{ m}^2$ na $2.5060 \text{ m}^2$ ($+27.47\%$).
-\end{enumerate}
+\paragraph{Utjecaj gustoće mreže}
+Prelaskom s $N = 20$ na $N = 100$ kriterij raste sa $1.916180$ na $1.965940\ \mathrm{m}^2$ ($+2.60\%$) u slučaju A, odnosno sa $2.453727$ na $2.506047\ \mathrm{m}^2$ ($+2.13\%$) u slučaju B. Razlog je u tome što je~\eqref{eq:cesta_disc} pravokutna kvadratura po čvorovima: na rijetkoj mreži odstupanje $|y - h|$ uzorkovano je u malo točaka, pa dio površine između čvorova izmiče sumi i diskretni kriterij podcjenjuje pravi integral. Pogreška takve kvadrature je reda $O(\Delta x)$, pa se s pet puta gušćom mrežom vrijednost približava kontinuiranom integralu.
+
+\paragraph{Utjecaj ograničenja brzine promjene nagiba}
+Pooštravanje s $b_2 = 0.5\ \mathrm{m}^{-1}$ (slučaj A) na $b_2 = 0.2\ \mathrm{m}^{-1}$ (slučaj B) prisiljava glađu niveletu: promjena nagiba mora se rasporediti na dulju dionicu, pa niveleta ranije napušta teren i ne može pratiti njegove pregibe. Trošak zbog toga raste sa $1.965940$ na $2.506047\ \mathrm{m}^2$ pri $N = 100$, dakle za $27.47\%$.
+
+Slika~\ref{fig:cesta_provjera} prikazuje profile $\nabla y_i$ i $\nabla^2 y_i$ za oba slučaja pri $N = 100$. Nagib u oba slučaja doseže gornju granicu $+0.5$ na uzlaznim dionicama. Razlika je u drugoj podijeljenoj razlici: u slučaju A ona zasićuje na $\pm 0.5\ \mathrm{m}^{-1}$ na kratkim odsječcima oko prijelaza, dok u slučaju B leži na granici $\pm 0.2\ \mathrm{m}^{-1}$ duž znatno duljih dionica, što je izravan uzrok većeg volumena zemljanih radova.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.85\textwidth]{figures/fig3_3_road_slope_profile.pdf}
-    \caption{Provjera ograničenja prvog reda: profil nagiba ceste $y'(x)$ duž trase za Slučaje A i B.}
-    \label{fig:road_slope}
+    \includegraphics[width=0.86\textwidth]{figures/fig3_3_road_constraint_check.pdf}
+    \caption{Provjera ograničenja za $N = 100$: profil nagiba $\nabla y_i$ (gore) i brzine promjene nagiba $\nabla^2 y_i$ (dolje) za slučajeve A i B.}
+    \label{fig:cesta_provjera}
 \end{figure}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.85\textwidth]{figures/fig3_4_road_curvature_profile.pdf}
-    \caption{Provjera ograničenja drugog reda: profil zakrivljenosti $y''(x)$ i zasićenje na granicama $\pm b_2$.}
-    \label{fig:road_curv}
-\end{figure}
-
-Na slici~\ref{fig:road_curv}, numerička aproksimacija druge derivacije $y''(x)$ u Slučaju B doseže točno ekstremne vrijednosti $\pm 0.2 \text{ m}^{-1}$, potvrđujući da su ograničenja drugog reda aktivna duž značajnih segmenata trase.

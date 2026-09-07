@@ -67,8 +67,10 @@ Acl_p = A_par + B*K;  Acl_n = A_nep + B*K;
 evp = eig(Acl_p);  evn = eig(Acl_n);
 fprintf('A_cl,parno   = [%9.6f %9.6f; %9.6f %9.6f]\n', Acl_p(1,1), Acl_p(1,2), Acl_p(2,1), Acl_p(2,2));
 fprintf('A_cl,neparno = [%9.6f %9.6f; %9.6f %9.6f]\n', Acl_n(1,1), Acl_n(1,2), Acl_n(2,1), Acl_n(2,2));
-fprintf('eig(A_cl,parno)   = %.6f %+.6fi\n', real(evp(1)), imag(evp(1)));
-fprintf('eig(A_cl,neparno) = %.6f %+.6fi\n', real(evn(1)), imag(evn(1)));
+fprintf('eig(A_cl,parno)   = %.6f %+.6fi ,  %.6f %+.6fi\n', ...
+        real(evp(1)), imag(evp(1)), real(evp(2)), imag(evp(2)));
+fprintf('eig(A_cl,neparno) = %.6f %+.6fi ,  %.6f %+.6fi\n', ...
+        real(evn(1)), imag(evn(1)), real(evn(2)), imag(evn(2)));
 
 Mp = Acl_p'*P + P*Acl_p;  Mn = Acl_n'*P + P*Acl_n;
 fprintf('lambda_max(A_cl,parno''P + P A_cl,parno)     = %.6f  < 0\n', max(eig(Mp)));
