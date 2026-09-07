@@ -1,1 +1,233 @@
-% placeholder
+\chapter{Kako se čita i kako se crta graf}
+\label{ch:graf}
+
+U ovom kolegiju slika nije ukras nego dokaz. Kad na obrani kažeš ,,rješenje je u
+ovoj točki``, ispitivač će te gotovo sigurno zamoliti da to \emph{pokažeš} --- da
+nacrtaš dopustivi skup, nivo-krivulje i gradijente, i da s crteža pročitaš zašto
+je baš ta točka optimum.
+
+Ovo poglavlje objašnjava svaki element takve slike: što je, odakle dolazi, kako
+ga izračunati i kako ga nacrtati rukom, bez računala.
+
+\section{Koordinatni sustav i što je na kojoj osi}
+\label{sec:koordinatni-sustav}
+
+U Zadacima 1 i 2 crta se \textbf{prostor projektnih varijabli}: na vodoravnoj
+osi je $x_1$, na okomitoj $x_2$. Svaka točka ravnine je jedan mogući izbor
+projektnih varijabli. To nije graf funkcije --- vrijednost funkcije cilja nije
+ni na jednoj osi, nego se prikazuje nivo-krivuljama.
+
+U Zadatku 3 crta se \textbf{fizikalni presjek terena}: na vodoravnoj osi je
+koordinata $x \in [0, L]$ uzduž trase, na okomitoj visina. Dvije krivulje na
+istoj slici su teren $h(x)$ i niveleta ceste $y(x)$.
+
+U Zadatku 4 crtaju se \emph{dvije različite} vrste slika:
+\begin{itemize}[nosep,leftmargin=*]
+  \item \textbf{vremenski odziv} --- na vodoravnoj osi vrijeme $t$, na okomitoj
+        komponente stanja $x_1(t)$ i $x_2(t)$, dvije krivulje;
+  \item \textbf{fazni portret} --- na vodoravnoj osi $x_1$, na okomitoj $x_2$,
+        a vrijeme je \emph{sakriveno}: vidi se samo putanja koju točka opisuje.
+\end{itemize}
+
+\begin{zamka}[Zamka: zamjena vremenskog odziva i faznog portreta]
+Zadatak 4b traži oboje, i to su različite slike istog rješenja. Na faznom
+portretu nema vremenske osi, pa se s njega \emph{ne} može očitati koliko je
+dugo trajala tranzicija --- samo kojim putem je stanje išlo. Obrnuto, iz
+vremenskog odziva ne vidi se spiralno namotavanje. Zato se traže obje.
+\end{zamka}
+
+\section{Nivo-krivulje}
+\label{sec:nivo-krivulje}
+
+\begin{pojam}{Nivo-krivulja (nivo-skup)}
+Za funkciju $f: \R^2 \to \R$ i broj $c \in \R$, \textbf{nivo-krivulja razine $c$} je
+skup
+\begin{equation}
+S_c \coloneqq \{\, x \in \R^2 \mid f(x) = c \,\}.
+\end{equation}
+To je skup svih točaka u kojima funkcija ima \emph{istu} vrijednost. Čita se:
+,,es ce``, ili ,,nivo-skup razine ce``.
+\end{pojam}
+
+Analogija koja pomaže: na zemljopisnoj karti to su izohipse. Sve točke na istoj
+izohipsi su na istoj nadmorskoj visini. Gušće izohipse znače strmiji teren.
+Točno to vrijedi i ovdje: gdje su nivo-krivulje gušće, funkcija cilja brže
+raste.
+
+\subsection{Zašto su nivo-krivulje kvadratne funkcije elipse}
+
+Za $f(x) = \tfrac{1}{2}x\trans Qx + c\trans x$ s $Q \pd 0$ vrijedi
+\begin{equation}
+f(x) = \tfrac{1}{2}(x - x^{0})\trans Q (x - x^{0}) + f(x^{0}),
+\qquad x^{0} \coloneqq -Q^{-1}c ,
+\label{eq:dopuna-kvadrata}
+\end{equation}
+što je matrična verzija ,,nadopune do potpunog kvadrata``. Uvjet $f(x) = c$ tada
+postaje
+\begin{equation}
+(x - x^{0})\trans Q (x - x^{0}) = 2\bigl(c - f(x^{0})\bigr) = \text{konst.},
+\end{equation}
+a to je jednadžba \textbf{elipse sa središtem u $x^{0}$}. Za $c < f(x^{0})$ skup
+je prazan --- ispod minimuma funkcija ne poprima nijednu vrijednost.
+
+\begin{korak}[Elipse za funkciju cilja iz Zadatka 1]
+\begin{enumerate}[leftmargin=*]
+  \item \textbf{Središte}: $x^{0} = -Q^{-1}c$. Uz $Q^{-1} = \tfrac{100}{791}\begin{bsmallmatrix}4 & 0{,}3 \\ 0{,}3 & 2\end{bsmallmatrix}$
+        i $c = \begin{bsmallmatrix}2 \\ -3\end{bsmallmatrix}$:
+        \[
+          x^{0} = -\frac{100}{791}\begin{bmatrix}4 & 0{,}3 \\ 0{,}3 & 2\end{bmatrix}
+                   \begin{bmatrix}2 \\ -3\end{bmatrix}
+                = -\frac{100}{791}\begin{bmatrix}7{,}1 \\ -5{,}4\end{bmatrix}
+                = \begin{bmatrix}-710/791 \\ 540/791\end{bmatrix}
+                \approx \begin{bmatrix}-0{,}898 \\ 0{,}683\end{bmatrix}.
+        \]
+        Središte elipsa leži \emph{izvan} dopustivog skupa --- zato optimum
+        završi na rubu.
+  \item \textbf{Smjerovi osi}: to su svojstveni vektori matrice $Q$. Za
+        $\lambda_1 = 1{,}956$ iz $(2 - \lambda_1)v_1 - 0{,}3\,v_2 = 0$ slijedi
+        $v_2 = 0{,}1468\,v_1$, dakle smjer pod kutom
+        $\arctan(0{,}1468) \approx 8{,}4^\circ$ prema osi $x_1$. Drugi svojstveni
+        vektor je na njega okomit, pod $\approx 98{,}4^\circ$.
+  \item \textbf{Koja je os duža}: manja svojstvena vrijednost daje \emph{dužu}
+        poluos, jer je duž tog smjera funkcija ,,plića``. Omjer poluosi je
+        $\sqrt{\lambda_2/\lambda_1} = \sqrt{4{,}044/1{,}956} \approx 1{,}44$.
+  \item \textbf{Zaključak za crtanje}: elipse su blago spljoštene (omjer $\approx 3{:}2$),
+        blago nagnute (oko $8^\circ$), koncentrične oko točke $(-0{,}9,\; 0{,}68)$.
+\end{enumerate}
+\end{korak}
+
+\begin{ploca}[Nivo-elipse na ploči, bez računala]
+\begin{enumerate}[leftmargin=*]
+  \item Nacrtaj osi i označi središte $x^{0} \approx (-0{,}9,\; 0{,}7)$ malim križićem.
+  \item Kroz središte povuci tanku iskošenu crtu pod otprilike $8^\circ$ --- to je
+        duža os. Okomito na nju drugu tanku crtu --- kraća os.
+  \item Nacrtaj dvije-tri koncentrične elipse oko središta, svaku sve veću, s
+        omjerom poluosi otprilike $3{:}2$ uzduž tih crta.
+  \item Uz svaku napiši rastuću vrijednost, npr.\ $f = 5$, $f = 15$, $f = 30$.
+        Ne moraju biti točne; poanta je da rastu prema van.
+  \item Reci naglas: ,,elipse rastu prema van, pa minimum tražimo što bliže
+        središtu --- a ograničenja nas guraju od njega``.
+\end{enumerate}
+\end{ploca}
+
+\section{Gradijent na slici}
+\label{sec:gradijent-na-slici}
+
+\begin{izvor}{Predavanje 2 --- Definicije, klasifikacija, konveksnost, slajd 37/71 (PDF str.~38)}
+\slajd[0.86]{p02-gradijent-okomit}
+
+\textbf{Transkripcija --- dva svojstva gradijenta:}
+\begin{enumerate}[nosep,leftmargin=*]
+  \item Gradijent funkcije $f$ u točki $x$ daje smjer \emph{najbržeg rasta} funkcije.
+  \item Gradijent $\grad f(x)$ je ortogonalan (okomit) na tangentu nivo-krivulje
+        $S_c$ u bilo kojoj točki $x$ za koju je $f(x) = c$.
+\end{enumerate}
+
+\textbf{Zašto je drugo svojstvo istinito} (profesor to dokazuje na sljedećem
+slajdu): parametriziraj nivo-krivulju kao $g(t)$ i definiraj $h(t) = f(g(t))$.
+Po definiciji nivo-krivulje $h(t) = c$ za sve $t$, pa je $\mathrm{d}h/\mathrm{d}t = 0$.
+Lančano pravilo daje $0 = \grad f(x)\trans d$, gdje je $d$ tangentni vektor
+krivulje. Skalarni produkt jednak nuli znači okomitost.
+\end{izvor}
+
+Praktična posljedica za crtanje: gradijent nikad ne crtaš ,,po osjećaju``. Nacrtaš
+nivo-krivulju kroz točku, pa strelicu \emph{okomito} na nju, usmjerenu prema
+većim vrijednostima --- prema van, ako su elipse koncentrične oko minimuma.
+
+\begin{formula}{Gradijenti u Zadatku 1, brojevima}
+\begin{align}
+\grad f(x) &= Qx + c
+  && \text{ovisi o točki, mijenja se po ravnini,} \\
+\grad g_1(x) &= \begin{bmatrix} -1 \\ -1 \end{bmatrix}
+  && \text{konstantan, jer je } g_1 \text{ afina,} \\
+\grad g_2(x) &= \begin{bmatrix} 1 \\ -1 \end{bmatrix}
+  && \text{konstantan, jer je } g_2 \text{ afina.}
+\end{align}
+\end{formula}
+
+\begin{zamka}[Zamka: duljina strelice gradijenta]
+Na slici gradijente crtamo skaliranima, da stanu i da se vide. To je dopušteno
+--- \emph{smjer} je ono što nosi informaciju --- ali to na obrani moraš reći.
+Ako prešutiš, ispitivač te može pitati zašto $\grad f$ izgleda jednako dug kao
+$\grad g_1$ iako im norme nisu jednake. Odgovor: ,,strelice su normirane radi
+preglednosti, uspoređujem samo smjerove i međusobne kutove``.
+\end{zamka}
+
+\section{Dopustivi skup}
+\label{sec:dopustivi-skup}
+
+Dopustivi skup je presjek poluprostora --- postupak crtanja svakog poluprostora
+razrađen je u \S\ref{sec:poluprostor}. Nakon što ucrtaš oba rubna pravca i
+odrediš dopustivu stranu svakoga, dopustivi skup je područje koje zadovoljava
+\emph{oba} uvjeta istovremeno; obično se šrafira ili osjenča.
+
+\begin{korak}[Redoslijed crtanja cijele slike Zadatka 1]
+\begin{enumerate}[leftmargin=*]
+  \item Osi $x_1$, $x_2$ s brojevima; raspon otprilike $0$ do $10$ po obje osi.
+  \item Pravac $x_1 + x_2 = 10$ kroz $(0,10)$ i $(10,0)$.
+  \item Pravac $x_1 - x_2 = 3$ kroz $(3,0)$ i $(0,-3)$.
+  \item Testiraj ishodište u obje nejednakosti i osjenčaj presjek dopustivih
+        strana --- ispada neograničeno klinasto područje gore desno.
+  \item Nivo-elipse oko $x^{0} \approx (-0{,}9,\; 0{,}7)$, prema
+        \S\ref{sec:nivo-krivulje}.
+  \item Točku optimuma $\xopt$ označi punim kružićem i napiši joj koordinate.
+  \item Iz $\xopt$ nacrtaj tri strelice: $\grad f(\xopt)$, $\grad g_1$, $\grad g_2$.
+  \item Provjeri očima: leži li $-\grad f(\xopt)$ unutar stošca razapetog
+        gradijentima \emph{aktivnih} ograničenja? Ako da, KKT uvjeti su
+        geometrijski potvrđeni.
+\end{enumerate}
+\end{korak}
+
+\section{Kako sliku pročitati naglas}
+\label{sec:citanje-slike}
+
+Ispitivač rijetko pita ,,što je na slici``. Pita ,,što slika \emph{pokazuje}``.
+Razlika je u tome što drugo pitanje traži zaključak, ne opis.
+
+\begin{izgovor}[Predložak za svaku sliku, četiri rečenice]
+\begin{enumerate}[leftmargin=*]
+  \item \textbf{Osi:} ,,Na apscisi je $x_1$, na ordinati $x_2$; ovo je prostor
+        projektnih varijabli.``
+  \item \textbf{Elementi:} ,,Osjenčano je dopustivo područje, presjek dvaju
+        poluprostora; koncentrične elipse su nivo-krivulje funkcije cilja, a
+        rastu prema van.``
+  \item \textbf{Ključna točka:} ,,Optimum je u ovoj točki na rubu, jer je
+        središte elipsa izvan dopustivog područja --- neograničeni minimum nije
+        dopustiv.``
+  \item \textbf{Zaključak:} ,,U optimumu je nivo-elipsa tangentna na aktivno
+        ograničenje, pa su gradijent cilja i gradijent tog ograničenja
+        kolinearni --- to je upravo uvjet stacionarnosti iz KKT sustava.``
+\end{enumerate}
+\end{izgovor}
+
+\begin{pitanje}{Što fizikalno znači to da je nivo-krivulja tangentna na ograničenje u optimumu?}
+\textbf{Odgovor.} Da se duž ruba dopustivog skupa vrijednost funkcije cilja u
+prvom redu više ne mijenja. Kad bi nivo-krivulja rub \emph{sjekla}, postojao bi
+smjer uzduž ruba koji ostaje dopustiv, a smanjuje cilj --- pa točka ne bi bila
+optimum. Tangentnost je geometrijski oblik uvjeta da projekcija gradijenta cilja
+na dopustive smjerove iščezava, dakle uvjeta stacionarnosti.
+\end{pitanje}
+
+\section{Vremenski odziv i fazni portret}
+\label{sec:odziv-fazni}
+
+Za Zadatak 4 vrijede druga pravila čitanja.
+
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Vremenski odziv}: gledaš \emph{omotnicu}. Ako vrhovi oscilacija
+        rastu, sustav divergira; ako padaju prema nuli, konvergira. Kod sklopnog
+        sustava korisno je okomitim isprekidanim crtama označiti cijele
+        vrijednosti $t$ --- trenutke u kojima se mijenja $A(t)$ --- pa se vidi
+        što se događa unutar svakog intervala.
+  \item \textbf{Fazni portret}: gledaš \emph{namotava li se} putanja prema
+        ishodištu ili se odmotava od njega. Spirala prema unutra znači
+        asimptotsku stabilnost, spirala prema van nestabilnost. Početna točka
+        $x(0) = (1,\,0)$ uvijek se posebno označi.
+\end{itemize}
+
+\begin{izgovor}
+,,Na faznom portretu otvorenog kruga putanja se odmotava od ishodišta, dakle
+sustav je nestabilan --- iako su, kako sam pokazao pod a), oba pojedinačna moda
+Hurwitzova. To je bit ovog zadatka: stabilnost svakog moda posebno ne povlači
+stabilnost sklopnog sustava.``
+\end{izgovor}

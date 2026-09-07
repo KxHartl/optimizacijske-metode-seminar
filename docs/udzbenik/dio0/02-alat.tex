@@ -1,1 +1,332 @@
-% placeholder
+\chapter{Alat: računske radnje koje ćeš stalno ponavljati}
+\label{ch:alat}
+
+Kroz sva četiri zadatka ponavlja se svega desetak računskih radnji. Ovdje su
+sve izvedene do kraja, na brojevima iz seminara, tako da ih poslije ne moraš
+iznova izvoditi --- samo se pozoveš na ovo poglavlje.
+
+\section{Množenje matrice i vektora}
+\label{sec:mnozenje}
+
+\begin{formula}{Matrica puta vektor}
+Za $M \in \R^{m \times n}$ i $x \in \R^{n}$ rezultat $Mx$ je vektor iz $\R^{m}$
+kojemu je $i$-ta komponenta skalarni produkt $i$-tog \emph{retka} matrice s
+vektorom $x$:
+\begin{equation}
+(Mx)_i \;=\; \sum_{k=1}^{n} M_{ik}\, x_k .
+\end{equation}
+\end{formula}
+
+Pravilo za pamćenje: \emph{redak puta stupac}. Broj stupaca lijeve matrice mora
+biti jednak broju redaka desne, inače množenje nije definirano.
+
+Na primjeru iz Zadatka 1, s $G = \begin{bsmallmatrix} -1 & -1 \\ 1 & -1 \end{bsmallmatrix}$
+i $x = \begin{bsmallmatrix} x_1 \\ x_2 \end{bsmallmatrix}$:
+\begin{equation}
+Gx = \begin{bmatrix} -1 & -1 \\ 1 & -1 \end{bmatrix}
+     \begin{bmatrix} x_1 \\ x_2 \end{bmatrix}
+   = \begin{bmatrix} -x_1 - x_2 \\ x_1 - x_2 \end{bmatrix}.
+\end{equation}
+Prvi redak $\begin{bsmallmatrix} -1 & -1\end{bsmallmatrix}$ pomnožen s $x$ daje
+$-x_1 - x_2$; drugi redak daje $x_1 - x_2$.
+
+\section{Kvadratna forma i zapis funkcije cilja u matričnom obliku}
+\label{sec:kvadratna-forma}
+
+Ovo je prvi korak svakog QP zadatka i mjesto gdje se najčešće promaši faktor.
+
+\begin{pojam}{Kvadratna forma}
+Za simetričnu matricu $Q \in \Sym{n}$ izraz
+\begin{equation}
+x\trans Q x \;=\; \sum_{i=1}^{n}\sum_{j=1}^{n} Q_{ij}\, x_i x_j
+\end{equation}
+zove se \textbf{kvadratna forma}. Rezultat je jedan broj. Za $n = 2$ raspisano:
+\begin{equation}
+x\trans Q x = Q_{11}x_1^2 + 2Q_{12}x_1x_2 + Q_{22}x_2^2 ,
+\label{eq:kv-forma-2d}
+\end{equation}
+gdje se mješoviti član pojavljuje \emph{dvaput} jer je $Q_{12} = Q_{21}$.
+\end{pojam}
+
+\begin{korak}[Kako iz zadane funkcije pročitati $Q$ i $c$]
+Tražimo zapis $f(x) = \tfrac{1}{2} x\trans Q x + c\trans x$. Postupak:
+\begin{enumerate}[leftmargin=*]
+  \item \textbf{Linearni članovi} idu izravno u $c$: koeficijent uz $x_i$ je $c_i$.
+  \item \textbf{Čisto kvadratni članovi}: koeficijent uz $x_i^2$ jednak je
+        $\tfrac{1}{2}Q_{ii}$, dakle $Q_{ii}$ je \emph{dvostruki} koeficijent uz $x_i^2$.
+  \item \textbf{Mješoviti član}: koeficijent uz $x_i x_j$ jednak je
+        $\tfrac{1}{2}\cdot 2 Q_{ij} = Q_{ij}$, dakle $Q_{ij}$ je \emph{isti}
+        koeficijent uz $x_ix_j$, podijeljen između $Q_{ij}$ i $Q_{ji}$ tako da
+        matrica ostane simetrična.
+\end{enumerate}
+\end{korak}
+
+Primijenjeno na funkciju cilja iz Zadatka 1,
+$f(x) = x_1^2 + 2x_2^2 - 0{,}3\,x_1x_2 + 2x_1 - 3x_2$:
+\begin{align}
+Q_{11} &= 2 \cdot 1 = 2, &
+Q_{22} &= 2 \cdot 2 = 4, &
+Q_{12} = Q_{21} &= -0{,}3, \\
+c_1 &= 2, &
+c_2 &= -3. & &
+\end{align}
+Dakle
+\begin{equation}
+Q = \begin{bmatrix} 2 & -0{,}3 \\ -0{,}3 & 4 \end{bmatrix}, \qquad
+c = \begin{bmatrix} 2 \\ -3 \end{bmatrix}.
+\label{eq:alat-Q-c}
+\end{equation}
+
+\textbf{Provjera unatrag} --- uvijek je napravi, traje deset sekundi:
+\begin{equation}
+\tfrac{1}{2}x\trans Q x = \tfrac{1}{2}\bigl(2x_1^2 + 2(-0{,}3)x_1x_2 + 4x_2^2\bigr)
+= x_1^2 - 0{,}3\,x_1x_2 + 2x_2^2 . \quad\checkmark
+\end{equation}
+
+\begin{zamka}[Zamka: faktor $\tfrac{1}{2}$ i dijeljenje mješovitog člana]
+Dvije greške koje se rade zajedno i međusobno se ,,ponište`` pa ostanu
+neprimijećene do trenutka kad rezultat ispadne kriv:
+\begin{itemize}[nosep,leftmargin=*]
+  \item Zaboravi se da standardni oblik ima $\tfrac{1}{2}$, pa se napiše
+        $Q_{11} = 1$ umjesto $2$. Tada Hesseova matrica ispadne
+        $\begin{bsmallmatrix} 1 & \cdot \\ \cdot & \cdot \end{bsmallmatrix}$,
+        a Hesseova matrica \emph{jest} $Q$ --- ne polovina od $Q$.
+  \item Mješoviti član $-0{,}3\,x_1x_2$ se podijeli na pola, pa se napiše
+        $Q_{12} = -0{,}15$. Pogrešno: pola je već uračunato u faktor
+        $\tfrac{1}{2}$ ispred cijele forme, a $Q_{12}$ i $Q_{21}$ zajedno daju
+        $2Q_{12}$ prema \eqref{eq:kv-forma-2d}.
+\end{itemize}
+Lijek je uvijek isti: raspiši $\tfrac{1}{2}x\trans Q x$ natrag i usporedi sa
+zadanom funkcijom.
+\end{zamka}
+
+\section{Gradijent i Hesseova matrica}
+\label{sec:gradijent-hessian}
+
+\begin{izvor}{Predavanje 2 --- Definicije, klasifikacija, konveksnost, slajd 33/71 (PDF str.~34)}
+\slajd[0.86]{p02-gradijent-def}
+
+\textbf{Transkripcija.} Neka je $f: \R^n \to \R$ diferencijabilna funkcija na
+svojoj domeni. Gradijent je definiran kao vektor
+\[
+\grad f(x) \coloneqq \bigl[Df(x)\bigr]\trans =
+\begin{bmatrix} \dfrac{\partial f(x)}{\partial x_1} \\[6pt] \vdots \\[2pt]
+                \dfrac{\partial f(x)}{\partial x_n} \end{bmatrix}.
+\]
+Afina funkcija $g(x) = f(x_0) + \grad f(x_0)\trans (x - x_0)$ je aproksimacija
+prvog reda funkcije $f$ u točki $x_0$.
+
+\textbf{Što to znači:} $Df(x)$ je Jacobijeva matrica, a za skalarnu funkciju ona
+je \emph{redak}. Gradijent je njezin transponat, dakle \emph{stupac}. Zato u
+svim formulama gradijent stoji kao stupčani vektor, a njegov skalarni produkt s
+nekim smjerom $d$ piše se $\grad f(x)\trans d$.
+\end{izvor}
+
+\begin{formula}{Gradijent i Hessian kvadratne funkcije}
+Za $f(x) = \tfrac{1}{2}x\trans Q x + c\trans x$ sa simetričnim $Q$ vrijedi
+\begin{equation}
+\grad f(x) = Qx + c, \qquad \grad^2 f(x) = Q .
+\label{eq:grad-hess-kvadratne}
+\end{equation}
+Hesseova matrica je \emph{konstantna} --- ne ovisi o $x$.
+\end{formula}
+
+To je razlog zašto se kod QP-a konveksnost provjerava jednom zauvijek, a ne u
+svakoj točki posebno.
+
+\begin{korak}[Provjera formule \eqref{eq:grad-hess-kvadratne} deriviranjem ,,rukom``]
+Za funkciju iz Zadatka 1:
+\begin{enumerate}[leftmargin=*]
+  \item $\dfrac{\partial f}{\partial x_1}
+        = \dfrac{\partial}{\partial x_1}\bigl(x_1^2 + 2x_2^2 - 0{,}3x_1x_2 + 2x_1 - 3x_2\bigr)
+        = 2x_1 - 0{,}3x_2 + 2.$
+  \item $\dfrac{\partial f}{\partial x_2} = 4x_2 - 0{,}3x_1 - 3.$
+  \item Složeno u vektor:
+        $\grad f(x) = \begin{bsmallmatrix} 2x_1 - 0{,}3x_2 + 2 \\ -0{,}3x_1 + 4x_2 - 3 \end{bsmallmatrix}$.
+  \item Isto to preko \eqref{eq:grad-hess-kvadratne}:
+        $Qx + c = \begin{bsmallmatrix} 2 & -0{,}3 \\ -0{,}3 & 4\end{bsmallmatrix}
+                  \begin{bsmallmatrix} x_1 \\ x_2 \end{bsmallmatrix}
+                + \begin{bsmallmatrix} 2 \\ -3 \end{bsmallmatrix}
+                = \begin{bsmallmatrix} 2x_1 - 0{,}3x_2 + 2 \\ -0{,}3x_1 + 4x_2 - 3\end{bsmallmatrix}$. \checkmark
+  \item Deriviraj još jednom: $\dfrac{\partial^2 f}{\partial x_1^2} = 2$,
+        $\dfrac{\partial^2 f}{\partial x_1 \partial x_2} = -0{,}3$,
+        $\dfrac{\partial^2 f}{\partial x_2^2} = 4$, pa je
+        $\grad^2 f = \begin{bsmallmatrix} 2 & -0{,}3 \\ -0{,}3 & 4\end{bsmallmatrix} = Q$. \checkmark
+\end{enumerate}
+\end{korak}
+
+Za afinu funkciju $g(x) = a\trans x + \beta$ gradijent je konstantan,
+$\grad g(x) = a$, a Hesseova matrica je nul-matrica. Zato su gradijenti
+ograničenja u Zadatku 1 fiksne strelice --- ne mijenjaju se od točke do točke.
+
+\section{Svojstvene vrijednosti matrice $2\times 2$}
+\label{sec:svojstvene}
+
+\begin{formula}{Karakteristična jednadžba}
+Svojstvene vrijednosti matrice $M$ su rješenja jednadžbe
+\begin{equation}
+\det(\lambda I - M) = 0 .
+\end{equation}
+Za $M = \begin{bsmallmatrix} a & b \\ b & d \end{bsmallmatrix}$ (simetričnu) to je
+kvadratna jednadžba
+\begin{equation}
+\lambda^2 - (a+d)\,\lambda + (ad - b^2) = 0,
+\label{eq:karakteristicna-2x2}
+\end{equation}
+gdje je $a + d = \tr(M)$ i $ad - b^2 = \det(M)$.
+\end{formula}
+
+Za $Q$ iz \eqref{eq:alat-Q-c}: $\tr(Q) = 2 + 4 = 6$, $\det(Q) = 2\cdot 4 - (-0{,}3)^2 = 7{,}91$, pa je
+\begin{equation}
+\lambda^2 - 6\lambda + 7{,}91 = 0
+\;\Longrightarrow\;
+\lambda_{1,2} = \frac{6 \pm \sqrt{36 - 31{,}64}}{2} = \frac{6 \pm \sqrt{4{,}36}}{2},
+\end{equation}
+\begin{equation}
+\lambda_1 = 1{,}955969, \qquad \lambda_2 = 4{,}044031 .
+\label{eq:alat-svojstvene-Q}
+\end{equation}
+Obje su strogo pozitivne.
+
+\begin{zamka}[Zamka: kad su svojstvene vrijednosti stvarno realne]
+Formula \eqref{eq:karakteristicna-2x2} može dati kompleksna rješenja ako je
+diskriminanta negativna. Za \emph{simetrične} matrice to se ne može dogoditi ---
+diskriminanta je $(a-d)^2 + 4b^2 \geq 0$. Zato kod provjere konveksnosti nikad
+ne završiš s kompleksnim brojevima. Kod \emph{nesimetričnih} matrica, kao što su
+$A_{\text{parno}}$ i $A_{\text{neparno}}$ u Zadatku 4, kompleksne svojstvene
+vrijednosti su posve normalne i baš one daju oscilatorno ponašanje.
+\end{zamka}
+
+\section{Provjera definitnosti: dva puta do istog odgovora}
+\label{sec:definitnost}
+
+\begin{izvor}{Predavanje 2 --- Definicije, klasifikacija, konveksnost, slajd 49/71 (PDF str.~50)}
+\slajd[0.86]{p02-psd-determinante}
+
+\textbf{Transkripcija.} Matrica $M$ je \textbf{pozitivno definitna} ako i samo ako
+su sve determinante u nizu vodećih glavnih minora pozitivne:
+\[
+D_1 = m_{11}, \quad
+D_2 = \begin{vmatrix} m_{11} & m_{12} \\ m_{21} & m_{22} \end{vmatrix}, \quad
+\dots, \quad
+D_n = \det(M).
+\]
+$M$ je \textbf{negativno definitna} ako i samo ako predznaci alterniraju počevši
+od negativnog: $D_1 < 0$, $D_2 > 0$, $D_3 < 0$, $D_4 > 0, \dots$
+
+\textbf{Kako se to koristi:} ovaj kriterij ne traži rješavanje karakteristične
+jednadžbe --- samo determinante. Za matrice $2\times2$ to su dva broja i gotov si
+u dva reda.
+\end{izvor}
+
+Za $Q$ iz \eqref{eq:alat-Q-c}: $D_1 = 2 > 0$ i $D_2 = \det Q = 7{,}91 > 0$, pa je
+$Q \pd 0$ --- isti zaključak kao iz \eqref{eq:alat-svojstvene-Q}, uz upola manje
+računa.
+
+\begin{izgovor}
+,,Pozitivnu definitnost provjerio sam na dva neovisna načina: preko svojstvenih
+vrijednosti, koje su $1{,}956$ i $4{,}044$, dakle obje strogo pozitivne, i preko
+vodećih glavnih minora, $D_1 = 2$ i $D_2 = 7{,}91$, oba pozitivna. Oba kriterija
+daju isti zaključak, matrica je pozitivno definitna.``
+\end{izgovor}
+
+\section{Inverz matrice $2\times2$ i rješavanje malog sustava}
+\label{sec:inverz}
+
+\begin{formula}{Inverz matrice $2\times2$}
+\begin{equation}
+M = \begin{bmatrix} a & b \\ c & d \end{bmatrix}
+\;\Longrightarrow\;
+M^{-1} = \frac{1}{ad - bc} \begin{bmatrix} d & -b \\ -c & a \end{bmatrix},
+\qquad ad - bc \neq 0 .
+\end{equation}
+Pravilo: zamijeni dijagonalu, promijeni predznak vandijagonalnima, podijeli s
+determinantom.
+\end{formula}
+
+Primijenjeno na $Q$: $\det Q = 7{,}91 = \tfrac{791}{100}$, pa je
+\begin{equation}
+Q^{-1} = \frac{100}{791} \begin{bmatrix} 4 & 0{,}3 \\ 0{,}3 & 2 \end{bmatrix}.
+\label{eq:alat-Q-inv}
+\end{equation}
+
+Ovaj se inverz koristi na dva mjesta u Zadatku 1: kod nalaženja neograničenog
+stacionarnog rješenja $x^{0} = -Q^{-1}c$ i kod izvoda dualne funkcije.
+
+\begin{zamka}[Zamka: računanje u decimalama umjesto u razlomcima]
+$\det Q = 7{,}91$ je egzaktno $791/100$. Ako od početka radiš u razlomcima,
+rješenje Zadatka 1 ispada kao egzaktan razlomak $\xopt = (190/33,\; 140/33)$.
+Ako radiš u decimalama i zaokružuješ, dobiješ $5{,}7576$ i $4{,}2424$ pa na
+obrani ne možeš pokazati da je rezultat točan, nego samo da je približan. Uvijek
+vodi egzaktan trag, a decimale piši uz njega u zagradi.
+\end{zamka}
+
+\section{Pravac, poluprostor i kako ograničenje pretvoriti u crtež}
+\label{sec:poluprostor}
+
+\begin{izvor}{Predavanje 2 --- Definicije, klasifikacija, konveksnost, slajd 65/71 (PDF str.~66)}
+\slajd[0.86]{p02-poluprostor}
+
+\textbf{Transkripcija.} Poluprostor je skup oblika
+\[
+H \coloneqq \{\, x \in \R^n \mid a\trans x \leq b \,\}
+\]
+za zadani $a \in \R^n$, $a \neq 0$, i $b \in \R$.
+
+\textbf{Što to znači u ravnini:} jednadžba $a\trans x = b$ opisuje pravac. Taj
+pravac dijeli ravninu na dvije polovice; nejednakost $a\trans x \leq b$ bira
+jednu od njih, zajedno sa samim pravcem. Vektor $a$ je okomit na pravac i
+pokazuje u polovicu koja je \emph{isključena} (u smjeru rasta $a\trans x$).
+\end{izvor}
+
+\begin{korak}[Od nejednakosti do crteža, u četiri poteza]
+Za ograničenje $g_1(x) = -x_1 - x_2 + 10 \leq 0$ iz Zadatka 1:
+\begin{enumerate}[leftmargin=*]
+  \item \textbf{Rub}: stavi znak jednakosti, $-x_1 - x_2 + 10 = 0$, tj.\
+        $x_1 + x_2 = 10$.
+  \item \textbf{Dvije točke}: uvrsti $x_1 = 0 \Rightarrow x_2 = 10$, pa
+        $x_2 = 0 \Rightarrow x_1 = 10$. Kroz $(0,10)$ i $(10,0)$ povuci pravac.
+  \item \textbf{Koja strana}: uvrsti probnu točku, najlakše ishodište
+        $x = (0,0)$: $g_1(0,0) = 10 > 0$. Ishodište \emph{ne} zadovoljava
+        ograničenje, dakle dopustiva je suprotna strana --- ona iznad pravca.
+  \item \textbf{Strelica gradijenta}: $\grad g_1 = \begin{bsmallmatrix} -1 \\ -1\end{bsmallmatrix}$;
+        nacrtaj je iz točke na pravcu. Pokazuje okomito na pravac, prema
+        \emph{nedopustivoj} strani.
+\end{enumerate}
+\end{korak}
+
+Isti postupak za $g_2(x) = x_1 - x_2 - 3 \leq 0$: rub je $x_1 - x_2 = 3$, prolazi
+kroz $(3,0)$ i $(0,-3)$; ishodište daje $g_2(0,0) = -3 < 0$, dakle ishodište
+\emph{jest} dopustivo, pa je dopustiva strana ona koja sadrži ishodište;
+gradijent je $\begin{bsmallmatrix} 1 \\ -1\end{bsmallmatrix}$.
+
+\begin{izvor}{Predavanje 2 --- Definicije, klasifikacija, konveksnost, slajd 58/71 (PDF str.~59)}
+\slajd[0.86]{p02-presjek-konveksnih}
+
+\textbf{Transkripcija.} Presjek konveksnih skupova je konveksan skup. Posljedica
+za karakterizaciju dopustivog prostora $\feas$: ako je
+$\feas_i = \{x \mid g_i(x) \leq 0\}$ ili $\feas_i = \{x \mid h_i(x) = 0\}$, i ako
+su svi $\feas_i$, $i = 1, \dots, m$, konveksni, tada će i dopustivi skup
+$\feas = \feas_1 \cap \feas_2 \cap \dots \cap \feas_m$ biti konveksan.
+
+\textbf{Zašto to trebamo:} ovo je jedini korak koji nedostaje da bi se iz ,,svako
+ograničenje je afino`` zaključilo ,,dopustivi skup je konveksan``. Bez njega
+tvrdnja o konveksnosti problema nije dokazana nego samo pretpostavljena.
+\end{izvor}
+
+\section{Popis: što provjeriti prije nego kreneš računati}
+\label{sec:kontrolna-lista}
+
+\begin{predznanje}
+Prije nego u bilo kojem zadatku napišeš prvi red računa:
+\begin{enumerate}[nosep,leftmargin=*]
+  \item Jesu li sva ograničenja svedena na oblik ,,nešto $\leq 0$``? Ako je
+        zadano $a\trans x \leq b$, prebaci: $a\trans x - b \leq 0$.
+  \item Je li $Q$ simetrična? Ako nije, zamijeni je sa $\tfrac{1}{2}(Q + Q\trans)$ ---
+        kvadratna forma se time ne mijenja.
+  \item Je li faktor $\tfrac{1}{2}$ uračunat u $Q$?
+  \item Znaš li dimenzije svakog simbola koji si napisao? ($x \in \R^2$,
+        $\mu \in \R^2$, $G \in \R^{2\times2}$, $h \in \R^2$.)
+  \item Vodiš li egzaktan trag u razlomcima, uz decimale u zagradi?
+\end{enumerate}
+\end{predznanje}
