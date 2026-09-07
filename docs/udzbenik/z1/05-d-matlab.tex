@@ -1,1 +1,192 @@
-% placeholder
+\chapter{Zadatak 1d --- numeričko rješenje u MATLAB-u}
+\label{ch:z1-matlab}
+
+\section{Što se ovdje traži}
+
+Riješiti isti problem rješavačem i \emph{usporediti} dobivene primarne i dualne
+varijable s analitičkim rezultatom iz (b). Naglasak je na usporedbi --- sam
+poziv funkcije nije poanta.
+
+\begin{zadatak}{Zadatak 1, podzadatak d)}
+d) Riješite problem u MATLABu (quadprog i/ili yalmip) --- odredite primarne i
+dualne varijable u optimumu te ih usporedite s rezultatima (Lagrangeovim
+množiteljima) iz (b).
+\end{zadatak}
+
+\begin{predznanje}
+\begin{itemize}[nosep,leftmargin=*]
+  \item Standardni oblik QP-a $\min \tfrac12 x\trans Qx + c\trans x$ uz $Gx \leq h$ --- \S\ref{sec:z1-standardni-oblik}.
+  \item Matrice $Q$, $c$, $G$, $h$ --- \eqref{eq:z1-Qc} i \eqref{eq:z1-Gh}.
+  \item Analitičko rješenje s kojim se uspoređuje --- \eqref{eq:z1b-rjesenje}.
+\end{itemize}
+\end{predznanje}
+
+\section{Zašto \texttt{quadprog} traži baš te argumente}
+\label{sec:z1d-sucelje}
+
+Sučelje funkcije je
+\begin{center}
+\texttt{quadprog(H, f, A, b, Aeq, beq, lb, ub, x0, options)}
+\end{center}
+i minimizira $\tfrac12 x\trans H x + f\trans x$ uz $Ax \leq b$. To je \emph{točno}
+standardni oblik s Predavanja 5, pa se matrice predaju izravno, bez ikakve
+pretvorbe:
+\begin{equation}
+\texttt{H} = Q, \quad \texttt{f} = c, \quad \texttt{A} = G, \quad \texttt{b} = h .
+\end{equation}
+
+\begin{zamka}[Zamka: MATLAB-ov $\tfrac12$ i ,,zaboravljeni`` faktor]
+\texttt{quadprog} \emph{sam} podrazumijeva faktor $\tfrac12$ ispred kvadratnog
+člana. Ako se preda matrica bez tog faktora --- dakle
+$\begin{bsmallmatrix}1 & -0{,}15\\ -0{,}15 & 2\end{bsmallmatrix}$ umjesto $Q$ ---
+rješavač će riješiti dvostruko manji kvadratni član i vratiti krivi optimum. Ovo
+je najčešća pogreška pri prvom pozivu, a ne javlja se kao greška nego kao
+naizgled uredan, ali pogrešan rezultat. Kontrola: usporedi
+\texttt{fval} s $f(\xopt)$ izračunatim ručno.
+\end{zamka}
+
+\begin{zamka}[Zamka: $h$, a ne $-h$]
+Sučelje traži $Ax \leq b$, dakle desnu stranu \emph{prije} prebacivanja. Naš
+$h = (-10,\; 3)$ ide izravno. Ako se preda $(10,\, -3)$, dopustivi skup je
+zrcaljen i rješenje je besmisleno.
+\end{zamka}
+
+\section{Kod i stvarni ispis}
+\label{sec:z1d-kod}
+
+\begin{seminar}{Seminar v1.2, §2.5 --- ,,(d) Numeričko rješenje u MATLAB-u``}
+Problem se u MATLAB-u rješava funkcijom \texttt{quadprog}, koja minimizira
+$\tfrac{1}{2}x^{\mathsf{T}}Qx + c^{\mathsf{T}}x$ uz $Gx \leq h$, pa se matrice
+predaju izravno.
+
+\begin{lstlisting}[style=matlabstyle]
+Q = [2.0, -0.3; -0.3, 4.0];
+c = [2.0; -3.0];
+G = [-1.0, -1.0; 1.0, -1.0];
+h = [-10.0; 3.0];
+
+opts = optimoptions('quadprog', 'Display', 'none', ...
+                    'Algorithm', 'interior-point-convex');
+[x_qp, f_qp, ef_qp, ~, lam_qp] = quadprog(Q, c, G, h, [], [], [], [], [], opts);
+\end{lstlisting}
+
+\begin{lstlisting}[style=outputstyle]
+exitflag        = 1
+x_opt           = [5.757576; 4.242424]
+p*  = fval      = 60.606061
+lambda.ineqlin  = [12.242424; 0.000000]
+\end{lstlisting}
+
+Primarne i dualne varijable dobivene rješavačem podudaraju se s analitičkim
+rezultatom do na tolerancije rješavača. Polje \texttt{lambda.ineqlin} sadrži
+upravo Lagrangeove množitelje $\mu_1^*$ i $\mu_2^*$ iz KKT uvjeta.
+\end{seminar}
+
+\subsection{Što koji redak znači}
+
+\begin{longtable}{@{}p{0.30\linewidth} p{0.66\linewidth}@{}}
+\toprule
+\textbf{Redak} & \textbf{Značenje} \\
+\midrule
+\endhead
+\texttt{'Display','none'} & Isključuje ispis rješavača, jer se sve što treba
+ispisuje ručno. \\[5pt]
+\texttt{'Algorithm','interior-\allowbreak point-convex'} & Metoda unutarnje točke
+za konveksne QP-ove. Ne nabraja aktivne skupove kao mi u (b), nego se optimumu
+približava iznutra i aktivni skup ,,otkriva`` u limesu. Zato su
+$\mu_2^{\star}$ i $g_2$ jednaki nuli tek do na toleranciju. \\[5pt]
+\texttt{ef\_qp} (\texttt{exitflag}) & $1$ znači da je rješavač konvergirao.
+Svaka druga vrijednost čini rezultat neupotrebljivim i mora se provjeriti prije
+nego se brojke uopće pogledaju. \\[5pt]
+\texttt{lam\_qp.ineqlin} & Vektor Lagrangeovih množitelja ograničenja
+nejednakosti --- upravo $\mu$ iz KKT sustava. Postoje i polja
+\texttt{eqlin}, \texttt{lower}, \texttt{upper} za ostale vrste ograničenja; ovdje
+su prazna. \\[5pt]
+\texttt{\textasciitilde} kao četvrti izlaz & Preskočeni izlaz
+\texttt{output} (statistika iteracija), koji nam ne treba. \\
+\bottomrule
+\end{longtable}
+
+\section{Usporedba, koja je zapravo zadatak}
+\label{sec:z1d-usporedba}
+
+\begin{seminar}{Seminar v1.2, Tablica 2.2}
+\begin{center}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Veličina} & \textbf{Analitički} & \texttt{quadprog} & \textbf{Odstupanje} \\
+\midrule
+$x_1^*$   & $190/33 = 5.757576$  & $5.757576$  & $< 10^{-10}$ \\
+$x_2^*$   & $140/33 = 4.242424$  & $4.242424$  & $< 10^{-10}$ \\
+$\mu_1^*$ & $404/33 = 12.242424$ & $12.242424$ & $< 10^{-10}$ \\
+$\mu_2^*$ & $0$                  & $0$         & --- \\
+$p^*$     & $2000/33 = 60.606061$& $60.606061$ & $< 10^{-10}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{seminar}
+
+Iz punog ispisa programa vidi se i norma razlike:
+
+\begin{lstlisting}[style=outputstyle]
+|x_qp - x_analiticki| = 7.155e-11
+\end{lstlisting}
+
+\begin{korak}[Što se ovom usporedbom zapravo pokazalo]
+\begin{enumerate}[leftmargin=*]
+  \item Analitičko rješavanje KKT sustava i numerički rješavač daju istu točku ---
+        dakle nijedan od dva puta nema grešku.
+  \item Množitelji koje vraća rješavač \emph{jesu} KKT množitelji. To nije
+        samorazumljivo: rješavač ih ne računa iz naše tablice slučajeva, nego kao
+        dualne varijable svoje metode unutarnje točke. Da se poklapaju, potvrda
+        je da su oba pristupa opis istog matematičkog objekta.
+  \item Odstupanje reda $10^{-11}$ je tolerancija rješavača, a ne fizikalna
+        veličina. Zato se u seminaru rezultat navodi kao razlomak, s decimalama
+        u zagradi.
+\end{enumerate}
+\end{korak}
+
+\section{Modelski odgovori}
+\label{sec:z1d-odgovori}
+
+\begin{pitanje}{Zašto \texttt{quadprog} vraća $\mu_2 = 0$, a ne neki mali broj poput $10^{-12}$?}
+\textbf{Odgovor.} Vraća ga do na toleranciju; ispisan je kao \texttt{0.000000}
+jer se ispisuje na šest decimala. Metoda unutarnje točke u limesu tjera umnožak
+$\mu_j g_j$ prema nuli, pa za neaktivno ograničenje $\mu_j$ pada prema nuli
+zajedno s parametrom barijere. Da je algoritam bio tipa aktivnog skupa,
+$\mu_2$ bi bio točno nula po konstrukciji.
+\end{pitanje}
+
+\begin{pitanje}{Biste li isti rezultat dobili preko YALMIP-a?}
+\textbf{Odgovor.} Da. YALMIP je modelirajući sloj --- problem se zapiše
+deklarativno, a on ga proslijedi rješavaču, među ostalim i \texttt{quadprog}-u.
+Za ovako mali QP nema razlike u rezultatu; YALMIP se isplati kad ograničenja nisu
+u standardnom obliku, kao u Zadatku 4, gdje se rješavaju linearne matrične
+nejednakosti.
+\end{pitanje}
+
+\begin{pitanje}{Što ako \texttt{exitflag} nije 1?}
+\textbf{Odgovor.} Tada se rezultat ne smije koristiti. Vrijednost $-2$ znači da
+problem nije dopustiv, $-3$ da je neograničen, $0$ da je premašen broj
+iteracija. Ovdje unaprijed znamo da je problem dopustiv (Slaterova točka) i
+ograničen odozdo (koercivnost), pa bi svaka od tih vrijednosti značila grešku u
+predaji matrica.
+\end{pitanje}
+
+\begin{izgovor}
+,,U MATLAB-u sam koristio \texttt{quadprog}, jer njegovo sučelje već jest
+standardni oblik s predavanja --- minimizira jedna polovina iks transponirano ha
+iks plus ef transponirano iks uz a iks manje ili jednako be --- pa sam matrice
+predao izravno, bez pretvorbe. Bitno je da faktor jedna polovina rješavač
+podrazumijeva, pa se predaje puna matrica ku.
+
+Rješavač je vratio iks pet zarez sedam pet sedam pet sedam šest i četiri zarez
+dva četiri dva četiri, optimalnu vrijednost šezdeset zarez šest nula šest, i
+množitelje dvanaest zarez dva četiri i nulu. To se s analitičkim rješenjem iz
+podzadatka b) poklapa do na jedanaestu decimalu.
+
+Time je pokazano i nešto više od podudarnosti brojeva: polje
+\texttt{lambda.ineqlin} koje rješavač vraća sadrži upravo Lagrangeove
+množitelje iz KKT uvjeta, iako ih algoritam dobiva sasvim drugim putem --- kao
+dualne varijable metode unutarnje točke.``
+\end{izgovor}

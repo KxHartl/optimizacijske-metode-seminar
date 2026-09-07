@@ -1,1 +1,337 @@
-% placeholder
+\chapter{Zadatak 1e --- Lagrangeov dualni problem}
+\label{ch:z1-dual}
+
+\section{Što se ovdje traži}
+
+Izvesti dualni problem \emph{analitički}, riješiti ga numerički i usporediti
+dualne varijable s onima iz (b) i (d).
+
+\begin{zadatak}{Zadatak 1, podzadatak e)}
+e) Postavite i riješite Lagrangeov dualan problem (koristite MATLAB za numeričko
+rješavanje dualnog problema). Usporedite vrijednost izračunatih dualnih varijabli
+s onima dobivenim pod (d) i (b).
+\end{zadatak}
+
+\begin{predznanje}
+\begin{itemize}[nosep,leftmargin=*]
+  \item Lagrangeova funkcija \eqref{eq:z1b-lagrangian} i množitelji $\mu \geq 0$.
+  \item $Q^{-1}$ postoji jer je $Q \pd 0$ --- \S\ref{sec:inverz}, \eqref{eq:alat-Q-inv}.
+  \item Jaka dualnost i Slaterov uvjet --- \S\ref{sec:z1a-slater}.
+  \item Značenje $\inf$ nasuprot $\min$ --- \S\ref{sec:oznake-optimizacije}.
+\end{itemize}
+\end{predznanje}
+
+\section{Definicije s predavanja}
+\label{sec:z1e-definicije}
+
+\begin{izvor}{Predavanje 4 --- Lagrangeova dualnost, slajd 6/26 (PDF str.~10)}
+\slajd[0.86]{p04-lagrangian-i-dual}
+
+\textbf{Transkripcija.} \emph{Terminologija i neka svojstva.}
+\begin{itemize}[nosep,leftmargin=*]
+  \item Lagrangian (Lagrangeova funkcija):
+        $\Lag(x,\lambda,\mu) \coloneqq f(x) + \sum_{i=1}^{m}\lambda_i h_i(x) + \sum_{j=1}^{p}\mu_j g_j(x)$
+  \item Lagrangeova dualna funkcija cilja:
+        $\dual(\lambda,\mu) \coloneqq \inf_x \Lag(x,\lambda,\mu)$
+  \item Lagrangeov dualan problem:
+        $\dopt = \sup_{\{\lambda,\mu \mid \mu \geq 0\}} \dual(\lambda,\mu)$
+  \item Primarni problem: $\popt = \inf_{\{x \mid g(x) \leq 0,\, h(x) = 0\}} f(x)$
+  \item $\lambda_i$ je Lagrangeov množitelj (dualna varijabla) pridružen
+        ograničenju $h_i(x) = 0$;
+        $\mu_j$ je Lagrangeov množitelj pridružen ograničenju $g_j(x) \leq 0$.
+\end{itemize}
+
+\textbf{Tri stvari koje treba uočiti u ovoj definiciji:}
+\begin{enumerate}[nosep,leftmargin=*]
+  \item Dualna funkcija nastaje \emph{minimizacijom po $x$ bez ikakvih
+        ograničenja} --- ograničenja su ušla u Lagrangian i time nestala iz skupa
+        po kojem se traži infimum.
+  \item Dualna funkcija je \emph{uvijek konkavna}, bez obzira na to je li primarni
+        problem konveksan: infimum familije afinih funkcija po $(\lambda,\mu)$ je
+        konkavna funkcija. Zato je dualni problem \emph{uvijek} konveksan.
+  \item Jedina preostala ograničenja u dualnom problemu su $\mu \geq 0$.
+\end{enumerate}
+\end{izvor}
+
+\section{Izvod dualne funkcije za QP}
+\label{sec:z1e-izvod}
+
+\begin{izvor}{Vježbe 3 --- Primjer 2: Dualnost, KKT, osjetljivost, slajd 30/36 (PDF str.~37)}
+\slajd[0.86]{v3-primjer2-dual-izvod}
+
+\textbf{Transkripcija.} \emph{d) Postavi i riješi dualan problem.} Primaran
+problem:
+\[
+\min_x \ \tfrac12 x\trans Qx + c\trans x \quad \text{uz ogr.} \quad Gx - h \leq 0 .
+\]
+Uočimo: $Q \pd 0$, pa stoga i $Q^{-1}$ postoji ($Q$ nema svojstvenu vrijednost
+jednaku nuli jer su sve strogo veće od nule).
+\[
+\Lag(x,\mu) = \tfrac12 x\trans Qx + c\trans x + \mu\trans(Gx - h)
+            = \tfrac12 x\trans Qx + (c + G\trans\mu)\trans x - \mu\trans h
+\]
+Dualan problem:
+\[
+\max_{\mu \geq 0} \ -\tfrac12 \mu\trans G Q^{-1} G\trans \mu
++ \bigl(-c\trans Q^{-1}G\trans - h\trans\bigr)\mu - \tfrac12 c\trans Q^{-1} c .
+\]
+
+\textbf{Ovo je opći rezultat za QP} --- profesor ga izvodi u simbolima, bez
+brojeva, pa vrijedi i za naš zadatak. Sve što nam preostaje jest uvrstiti naše
+$Q$, $c$, $G$, $h$.
+\end{izvor}
+
+\begin{korak}[Izvod, korak po korak]
+\begin{enumerate}[leftmargin=*]
+  \item \textbf{Grupiraj po $x$.} Uvrštavanjem $g(x) = Gx - h$ u definiciju
+        Lagrangiana i skupljanjem linearnih članova:
+        \[
+          \Lag(x,\mu) = \tfrac12 x\trans Q x + \underbrace{(c + G\trans\mu)}_{\eqqcolon\, w}{}\trans x - \mu\trans h .
+        \]
+        Uveli smo kraticu $w \coloneqq c + G\trans\mu$; ona ovisi o $\mu$, ali ne o $x$.
+  \item \textbf{Infimum po $x$ se \emph{postiže}.} Kako je $Q \pd 0$, funkcija
+        $x \mapsto \Lag(x,\mu)$ je strogo konveksna po $x$, pa infimum nije samo
+        donja granica nego se doseže u jedinstvenoj točki. Ta je točka rješenje
+        uvjeta $\grad_x \Lag = 0$:
+        \[
+          Q\tilde{x} + w = 0 \;\Longrightarrow\; \tilde{x} = -Q^{-1}w .
+        \]
+  \item \textbf{Uvrsti $\tilde{x}$ natrag.} Uz $\tilde{x} = -Q^{-1}w$ i
+        simetričnost $Q^{-1}$:
+        \begin{align*}
+          \tfrac12 \tilde{x}\trans Q \tilde{x}
+            &= \tfrac12 w\trans Q^{-1} Q Q^{-1} w = \tfrac12 w\trans Q^{-1} w, \\
+          w\trans \tilde{x} &= -w\trans Q^{-1} w,
+        \end{align*}
+        pa je
+        \[
+          \dual(\mu) = \tfrac12 w\trans Q^{-1}w - w\trans Q^{-1}w - \mu\trans h
+                     = -\tfrac12 w\trans Q^{-1}w - \mu\trans h .
+        \]
+  \item \textbf{Raspiši $w = c + G\trans\mu$.}
+        \[
+          w\trans Q^{-1} w = c\trans Q^{-1}c + 2\,c\trans Q^{-1}G\trans\mu + \mu\trans G Q^{-1}G\trans \mu ,
+        \]
+        odakle
+        \[
+          \dual(\mu) = -\tfrac12 \mu\trans G Q^{-1}G\trans\mu
+                       + \bigl(-c\trans Q^{-1}G\trans - h\trans\bigr)\mu
+                       - \tfrac12 c\trans Q^{-1}c .
+        \]
+\end{enumerate}
+\end{korak}
+
+\begin{formula}{Dualni problem}
+\begin{equation}
+\max_{\mu \geq 0}\ \dual(\mu),
+\qquad
+\dual(\mu) = -\tfrac{1}{2}\mu\trans \underbrace{G Q^{-1} G\trans}_{\text{PSD}}\mu
++ \bigl(-c\trans Q^{-1}G\trans - h\trans\bigr)\mu
+- \tfrac{1}{2}c\trans Q^{-1}c .
+\label{eq:z1e-dual}
+\end{equation}
+Matrica $-GQ^{-1}G\trans$ je negativno semidefinitna, pa je $\dual$ konkavna
+kvadratna funkcija. Maksimizacija konkavne funkcije uz ograničenje $\mu \geq 0$
+je konveksan problem --- opet kvadratni program, samo u varijabli $\mu$.
+\end{formula}
+
+\section{Dualni problem u brojevima}
+\label{sec:z1e-brojevi}
+
+Uvrštavanjem $Q^{-1} = \tfrac{100}{791}\begin{bsmallmatrix}4 & 0{,}3\\ 0{,}3 & 2\end{bsmallmatrix}$,
+$G$, $c$ i $h$ dobiva se, egzaktno u razlomcima:
+\begin{equation}
+G Q^{-1} G\trans = \frac{1}{791}\begin{bmatrix} 660 & -200 \\ -200 & 540 \end{bmatrix}
+\approx \begin{bmatrix} 0{,}834387 & -0{,}252845 \\ -0{,}252845 & 0{,}682680 \end{bmatrix},
+\end{equation}
+\begin{equation}
+-c\trans Q^{-1}G\trans - h\trans = \frac{1}{791}\begin{bmatrix} 8080 & -3623 \end{bmatrix}
+\approx \begin{bmatrix} 10{,}214918 & -4{,}580278 \end{bmatrix},
+\qquad
+\tfrac12 c\trans Q^{-1}c = \frac{1520}{791} .
+\end{equation}
+
+\begin{korak}[Uočljiva veza: linearni član dualne funkcije]
+Linearni koeficijent $-c\trans Q^{-1}G\trans - h\trans$ nije proizvoljan broj.
+Vrijedi
+\[
+-G Q^{-1}c - h = G x^{0} - h = g(x^{0}),
+\]
+jer je $x^{0} = -Q^{-1}c$ neograničeni minimum iz Slučaja 1. Doista, prva
+komponenta je $8080/791 = 10{,}214918$ --- upravo vrijednost $g_1(x^{0})$ zbog
+koje je Slučaj 1 odbačen (\S\ref{sec:z1b-slucaj1}). Dualna funkcija u nuli ima
+nagib jednak vrijednostima ograničenja u neograničenom minimumu.
+\end{korak}
+
+\begin{korak}[Provjera: $\dual(\muopt) = \popt$]
+Uz $\muopt = (404/33,\; 0)$ druga komponenta ne doprinosi, pa je
+\[
+\dual(\muopt) = -\frac12 \cdot \frac{660}{791}\left(\frac{404}{33}\right)^{2}
++ \frac{8080}{791}\cdot\frac{404}{33} - \frac{1520}{791}
+= \frac{2000}{33} = 60{,}606061 .
+\]
+To je točno $\popt$ iz \eqref{eq:z1b-rjesenje}: dualni procjep je \textbf{egzaktno
+nula}, kako i mora biti kad vrijedi jaka dualnost.
+\end{korak}
+
+\subsection{Zašto je maksimum na rubu $\mu_2 = 0$}
+
+\begin{korak}
+Da nema ograničenja $\mu \geq 0$, maksimum konkavne kvadratne funkcije
+\eqref{eq:z1e-dual} bio bi u stacionarnoj točki
+$\bar{\mu} = (GQ^{-1}G\trans)^{-1}\bigl(-GQ^{-1}c - h\bigr)$. Izračunato:
+\begin{equation}
+\bar{\mu} = \begin{bmatrix} 23/2 \\ -49/20 \end{bmatrix}
+          = \begin{bmatrix} 11{,}50 \\ -2{,}45 \end{bmatrix}.
+\end{equation}
+To su \emph{točno} množitelji koje smo dobili u Slučaju 4
+(\S\ref{sec:z1b-slucaj4}). Druga komponenta je negativna, dakle
+$\bar{\mu}$ nije dopustiv za dualni problem, pa se maksimum postiže na rubu
+$\mu_2 = 0$. Ondje je
+\begin{equation}
+\grad \dual(\muopt) = \begin{bmatrix} 0 \\ -49/33 \end{bmatrix}
+                     = \begin{bmatrix} g_1(\xopt) \\ g_2(\xopt) \end{bmatrix},
+\end{equation}
+što je opće svojstvo: gradijent dualne funkcije jednak je vrijednostima
+ograničenja u pripadnom $\tilde{x}(\mu)$. Prva komponenta je nula jer je $g_1$
+aktivno; druga je negativna, pa bi povećanje $\mu_2$ smanjilo $\dual$ --- rub je
+optimalan.
+\end{korak}
+
+\begin{pojam}{Ista činjenica, tri lica}
+Slučaj 4 KKT sustava, unutarnji maksimum dualne funkcije i vrh dopustivog skupa
+tri su opisa iste točke $(11{,}5,\; -2{,}45)$. U primarnom svijetu odbacuje se
+zbog $\mu_2 < 0$; u dualnom, zato što je izvan dopustivog skupa $\mu \geq 0$.
+Ako to na obrani povežeš, pokazao si da razumiješ dualnost, a ne da si zapamtio
+dva odvojena računa.
+\end{pojam}
+
+\section{Kako je to riješeno u seminaru}
+\label{sec:z1e-seminar}
+
+\begin{seminar}{Seminar v1.2, §2.6 --- ,,(e) Lagrangeov dualni problem``}
+Budući da je $Q \succ 0$, matrica $Q^{-1}$ postoji, a Lagrangeova funkcija
+\[
+\mathcal{L}(x, \mu) = \tfrac{1}{2} x^{\mathsf{T}} Q x + (c + G^{\mathsf{T}}\mu)^{\mathsf{T}} x - \mu^{\mathsf{T}} h
+\]
+strogo je konveksna po $x$. Infimum se postiže u točki u kojoj je
+$\nabla_x \mathcal{L} = 0$:
+\[
+Q\tilde{x} + c + G^{\mathsf{T}} \mu = 0 \implies \tilde{x} = -Q^{-1}(c + G^{\mathsf{T}} \mu).
+\]
+Uvrštavanjem $\tilde{x}$ natrag u $\mathcal{L}$ dobiva se dualna funkcija
+\[
+\theta(\mu) = \inf_{x} \mathcal{L}(x, \mu)
+= -\tfrac{1}{2} \mu^{\mathsf{T}} G Q^{-1} G^{\mathsf{T}} \mu
++ \left( -c^{\mathsf{T}} Q^{-1} G^{\mathsf{T}} - h^{\mathsf{T}} \right) \mu
+- \tfrac{1}{2} c^{\mathsf{T}} Q^{-1} c,
+\]
+a dualni problem glasi $\max_{\mu \geq 0} \theta(\mu)$.
+
+Matrica $-G Q^{-1} G^{\mathsf{T}}$ je negativno semidefinitna, pa je $\theta$
+konkavna kvadratna funkcija, a dualni problem je maksimizacija konkavne funkcije
+uz konveksna ograničenja, dakle konveksan optimizacijski problem. Riječ je opet o
+kvadratnom programu, samo u varijabli $\mu$, pa se rješava istom funkcijom
+\texttt{quadprog} primijenjenom na $-\theta(\mu)$ uz donju granicu $\mu \geq 0$.
+
+\begin{lstlisting}[style=matlabstyle]
+Qi = inv(Q);
+Hd = G*Qi*G';  Hd = 0.5*(Hd + Hd');    % Hessian dualnog QP-a
+fd = (c'*Qi*G' + h')';
+kd = 0.5*(c'*Qi*c);                    % konstantni clan
+[mu_d, negd, ef_d] = quadprog(Hd, fd, [], [], [], [], [0;0], [], [], opts);
+d_opt = -(negd + kd);
+\end{lstlisting}
+
+\begin{lstlisting}[style=outputstyle]
+exitflag        = 1
+mu*             = [12.242424; 0.000000]
+d*  = theta(mu*)= 60.606061
+dualni procjep p* - d* = 2.480e-10
+\end{lstlisting}
+
+Dualne varijable $\mu^*$ identične su Lagrangeovim množiteljima dobivenim
+analitički pod (b) i onima koje je \texttt{quadprog} vratio pod (d). Kako je
+Slaterov uvjet zadovoljen, vrijedi jaka dualnost, što potvrđuje i numerički
+dualni procjep $p^* - d^* = 2.48 \cdot 10^{-10}$. Maksimum konkavne funkcije
+$\theta$ postiže se na rubu $\mu_2 = 0$, što odgovara neaktivnosti drugog
+primarnog ograničenja.
+\end{seminar}
+
+\subsection{Zašto kod izgleda baš tako}
+
+\begin{longtable}{@{}p{0.34\linewidth} p{0.62\linewidth}@{}}
+\toprule
+\textbf{Redak} & \textbf{Razlog} \\
+\midrule
+\endhead
+\texttt{Hd = 0.5*(Hd + Hd')} & Simetrizacija. Matematički je $GQ^{-1}G\trans$
+simetrična, ali u aritmetici s pomičnim zarezom razlikuje se od svog transponata
+u zadnjim bitovima, a \texttt{quadprog} traži simetričan ulaz. \\[5pt]
+\texttt{fd = (c'*Qi*G' + h')'} & Predaje se \emph{minus} linearni član iz
+\eqref{eq:z1e-dual}, jer se minimizira $-\dual$. Predznak je već ugrađen. \\[5pt]
+\texttt{[0;0]} kao \texttt{lb} & Jedino ograničenje dualnog problema, $\mu \geq 0$,
+zadaje se kao donja granica, ne kao redak matrice $A$. \\[5pt]
+\texttt{d\_opt = -(negd + kd)} & \texttt{quadprog} vraća minimum od $-\dual$ bez
+konstantnog člana, pa se konstanta vraća i predznak okreće. \\
+\bottomrule
+\end{longtable}
+
+\begin{zamka}[Zamka: prešućeni konstantni član]
+Konstanta $-\tfrac12 c\trans Q^{-1}c = -1520/791 \approx -1{,}9216$ ne utječe na
+to \emph{gdje} je maksimum, pa je rješavaču nije potrebno predati. Ali utječe na
+\emph{vrijednost} $\dopt$. Ako se zaboravi vratiti, dualni procjep ispadne
+$\approx 1{,}92$ umjesto nule i cijeli zaključak o jakoj dualnosti pada.
+\end{zamka}
+
+\section{Modelski odgovori}
+\label{sec:z1e-odgovori}
+
+\begin{pitanje}{Zašto je dualni problem uvijek konveksan, čak i kad primarni nije?}
+\textbf{Odgovor.} Jer je dualna funkcija infimum familije funkcija koje su afine
+u $(\lambda,\mu)$: za svaki fiksni $x$, preslikavanje
+$\mu \mapsto f(x) + \mu\trans g(x)$ je afino. Infimum bilo koje familije
+konkavnih (ovdje afinih) funkcija je konkavan, a maksimizacija konkavne funkcije
+uz $\mu \geq 0$ je konveksan problem. Konveksnost dualnog problema ne ovisi ni o
+čemu u primarnome.
+\end{pitanje}
+
+\begin{pitanje}{Koliko bi iznosio dualni procjep da problem nije konveksan?}
+\textbf{Odgovor.} Bio bi nenegativan, ali ne nužno nula --- vrijedila bi samo
+slaba dualnost $\dopt \leq \popt$. Ovdje je nula jer je problem konveksan i
+Slaterov uvjet zadovoljen. Numerički se dobiva $2{,}48 \cdot 10^{-10}$, što je
+tolerancija rješavača, a ne stvaran procjep.
+\end{pitanje}
+
+\begin{pitanje}{Čemu uopće služi dualni problem ako primarni već znamo riješiti?}
+\textbf{Odgovor.} Trima stvarima. Prvo, daje \emph{certifikat}: svaki dopustivi
+$\mu \geq 0$ daje donju granicu na $\popt$, pa se optimalnost može dokazati bez
+rješavanja primarnog problema. Drugo, dualne varijable imaju izravno inženjersko
+značenje --- osjetljivost, o čemu je podzadatak (f). Treće, za velike probleme
+dual može biti mnogo manji od primarnog, jer ima onoliko varijabli koliko primar
+ima ograničenja.
+\end{pitanje}
+
+\begin{izgovor}
+,,Lagranžijan sam grupirao po iks, pa je linearni član ce plus ge transponirano
+mi. Budući da je ku pozitivno definitna, Lagranžijan je strogo konveksan po iks,
+pa se infimum stvarno postiže, i to u točki iks tilda jednako minus ku inverz
+puta ce plus ge transponirano mi.
+
+Uvrštavanjem natrag dobiva se dualna funkcija: minus jedna polovina mi
+transponirano ge ku inverz ge transponirano mi, plus linearni član, minus
+konstanta jedna polovina ce transponirano ku inverz ce. Matrica ispred kvadratnog
+člana je negativno semidefinitna, pa je dualna funkcija konkavna, i dualni
+problem je maksimizacija konkavne funkcije uz mi veće ili jednako nuli --- dakle
+opet kvadratni program.
+
+Riješio sam ga u MATLAB-u i dobio mi jednako dvanaest zarez dva četiri i nula,
+identično množiteljima iz podzadataka b) i d), s optimalnom vrijednošću šezdeset
+zarez šest nula šest. Dualni procjep je dva puta deset na minus deset, dakle
+numerička nula --- u skladu s jakom dualnošću.
+
+Zanimljivo je da bi bezuvjetni maksimum dualne funkcije bio u jedanaest i pol,
+minus dva zarez četiri pet. To su točno množitelji iz slučaja u kojem su oba
+ograničenja aktivna, a odbacili smo ga upravo zato što je drugi množitelj
+negativan. Ista činjenica, gledana iz primarnog i iz dualnog problema.``
+\end{izgovor}
