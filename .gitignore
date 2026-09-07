@@ -37,6 +37,8 @@ docs/**/build/
 
 # Generated PDFs in docs build (Tectonic outputs next to source)
 docs/**/*.pdf
+# ...ali slike koje main.tex ukljucuje su izvorni artefakti i moraju biti u repou
+!docs/figures/*.pdf
 
 # Generated PDFs in dist (built by CI or scripts)
 dist/**/*.pdf
@@ -46,6 +48,10 @@ dist/**/*.pdf
 
 # Personal notes
 IDEAS.md
+.obsidian/
+
+# Lokalna kopija skeniranih predavanja (izvornik je u data/sources/lectures/)
+predavanja_vjezbe.pdf
 
 # Test / sandbox directories
 TestRealm/

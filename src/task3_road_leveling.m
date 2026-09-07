@@ -1,90 +1,116 @@
-%% Task 3: Optimization Formulation - Road Profile Leveling (LP) in MATLAB
-% Formulates and solves the terrain leveling problem using sparse linprog for Cases A & B
+%% Zadatak 3 - Optimalna nivelacija uzduznog profila ceste (LP)
+%  min dx*sum(z)  uz  -z <= y - h <= z, |D1*y| <= b1, |D2*y| <= b2, y0 = a, yN = b
+%  Sve brojke koje se pojavljuju u poglavlju 4 seminara ispisuje ova skripta.
 
 clear; close all; clc;
+addpath(fullfile(pwd, 'common'));   % skripte se pokrecu iz mape src
 config_plot();
 
-L = 10;
+L    = 10;
 hfun = @(x) 0.0053*x.^4 - 0.095*x.^3 + 0.48*x.^2 - 0.3*x + 1;
+cases = struct('name', {'A','A','B','B'}, 'b1', {0.5,0.5,0.5,0.5}, ...
+               'b2', {0.5,0.5,0.2,0.2}, 'N', {20,100,20,100});
 
-cases = { ...
-    struct('name',"A",'b1',0.5,'b2',0.5,'N',20); ...
-    struct('name',"A",'b1',0.5,'b2',0.5,'N',100); ...
-    struct('name',"B",'b1',0.5,'b2',0.2,'N',20); ...
-    struct('name',"B",'b1',0.5,'b2',0.2,'N',100) ...
-};
+opts = optimoptions('linprog', 'Algorithm', 'dual-simplex', 'Display', 'none');
+res  = struct([]);
 
-opts = optimoptions('linprog','Algorithm','dual-simplex','Display','none');
-
-fprintf('=== Task 3: MATLAB linprog Benchmark ===\n');
+fprintf('=== ZADATAK 3 ===\n');
+fprintf('h(0) = %.4f,  h(L) = %.4f\n', hfun(0), hfun(L));
+fprintf('\n Slucaj |   N |   dx  |   J* [m^2] | max|Dy| | max|D2y| | var | nejed. | exitflag\n');
 
 for k = 1:numel(cases)
-    name = cases{k}.name;
-    b1 = cases{k}.b1;
-    b2 = cases{k}.b2;
-    N  = cases{k}.N;
-    dx = L/N;
-    x  = linspace(0,L,N+1).';
-    h  = hfun(x);
-    a  = h(1);
-    b  = h(end);
+    N  = cases(k).N;  b1 = cases(k).b1;  b2 = cases(k).b2;
+    dx = L/N;  x = linspace(0, L, N+1)';  hv = hfun(x);  n = N+1;
 
-    % Variables: theta = [y_0...y_N, z_0...z_N]^T (dim: 2*(N+1))
-    ny = N+1; nz = N+1; n = ny + nz;
-    
-    % Cost: min sum(z_i * dx)
-    f = zeros(n,1);
-    f(ny+1:end) = dx;
+    % Varijable: v = [y; z],  dim = 2*(N+1)
+    f = [zeros(n,1); dx*ones(n,1)];
 
-    % Inequalities A * theta <= bineq
-    % 1. Epigraph absolute value bounds: (y_i - h_i <= z_i) and (-y_i + h_i <= z_i)
-    % 2. Slope bounds: -b1 <= (y_i - y_{i-1})/dx <= b1
-    % 3. Curvature bounds: -b2 <= (y_i - 2*y_{i-1} + y_{i-2})/dx^2 <= b2
-    A_ineq = [];
-    bineq = [];
-
-    % 1. Epigraph bounds
-    I_y = eye(ny);
-    I_z = eye(nz);
-    A_ineq = [A_ineq; [I_y, -I_z]; [-I_y, -I_z]];
-    bineq  = [bineq; h; -h];
-
-    % 2. Slope bounds
-    D1 = zeros(N, ny);
-    for i = 1:N
-        D1(i, i+1) = 1/dx;
-        D1(i, i)   = -1/dx;
-    end
-    A_ineq = [A_ineq; [D1, zeros(N, nz)]; [-D1, zeros(N, nz)]];
-    bineq  = [bineq; b1*ones(N,1); b1*ones(N,1)];
-
-    % 3. Curvature bounds
-    D2 = zeros(N-1, ny);
+    I  = eye(n);
+    D1 = (diag(-ones(n,1)) + diag(ones(n-1,1), 1));  D1 = D1(1:N, :)/dx;
+    D2 = zeros(N-1, n);
     for i = 1:N-1
-        D2(i, i+2) = 1/(dx^2);
-        D2(i, i+1) = -2/(dx^2);
-        D2(i, i)   = 1/(dx^2);
+        D2(i, i) = 1;  D2(i, i+1) = -2;  D2(i, i+2) = 1;
     end
-    A_ineq = [A_ineq; [D2, zeros(N-1, nz)]; [-D2, zeros(N-1, nz)]];
-    bineq  = [bineq; b2*ones(N-1,1); b2*ones(N-1,1)];
+    D2 = D2/dx^2;
+    Zn = zeros(size(D1,1), n);  Zc = zeros(size(D2,1), n);
 
-    % Boundary equality constraints: y(0)=1, y(L)=4
-    Aeq = zeros(2, n);
-    beq = [a; b];
-    Aeq(1, 1)  = 1;
-    Aeq(2, ny) = 1;
+    A = [ I, -I;  -I, -I;  D1, Zn;  -D1, Zn;  D2, Zc;  -D2, Zc];
+    b = [hv;      -hv;     b1*ones(N,1); b1*ones(N,1); b2*ones(N-1,1); b2*ones(N-1,1)];
 
-    % Lower bounds for z >= 0, y free
-    lb = [-Inf*ones(ny,1); zeros(nz,1)];
-    ub = Inf*ones(n,1);
+    Aeq = zeros(2, 2*n);  Aeq(1,1) = 1;  Aeq(2,N+1) = 1;
+    beq = [hv(1); hv(end)];
+    lb  = [-inf(n,1); zeros(n,1)];
 
-    % Solve LP
-    [sol, cost_integral, exitflag] = linprog(f, A_ineq, bineq, Aeq, beq, lb, ub, opts);
-    
-    y_opt = sol(1:ny);
-    z_opt = sol(ny+1:end);
-    raw_sum = sum(z_opt);
+    [v, J, ef] = linprog(f, A, b, Aeq, beq, lb, [], opts);
+    assert(ef == 1, 'linprog nije konvergirao (slucaj %d, exitflag = %d).', k, ef);
 
-    fprintf('Slučaj %s (b1=%.1f, b2=%.1f, N=%d):\n', name, b1, b2, N);
-    fprintf('  Total Cost J* = %.6f m^2 (Raw discrete sum = %.4f)\n', cost_integral, raw_sum);
+    y = v(1:n);
+    res(k).name = cases(k).name;  res(k).N = N;  res(k).dx = dx;
+    res(k).x = x;  res(k).h = hv;  res(k).y = y;  res(k).J = J;
+    res(k).b1 = b1; res(k).b2 = b2;
+    res(k).mD1 = max(abs(D1*y));  res(k).mD2 = max(abs(D2*y));
+    res(k).nvar = 2*n;  res(k).nineq = size(A,1);  res(k).ef = ef;
+
+    fprintf('   %s    | %3d | %5.2f | %10.6f | %7.4f | %8.4f | %3d | %6d | %d\n', ...
+        cases(k).name, N, dx, J, res(k).mD1, res(k).mD2, 2*n, size(A,1), ef);
 end
+
+fprintf('\nUtjecaj mreze  (A): %.6f -> %.6f  (%+.2f %%)\n', res(1).J, res(2).J, 100*(res(2).J/res(1).J - 1));
+fprintf('Utjecaj mreze  (B): %.6f -> %.6f  (%+.2f %%)\n', res(3).J, res(4).J, 100*(res(4).J/res(3).J - 1));
+fprintf('Utjecaj b2 (N=100): %.6f -> %.6f  (%+.2f %%)\n', res(2).J, res(4).J, 100*(res(4).J/res(2).J - 1));
+
+%% Slike 4.1 i 4.2 - profil ceste za slucaj A i B
+for pair = {[1 2 'A'], [3 4 'B']}
+    ii = pair{1};  k20 = ii(1);  k100 = ii(2);  nm = char(ii(3));
+    fg = figure('Position', [100 100 780 420], 'Visible', 'off', 'Color', 'w');
+    hold on;
+    xf = [res(k100).x; flipud(res(k100).x)];
+    yf = [res(k100).y; flipud(res(k100).h)];
+    fill(xf, yf, [0.86 0.86 0.86], 'EdgeColor', 'none');
+    plot(res(k100).x, res(k100).h, 'k-',  'LineWidth', 2.0);
+    plot(res(k20).x,  res(k20).y,  'k:',  'LineWidth', 1.8);
+    plot(res(k100).x, res(k100).y, 'k--', 'LineWidth', 2.0);
+    xlabel('x [m]'); ylabel('visina [m]');
+    legend({'iskop / nasip', 'teren h(x)', ...
+            sprintf('niveleta y(x), N = 20  (J^* = %.4f m^2)',  res(k20).J), ...
+            sprintf('niveleta y(x), N = 100 (J^* = %.4f m^2)', res(k100).J)}, ...
+           'Location', 'northwest', 'FontSize', 9);
+    xlim([0 L]);
+    fn = sprintf('fig3_%d_road_case_%s.pdf', 1 + (nm == 'B'), nm);
+    exportgraphics(fg, fullfile(fig_dir(), fn), 'ContentType', 'vector');
+    close(fg);
+end
+
+%% Slika 4.3 - provjera ogranicenja prve i druge podijeljene razlike (N = 100)
+fg = figure('Position', [100 100 780 620], 'Visible', 'off', 'Color', 'w');
+for sp = 1:2
+    subplot(2,1,sp); hold on;
+    for k = [2 4]
+        N = res(k).N;  dx = res(k).dx;  y = res(k).y;
+        D1 = (diag(-ones(N+1,1)) + diag(ones(N,1),1));  D1 = D1(1:N,:)/dx;
+        if sp == 1
+            d = D1*y;  xs = res(k).x(2:end);
+        else
+            D2 = zeros(N-1, N+1);
+            for i = 1:N-1, D2(i,i) = 1; D2(i,i+1) = -2; D2(i,i+2) = 1; end
+            D2 = D2/dx^2;  d = D2*y;  xs = res(k).x(3:end);
+        end
+        st = {'k-', 'k--'};  ii = 1 + (k == 4);
+        plot(xs, d, st{ii}, 'LineWidth', 1.8);
+    end
+    if sp == 1
+        yline( 0.5, 'k:', 'LineWidth', 1.4);  yline(-0.5, 'k:', 'LineWidth', 1.4);
+        ylabel('\nabla y_i  [m/m]');  ylim([-0.65 0.65]);
+        legend({'slucaj A', 'slucaj B', '\pm b_1 = \pm 0.5'}, 'Location', 'southeast', 'FontSize', 9);
+    else
+        yline( 0.5, 'k:', 'LineWidth', 1.4);  yline(-0.5, 'k:', 'LineWidth', 1.4);
+        yline( 0.2, 'k-.', 'LineWidth', 1.2); yline(-0.2, 'k-.', 'LineWidth', 1.2);
+        ylabel('\nabla^2 y_i  [m^{-1}]');  ylim([-0.65 0.65]);
+        legend({'slucaj A', 'slucaj B', '\pm b_2 = \pm 0.5 (A)', '', '\pm b_2 = \pm 0.2 (B)'}, ...
+               'Location', 'southeast', 'FontSize', 9);
+    end
+    xlabel('x [m]');  xlim([0 L]);
+end
+exportgraphics(fg, fullfile(fig_dir(), 'fig3_3_road_constraint_check.pdf'), 'ContentType', 'vector');
+close(fg);
+fprintf('\nSlike 4.1-4.3 izvezene.\n');

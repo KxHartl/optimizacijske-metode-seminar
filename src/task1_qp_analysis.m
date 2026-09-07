@@ -1,92 +1,138 @@
-%% Task 1: Quadratic Programming (QP) Analysis in MATLAB
-% Solves primal QP, 4-case KKT resolution, Lagrange dual, sensitivity analysis, and generates plots
+%% Zadatak 1 - QP, konveksnost, KKT uvjeti, Lagrangeova dualnost, osjetljivost
+%  min 1/2*x'*Q*x + c'*x   uz   G*x - h <= 0
+%  Sve brojke koje se pojavljuju u poglavlju 2 seminara ispisuje ova skripta.
 
 clear; close all; clc;
+addpath(fullfile(pwd, 'common'));   % skripte se pokrecu iz mape src
 config_plot();
 
-% 1. Problem matrices (f(x) = 0.5*x'*Q*x + c'*x)
-Q = [2.0, -0.3; -0.3, 4.0];
-c = [2.0; -3.0];
-A = [-1.0, -1.0; 1.0, -1.0];
-b = [-10.0; 3.0];
+%% 1. Podaci problema
+Q = [ 2.0, -0.3;
+     -0.3,  4.0];
+c = [ 2.0; -3.0];
+G = [-1.0, -1.0;
+      1.0, -1.0];
+h = [-10.0; 3.0];
 
-% 2. Strict convexity verification
-lambda = eig(Q);
-fprintf('Hessian Q eigenvalues: lambda_1 = %.6f, lambda_2 = %.6f\n', lambda(1), lambda(2));
-if all(lambda > 0)
-    fprintf('Matrix Q is strictly positive definite (Q > 0) -> f(x) is strictly convex.\n');
-end
+fprintf('=== ZADATAK 1 ===\n');
 
-% 3. Numerical solution with quadprog
-options = optimoptions('quadprog', 'Display', 'none', 'Algorithm', 'interior-point-convex');
-[x_opt, f_opt, exitflag, output, lambda_qp] = quadprog(Q, c, A, b, [], [], [], [], [], options);
+%% (a) Konveksnost: svojstvene vrijednosti Hesseove matrice
+lam = eig(Q);
+fprintf('\n--- (a) Konveksnost ---\n');
+fprintf('eig(Q) = %.6f, %.6f\n', lam(1), lam(2));
+fprintf('det(Q) = %.6f,  Q > 0 : %d\n', det(Q), all(lam > 0));
 
-fprintf('\n--- Numerical quadprog Results ---\n');
-fprintf('Optimal x* = [%.6f; %.6f]\n', x_opt(1), x_opt(2));
-fprintf('Optimal cost p* = %.6f\n', f_opt);
-fprintf('Lagrange multipliers mu* = [%.6f; %.6f]\n', lambda_qp.ineqlin(1), lambda_qp.ineqlin(2));
+%% (b) KKT: sve 4 kombinacije aktivnosti ogranicenja
+fprintf('\n--- (b) KKT, 4 kombinacije aktivnosti ---\n');
 
-% 4. Analytical KKT Solution (Case 2: g1 active, g2 inactive)
-M_kkt = [2.0, -0.3, -1.0; -0.3, 4.0, -1.0; -1.0, -1.0, 0.0];
-rhs_kkt = [-2.0; 3.0; -10.0];
-sol_kkt = M_kkt \ rhs_kkt;
-x_analytical = sol_kkt(1:2);
-mu1_analytical = sol_kkt(3);
-p_analytical = 0.5 * x_analytical' * Q * x_analytical + c' * x_analytical;
+% Slucaj 1: oba neaktivna  (mu = 0)
+x0 = -Q\c;
+fprintf('Slucaj 1 (0,0): x = [%.6f, %.6f], g1 = %.6f  -> %s\n', ...
+    x0(1), x0(2), G(1,:)*x0 - h(1), 'odbacen (g1 > 0)');
 
-fprintf('\n--- Analytical KKT Results ---\n');
-fprintf('Analytical x* = [%.6f; %.6f]\n', x_analytical(1), x_analytical(2));
-fprintf('Analytical mu1* = %.6f\n', mu1_analytical);
-fprintf('Analytical p* = %.6f\n', p_analytical);
+% Slucaj 2: samo g1 aktivno
+M2   = [Q, G(1,:)'; G(1,:), 0];
+s2   = M2 \ [-c; h(1)];
+x2   = s2(1:2); mu1 = s2(3);
+g2v  = G(2,:)*x2 - h(2);
+p2   = 0.5*x2'*Q*x2 + c'*x2;
+fprintf('Slucaj 2 (1,0): x = [%.6f, %.6f], mu1 = %.6f, g2 = %.6f -> KKT OK\n', ...
+    x2(1), x2(2), mu1, g2v);
+fprintf('                p* = f(x*) = %.6f   (= 2000/33 = %.6f)\n', p2, 2000/33);
 
-% 5. Dual Problem Maximization
-Q_inv = inv(Q);
-dual_obj = @(mu) -(-0.5 * (c + A'*mu)' * Q_inv * (c + A'*mu) - b'*mu);
-mu0 = [1.0; 1.0];
-opts_fmincon = optimoptions('fmincon', 'Display', 'none', 'Algorithm', 'interior-point');
-[mu_dual_opt, neg_d_opt] = fmincon(dual_obj, mu0, [], [], [], [], [0; 0], [Inf; Inf], [], opts_fmincon);
-d_opt = -neg_d_opt;
+% Slucaj 3: samo g2 aktivno
+M3  = [Q, G(2,:)'; G(2,:), 0];
+s3  = M3 \ [-c; h(2)];
+x3  = s3(1:2); mu2_3 = s3(3);
+fprintf('Slucaj 3 (0,1): x = [%.6f, %.6f], mu2 = %.6f, g1 = %.6f -> odbacen\n', ...
+    x3(1), x3(2), mu2_3, G(1,:)*x3 - h(1));
 
-fprintf('\n--- Dual Optimization Results ---\n');
-fprintf('Dual optimal mu* = [%.6f; %.6f]\n', mu_dual_opt(1), mu_dual_opt(2));
-fprintf('Dual optimal d* = %.6f\n', d_opt);
-fprintf('Duality gap |p* - d*| = %.2e\n', abs(f_opt - d_opt));
+% Slucaj 4: oba aktivna
+x4  = G \ h;
+mu4 = -G' \ (Q*x4 + c);
+fprintf('Slucaj 4 (1,1): x = [%.6f, %.6f], mu = [%.6f, %.6f] -> odbacen (mu2 < 0)\n', ...
+    x4(1), x4(2), mu4(1), mu4(2));
 
-% 6. Sensitivity Analysis
-delta = 1e-4;
-b_pert = [-10.0 + delta; 3.0];
-[x_pert, f_pert] = quadprog(Q, c, A, b_pert, [], [], [], [], [], options);
-dp_db1_num = (f_pert - f_opt) / delta;
-fprintf('\n--- Sensitivity Results ---\n');
-fprintf('Numerical dp*/db1 = %.6f\n', dp_db1_num);
-fprintf('Analytical -mu1*  = %.6f\n', -mu1_analytical);
-fprintf('Absolute difference = %.2e\n', abs(dp_db1_num - (-mu1_analytical)));
+% Gradijenti u optimumu
+gradf = Q*x2 + c;
+fprintf('grad f(x*) = [%.6f, %.6f];  -mu1*grad g1 = [%.6f, %.6f]\n', ...
+    gradf(1), gradf(2), -mu1*G(1,1), -mu1*G(1,2));
 
-% 7. MATLAB Plotting & Figure Export
-fig_dir = fullfile('docs', 'figures');
-if ~exist(fig_dir, 'dir'), mkdir(fig_dir); end
+%% (d) Numericko rjesenje - quadprog
+fprintf('\n--- (d) MATLAB quadprog ---\n');
+opts = optimoptions('quadprog', 'Display', 'none', 'Algorithm', 'interior-point-convex');
+[x_qp, f_qp, ef_qp, ~, lam_qp] = quadprog(Q, c, G, h, [], [], [], [], [], opts);
+assert(ef_qp == 1, 'quadprog nije konvergirao (exitflag = %d).', ef_qp);
+fprintf('exitflag        = %d\n', ef_qp);
+fprintf('x_opt           = [%.6f; %.6f]\n', x_qp(1), x_qp(2));
+fprintf('p*  = fval      = %.6f\n', f_qp);
+fprintf('lambda.ineqlin  = [%.6f; %.6f]\n', lam_qp.ineqlin(1), lam_qp.ineqlin(2));
+fprintf('|x_qp - x_analiticki| = %.3e\n', norm(x_qp - x2));
 
-% Fig 1.1: Primal Geometry
-figure('Position', [100, 100, 700, 600], 'Visible', 'off');
-[X1, X2] = meshgrid(linspace(0, 10, 300), linspace(0, 10, 300));
+%% (e) Dualni problem - fmincon na -theta(mu)
+fprintf('\n--- (e) Dualni problem (fmincon) ---\n');
+Qi    = inv(Q);
+theta = @(mu) -0.5*mu'*(G*Qi*G')*mu + (-c'*Qi*G' - h')*mu - 0.5*c'*Qi*c;
+optf  = optimoptions('fmincon', 'Display', 'none', 'Algorithm', 'sqp', ...
+                     'OptimalityTolerance', 1e-12, 'ConstraintTolerance', 1e-12);
+[mu_d, negd, ef_d] = fmincon(@(mu) -theta(mu), [1;1], [], [], [], [], [0;0], [Inf;Inf], [], optf);
+assert(ef_d > 0, 'fmincon nije konvergirao (exitflag = %d).', ef_d);
+d_opt = -negd;
+fprintf('exitflag        = %d\n', ef_d);
+fprintf('mu*             = [%.6f; %.6f]\n', mu_d(1), mu_d(2));
+fprintf('d*  = theta(mu*)= %.6f\n', d_opt);
+fprintf('dualni procjep p* - d* = %.3e\n', f_qp - d_opt);
+
+% Slaterova tocka
+xs = [7; 6];
+fprintf('Slaterova tocka x = [7; 6]: g1 = %.4f, g2 = %.4f\n', G(1,:)*xs - h(1), G(2,:)*xs - h(2));
+
+%% (f) Osjetljivost: G*x - h <= v
+fprintf('\n--- (f) Osjetljivost ---\n');
+dlt = 1e-4;
+[~, f_v1] = quadprog(Q, c, G, h + [dlt; 0], [], [], [], [], [], opts);
+[~, f_v2] = quadprog(Q, c, G, h + [0; dlt], [], [], [], [], [], opts);
+dp1 = (f_v1 - f_qp)/dlt;
+dp2 = (f_v2 - f_qp)/dlt;
+fprintf('dp*/dv1 numericki = %.6f,  -mu1* = %.6f,  odstupanje = %.2e\n', dp1, -mu1,   abs(dp1 + mu1));
+fprintf('dp*/dv2 numericki = %.6f,  -mu2* = %.6f,  odstupanje = %.2e\n', dp2, 0.0,    abs(dp2));
+
+%% (c) Slika 2.1 - dopustivi skup, nivo-krivulje, gradijenti u KKT tocki
+fg = figure('Position', [100 100 720 600], 'Visible', 'off', 'Color', 'w');
+[X1, X2] = meshgrid(linspace(-2, 11, 400), linspace(-2, 11, 400));
 Z = 0.5*(Q(1,1)*X1.^2 + 2*Q(1,2)*X1.*X2 + Q(2,2)*X2.^2) + c(1)*X1 + c(2)*X2;
-contour(X1, X2, Z, 25, 'LineWidth', 1.2); hold on;
 
-% Boundaries
-x1_v = linspace(0, 10, 300);
-plot(x1_v, 10 - x1_v, 'r-', 'LineWidth', 2.0, 'DisplayName', 'g_1(x) = 0');
-plot(x1_v, x1_v - 3, 'g-', 'LineWidth', 2.0, 'DisplayName', 'g_2(x) = 0');
-plot(x_opt(1), x_opt(2), 'rp', 'MarkerSize', 14, 'MarkerFaceColor', 'r', 'DisplayName', 'x^*');
-
-% Gradients
-grad_f = Q * x_opt + c;
-quiver(x_opt(1), x_opt(2), 0.25*grad_f(1), 0.25*grad_f(2), 0, 'b', 'LineWidth', 2, 'DisplayName', '\nabla f(x^*)');
-quiver(x_opt(1), x_opt(2), -1.8, -1.8, 0, 'r', 'LineWidth', 2, 'DisplayName', '\nabla g_1(x^*) (\mu_1^* = 12.242)');
-quiver(x_opt(1), x_opt(2), 1.8, -1.8, 0, 'g--', 'LineWidth', 2, 'DisplayName', '\nabla g_2(x^*) (\mu_2^* = 0)');
-
-xlim([0, 10]); ylim([0, 10]);
+hold on;
+% dopustivi skup F (neomedjen; ovdje odrezan na prikazani okvir)
+Fx = [-1, 6.5, 11, 11, -1];
+Fy = [11, 3.5,  8, 11, 11];
+fill(Fx, Fy, [0.86 0.86 0.86], 'EdgeColor', 'none');
+% nivo-krivulje funkcije cilja
+contour(X1, X2, Z, 16, 'LineWidth', 0.7, 'LineColor', [0.50 0.50 0.50]);
+% granice ogranicenja
+t = linspace(-2, 11, 200);
+plot(t, 10 - t,  'k-',  'LineWidth', 2.0);
+plot(t, t - 3,   'k-.', 'LineWidth', 2.0);
+% tocke
+plot(x0(1), x0(2), 'ko', 'MarkerSize', 7, 'MarkerFaceColor', 'w', 'LineWidth', 1.2);
+plot(x2(1), x2(2), 'kp', 'MarkerSize', 15, 'MarkerFaceColor', 'k');
+% gradijenti (duljine su graficki skalirane)
+sf = 0.22;
+quiver(x2(1), x2(2), sf*gradf(1), sf*gradf(2), 0, 'k',  'LineWidth', 2.2, 'MaxHeadSize', 0.5);
+quiver(x2(1), x2(2), sf*mu1*G(1,1), sf*mu1*G(1,2), 0, 'k', 'LineWidth', 2.2, ...
+       'LineStyle', '-', 'MaxHeadSize', 0.5, 'Color', [0.30 0.30 0.30]);
+quiver(x2(1), x2(2), 1.7*G(2,1), 1.7*G(2,2), 0, 'LineWidth', 1.8, ...
+       'LineStyle', '--', 'MaxHeadSize', 0.6, 'Color', [0.40 0.40 0.40]);
+text(x2(1)+0.15, x2(2)+2.3,  '\nabla f(x^*)',                 'FontSize', 11);
+text(x2(1)-4.6,  x2(2)-3.6,  '\mu_1^*\nabla g_1(x^*)',        'FontSize', 11);
+text(x2(1)+1.1,  x2(2)-1.9,  '\nabla g_2(x^*),  \mu_2^* = 0', 'FontSize', 11);
+text(x0(1)+0.2,  x0(2)+0.35, 'x^0',                           'FontSize', 11);
+text(x2(1)+0.25, x2(2)+0.35, 'x^*',                           'FontSize', 11);
+xlim([-2 11]); ylim([-2 11]); axis square;
 xlabel('x_1'); ylabel('x_2');
-title('Zadatak 1: Geometrija QP problema i KKT ravnoteža gradijenata (MATLAB)');
-legend('Location', 'northeast'); grid on;
-exportgraphics(gcf, fullfile(fig_dir, 'fig1_1_qp_primal_geometry_matlab.png'), 'Resolution', 300);
-close(gcf);
+legend({'dopustivi skup F', 'nivo-krivulje f(x)', 'g_1(x) = 0', 'g_2(x) = 0', ...
+        'x^0 (min. bez ogranicenja)', 'x^* (KKT tocka)'}, ...
+       'Location', 'northeast', 'FontSize', 9);
+exportgraphics(fg, fullfile(fig_dir(), 'fig1_1_qp_primal_geometry.pdf'), 'ContentType', 'vector');
+close(fg);
+fprintf('\nSlika 2.1 izvezena.\n');
