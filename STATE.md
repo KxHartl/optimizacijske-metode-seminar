@@ -8,8 +8,8 @@
 - **Student**: Krešimir Hartl
 - **Mentor**: Prof. dr. sc. Andrej Jokić
 - **LaTeX format**: FSB Seminar (`fsb-seminar`)
-- **Trenutna verzija**: v1.2 — `dist/v1.2/OMRiUS_seminar_Kresimir_Hartl.pdf`, 29 stranica
-  (naslovnica, 2 stranice skena zadatka, 26 stranica rada)
+- **Trenutna verzija**: v1.2 — `dist/v1.2/OMRiUS_seminar_Kresimir_Hartl.pdf`, 31 stranica
+  (naslovnica, 2 stranice skena zadatka, 28 stranica rada)
 
 ## Trenutni fokus
 
@@ -48,9 +48,10 @@
   - **Umetnute slike i vodiči za crtanje na ploči**: Umetnuto svih 7 slika seminara u visoko-kvalitetnom PNG formatu, uz detaljne dekonstrukcije elemenata i korak-po-korak vodiče s ASCII skicama i govornim predlošcima za crtanje na ploči (Zadatak 1 geometrija i nivo-elipse, Zadatak 2 robusna anvelopa i Monte Carlo, Zadatak 3 niveleta ceste i zasićenje zakrivljenosti, Zadatak 4 odmotavajuća spirala otvorenog kruga i Ljapunovljeva elipsoidna kontrakcija zatvorenog kruga).
   - **Kompajliran PDF udžbenika**: `docs/UDZBENIK_OMRIUS_PRIPREMA_OBRANE.pdf` i `dist/v1.2/OMRiUS_udzbenik_priprema_obrane_latest.pdf` (123 stranice, 1.3 MB, akademski format report s dvo-stupanjskim TOC-om, fancyhdr i microtype).
 
-- [ ] Dubinska komparativna recenzija v1.2 prema izvornom zadatku i seminarima Matije i Ivana (plan potvrđen 2026-09-07).
+- [x] Dubinska komparativna recenzija v1.2 prema izvornom zadatku i seminarima Matije i Ivana (završena 2026-09-08).
   - Primarni artefakt: `dist/v1.2/OMRiUS_seminar_Kresimir_Hartl.pdf`; kopija u `for_validator` ima drugi SHA-256 i ne smatra se istom verzijom bez provjere.
-  - U tijeku: RAG indeksiranje Ivanova PDF-a, neovisna matematička provjera i usporedba podudarnosti; završni nalaz ide u `docs/REVIEW.md`.
+  - Završni nalaz je u `docs/REVIEW.md`; provedeni su neovisna matematička provjera, RAG provjera izvora i usporedba stvarnih PDF-ova.
+  - Glavni zaključak: nema potvrđene zajedničke numeričke pogreške; prije predaje preporučena je ciljana revizija nalaza F01–F11.
   - Recenzija ne mijenja sadržaj seminara, MATLAB kod ni grafove.
 
 - [x] Verzija v1.0 (38 str.) i šest neovisnih recenzija u `for_validator/`.
