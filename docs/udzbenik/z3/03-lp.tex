@@ -1,0 +1,218 @@
+\chapter{Zadatak 3 --- svođenje na standardni linearni program}
+\label{ch:z3-lp}
+
+\section{Što se ovdje radi}
+
+Uklanja se apsolutna vrijednost iz funkcije cilja. To je jedini korak koji
+problem od ,,konveksnog ali neglatkog`` čini linearnim programom.
+
+\begin{predznanje}
+\begin{itemize}[nosep,leftmargin=*]
+  \item Diskretizirane veličine $h_i$, $D_1$, $D_2$ --- Poglavlje~\ref{ch:z3-diskretizacija}.
+  \item Standardni oblik LP-a --- \S\ref{sec:z3-klasa}.
+  \item Norma $\norm{\cdot}_1$ --- \S\ref{sec:vektori-matrice}.
+\end{itemize}
+\end{predznanje}
+
+\section{Diskretni kriterij}
+\label{sec:z3-kriterij}
+
+\begin{korak}[Integral $\to$ suma]
+Integral \eqref{eq:z3-kont} aproksimira se pravokutnom kvadraturom po čvorovima:
+\begin{equation}
+J_{\mathrm{disc}}(y) = \Delta x \sum_{i=0}^{N} \abs{y_i - h_i}
+                     = \Delta x \, \norm{y - h}_1 .
+\label{eq:z3-Jdisc}
+\end{equation}
+Faktor $\Delta x$ daje kriteriju dimenziju površine ($\mathrm{m}^2$). Kako je
+riječ o \emph{pozitivnoj konstanti}, on ne mijenja minimizator --- samo mjerilo
+kriterija. Bez njega bi $J$ za $N = 100$ bio pet puta veći nego za $N = 20$ pri
+istom odstupanju, pa se vrijednosti ne bi mogle uspoređivati.
+\end{korak}
+
+\section{Trik s pomoćnim varijablama}
+\label{sec:z3-l1-trik}
+
+\begin{izvor}{Vježbe 4 --- slajd 5/40 (PDF str.~5)}
+\slajd[0.86]{v4-norme-lp}
+
+\textbf{Transkripcija.} \emph{Uobičajene norme:}
+\begin{itemize}[leftmargin=*]
+  \item $\norm{\cdot}_2$: Euklidska aproksimacija. Problem najmanjih kvadrata
+        (\emph{least squares}). Rješenje $\xopt = (A\trans A)^{-1}A\trans b$ (uz
+        pretpostavku da su stupci od $A$ linearno nezavisni).
+  \item $\norm{\cdot}_\infty$: Chebysheva aproksimacija (minimax). Formulacija u
+        obliku LP-a:
+        \[
+          \text{minimiziraj}_{x,t}\ t \quad \text{uz ogr.}\quad -t\mathbf{1} \leq Ax - b \leq t\mathbf{1},
+        \]
+        gdje je $t \in \R$ i $\mathbf{1}$ vektor stupac sa svim elementima
+        jednakim $1$.
+  \item $\norm{\cdot}_1$: suma apsolutnih vrijednosti reziduala. Formulacija u
+        obliku LP-a:
+        \[
+          \text{minimiziraj}_{x,y}\ \mathbf{1}\trans y \quad \text{uz ogr.}\quad -y \leq Ax - b \leq y .
+        \]
+\end{itemize}
+
+\textbf{Ovo je recept koji Zadatak 3 koristi doslovno.} Uoči razliku između
+zadnja dva retka: kod $\ell_\infty$ pomoćna varijabla je \emph{jedan skalar} $t$
+za sve reziduale (jer se minimizira najveći), a kod $\ell_1$ je \emph{vektor} ---
+po jedna pomoćna varijabla za svaki rezidual (jer se zbrajaju svi).
+
+\emph{Napomena o oznakama:} profesor pomoćni vektor zove $y$. U našem zadatku je
+$y$ već zauzeto za visine nivelete, pa se pomoćni vektor ovdje zove $z$.
+\end{izvor}
+
+\begin{korak}[Zašto trik radi]
+Uvodimo $z_i$ i tražimo $z_i \geq \abs{y_i - h_i}$, što je ekvivalentno paru
+linearnih nejednakosti:
+\begin{equation}
+z_i \geq \abs{y_i - h_i}
+\iff
+\begin{cases}
+\ \ y_i - h_i \leq z_i \\
+-(y_i - h_i) \leq z_i
+\end{cases}
+\iff
+\begin{cases}
+\ \ y_i - z_i \leq h_i \\
+-y_i - z_i \leq -h_i
+\end{cases}
+\label{eq:z3-par}
+\end{equation}
+Ključno je zapažanje: mi tražimo samo nejednakost $\geq$, a \emph{u optimumu
+vrijedi jednakost}. Razlog: $z_i$ ulazi u funkciju cilja s pozitivnim
+koeficijentom $\Delta x > 0$, pa je minimizacija tjera prema dolje, sve do donje
+granice koju dopuštaju \eqref{eq:z3-par} --- a ta je granica upravo
+$\abs{y_i - h_i}$. Zato je
+\begin{equation}
+\min \Delta x \sum_i z_i \quad\text{uz \eqref{eq:z3-par}}
+\qquad\text{ima istu optimalnu vrijednost kao}\qquad
+\min \Delta x \sum_i \abs{y_i - h_i}.
+\end{equation}
+\end{korak}
+
+\begin{zamka}[Zamka: ,,zašto smijem $\geq$ umjesto $=$``]
+Ovo je klasično potpitanje. Odgovor mora sadržavati riječ \emph{minimizacija}:
+uvjet $z_i = \abs{y_i - h_i}$ nije linearan i ne bi se smio staviti u LP;
+uvjet $z_i \geq \abs{y_i - h_i}$ jest linearan (kao par nejednakosti), a
+jednakost se \emph{postiže sama} jer se $z_i$ minimizira. Da $z_i$ ulazi u cilj s
+negativnim koeficijentom, ili da ne ulazi uopće, trik ne bi radio.
+\end{zamka}
+
+\begin{izvor}{Predavanje 5 --- LP i QP, slajd 24/34 (PDF str.~27)}
+\slajd[0.86]{p05-po-dijelovima-afina}
+
+\textbf{Transkripcija.} \emph{Primjer 1: Minimizacija po dijelovima afinih
+funkcija.} Za zadan skup $\{a_i, b_i\}_{i=1,\dots,m}$ minimiziraj po dijelovima
+afinu funkciju $f(x) = \max_{i} \bigl(a_i\trans x + b_i\bigr)$.
+\emph{b) Formuliraj problem kao LP.} Ekvivalentan LP:
+\[
+\min_{x,t}\ t \quad \text{uz ogr.}\quad a_i\trans x + b_i \leq t, \quad i = 1,\dots,m .
+\]
+
+\textbf{Isti mehanizam, opći oblik.} Trik s $z_i$ je poseban slučaj ovoga:
+$\abs{u} = \max\{u, -u\}$ je maksimum dviju afinih funkcija, pa se zamjenjuje
+pomoćnom varijablom i parom nejednakosti. Ovaj se postupak zove
+\emph{epigrafska reformulacija} --- umjesto same funkcije optimizira se preko
+skupa iznad njezina grafa.
+\end{izvor}
+
+\section{Standardni oblik}
+\label{sec:z3-standardni}
+
+\begin{formula}{Linearni program Zadatka 3}
+Vektor optimizacijskih varijabli je
+\begin{equation}
+\vartheta = \begin{bmatrix} y \\ z \end{bmatrix} \in \R^{2(N+1)},
+\end{equation}
+a linearni program glasi
+\begin{equation}
+\min_{\vartheta} \
+\begin{bmatrix} \mathbf{0}\trans & \Delta x\,\mathbf{1}\trans \end{bmatrix} \vartheta
+\quad \text{uz} \quad
+A\vartheta \leq \beta, \quad A_{\mathrm{eq}}\vartheta = \beta_{\mathrm{eq}}, \quad z \geq 0,
+\label{eq:z3-lp}
+\end{equation}
+gdje je
+\begin{equation}
+A = \begin{bmatrix}
+I & -I \\ -I & -I \\ D_1 & 0 \\ -D_1 & 0 \\ D_2 & 0 \\ -D_2 & 0
+\end{bmatrix},
+\qquad
+\beta = \begin{bmatrix}
+h \\ -h \\ b_1\mathbf{1}_N \\ b_1\mathbf{1}_N \\ b_2\mathbf{1}_{N-1} \\ b_2\mathbf{1}_{N-1}
+\end{bmatrix}.
+\label{eq:z3-A}
+\end{equation}
+\end{formula}
+
+\begin{korak}[Što je koji blok redaka]
+\begin{enumerate}[leftmargin=*]
+  \item $\begin{bmatrix} I & -I \end{bmatrix} \vartheta \leq h$ je
+        $y_i - z_i \leq h_i$ --- prva polovica para \eqref{eq:z3-par}.
+        $N+1$ redaka.
+  \item $\begin{bmatrix} -I & -I \end{bmatrix} \vartheta \leq -h$ je
+        $-y_i - z_i \leq -h_i$ --- druga polovica. $N+1$ redaka.
+  \item $\pm D_1 y \leq b_1 \mathbf{1}$ je $\abs{\nabla y_i} \leq b_1$, rastavljeno
+        na dvije nejednakosti. $2N$ redaka.
+  \item $\pm D_2 y \leq b_2 \mathbf{1}$ je $\abs{\nabla^2 y_i} \leq b_2$.
+        $2(N-1)$ redaka.
+\end{enumerate}
+Ukupno:
+\begin{equation}
+2(N+1) + 2N + 2(N-1) = 6N \ \text{nejednakosti}.
+\end{equation}
+Provjera: za $N = 20$ to je $120$, za $N = 100$ to je $600$ --- točno kako ispis
+programa i navodi.
+\end{korak}
+
+\begin{korak}[Rubni uvjeti i granice varijabli]
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Rubni uvjeti} $y_0 = a$ i $y_N = b$ su \emph{jednakosti}, pa idu
+        u $A_{\mathrm{eq}}$, a ne među nejednakosti. Dva retka.
+  \item \textbf{Varijable $y_i$ su slobodne} --- niveleta smije biti i ispod i
+        iznad terena, pa donja granica mora biti $-\infty$. Ovo je česta greška:
+        \texttt{linprog} po zadanome ne postavlja granice, ali ako se nesmotreno
+        napiše \texttt{lb = zeros(...)}, niveleta se prisili da bude nenegativna
+        i rješenje se tiho promijeni.
+  \item \textbf{Varijable $z_i$ imaju donju granicu nula}, jer predstavljaju
+        apsolutnu vrijednost. Formalno to slijedi već iz \eqref{eq:z3-par}
+        (zbrajanjem dviju nejednakosti dobiva se $-2z_i \leq 0$), ali eksplicitna
+        granica pomaže rješavaču.
+\end{itemize}
+\end{korak}
+
+\begin{korak}[Veličina problema]
+\begin{center}
+\begin{tabular}{lcc}
+\toprule
+& $N = 20$ & $N = 100$ \\
+\midrule
+Čvorova $N+1$ & $21$ & $101$ \\
+Varijabli $2(N+1)$ & $42$ & $202$ \\
+Nejednakosti $6N$ & $120$ & $600$ \\
+Jednakosti & $2$ & $2$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+Oba su, po mjerilu s Predavanja 5 (,,LP i sa preko $10\,000$ varijabli``), vrlo
+mali problemi.
+\end{korak}
+
+\begin{izgovor}
+,,Apsolutnu vrijednost uklanjam po receptu s Vježbi 4: uvodim pomoćni vektor zet
+i par nejednakosti, ipsilon i minus zet i manje ili jednako ha i, te minus
+ipsilon i minus zet i manje ili jednako minus ha i. Traži se samo nejednakost, a
+jednakost se u optimumu postiže sama, jer zet ulazi u funkciju cilja s
+pozitivnim koeficijentom pa ga minimizacija tjera na donju granicu.
+
+Vektor varijabli je ipsilon i zet zajedno, dakle dva puta en plus jedan
+komponenti. Funkcija cilja je delta iks puta suma zetova --- ipsilon u nju uopće
+ne ulazi.
+
+Ograničenja: dva bloka za apsolutnu vrijednost, dva za nagib i dva za drugu
+razliku, ukupno šest en nejednakosti. Rubni uvjeti idu kao dvije jednakosti.
+Ipsilon je slobodna varijabla, zet ima donju granicu nula.``
+\end{izgovor}

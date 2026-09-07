@@ -1,0 +1,187 @@
+\chapter{Zadatak 3 --- priprema za obranu}
+\label{ch:z3-obrana}
+
+\section{Brojevi koje moraš znati napamet}
+\label{sec:z3o-brojevi}
+
+\begin{longtable}{@{}p{0.34\linewidth} p{0.28\linewidth} p{0.32\linewidth}@{}}
+\toprule
+\textbf{Veličina} & \textbf{Vrijednost} & \textbf{Napomena} \\
+\midrule
+\endhead
+$L$, $a$, $b$ & $10$, $1$, $4$ & rubni uvjeti na terenu \\
+$h(10)$ & $53 - 95 + 48 - 3 + 1 = 4$ & provjeri se napamet \\
+Slučaj A & $b_1 = 0{,}5$, $b_2 = 0{,}5$ & \\
+Slučaj B & $b_1 = 0{,}5$, $b_2 = 0{,}2$ & \\
+$J^{\star}$ A, $N = 20$ & $1{,}916180\ \mathrm{m}^2$ & \\
+$J^{\star}$ A, $N = 100$ & $1{,}965940\ \mathrm{m}^2$ & $+2{,}60\%$ \\
+$J^{\star}$ B, $N = 20$ & $2{,}453727\ \mathrm{m}^2$ & \\
+$J^{\star}$ B, $N = 100$ & $2{,}506047\ \mathrm{m}^2$ & $+2{,}13\%$ \\
+Utjecaj $b_2$ pri $N = 100$ & $+27{,}47\%$ & $1{,}9659 \to 2{,}5060$ \\
+Varijabli & $2(N+1)$ & $42$ / $202$ \\
+Nejednakosti & $6N$ & $120$ / $600$ \\
+Jednakosti & $2$ & rubni uvjeti \\
+$h(9)$, $h(8)$ & $2{,}698$, $2{,}389$ & ključ za objašnjenje nasipa \\
+\bottomrule
+\end{longtable}
+
+\begin{izgovor}[Jedna računica koja objašnjava cijelu sliku]
+,,Zadano je $y(10) = 4$, a nagib najviše $0{,}5$ po metru. Dakle $y(9)$ mora biti
+barem $3{,}5$, a $y(8)$ barem $3{,}0$. Teren je ondje na $2{,}70$ odnosno
+$2{,}39$. Razlika od gotovo metar je nasip --- i to je najveći dio cijelog
+troška.``
+
+Ako na obrani znaš samo tu jednu računicu, možeš objasniti oblik rješenja bez
+ijednog drugog broja.
+\end{izgovor}
+
+\section{Zadatak u pet rečenica}
+\label{sec:z3o-sazetak}
+
+\begin{izgovor}[Ako imaš samo minutu]
+,,Trošak je proporcionalan količini premještene zemlje, dakle integralu
+apsolutne razlike između nivelete i terena. Ograničenja su nagib, brzina promjene
+nagiba i rubni uvjeti.
+
+Diskretizirao sam interval na en podintervala i derivacije zamijenio podijeljenim
+razlikama unatrag, kako zadatak propisuje. Nepoznanica je vektor visina u
+čvorovima.
+
+Apsolutnu vrijednost sam uklonio pomoćnim vektorom zet i parom nejednakosti, po
+receptu s Vježbi 4. Time je sve postalo linearno, pa je problem linearni program
+--- preciznije, $\ell_1$-aproksimacija s linearnim ograničenjima.
+
+Riješio sam ga funkcijom \texttt{linprog} za četiri tražena slučaja. U svim
+slučajevima su i ograničenje nagiba i ograničenje glatkoće aktivna.
+
+Najveći trošak javlja se na kraju trase, gdje teren raste brže nego što nagib
+dopušta, pa niveleta mora ići iznad terena da bi stigla do zadane krajnje visine.``
+\end{izgovor}
+
+\section{Pitanja koja se očekuju}
+\label{sec:z3o-pitanja}
+
+\begin{pitanje}{Zašto ste smjeli napisati $z_i \geq \abs{y_i - h_i}$ umjesto jednakosti?}
+\textbf{Odgovor.} Jer se $z_i$ minimizira. Ulazi u funkciju cilja s pozitivnim
+koeficijentom $\Delta x$, pa ga optimizacija tjera na najmanju vrijednost koju
+ograničenja dopuštaju --- a to je točno $\abs{y_i - h_i}$. Jednakost bi bila
+nelinearan uvjet i ne bi smjela ući u LP; nejednakost jest linearna (kao par),
+a jednakost se postiže sama. Da $z_i$ ne ulazi u cilj, ili da ulazi s negativnim
+koeficijentom, trik ne bi radio.
+\end{pitanje}
+
+\begin{pitanje}{Kojoj klasi problem pripada i zašto ne QP?}
+\textbf{Odgovor.} LP-u. Funkcija cilja je suma apsolutnih vrijednosti, dakle
+$\ell_1$-norma, koja se pomoćnim varijablama svodi na linearnu funkciju. QP bi
+bio da je kriterij suma \emph{kvadrata} odstupanja, dakle $\ell_2$-norma --- tada
+bi funkcija cilja bila kvadratna i ne bi trebale pomoćne varijable. Zadatak
+izričito kaže da je trošak proporcionalan \emph{količini} materijala, što je
+linearno u volumenu, pa je $\ell_1$ ispravan izbor.
+\end{pitanje}
+
+\begin{pitanje}{Kako bi izgledalo rješenje da je kriterij $\ell_2$ umjesto $\ell_1$?}
+\textbf{Odgovor.} Bilo bi glađe i ,,razmazanije``. $\ell_2$ jako kažnjava velika
+odstupanja, pa bi ih raspodijelio po cijeloj trasi --- niveleta bi svugdje malo
+odstupala od terena. $\ell_1$ kažnjava linearno, pa preferira rješenja u kojima
+je odstupanje \emph{nula na većini trase}, a koncentrirano ondje gdje je nužno.
+To se vidi na slici: niveleta se poklapa s terenom u sredini i odstupa samo na
+kraju. To je isto svojstvo koje $\ell_1$ čini korisnim za rijetka rješenja.
+\end{pitanje}
+
+\begin{pitanje}{Zašto je druga razlika definirana samo za $N-1$ točaka?}
+\textbf{Odgovor.} Jer traži tri uzastopna čvora: $y_i$, $y_{i-1}$, $y_{i-2}$. Za
+$i = 0$ i $i = 1$ nema dovoljno prethodnika. Prva razlika traži dva čvora, pa je
+definirana za $N$ točaka. Zato $D_1$ ima $N$, a $D_2$ ima $N-1$ redaka, i zato je
+ukupan broj nejednakosti $2(N+1) + 2N + 2(N-1) = 6N$.
+\end{pitanje}
+
+\begin{pitanje}{Zašto trošak raste kad se mreža progusti? Zar finija mreža ne bi trebala dati bolje rješenje?}
+\textbf{Odgovor.} Djeluju dva učinka, oba u istom smjeru. Prvo, diskretni
+kriterij je pravokutna kvadratura: na rijetkoj mreži dio površine između čvorova
+izmiče sumi, pa se integral podcjenjuje. Drugo, ograničenje glatkoće je na
+rijetkoj mreži \emph{blaže}, jer je diskretna druga razlika preko većeg koraka
+izglađena verzija druge derivacije --- dakle dopustivi skup se s finijom mrežom
+steže. Finija mreža daje \emph{vjerniju} vrijednost, ne manju. Iz dviju mreža ne
+mogu odvojiti ta dva doprinosa niti izmjeriti red konvergencije.
+\end{pitanje}
+
+\begin{pitanje}{Zašto niste naveli koliko je iskopa, a koliko nasipa?}
+\textbf{Odgovor.} Jer ta podjela nije jedinstvena. Ondje gdje se niveleta i
+teren poklapaju LP je degeneriran --- optimalno lice nije jedna točka, pa
+različiti algoritmi vraćaju različite optimalne nivelete s istom ukupnom
+vrijednošću. Ukupni volumen $J^{\star}$ jest jedinstven i njega navodim; njegovu
+raspodjelu ne, jer bi ovisila o odabranom rješavaču.
+\end{pitanje}
+
+\begin{pitanje}{Zašto je profil druge razlike po dijelovima konstantan?}
+\textbf{Odgovor.} Zato što je optimum LP-a u vrhu dopustivog poliedra, gdje je
+aktivan maksimalan broj ograničenja. Varijable stoga ,,sjede`` na svojim
+granicama --- ovdje $\nabla^2 y_i$ poprima vrijednosti $+b_2$, $-b_2$ ili nulu, s
+kratkim prijelazima. To je karakteristično \emph{bang-bang} ponašanje rješenja
+linearnih programa; kod kvadratnog kriterija profil bi bio gladak.
+\end{pitanje}
+
+\begin{pitanje}{Je li $y''$ zaista zakrivljenost?}
+\textbf{Odgovor.} Nije, nego njezina aproksimacija za male nagibe. Prava
+zakrivljenost je $\kappa = y''/(1 + y'^2)^{3/2}$; uz $y' = 0{,}5$ nazivnik je
+oko $1{,}40$, pa $y''$ precjenjuje zakrivljenost za oko $40\%$ na najstrmijim
+dionicama. Zadatak izričito propisuje drugu podijeljenu razliku, pa sam tako i
+radio, ali ta razlika postoji.
+\end{pitanje}
+
+\begin{pitanje}{Što bi se dogodilo da rubni uvjeti nisu na terenu?}
+\textbf{Odgovor.} Trošak bi porastao, jer bi niveleta na rubovima nužno odstupala
+od terena. Ovdje je $a = h(0)$ i $b = h(L)$, pa je odstupanje na rubovima nula i
+sav trošak dolazi iz unutrašnjosti trase. Kad bi npr.\ $b$ bio veći od $h(L)$,
+dodao bi se nasip na cijeloj završnoj dionici.
+\end{pitanje}
+
+\section{Popis zamki}
+\label{sec:z3o-zamke}
+
+\begin{longtable}{@{}p{0.05\linewidth} p{0.42\linewidth} p{0.47\linewidth}@{}}
+\toprule
+\textbf{\#} & \textbf{Zamka} & \textbf{Kako je izbjeći} \\
+\midrule
+\endhead
+1 & Trošak bez apsolutne vrijednosti & Iskop bi poništavao nasip; rezultat
+fizikalno besmislen. \\[5pt]
+2 & Nagib shvaćen jednostrano & ,,Ne veći od $b_1$`` znači
+$\abs{y'} \leq b_1$, dakle dva reda po ograničenju. \\[5pt]
+3 & Brkanje $N$ i $N+1$ & $N$ podintervala, $N+1$ čvorova. \\[5pt]
+4 & Krive dimenzije $D_1$, $D_2$ & $N \times (N{+}1)$ i $(N{-}1) \times (N{+}1)$
+(\S\ref{sec:z3-razlike}). \\[5pt]
+5 & $D_2$ podijeljena s $\Delta x$ umjesto $\Delta x^2$ & Provjeri jedinice:
+$\nabla^2 y$ mora biti $\mathrm{m}^{-1}$. \\[5pt]
+6 & Centralna umjesto propisane razlike unatrag & Zadatak propisuje razliku
+unatrag; ne mijenjaj shemu. \\[5pt]
+7 & $z_i = \abs{\cdot}$ upisano kao jednakost & Nelinearno; ide kao par
+nejednakosti (\S\ref{sec:z3-l1-trik}). \\[5pt]
+8 & Donja granica $0$ postavljena i za $y$ & $y$ mora biti slobodan,
+$-\infty$. \\[5pt]
+9 & Izostavljen faktor $\Delta x$ u kriteriju & Bez njega se $N = 20$ i
+$N = 100$ ne mogu uspoređivati. \\[5pt]
+10 & Porast $J^{\star}$ pripisan samo kvadraturi & Doprinose dva učinka; dvije
+mreže nisu dokaz reda konvergencije. \\[5pt]
+11 & Navedena podjela na iskop i nasip & LP je degeneriran; podjela nije
+jedinstvena. \\[5pt]
+12 & $y''$ nazvan zakrivljenošću bez ograde & Aproksimacija za male nagibe. \\
+\bottomrule
+\end{longtable}
+
+\section{Veza s ostalim zadacima}
+\label{sec:z3o-veze}
+
+\begin{predznanje}
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Iz Zadatka 1} dolazi cijeli pojmovni aparat: konveksnost,
+        dopustivi skup, aktivna ograničenja. Ovdje se ne rješavaju KKT uvjeti
+        ručno --- s $600$ nejednakosti to nije izvedivo --- ali logika aktivnog
+        skupa je ista, i vidi se na profilima koji ,,sjede`` na granicama.
+  \item \textbf{Prema Zadatku 4}: ista ideja svođenja na standardnu klasu.
+        Ondje se bilinearan uvjet supstitucijom $Y = KP$ svodi na linearnu
+        matričnu nejednakost, kao što se ovdje apsolutna vrijednost pomoćnom
+        varijablom svodi na par linearnih nejednakosti. Oba puta ključ je
+        reformulacija, ne novi algoritam.
+\end{itemize}
+\end{predznanje}

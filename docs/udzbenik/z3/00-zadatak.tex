@@ -1,0 +1,131 @@
+\chapter{Zadatak 3 --- što je točno zadano}
+\label{ch:z3-zadatak}
+
+\section{Izvorni tekst, doslovno}
+\label{sec:z3-izvorni}
+
+Zadatak 3 se u izvorniku proteže preko dvije stranice. Slijede obje, u
+izvornom rasporedu.
+
+\begin{zadatak}{Zadatak 3 (Formulacija opt.\ problema; opt.\ aproksimacija s ograničenjima) --- prva stranica}
+\skenzad[0.96]{z3-original-a}
+\end{zadatak}
+
+\begin{zadatak}{Zadatak 3 --- druga stranica: upute za diskretizaciju i podzadaci}
+\skenzad[0.96]{z3-original-b}
+\end{zadatak}
+
+\subsection{Prijepis}
+
+\begin{zadatak}{Zadatak 3 --- prijepis teksta}
+\textbf{Zadatak 3. (Formulacija opt.\ problema; opt.\ aproksimacija s
+ograničenjima)} Potrebno je izgraditi cestu na neravnom terenu. Trošak izrade
+ceste proporcionalan je količini materijala (zemlje) kojeg treba oduzeti
+(otkopati) ili dodati da bi se dobio donekle ,,poravnan`` teren prikladan za
+izgradnju ceste.
+
+Neka je $L$ sveukupna duljina ceste (točnije projekcija duljine ceste na
+horizontalnu os $x$), a $h(x)$ je poznata visina terena u ovisnosti o koordinati
+$x \in [0, L]$ --- vidjeti sliku za ilustraciju. Potrebno je odrediti visinu
+ceste $y(x)$ za $x \in [0, L]$ koja rezultira minimalnim troškovima izrade, s
+time da je nužno poštovati sljedeća ograničenja:
+\begin{itemize}[nosep,leftmargin=*]
+  \item nagib ceste ne smije biti veći od $b_1$;
+  \item za ugodnu vožnju brzina promjene nagiba ceste ne smije biti veća od $b_2$;
+  \item rubni uvjeti $y(0) = a$ i $y(L) = b$ moraju biti zadovoljeni.
+\end{itemize}
+
+Zadano je:
+\begin{align}
+L &= 10, \tag{2a} \\
+h(x) &= 0.0053x^4 - 0.095x^3 + 0.48x^2 - 0.3x + 1, \tag{2b} \\
+a &= h(0) = 1, \quad b = h(L) = 4, \tag{2c} \\
+\text{slučaj A:}& \quad b_1 = 0.5,\ b_2 = 0.5 \tag{2d} \\
+\text{slučaj B:}& \quad b_1 = 0.5,\ b_2 = 0.2 \tag{2e}
+\end{align}
+
+\textbf{Upute:} Koordinate $x$ na intervalu $[0, L]$ diskretizirajte s $N+1$
+točaka $\{x_0, x_1, \dots, x_N\}$, odnosno ovaj interval podijelite na $N$
+podintervala od kojih je svaki duljine $\Delta h = L/N$ (uočite $x_0 = 0$,
+$x_N = L$). Tada visinu ceste računajte samo u točkama diskretizacije
+$\{y_0 = y(x_0),\, y_1 = y(x_1),\, \dots,\, y_N = y(x_L)\}$. Nagib ceste
+(derivaciju) aproksimirajte prvom podijeljenom razlikom:
+$y'(x_i) \approx \nabla y_i \coloneqq \frac{1}{\Delta x}(y_i - y_{i-1})$, a
+brzinu promjene nagiba (druga derivacija) s
+$y''(x_i) \approx \nabla^2 y_i \coloneqq \frac{1}{\Delta x}(\nabla y_i - \nabla y_{i-1})$.
+
+\textbf{Zadatci:}
+\begin{itemize}[nosep,leftmargin=*]
+  \item Formulirajte problem kao optimizacijski problem. Kojoj klasi
+        optimizacijskih problema pripada ovaj problem?
+  \item Riješite problem za 4 različita slučaja: \emph{i)} za slučaj A
+        (parametri zadani s (2d)) te s $N = 20$; \emph{ii)} za slučaj A s
+        $N = 100$; \emph{iii)} za slučaj B (parametri zadani s (2e)) te s
+        $N = 20$; \emph{iv)} za slučaj B s $N = 100$.
+\end{itemize}
+\end{zadatak}
+
+\section{Što u zadatku \emph{ne} piše}
+\label{sec:z3-nije-receno}
+
+Ovaj zadatak traži najviše vlastitog modeliranja od sva četiri --- zadan je
+inženjerski opis, ne matematički problem.
+
+\begin{longtable}{@{}p{0.36\linewidth} p{0.60\linewidth}@{}}
+\toprule
+\textbf{Što nije rečeno} & \textbf{Kako je protumačeno i zašto} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Što nije rečeno} & \textbf{Kako je protumačeno i zašto} \\
+\midrule
+\endhead
+Koja je \emph{formula} za trošak. & Zadatak kaže samo da je trošak
+,,proporcionalan količini materijala koji treba otkopati ili dodati``. Uzeto je
+$J = \int_0^L \abs{y(x) - h(x)}\,\dd x$: apsolutna vrijednost, jer se i iskop i
+nasip plaćaju, i to \emph{jednakim} ponderom. Da su ponderi različiti, funkcija
+cilja bila bi po dijelovima linearna s dva koeficijenta. \\[6pt]
+Širina trase. & Nije zadana. Uzeta je jedinična, $w = 1$ m, pa je volumen
+brojčano jednak površini u $\mathrm{m}^2$. Konstantna širina je pozitivan faktor
+i ne mijenja minimizator. \\[6pt]
+Jesu li iskop i nasip jednako skupi. & Nije rečeno. Uzeto je da jesu --- to je
+najjednostavnija pretpostavka konzistentna s tekstom. \\[6pt]
+Mjerne jedinice. & $L = 10$ bez jedinice; uzeto je metara. Tada je $b_1$
+bezdimenzijski (m/m), a $b_2$ ima jedinicu $\mathrm{m}^{-1}$. \\[6pt]
+$\Delta h$ ili $\Delta x$. & Upute u istoj rečenici koriste $\Delta h = L/N$ za
+duljinu podintervala, a zatim $\frac{1}{\Delta x}$ u formulama za razlike. Riječ
+je o istoj veličini pod dvama imenima; ovdje se dosljedno piše $\Delta x$. \\[6pt]
+Kako uključiti apsolutnu vrijednost u LP. & Ne spominje se. Uklanja se
+pomoćnim varijablama $z_i$, po postupku s Vježbi 4
+(\S\ref{sec:z3-l1-trik}). \\[6pt]
+Treba li skalirati sumu s $\Delta x$. & Nije rečeno. Faktor $\Delta x$ dodan je
+da kriterij ima dimenziju površine; kao pozitivna konstanta ne mijenja
+minimizator, samo mjerilo. \\[6pt]
+Što s $\nabla^2 y_i$ na rubovima. & Druga podijeljena razlika definirana je tek
+za $i \geq 2$, jer traži tri uzastopna čvora. Ograničenje glatkoće stoga vrijedi
+za $N-1$ točaka, ne za $N+1$. \\
+\bottomrule
+\end{longtable}
+
+\begin{zamka}[Zamka: ,,nagib ne smije biti veći od $b_1$`` znači po apsolutnoj vrijednosti]
+Doslovno čitanje ,,$y'(x) \leq b_1$`` dopustilo bi proizvoljno strm \emph{pad}.
+Fizikalno to nema smisla --- strmina je jednako problematična u oba smjera --- pa
+se uzima $\abs{y'(x)} \leq b_1$. Isto vrijedi za $b_2$. Ta pretpostavka mijenja
+broj ograničenja: svako daje \emph{dva} reda u matrici, ne jedan.
+\end{zamka}
+
+\section{Karta poglavlja}
+\label{sec:z3-karta}
+
+\begin{longtable}{@{}p{0.48\linewidth} p{0.48\linewidth}@{}}
+\toprule
+\textbf{Korak} & \textbf{Gdje je obrađen} \\
+\midrule
+\endhead
+(a) Kontinuirana formulacija i klasa problema & Poglavlje~\ref{ch:z3-formulacija} \\
+Diskretizacija konačnim razlikama & Poglavlje~\ref{ch:z3-diskretizacija} \\
+Svođenje na standardni LP & Poglavlje~\ref{ch:z3-lp} \\
+(b) Četiri slučaja, slike, analiza & Poglavlje~\ref{ch:z3-rjesenja} \\
+Pitanja, zamke i modelski odgovori & Poglavlje~\ref{ch:z3-obrana} \\
+\bottomrule
+\end{longtable}

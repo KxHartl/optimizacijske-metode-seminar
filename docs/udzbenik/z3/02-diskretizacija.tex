@@ -1,0 +1,148 @@
+\chapter{Zadatak 3 --- diskretizacija konačnim razlikama}
+\label{ch:z3-diskretizacija}
+
+\section{Što se ovdje radi}
+
+Nepoznata \emph{funkcija} $y(\cdot)$ zamjenjuje se konačnim vektorom njezinih
+vrijednosti u čvorovima, a derivacije podijeljenim razlikama. Postupak je zadan
+uputama, ali se ovdje izvodi do matričnog zapisa, koji upute ne daju.
+
+\begin{predznanje}
+\begin{itemize}[nosep,leftmargin=*]
+  \item Kontinuirani problem \eqref{eq:z3-kont}--\eqref{eq:z3-kont-ogr}.
+  \item Množenje matrice i vektora --- \S\ref{sec:mnozenje}.
+  \item Oznaka $\coloneqq$ --- \S\ref{sec:znakovi-logike}.
+\end{itemize}
+\end{predznanje}
+
+\section{Mreža}
+\label{sec:z3-mreza}
+
+\begin{korak}[Čvorovi i korak]
+Interval $[0, L]$ dijeli se na $N$ jednakih podintervala duljine
+\begin{equation}
+\Delta x = \frac{L}{N},
+\end{equation}
+čime nastaje mreža od $N+1$ čvorova
+\begin{equation}
+x_i = i\,\Delta x, \quad i = 0, 1, \dots, N,
+\qquad x_0 = 0, \quad x_N = L .
+\end{equation}
+Visine terena u čvorovima su $h_i = h(x_i)$, a nepoznanice su visine nivelete
+\begin{equation}
+y = [\,y_0,\ y_1,\ \dots,\ y_N\,]\trans \in \R^{N+1} .
+\end{equation}
+Broj \emph{čvorova} je $N+1$, broj \emph{podintervala} je $N$ --- razlika koja se
+često promaši u dimenzijama matrica.
+\end{korak}
+
+\begin{zamka}[Zamka: $\Delta h$ nasuprot $\Delta x$ u tekstu zadatka]
+Upute u istoj rečenici pišu ,,svaki duljine $\Delta h = L/N$``, a zatim u
+formulama za razlike koriste $\frac{1}{\Delta x}$. To su iste veličine pod dvama
+imenima --- vjerojatno omaška u tekstu. Ovdje se dosljedno piše $\Delta x$. Ako
+te se na obrani pita, reci da si uočio nedosljednost u oznakama i uzeo
+$\Delta h \equiv \Delta x = L/N$; to je jedino čitanje koje ima smisla, jer
+$\Delta h$ inače ne bi bilo definirano nigdje drugdje.
+\end{zamka}
+
+\section{Podijeljene razlike}
+\label{sec:z3-razlike}
+
+Prema uputama zadatka:
+\begin{formula}{Prva i druga podijeljena razlika}
+\begin{align}
+\nabla y_i &\coloneqq \frac{y_i - y_{i-1}}{\Delta x}, & i &= 1, \dots, N, \label{eq:z3-D1} \\
+\nabla^2 y_i &\coloneqq \frac{\nabla y_i - \nabla y_{i-1}}{\Delta x}
+             = \frac{y_i - 2y_{i-1} + y_{i-2}}{\Delta x^2}, & i &= 2, \dots, N. \label{eq:z3-D2}
+\end{align}
+\end{formula}
+
+\begin{korak}[Odakle drugi izraz u \eqref{eq:z3-D2}]
+Uvrštavanjem definicije prve razlike:
+\[
+\nabla^2 y_i
+= \frac{1}{\Delta x}\left( \frac{y_i - y_{i-1}}{\Delta x} - \frac{y_{i-1} - y_{i-2}}{\Delta x} \right)
+= \frac{y_i - y_{i-1} - y_{i-1} + y_{i-2}}{\Delta x^2}
+= \frac{y_i - 2y_{i-1} + y_{i-2}}{\Delta x^2}.
+\]
+Koeficijenti $1, -2, 1$ karakteristični su za drugu razliku; zbroj im je nula,
+što znači da druga razlika iščezava na svakoj \emph{linearnoj} funkciji --- kako
+i treba, jer je druga derivacija pravca nula.
+\end{korak}
+
+\begin{zamka}[Zamka: koliko ograničenja stvarno ima]
+\begin{itemize}[nosep,leftmargin=*]
+  \item Prva razlika traži \emph{dva} uzastopna čvora, pa je definirana za
+        $i = 1, \dots, N$ --- dakle $N$ vrijednosti, ne $N+1$.
+  \item Druga razlika traži \emph{tri} uzastopna čvora, pa je definirana za
+        $i = 2, \dots, N$ --- dakle $N-1$ vrijednosti.
+\end{itemize}
+Ako se to previdi, matrice $D_1$ i $D_2$ dobiju krive dimenzije i \texttt{linprog}
+javi grešku o nepodudarnim veličinama. Ovo je najčešći uzrok pada koda u ovom
+zadatku.
+\end{zamka}
+
+\begin{zamka}[Zamka: razlika unatrag, ne centralna]
+Zadatak izričito propisuje razliku \emph{unatrag} --- $\nabla y_i$ koristi $y_i$
+i $y_{i-1}$. Centralna razlika, $(y_{i+1} - y_{i-1})/(2\Delta x)$, bila bi
+točnija (pogreška $O(\Delta x^2)$ umjesto $O(\Delta x)$), ali \emph{nije}
+zadana. Ne mijenjaj propisanu shemu; ako je spomeneš, spomeni je kao alternativu
+koju zadatak ne traži.
+\end{zamka}
+
+\section{Matrični zapis}
+\label{sec:z3-matrice}
+
+\begin{formula}{Matrice razlika}
+$\nabla y = D_1 y$ i $\nabla^2 y = D_2 y$, gdje su
+\begin{equation}
+D_1 = \frac{1}{\Delta x}
+\begin{bmatrix}
+-1 & 1 & & & \\
+& -1 & 1 & & \\
+& & \ddots & \ddots & \\
+& & & -1 & 1
+\end{bmatrix} \in \R^{N \times (N+1)},
+\end{equation}
+\begin{equation}
+D_2 = \frac{1}{\Delta x^2}
+\begin{bmatrix}
+1 & -2 & 1 & & \\
+& 1 & -2 & 1 & \\
+& & \ddots & \ddots & \ddots \\
+& & & 1 & -2 & 1
+\end{bmatrix} \in \R^{(N-1) \times (N+1)} .
+\end{equation}
+\end{formula}
+
+\begin{korak}[Provjera dimenzija]
+\begin{itemize}[nosep,leftmargin=*]
+  \item $D_1$ ima $N$ redaka (po jedan za svaku prvu razliku) i $N+1$ stupaca
+        (po jedan za svaki čvor). Umnožak $D_1 y \in \R^N$. \checkmark
+  \item $D_2$ ima $N-1$ redaka i $N+1$ stupaca; $D_2 y \in \R^{N-1}$. \checkmark
+  \item Svaki redak od $D_1$ ima točno dva elementa različita od nule, svaki
+        redak od $D_2$ točno tri. Matrice su rijetke (\emph{sparse}) --- za
+        $N = 100$ od $100 \times 101 = 10\,100$ elemenata samo $200$ nije nula.
+\end{itemize}
+\end{korak}
+
+\begin{korak}[Zašto je $D_2$ podijeljena s $\Delta x^2$, a ne s $\Delta x$]
+Jer je druga derivacija drugog reda: dvaput se dijeli korakom. Provjera
+dimenzija: $y$ je u metrima, $\Delta x$ u metrima, pa je $D_1 y$
+bezdimenzijski (m/m), kako i treba za nagib, a $D_2 y$ ima jedinicu
+$\mathrm{m}^{-1}$, kako i treba za $b_2$. Ako se ovdje promaši potencija, brojevi
+za $N = 20$ i $N = 100$ razlikovat će se za faktor $5$ umjesto da budu
+usporedivi --- i to je najlakši način da otkriješ grešku.
+\end{korak}
+
+\begin{ploca}[Kako $D_1$ i $D_2$ zapisati na ploči]
+Ne prepisuj cijele matrice. Napiši prvi redak i naznači strukturu:
+\begin{enumerate}[nosep,leftmargin=*]
+  \item ,,$D_1$ ima u svakom retku $-1$ i $1$ na susjednim mjestima, sve
+        podijeljeno s $\Delta x$; dimenzija $N \times (N{+}1)$.``
+  \item ,,$D_2$ ima $1, -2, 1$, podijeljeno s $\Delta x^2$; dimenzija
+        $(N{-}1) \times (N{+}1)$.``
+  \item Nacrtaj shematski pravokutnik s dijagonalnom vrpcom i upiši te brojeve u
+        prvi redak. To je dovoljno --- ispitivač traži strukturu, ne prijepis.
+\end{enumerate}
+\end{ploca}

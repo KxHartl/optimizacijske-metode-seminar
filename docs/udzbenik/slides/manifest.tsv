@@ -40,3 +40,9 @@ p08-dokaz-dualnost	08_Robusno_optimiranje	4	-
 p08-primjer1-nominalno	08_Robusno_optimiranje	8	-
 p08-primjer1-robusno	08_Robusno_optimiranje	9	-
 p08-primjer2-konacno	08_Robusno_optimiranje	16	-
+# --- Zadatak 3: LP i l1-aproksimacija ---
+p05-lp	05_LP_QP	4	-
+p05-po-dijelovima-afina	05_LP_QP	27	-
+p05-simpleks	05_LP_QP	20	-
+v4-aproksimacija	Vjezbe 4	4	-
+v4-norme-lp	Vjezbe 4	5	-

@@ -1,0 +1,192 @@
+\chapter{Zadatak 3a --- formulacija i klasa}
+\label{ch:z3-formulacija}
+
+\section{Što se ovdje traži}
+
+Prevesti inženjerski opis --- ,,trošak je proporcionalan količini zemlje`` --- u
+optimizacijski problem, i reći kojoj klasi taj problem pripada.
+
+\begin{zadatak}{Zadatak 3, prvi podzadatak}
+Formulirajte problem kao optimizacijski problem. Kojoj klasi optimizacijskih
+problema pripada ovaj problem?
+\end{zadatak}
+
+\begin{predznanje}
+\begin{itemize}[nosep,leftmargin=*]
+  \item Što je konveksna funkcija --- \S\ref{sec:z1a-konveksan-skup}, Poglavlje~\ref{ch:z1-konveksnost}.
+  \item Norma $\norm{\cdot}_1$ --- \S\ref{sec:vektori-matrice}.
+  \item Značenje derivacije i druge derivacije --- \S\ref{sec:derivacije-oznake}.
+\end{itemize}
+\end{predznanje}
+
+\section{Od zemljanih radova do integrala}
+\label{sec:z3-model}
+
+\begin{korak}[Izgradnja funkcije cilja, korak po korak]
+\begin{enumerate}[leftmargin=*]
+  \item \textbf{Što se plaća.} Trošak je proporcionalan količini zemlje koju
+        treba otkopati \emph{ili} nasuti. Na mjestu $x$ razlika između nivelete i
+        terena je $y(x) - h(x)$: pozitivna znači nasip, negativna iskop.
+  \item \textbf{Zašto apsolutna vrijednost.} Oboje se plaća, pa u trošak ulazi
+        $\abs{y(x) - h(x)}$. Bez apsolutne vrijednosti iskop bi ,,poništavao``
+        nasip, pa bi optimalno rješenje bilo bilo koja krivulja koja u prosjeku
+        prati teren --- što je fizikalno besmisleno.
+  \item \textbf{Od visine do volumena.} Površina presjeka između dviju krivulja
+        je $\int_0^L \abs{y - h}\dd x$. Uz jediničnu širinu trase, $w = 1$ m,
+        volumen je brojčano jednak toj površini, izraženoj u $\mathrm{m}^2$.
+  \item \textbf{Ograničenja.} Tri, izravno iz teksta: nagib
+        $\abs{y'(x)} \leq b_1$, brzina promjene nagiba $\abs{y''(x)} \leq b_2$, i
+        rubni uvjeti $y(0) = a$, $y(L) = b$.
+\end{enumerate}
+\end{korak}
+
+\begin{formula}{Kontinuirana formulacija}
+\begin{equation}
+\min_{y(\cdot)} \ J[y] = \int_0^L \bigl| y(x) - h(x) \bigr| \dd x
+\label{eq:z3-kont}
+\end{equation}
+uz ograničenja
+\begin{equation}
+\abs{y'(x)} \leq b_1, \qquad \abs{y''(x)} \leq b_2, \qquad y(0) = a, \quad y(L) = b .
+\label{eq:z3-kont-ogr}
+\end{equation}
+\end{formula}
+
+Zadani podaci:
+\begin{equation}
+L = 10\ \mathrm{m}, \qquad
+h(x) = 0{,}0053x^4 - 0{,}095x^3 + 0{,}48x^2 - 0{,}3x + 1,
+\end{equation}
+\begin{equation}
+a = h(0) = 1\ \mathrm{m}, \qquad b = h(L) = 4\ \mathrm{m},
+\end{equation}
+\begin{equation}
+\text{slučaj A:}\ b_1 = 0{,}5,\ b_2 = 0{,}5\ \mathrm{m}^{-1};
+\qquad
+\text{slučaj B:}\ b_1 = 0{,}5,\ b_2 = 0{,}2\ \mathrm{m}^{-1}.
+\end{equation}
+
+\begin{korak}[Provjera rubnih uvjeta]
+Zadatak tvrdi $a = h(0) = 1$ i $b = h(L) = 4$. Provjerimo:
+\begin{align}
+h(0) &= 1, \\
+h(10) &= 0{,}0053 \cdot 10^4 - 0{,}095 \cdot 10^3 + 0{,}48 \cdot 10^2 - 0{,}3 \cdot 10 + 1 \\
+      &= 53 - 95 + 48 - 3 + 1 = 4 . \quad\checkmark
+\end{align}
+Rubni uvjeti, dakle, traže da niveleta \emph{počinje i završava na terenu} ---
+ondje nema ni iskopa ni nasipa. To je važno za razumijevanje slike: odstupanje
+mora biti nula na oba kraja.
+\end{korak}
+
+\section{Što $b_1$ i $b_2$ fizikalno znače}
+\label{sec:z3-fizikalno}
+
+\begin{pojam}{Nagib i brzina promjene nagiba}
+\begin{itemize}[leftmargin=*]
+  \item $b_1$ ograničava \textbf{nagib} nivelete, $y'(x)$. Bezdimenzijski je
+        (m/m); $b_1 = 0{,}5$ znači najviše $50\%$ uspona, odnosno oko $26{,}6^\circ$.
+        To je uvjet izvedivosti --- vozilo mora moći savladati uspon.
+  \item $b_2$ ograničava \textbf{brzinu promjene nagiba}, $y''(x)$. Jedinica je
+        $\mathrm{m}^{-1}$. Pri malim nagibima ovo je aproksimacija vertikalne
+        \emph{zakrivljenosti} trase, jer je
+        $\kappa = y''/(1 + y'^2)^{3/2} \approx y''$ za mali $y'$. To je uvjet
+        udobnosti --- zakrivljenost izravno određuje vertikalno ubrzanje koje
+        putnik osjeća pri danoj brzini vožnje.
+\end{itemize}
+\end{pojam}
+
+\begin{zamka}[Zamka: $y''$ nije zakrivljenost, nego njezina aproksimacija]
+Prava zakrivljenost krivulje je $\kappa = y''/(1+y'^2)^{3/2}$. Uz $y' = 0{,}5$
+nazivnik iznosi $(1{,}25)^{3/2} \approx 1{,}40$, pa $y''$ precjenjuje
+zakrivljenost za oko $40\%$ na najstrmijim dionicama. Zadatak izričito traži
+$y''$, pa se tako i radi --- ali ako te se pita ,,je li to zakrivljenost``,
+točan odgovor je: aproksimacija koja vrijedi za male nagibe, a ovdje nagibi nisu
+zanemarivi.
+\end{zamka}
+
+\section{Kojoj klasi problem pripada}
+\label{sec:z3-klasa}
+
+Odgovor je \textbf{linearni program}, ali tek nakon dva koraka: diskretizacije i
+uklanjanja apsolutne vrijednosti. Prije toga problem nije ni konačnodimenzionalan
+(nepoznanica je \emph{funkcija} $y(\cdot)$), a funkcija cilja nije glatka.
+
+\begin{izvor}{Predavanje 5 --- LP i QP, slajd 4/34 (PDF str.~4)}
+\slajd[0.86]{p05-lp}
+
+\textbf{Transkripcija.} \emph{LP problem.} Za zadane matrice $G \in \R^{p\times n}$,
+$A \in \R^{q\times n}$ i vektore $c \in \R^n$, $h \in \R^p$, $b \in \R^q$,
+problem linearnog programiranja je optimizacijski problem oblika
+\[
+\begin{aligned}
+\text{minimiziraj} \quad & c\trans x \\
+\text{uz ograničenja} \quad & Gx \leq h \\
+& Ax = b
+\end{aligned}
+\]
+gdje je $x \in \R^n$ vektor projektnih varijabli.
+\begin{itemize}[nosep,leftmargin=*]
+  \item Funkcija cilja je linearna u projektnim varijablama.
+  \item Ograničenja su linearna (afina).
+  \item LP problemi i sa preko $10\,000$ varijabli se mogu učinkovito riješiti.
+  \item Široko dostupni računalni programi za rješavanje LP problema.
+  \item \emph{,,Rješavanje LP problema je tehnologija!``}
+\end{itemize}
+
+\textbf{Zašto to citiramo:} zadnja rečenica objašnjava \emph{zašto} se isplati
+mukotrpno svoditi problem na LP. Naš problem s $N = 100$ ima $202$ varijable i
+$600$ nejednakosti --- za LP to je sitno.
+\end{izvor}
+
+\begin{izvor}{Vježbe 4 --- slajd 4/40 (PDF str.~4)}
+\slajd[0.86]{v4-aproksimacija}
+
+\textbf{Transkripcija.} \emph{Problem aproksimacije.} Za zadane
+$A \in \R^{m\times n}$, gdje je $m > n$, i $b \in \R^m$:
+\[
+\min_x \ \norm{Ax - b}
+\]
+gdje je $\norm{\cdot}$ zadana norma. Interpretacije:
+\begin{itemize}[nosep,leftmargin=*]
+  \item \emph{aproksimacija}: vektor $A\xopt$ je najbolja aproksimacija vektora
+        $b$ dobivena linearnom kombinacijom stupaca od $A$;
+  \item \emph{geometrijska}: $A\xopt$ je točka u slici od $A$ koja je najbliža
+        $b$-u (u promatranoj normi);
+  \item \emph{estimacija}: za linearan model $y = Ax + v$ mjerimo $y$ a želimo
+        odrediti $x$, dok je $v$ šum;
+  \item \emph{optimalan dizajn}: $x$ je vektor ulaznih varijabli, $Ax$ rezultat;
+        za željeni rezultat $b$, $\xopt$ je najbolji izbor.
+\end{itemize}
+
+\textbf{Naš zadatak je četvrta interpretacija:} $y$ su projektne varijable
+(visine nivelete), $h$ je ,,željeni rezultat`` (teren), a tražimo najbolju
+aproksimaciju terena u normi $\ell_1$ --- ali s dodatnim ograničenjima na
+glatkoću, kakvih u čistom problemu aproksimacije nema.
+\end{izvor}
+
+\begin{formula}{Klasa problema}
+Nakon diskretizacije i uklanjanja apsolutne vrijednosti funkcija cilja i sva
+ograničenja su linearna u optimizacijskim varijablama, pa problem pripada klasi
+\textbf{linearnog programiranja (LP)}.
+
+Preciznije, riječ je o \textbf{$\ell_1$-aproksimaciji s dodatnim linearnim
+ograničenjima}: minimizira se $\norm{y - h}_1$ uz linearna ograničenja na $D_1 y$
+i $D_2 y$ i rubne uvjete.
+\end{formula}
+
+\begin{izgovor}
+,,Trošak je proporcionalan količini premještene zemlje, dakle površini između
+nivelete i terena. Kako se i iskop i nasip plaćaju, u kriterij ulazi apsolutna
+vrijednost razlike, pa je kontinuirani problem: minimiziraj integral apsolutne
+vrijednosti ipsilon minus ha, po iks od nule do el, uz ograničenja na prvu i
+drugu derivaciju i uz zadane rubne uvjete.
+
+Klasa: nakon diskretizacije i uklanjanja apsolutne vrijednosti pomoćnim
+varijablama, sve postaje linearno --- dakle linearni program. Preciznije, to je
+$\ell_1$-aproksimacija s linearnim ograničenjima, u obliku koji smo radili na
+Vježbama 4.
+
+Naglasio bih da prije ta dva koraka problem nije LP: nepoznanica je funkcija, ne
+vektor, a apsolutna vrijednost nije glatka. Konveksan jest od samog početka, jer
+je apsolutna vrijednost konveksna, a ograničenja afina.``
+\end{izgovor}
