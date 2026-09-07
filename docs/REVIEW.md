@@ -1,84 +1,76 @@
-# Quality Assurance Review & Defense Preparation Report
+# Provjera rada prije predaje (v1.2)
 
-> **Kolegij:** Optimizacijske metode u razvoju i upravljanju sustava (OMRiUS)  
-> **Student:** Krešimir Hartl  
-> **Mentor:** Prof. dr. sc. Andrej Jokić  
-> **Datum revizije:** Kolovoz 2026.  
-> **Status:** Potpuno verificirano i spremno za obranu  
-
----
-
-## 1. Tablica numeričko-analitičke konzistencije i tolerancija
-
-Sve analitičke vrijednosti provjerene su numeričkim rješavačima u programskim jezicima MATLAB i Python (`quadprog`, `linprog`, `fmincon`, YALMIP, CVXPY).
-
-| Zadatak / Veličina | Analitička vrijednost | Numerički solver (MATLAB / Python) | Relativna / Apsolutna pogreška | Status |
-|---|---|---|---|---|
-| **Zadatak 1: $x_1^*$** | $190/33 \approx 5.757576$ | $5.757576$ | $< 10^{-8}$ | **PASSED** |
-| **Zadatak 1: $x_2^*$** | $140/33 \approx 4.242424$ | $4.242424$ | $< 10^{-8}$ | **PASSED** |
-| **Zadatak 1: $\mu_1^*$** | $404/33 \approx 12.242424$ | $12.242424$ | $< 10^{-8}$ | **PASSED** |
-| **Zadatak 1: $\mu_2^*$** | $0.000000$ | $0.000000$ | $0.00$ | **PASSED** |
-| **Zadatak 1: $p^*$** | $2000/33 \approx 60.606061$ | $60.606061$ | $< 10^{-8}$ | **PASSED** |
-| **Zadatak 1: $d^*$** | $2000/33 \approx 60.606061$ | $60.606061$ | $< 10^{-8}$ (Nulti procjep) | **PASSED** |
-| **Zadatak 1: $\frac{\partial p^*}{\partial b_1}$** | $-404/33 \approx -12.242424$ | $-12.242357$ | $6.75 \times 10^{-5}$ ($\Delta b_1 = 10^{-4}$) | **PASSED** |
-| **Zadatak 2: $x_{1,\mathrm{rob}}^*$** | $13/2 = 6.500000$ | $6.500000$ | $< 10^{-8}$ | **PASSED** |
-| **Zadatak 2: $x_{2,\mathrm{rob}}^*$** | $179/34 \approx 5.264706$ | $5.264706$ | $< 10^{-8}$ | **PASSED** |
-| **Zadatak 2: $f(x_{\mathrm{rob}}^*)$** | $978253/11560 \approx 84.623962$ | $84.623962$ | $< 10^{-8}$ | **PASSED** |
-| **Zadatak 2: MC Pouzdanost** | $100\%$ ($x_{\mathrm{rob}}^*$), $43\%$ ($x_{\mathrm{nom}}^*$) | $0\%$ kršenja vs $57\%$ kršenja | Egzaktno | **PASSED** |
-| **Zadatak 3: Slučaj A ($N=20$)** | -- | $J^* = 1.916180\text{ m}^2$ | Iskop: $0.088$, Nasip: $1.829$ | **PASSED** |
-| **Zadatak 3: Slučaj A ($N=100$)** | -- | $J^* = 1.965940\text{ m}^2$ | Asimptotski kontinuum limit | **PASSED** |
-| **Zadatak 3: Slučaj B ($N=20$)** | -- | $J^* = 2.453727\text{ m}^2$ | Iskop: $0.303$, Nasip: $2.151$ | **PASSED** |
-| **Zadatak 3: Slučaj B ($N=100$)** | -- | $J^* = 2.506047\text{ m}^2$ | Zasićenje zakrivljenosti $\pm 0.2$ | **PASSED** |
-| **Zadatak 4: $\lambda(A_{\mathrm{parno}})$** | $-1 \pm j\frac{\pi}{2}$ | $-1 \pm 1.570796j$ | $< 10^{-8}$ (Hurwitz) | **PASSED** |
-| **Zadatak 4: $\lambda(A_{\mathrm{neparno}})$** | $-1 \pm j\frac{\pi}{2}$ | $-1 \pm 1.570796j$ | $< 10^{-8}$ (Hurwitz) | **PASSED** |
-| **Zadatak 4: $\rho(\Phi_{\mathrm{cycle}})$** | $1.2180$ | $1.2180$ | $> 1$ (Divergencija) | **PASSED** |
-| **Zadatak 4: $\rho(\Phi_{\mathrm{cl,cycle}})$** | $0.1320$ | $0.1320$ | $\ll 1$ (Eksponencijalni pad) | **PASSED** |
+> **Kolegij:** Optimizacijske metode u razvoju i upravljanju sustava (OMRiUS)
+> **Student:** Krešimir Hartl
+> **Mentor:** Prof. dr. sc. Andrej Jokić
+> **Opseg:** 27 stranica, 7 slika, 5 tablica, 4 reference
 
 ---
 
-## 2. Pitanja mentora i obrambeni odgovori (Defense Q&A Package)
+## 1. Pokrivenost zadatka
 
-### Pitanje 1: Zašto prespajanje između dvije Hurwitzove matrice može dovesti do nestabilnosti otvorenog kruga?
-**Obrazloženje:**  
-Hurwitzovo svojstvo individualnih matrica $A_{\mathrm{parno}}$ i $A_{\mathrm{neparno}}$ jamči samo da trajektorije stanja asimptotski konvergiraju prema ishodištu ako je sustav trajno u jednom modu. Međutim, svaka matrica definira vlastito vektorsko polje i eliptične nivo-plohe energije. Prilikom periodičkog prespajanja (u cjelobrojnim sekundama $\Delta t = 1\text{ s}$), stanje prelazi u točku gdje novo vektorsko polje ima komponentu koja ekspandira normu stanja prije nego što započne faza rotacijskog prigušenja.  
-Izračunom monodromijske matrice preko punog perioda prespajanja ($T = 2\text{ s}$):
-$$\Phi_{\mathrm{cycle}} = e^{A_{\mathrm{neparno}} \cdot 1} e^{A_{\mathrm{parno}} \cdot 1}$$
-dokazano je da njezina maksimalna svojstvena vrijednost (spektralni radijus) iznosi $\rho(\Phi_{\mathrm{cycle}}) = 1.2180 > 1$. Budući da vrijedi $x(2(k+1)) = \Phi_{\mathrm{cycle}} x(2k)$, energija se pumpa u sustav u svakom periodu, što uzrokuje eksponencijalnu divergenciju.
+Svaka podtočka iz `TASK/zadatak_omrius.md` ima svoje mjesto u radu:
 
----
+| Podzadatak | Traženo | Gdje |
+|---|---|---|
+| 1a | Je li problem konveksan? Obrazložiti. | §2.2 |
+| 1b | Postaviti i riješiti KKT uvjete | §2.3, tablica 2.1, 4 slučaja |
+| 1c | Dopustivi skup, nivo-krivulje, gradijenti u KKT točki | §2.4, slika 2.1 |
+| 1d | MATLAB (`quadprog`), usporedba s (b) | §2.5, tablica 2.2 |
+| 1e | Dualni problem, usporedba s (d) i (b) | §2.6 |
+| 1f | Osjetljivost $p^*$ na perturbacije $b_1$, $b_2$ | §2.7 |
+| 2 | Robusni problem + slika s nizom realizacija i optimumom | §3.1–3.5, slika 3.1 |
+| 3a | Formulacija i klasa problema | §4.1 (odgovor: LP) |
+| 3b | Četiri slučaja, prikaz $y(x)$ uz $h(x)$ | §4.4, tablica 4.1, slike 4.1–4.2 |
+| 4a | Jesu li matrice Hurwitzove? | §5.2 |
+| 4b | Simulacija, $x(t)$, fazni portret, je li stabilan? | §5.3, slika 5.1 |
+| 4c | LMI sinteza $K$, simulacija zatvorenog kruga | §5.4, slika 5.2 |
 
-### Pitanje 2: Zašto je robusni deterministički ekvivalent u Zadatku 2 egzaktan, a ne konzervativna unutarnja aproksimacija?
-**Obrazloženje:**  
-Skup nesigurnosti parametara $\mathcal{U}_i$ je pravokutnik (hiper-pravokutnik u $\mathbb{R}^2$), što predstavlja konveksan poliedar s $2^2 = 4$ ekstremna vrha. Prema temeljnom teoremu linearnog programiranja i teoriji funkcija potpore (\textit{support functions}), maksimum linearne funkcije $a_i^T x$ po konveksnom poliedru uvijek se dostiže u jednom od njegovih vrhova.  
-Uvjetovanje da rješenje $x$ mora zadovoljiti nejednakost za svih 8 vrhova (po 4 vrha za svako ograničenje) predstavlja nužan i dovoljan uvjet za zadovoljenje ograničenja nad čitavim intervalnim skupom. Zbog toga nema nikakvog relaksacijskog procjepa, a deterministički QP je egzaktan ekvivalent polaznog semi-beskonačnog problema.
+Na svako izravno pitanje iz zadatka odgovoreno je i u zaključku, jednom rečenicom
+po zadatku.
 
----
+## 2. Brojčana provjera
 
-### Pitanje 3: Koja je geometrijska i fizikalna interpretacija Lagrangeovog množitelja $\mu_1^* = 12.2424$?
-**Obrazloženje:**  
-Prema teoremu o osjetljivosti u nelinearnom programiranju vrijedi:
-$$\frac{\partial p^*}{\partial b_1} = -\mu_1^* = -12.242424.$$
-Množitelj $\mu_1^*$ predstavlja cijenu u sjeni (\textit{shadow price}) ili silu reakcije veze. U točki optimuma $x^*$ gradijent funkcije cilja $\nabla f(x^*)$ teži pomicati točku prema nesputanom minimumu $x_0$, ali nailazi na aktivno ograničenje $g_1(x) = 0$. Vektor $\nabla g_1(x^*)$ djeluje suprotnim smjerom, a intenzitet te reakcije je točno $\mu_1^* = 12.2424$. Relaksacija ograničenja za $\Delta b_1 > 0$ omogućuje pomak točke u povoljniji nivo funkcije cilja, smanjujući optimalni trošak po stopi od $12.2424 \cdot \Delta b_1$.
+Sve brojke potječu iz jednog pokretanja `src/run_all.m` (MATLAB R2025b) i
+zapisane su u `docs/code/task1_output.txt` … `task4_output.txt`. Detaljna tablica
+usporedbe analitičkih i numeričkih vrijednosti je u
+`for_validator/05_VERIFICATION_AND_BENCHMARKS/BENCHMARK_RESULTS.md`.
 
----
+Ključni rezultati:
 
-### Pitanje 4: Zašto je nužno provesti kongruentnu transformaciju i supstituciju $Y = KQ$ kod LMI sinteze?
-**Obrazloženje:**  
-Polazni Ljapunovljev uvjet stabilnosti za zatvoreni sustav glasi:
-$$(A_i + BK)^T P + P(A_i + BK) \prec 0, \quad P \succ 0.$$
-Ovaj matrični izraz sadrži bilinearni član $P B K$ (umnožak nepoznate matrice $P$ i nepoznatog vektora $K$), što ga čini nekonveksnom bilinearnom matričnom nejednakošću (BMI).  
-Pre- i post-množenjem s regularnom simetričnom matricom $Q = P^{-1} \succ 0$ (kongruentna transformacija) čuva se negativna definitnost, a član $P B K$ prelazi u $B K Q$. Uvođenjem nove optimizacijske varijable $Y = K Q \in \mathbb{R}^{1 \times 2}$, izraz postaje:
-$$A_i Q + Q A_i^T + B Y + Y^T B^T \prec 0,$$
-što je strogo linearno po matricama $Q$ i $Y$. Time je problem lineariziran bez gubitka egzaktne ekvivalencije te se rješava semidefinitnim programiranjem (SDP).
+- Zadatak 1: $x^* = (190/33,\ 140/33)$, $\mu^* = (404/33,\ 0)$,
+  $p^* = d^* = 2000/33 = 60.606061$, dualni procjep $2.48 \cdot 10^{-10}$.
+- Zadatak 2: $x_{\mathrm{rob}}^* = (13/2,\ 179/34)$, $f = 978253/11560 = 84.623962$,
+  dva aktivna vrha uz $\mu = (17.607439,\ 1.344118) > 0$.
+- Zadatak 3: $J^* = 1.916180 / 1.965940 / 2.453727 / 2.506047\ \mathrm{m}^2$,
+  `exitflag = 1` u sva četiri slučaja.
+- Zadatak 4: $\rho(\Phi_{\mathrm{cikl}}) = 9e^{-2} = 1.218018 > 1$;
+  $K = [-3.424629,\ -0.104650]$, $\lambda_{\max}(M_i) = -0.910478$ i $-0.329090$,
+  $\rho(\Phi_{\mathrm{cikl}}^{\mathrm{zk}}) = 0.069720$.
 
----
+## 3. Provjere prije predaje
 
-## 3. Tehnički podaci o dokumentu
+| Provjera | Naredba | Status |
+|---|---|---|
+| Sve skripte prolaze | `matlab -batch "cd src; run_all"` | prolazi |
+| Broj stranica $\leq 30$ | `pdfinfo dist/v1.2/*.pdf` | 27 |
+| Nema spomena Pythona ni drugih alata | `grep -iE 'python\|cvxpy\|clarabel\|scipy\|highs' docs` | prazno |
+| Nema Markdown `**` u LaTeX-u | `grep -F '**' docs/chapters/*.tex` | prazno |
+| Nema pogrešnih termina | `grep -iE 'dupleks\|CQLF' docs` | prazno |
+| Sve slike referencirane iz teksta | ručno | 7/7 |
+| Sve tablice referencirane iz teksta | ručno | 5/5 |
 
-- **Predložak:** `fsb-seminar.cls` (Fakultet strojarstva i brodogradnje)
-- **Engine:** Tectonic (XeTeX)
-- **Ukupan broj stranica:** 38 stranica (ograničenje $\le 45$ stranica zadovoljeno)
-- **Broj slika:** 12 vektorskih grafika visoke rezolucije ($\ge 300\text{ DPI}$) u `docs/figures/`
-- **Broj tablica:** 3 formatirane cjeline u `docs/tables/` i poglavljima
-- **Referentna literatura:** 7 stručnih bibliografskih jedinica u `docs/references.bib`
-- **Verifikacijski skriptovi:** `src/run_all.py` i `src/run_all.m`
+## 4. Poznata ograničenja i svjesne odluke
+
+- **LMI nema jedinstveno rješenje.** Prikazani $K$ dobiven je uz normalizaciju
+  $\mathcal{Q} \succeq I$, $M_i \preceq -I$ i kriterij $\min\lVert Y\rVert_2$.
+  To je u radu izrečeno, a ne prešućeno.
+- **Podjela $J^*$ na iskop i nasip nije jedinstvena** jer je LP degeneriran; zato
+  ti stupci nisu u tablici 4.1.
+- **Monte Carlo je ilustracija, ne dokaz.** Brojka 54/100 vrijedi za MATLAB-ov
+  generator uz `rng(42)`; jamstvo dopustivosti daje osam vršnih nejednakosti.
+- **Zajamčena stopa $\alpha = 0.288374\ \mathrm{s}^{-1}$ je konzervativna** jer
+  vrijedi za proizvoljno prespajanje; pri zadanom periodičkom prespajanju stvarna
+  je kontrakcija znatno brža.
+- **JMBAG na naslovnici je zamjenski tekst** (`\authorid` u `docs/main.tex`) i
+  treba ga zamijeniti stvarnim brojem prije predaje.

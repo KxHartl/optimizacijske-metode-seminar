@@ -8,26 +8,41 @@
 - **Student**: Krešimir Hartl
 - **Mentor**: Prof. dr. sc. Andrej Jokić
 - **LaTeX format**: FSB Seminar (`fsb-seminar`)
+- **Trenutna verzija**: v1.2 — `dist/v1.2/OMRiUS_seminar_Kresimir_Hartl.pdf`, 27 stranica
 
 ## Trenutni fokus
 
-- [x] Inicijalizacija repozitorija, okruženja i RAG baze podataka.
-- [x] Transkripcija i analiza specifikacije zadataka (`TASK/zadatak_omrius.md`).
-- [x] Kreiranje sveobuhvatnog inženjerskog plana i radnog registra (`TODO.md`).
-- [x] Postavljanje kostura LaTeX dokumenta u `docs/` (`latex_architect`).
-- [x] Implementacija i verifikacija numeričkih i analitičkih rješenja u `src/` i `for_validator/`:
-  - [x] Zadatak 1: QP, konveksnost, KKT 4-slučajna analiza, grafički prikaz s neaktivnim vektorom $\nabla g_2$, dualnost, osjetljivost.
-  - [x] Zadatak 2: Robustan QP (egzaktna metoda najgoreg slučaja nad 8 vrhova uz KKT verifikaciju + deterministička Monte Carlo verifikacija na 100 uzoraka sa seed 42).
-  - [x] Zadatak 3: Optimizacijska nivelacija ceste (LP formulacija, jedinice površine/zakrivljenosti, dualni simpleks, slučaji A i B, $N=20, 100$).
-  - [x] Zadatak 4: Sklopni sustav, egzaktne monodromijske matrice $\Phi_{\mathrm{even}}, \Phi_{\mathrm{odd}}, \Phi_{\mathrm{cycle}}$, determinantni i spektralni dokaz, LMI sinteza stanjskog regulatora, egzaktna Ljapunovljeva stopa disipacije $\beta = 0.0742\text{ s}^{-1}$ i simulacija.
-- [x] Pisanje i inženjersko usavršavanje LaTeX poglavlja seminara (`docs/chapters/` i `for_validator/03_LATEX_SOURCE/`).
-- [x] Recenzija i verifikacija rada (`for_validator/05_VERIFICATION_AND_BENCHMARKS/` s tablicom tolerancija i paketom pitanja za obranu).
-- [x] Finalni release build u `dist/v1.0/OMRiUS_seminar_Kresimir_Hartl.pdf` (strogo unutar limita $\le 45$ stranica).
+- [x] Verzija v1.0 (38 str.) i šest neovisnih recenzija u `for_validator/`.
+- [x] **v1.2 — pročišćavanje rada** (rujan 2026.):
+  - [x] MATLAB je jedini izvor rezultata i slika; Python implementacija uklonjena.
+  - [x] YALMIP instaliran u `~/Documents/MATLAB/YALMIP` uz `startup.m`; SDPT3 dolazi s R2025b.
+  - [x] Iz `task4` uklonjena hardkodirana zamjenska vrijednost $K$; LMI se stvarno rješava.
+  - [x] `run_all.m` zapisuje konzolni ispis u `docs/code/task*_output.txt` — jedini referentni izvor brojki.
+  - [x] Poglavlja prepisana po podzadacima (a)–(f), u notaciji s vježbi ($Gx-h\leq0$, $\theta(\mu)$, vektor $v$).
+  - [x] Uklonjeno što zadatak ne traži: taksonomija, cijena robusnosti, smjernice za praksu, 5 od 12 slika.
+  - [x] MATLAB kod i stvarni ispis priloženi uz svaki zadatak.
+  - [x] `for_validator/`, `docs/REVIEW.md`, `BENCHMARK_RESULTS.md` i `DEFENSE_QA_PACKAGE.md` sinkronizirani.
+
+## Preostalo prije predaje
+
+- [ ] **JMBAG** — `\authorid` u `docs/main.tex` je zamjenski tekst `0035 XXX XXX`.
 
 ## Bilješke
 
-- **Zadatak 1**: Figure 1.1 dopunjena vektorom $\nabla g_2(x^*)$ uz eksplicitno objašnjenje zašto je $\mu_2^* = 0$ u KKT ravnoteži; uklonjen pogrešan spomen YALMIP-a za Zadatak 1.
-- **Zadatak 2**: KKT verifikacija nad 8 vrhova potvrđuje $\mu_1^* > 0, \mu_2^* > 0$ za dva najgora vrha i strogi slack ($\ge 1.5794$) za preostalih 6; Monte Carlo analiza precizno formulirana sa seed 42.
-- **Zadatak 3**: Uvedena jedinična širina $w = 1\text{ m}$, diskretni integral $J_{\mathrm{disc}} = \Delta x \sum z_i$ usklađen s Riemannovom sumom površine, a terminologija usklađena s dualnim simpleksom.
-- **Zadatak 4**: Ispravljene matrice prijelaza i monodromije ($\Phi_{\mathrm{cycle}} = e^{-2}\mathrm{diag}(-9, -1/9)$), popravljen MATLAB bug indeksiranja `eig(Acl_even)`, objašnjena nejedinstvenost LMI dobitka $K$ i izračunata egzaktna Ljapunovljeva stopa disipacije $\beta = 0.0742\text{ s}^{-1}$.
-- **Naslovnica i stil**: Uklonjeno dvostruko ponavljanje naziva kolegija, formatiran "SEMINARSKI RAD", uklonjene generičke AI fraze iz zaključka.
+- **Notacija** je usklađena s profesorovim materijalima: Vježbe 3 (isti tip zadatka
+  a)–f), `Gx - h ≤ 0`, `θ(μ)`, tablica svih $2^m$ kombinacija aktivnosti,
+  perturbacijski vektor `v`), Vježbe 4 ($\ell_1$-aproksimacija za Zadatak 3),
+  Predavanje 7 (kvadratna stabilnost, `Q = P⁻¹`, `Y = KP⁻¹`), Predavanje 8
+  (robusno optimiranje nad poliedarskim skupovima nesigurnosti).
+- **Zadatak 1**: naš rezultat `x* = (190/33, 140/33)` je točan; u tuđem seminaru
+  koji je poslužio kao usporedba (`data/sources/matija/`) rezultat
+  `(5.4762, 4.5238)` ne zadovoljava uvjet stacionarnosti — nije preuzet.
+- **Zadatak 2**: Monte Carlo pod MATLAB-ovim `rng(42)` daje **54/100** kršenja za
+  nominalnu točku (ne 57/100 kao u v1.0, gdje je brojka bila iz Pythona).
+- **Zadatak 3**: podjela `J*` na iskop i nasip nije jedinstvena — LP je
+  degeneriran, pa su ti stupci uklonjeni iz tablice.
+- **Zadatak 4**: LMI se rješava uz normalizaciju `Q ⪰ I`, `M_i ⪯ -I` i kriterij
+  `min ‖Y‖₂`, što daje `K = [-3.424629, -0.104650]`, `α = 0.288374 s⁻¹`.
+- **MATLAB R2025b gotcha**: u `-batch` načinu figure se crtaju prema tamnoj temi
+  bez obzira na `Figure.Color`, pa `src/common/config_plot.m` eksplicitno
+  postavlja sve boje na svijetle.

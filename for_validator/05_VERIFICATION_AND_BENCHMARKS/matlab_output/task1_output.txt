@@ -1,0 +1,33 @@
+=== ZADATAK 1 ===
+
+--- (a) Konveksnost ---
+eig(Q) = 1.955969, 4.044031
+det(Q) = 7.910000,  Q > 0 : 1
+
+--- (b) KKT, 4 kombinacije aktivnosti ---
+Slucaj 1 (0,0): x = [-0.897598, 0.682680], g1 = 10.214918  -> odbacen (g1 > 0)
+Slucaj 2 (1,0): x = [5.757576, 4.242424], mu1 = 12.242424, g2 = -1.484848 -> KKT OK
+                p* = f(x*) = 60.606061   (= 2000/33 = 60.606061)
+Slucaj 3 (0,1): x = [2.240741, -0.759259], mu2 = -6.709259, g1 = 8.518519 -> odbacen
+Slucaj 4 (1,1): x = [6.500000, 3.500000], mu = [11.500000, -2.450000] -> odbacen (mu2 < 0)
+grad f(x*) = [12.242424, 12.242424];  -mu1*grad g1 = [12.242424, 12.242424]
+
+--- (d) MATLAB quadprog ---
+exitflag        = 1
+x_opt           = [5.757576; 4.242424]
+p*  = fval      = 60.606061
+lambda.ineqlin  = [12.242424; 0.000000]
+|x_qp - x_analiticki| = 7.155e-11
+
+--- (e) Dualni problem (quadprog na -theta(mu), uz mu >= 0) ---
+exitflag        = 1
+mu*             = [12.242424; 0.000000]
+d*  = theta(mu*)= 60.606061
+dualni procjep p* - d* = 2.480e-10
+Slaterova tocka x = [7; 6]: g1 = -3.0000, g2 = -2.0000
+
+--- (f) Osjetljivost ---
+dp*/dv1 numericki = -12.242364,  -mu1* = -12.242424,  odstupanje = 5.99e-05
+dp*/dv2 numericki = 0.000000,  -mu2* = 0.000000,  odstupanje = 0.00e+00
+
+Slika 2.1 izvezena.

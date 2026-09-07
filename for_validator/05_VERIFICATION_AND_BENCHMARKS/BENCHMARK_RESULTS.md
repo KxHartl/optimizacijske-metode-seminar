@@ -1,64 +1,122 @@
-# Benchmark Results & Numerical Tolerances Audit
+# Provjera brojčanih rezultata
 
-> **Course:** Optimization Methods in Systems Development and Control (OMRiUS)  
-> **Student:** Krešimir Hartl  
-> **Mentor:** Prof. Dr. Sc. Andrej Jokić  
-> **Project:** Master's Seminar — Technical Verification & Validation Dossier  
-
----
-
-## 1. Summary of Numerical Discrepancies and Solvers
-
-All analytical results derived in the report have been verified across numerical optimization packages in both **MATLAB** (`quadprog`, `linprog`, `fmincon`, YALMIP + SDPT3) and **Python** (`scipy.optimize`, `cvxpy` with Clarabel/SCS solvers).
-
-| Task / Metric | Exact Analytical Formula | Analytical Value | MATLAB / Python Value | Discrepancy / Error | Verification Status |
-|---|---|---|---|---|---|
-| **Task 1: $x_1^*$** | $\frac{380}{66} = \frac{190}{33}$ | $5.757576$ | $5.757576$ | $< 10^{-8}$ | **PASSED** (Exact) |
-| **Task 1: $x_2^*$** | $10 - \frac{190}{33} = \frac{140}{33}$ | $4.242424$ | $4.242424$ | $< 10^{-8}$ | **PASSED** (Exact) |
-| **Task 1: $\mu_1^*$** | $\frac{404}{33}$ | $12.242424$ | $12.242424$ | $< 10^{-8}$ | **PASSED** (Exact) |
-| **Task 1: $\mu_2^*$** | $0$ (Inactive constraint) | $0.000000$ | $0.000000$ | $0.00$ | **PASSED** (Exact) |
-| **Task 1: $p^* = f(x^*)$** | $\frac{2000}{33}$ | $60.606061$ | $60.606061$ | $< 10^{-8}$ | **PASSED** (Exact) |
-| **Task 1: $d^* = g(\mu^*)$** | $\frac{2000}{33}$ | $60.606061$ | $60.606061$ | $< 10^{-8}$ | **PASSED** (Zero duality gap) |
-| **Task 1: $\frac{\partial p^*}{\partial b_1}$** | $-\mu_1^* = -\frac{404}{33}$ | $-12.242424$ | $-12.242357$ | $6.75 \times 10^{-5}$ ($\Delta b_1 = 10^{-4}$) | **PASSED** (Sensitivity verified) |
-| **Task 2: $x_{1,\mathrm{rob}}^*$** | $\frac{10 + 3}{0.85 + 1.15} = \frac{13}{2}$ | $6.500000$ | $6.500000$ | $< 10^{-8}$ | **PASSED** (Exact) |
-| **Task 2: $x_{2,\mathrm{rob}}^*$** | $\frac{10 - 0.85(6.5)}{0.85} = \frac{179}{34}$ | $5.264706$ | $5.264706$ | $< 10^{-8}$ | **PASSED** (Exact) |
-| **Task 2: $f(x_{\mathrm{rob}}^*)$** | $\frac{978253}{11560}$ | $84.623962$ | $84.623962$ | $< 10^{-8}$ | **PASSED** (Exact) |
-| **Task 2: Price of Robustness** | $\Delta f^* = f_{\mathrm{rob}}^* - f_{\mathrm{nom}}^*$ | $24.017901$ ($+39.63\%$) | $24.017901$ ($+39.63\%$) | $< 10^{-8}$ | **PASSED** |
-| **Task 2: Monte Carlo Feasibility** | 100 Uniform realizations | 100% ($x_{\mathrm{rob}}^*$) vs 43% ($x_{\mathrm{nom}}^*$) | 0% violations vs 57% violations | Exact | **PASSED** (Worst-case guaranteed) |
-| **Task 3: Case A ($N=20$)** | LP Discrete Formulation | $J^* = 1.916180\text{ m}^2$ | $1.916180\text{ m}^2$ | $< 10^{-8}$ | **PASSED** (Cut: 0.088, Fill: 1.829) |
-| **Task 3: Case A ($N=100$)** | LP Discrete Formulation | $J^* = 1.965940\text{ m}^2$ | $1.965940\text{ m}^2$ | $< 10^{-8}$ | **PASSED** (Asymptotic continuum limit) |
-| **Task 3: Case B ($N=20$)** | LP Discrete Formulation | $J^* = 2.453727\text{ m}^2$ | $2.453727\text{ m}^2$ | $< 10^{-8}$ | **PASSED** (Cut: 0.303, Fill: 2.151) |
-| **Task 3: Case B ($N=100$)** | LP Discrete Formulation | $J^* = 2.506047\text{ m}^2$ | $2.506047\text{ m}^2$ | $< 10^{-8}$ | **PASSED** (Curvature saturated $\pm 0.2$) |
-| **Task 4: $\lambda(A_{\mathrm{parno}})$** | $-1 \pm j\frac{\pi}{2}$ | $-1.0000 \pm 1.5708j$ | $-1.0000 \pm 1.5708j$ | $< 10^{-8}$ | **PASSED** (Hurwitz mode 1) |
-| **Task 4: $\lambda(A_{\mathrm{neparno}})$** | $-1 \pm j\frac{\pi}{2}$ | $-1.0000 \pm 1.5708j$ | $-1.0000 \pm 1.5708j$ | $< 10^{-8}$ | **PASSED** (Hurwitz mode 2) |
-| **Task 4: $\rho(\Phi_{\mathrm{cycle}})$** | $e^{A_{\mathrm{odd}}} e^{A_{\mathrm{even}}}$ | $1.2180$ | $1.2180$ | $> 1$ | **PASSED** (Open-loop unstable) |
-| **Task 4: Closed-loop Gain $K$** | LMI SDP Synthesis | $[-2.7120, 0.0926]$ | $[-2.7120, 0.0926]$ | Convex LMI | **PASSED** |
-| **Task 4: $\rho(\Phi_{\mathrm{cl,cycle}})$** | Closed loop monodromy | $0.1320$ | $0.1320$ | $\ll 1$ | **PASSED** (Strict contraction) |
-| **Task 4: $\lambda_{\max}(\dot{V})$** | Mode 1 & Mode 2 LMI check | $-0.0950, -0.0549$ | $< 0$ | $< 0$ | **PASSED** (Monotone energy decay) |
+> **Kolegij:** Optimizacijske metode u razvoju i upravljanju sustava (OMRiUS)
+> **Student:** Krešimir Hartl
+> **Mentor:** Prof. dr. sc. Andrej Jokić
+> **Verzija rada:** v1.2
 
 ---
 
-## 2. Key Theoretical Formulas
+## 1. Kako su brojke dobivene
 
-### Task 1: Quadratic Programming
-* Hessian matrix:
-  $$Q = \begin{bmatrix} 2 & -0.3 \\ -0.3 & 4 \end{bmatrix} \succ 0, \quad c = \begin{bmatrix} 2 \\ -3 \end{bmatrix}, \quad A = \begin{bmatrix} -1 & -1 \\ 1 & -1 \end{bmatrix}, \quad b = \begin{bmatrix} -10 \\ 3 \end{bmatrix}$$
-* Lagrange Dual Function:
-  $$g(\mu) = -\frac{1}{2}(c + A^T \mu)^T Q^{-1} (c + A^T \mu) - b^T \mu$$
-* Sensitivity theorem:
-  $$\frac{\partial p^*}{\partial b_i} = -\mu_i^*$$
+Svi rezultati u radu proizlaze iz **jednog** pokretanja MATLAB skripti (MATLAB R2025b):
 
-### Task 2: Robust Optimization
-* Vertex-based robust deterministic equivalent:
-  $$\max_{a_i \in \mathcal{U}_i} a_i^T x \leq b_i \iff (v_i^{(k)})^T x \leq b_i, \quad \forall k \in \{1, \dots, 2^n\}$$
-* 8 linear inequalities with vertices from $[-1.15, -0.85] \times [-1.15, -0.85]$ and $[0.85, 1.15] \times [-1.15, -0.85]$.
+```matlab
+cd src
+run_all
+```
 
-### Task 3: Road Leveling Linear Program
-* Epigraph slack variables $z_i \geq |y_i - h_i|$:
-  $$\min \Delta x \sum_{i=0}^N z_i \quad \text{s.t.} \quad y_i - z_i \leq h_i, \quad -y_i - z_i \leq -h_i, \quad |D_1 y| \leq b_1, \quad |D_2 y| \leq b_2, \quad y_0 = a, \quad y_N = b$$
+`run_all.m` pokreće četiri skripte i zapisuje njihov konzolni ispis u
+`docs/code/task1_output.txt` … `task4_output.txt`. Kopije tih ispisa nalaze se u
+mapi `matlab_output/` uz ovaj dokument. **Svaka brojka u tekstu, tablici ili
+potpisu slike mora se doslovno podudarati s jednim retkom tih datoteka.**
 
-### Task 4: Switched System LMI Stabilization
-* Congruence transformation ($Q = P^{-1} \succ 0, Y = KQ$):
-  $$A_i Q + Q A_i^T + B Y + Y^T B^T \prec 0, \quad i \in \{\mathrm{even}, \mathrm{odd}\}$$
-* Monodromy Matrix:
-  $$\Phi_{\mathrm{cycle}} = e^{A_{\mathrm{odd}} \cdot 1} e^{A_{\mathrm{even}} \cdot 1} = e^{-2}\begin{bmatrix} -9 & 0 \\ 0 & -\frac{1}{9} \end{bmatrix}, \quad \rho(\Phi_{\mathrm{cycle}}) = 9e^{-2} \approx 1.2180$$
+Korišteni rješavači:
+
+| Zadatak | Rješavač | Napomena |
+|---|---|---|
+| 1 | `quadprog` (primal i dual), `interior-point-convex` | dual QP-a je opet QP u $\mu$ |
+| 2 | `quadprog` | 8 vršnih nejednakosti |
+| 3 | `linprog`, `dual-simplex` | 4 slučaja |
+| 4 | YALMIP + SDPT3 | SDPT3 dolazi s R2025b; YALMIP se dodaje na path |
+
+Za zadatak 4 potreban je YALMIP na MATLAB path-u. Skripta se prekida s jasnom
+porukom ako ga nema — nema zamjenske ("hardkodirane") vrijednosti pojačanja.
+
+---
+
+## 2. Zadatak 1 — analitičko nasuprot numeričkom
+
+| Veličina | Analitički | MATLAB | Odstupanje |
+|---|---|---|---|
+| $\lambda(Q)$ | $\lambda_{1,2} = 3 \mp \sqrt{1.09}$ | $1.955969$, $4.044031$ | $< 10^{-10}$ |
+| $x^0$ (bez ogr.) | $(-710/791,\ 540/791)$ | $(-0.897598,\ 0.682680)$ | $< 10^{-10}$ |
+| $x^*$ | $(190/33,\ 140/33)$ | $(5.757576,\ 4.242424)$ | $7.16 \cdot 10^{-11}$ |
+| $\mu^*$ | $(404/33,\ 0)$ | $(12.242424,\ 0.000000)$ | $< 10^{-10}$ |
+| $p^*$ | $2000/33$ | $60.606061$ | $< 10^{-10}$ |
+| $d^*$ | $2000/33$ | $60.606061$ | procjep $2.48 \cdot 10^{-10}$ |
+| $\partial p^*/\partial v_1$ | $-404/33 = -12.242424$ | $-12.242364$ | $5.99 \cdot 10^{-5}$ ($\delta = 10^{-4}$) |
+| $\partial p^*/\partial v_2$ | $0$ | $0.000000$ | $0$ |
+
+Odbačeni slučajevi: slučaj 1 ($g_1(x^0) = 10.214918 > 0$), slučaj 3
+($\mu_2 = -3623/540 = -6.709259 < 0$), slučaj 4 ($\mu_2 = -2.45 < 0$).
+
+## 3. Zadatak 2 — robusni QP
+
+| Veličina | Analitički | MATLAB |
+|---|---|---|
+| $x_{\mathrm{rob}}^*$ | $(13/2,\ 179/34)$ | $(6.500000,\ 5.264706)$ |
+| $f(x_{\mathrm{rob}}^*)$ | $978253/11560$ | $84.623962$ |
+| $\max(G_{\mathrm{rob}}x - h_{\mathrm{rob}})$ | $0$ (dva aktivna vrha) | $-2.793 \cdot 10^{-11}$ |
+| množitelji aktivnih vrhova | — | $(17.607439,\ 1.344118) > 0$ |
+| porast prema nominalnom | — | $+24.017901$ ($+39.63\%$) |
+
+Aktivni su vrhovi $k = 1$, tj. $(-0.85, -0.85)$, i $k = 7$, tj. $(1.15, -0.85)$;
+preostalih šest ima rezervu $\geq 1.5794$.
+
+**Monte Carlo (`rng(42)`, 100 realizacija):** nominalna točka krši ograničenje u
+**54** realizacije, robusna ni u jednoj. Brojka 54 vrijedi za MATLAB-ov generator
+uz to sjeme; ona je ilustracija, a ne dokaz — dopustivost na cijelom skupu
+nesigurnosti slijedi iz osam vršnih nejednakosti.
+
+## 4. Zadatak 3 — nivelacija ceste (LP)
+
+| Slučaj | $N$ | $\Delta x$ | $J^*$ [m²] | $\max\lvert\nabla y\rvert$ | $\max\lvert\nabla^2 y\rvert$ | varijable / nejed. | `exitflag` |
+|---|---|---|---|---|---|---|---|
+| A | 20 | 0.50 | 1.916180 | 0.5000 | 0.5000 | 42 / 120 | 1 |
+| A | 100 | 0.10 | 1.965940 | 0.5000 | 0.5000 | 202 / 600 | 1 |
+| B | 20 | 0.50 | 2.453727 | 0.5000 | 0.2000 | 42 / 120 | 1 |
+| B | 100 | 0.10 | 2.506047 | 0.5000 | 0.2000 | 202 / 600 | 1 |
+
+Kriterij je $J = \Delta x \sum_i z_i$, dakle površina uzdužnog presjeka [m²] uz
+jediničnu širinu trase. Rast s $N$ (+2.60 % za A, +2.13 % za B) posljedica je
+pravokutne kvadrature koja na rijetkoj mreži podcjenjuje integral.
+
+> **Napomena o degeneraciji:** razdvajanje $J^*$ na iskop i nasip **nije
+> jedinstveno** — LP ima više optimalnih rješenja s istim $J^*$, a različiti
+> rješavači daju različitu podjelu. Zato ti stupci nisu u radu.
+
+## 5. Zadatak 4 — sklopni sustav i LMI
+
+| Veličina | Analitički | MATLAB |
+|---|---|---|
+| $\lambda(A_{\mathrm{parno}})$, $\lambda(A_{\mathrm{neparno}})$ | $-1 \pm j\pi/2$ | $-1.000000 \pm 1.570796 j$ |
+| $\Phi_{\mathrm{parno}}$ | $e^{-1}\begin{bmatrix}0 & -1/3\\ 3 & 0\end{bmatrix}$ | $\begin{bmatrix}0 & -0.122626\\ 1.103638 & 0\end{bmatrix}$ |
+| $\Phi_{\mathrm{cikl}}$ | $e^{-2}\,\mathrm{diag}(-9,\ -1/9)$ | $\mathrm{diag}(-1.218018,\ -0.015037)$ |
+| $\det \Phi_{\mathrm{cikl}}$ | $e^{-4}$ | $0.018316$ |
+| $\rho(\Phi_{\mathrm{cikl}})$ | $9e^{-2}$ | $1.218018 > 1$ |
+
+Sinteza (YALMIP + SDPT3, normalizacija $\mathcal{Q} \succeq I$,
+$A_i\mathcal{Q} + \mathcal{Q}A_i^{\mathsf{T}} + BY + Y^{\mathsf{T}}B^{\mathsf{T}} \preceq -I$, kriterij $\min \lVert Y \rVert_2$):
+
+| Veličina | Vrijednost |
+|---|---|
+| $\mathcal{Q}$ | $\begin{bmatrix}1.354304 & -0.385757\\ -0.385757 & 1.420003\end{bmatrix}$ |
+| $Y$ | $[-4.597618,\ 1.172472]$ |
+| $P = \mathcal{Q}^{-1}$ | $\begin{bmatrix}0.800314 & 0.217413\\ 0.217413 & 0.763286\end{bmatrix}$, $\lambda(P) = 0.563600,\ 1.000000$ |
+| $K = YP$ | $[-3.424629,\ -0.104650]$ |
+| $\lambda(A_{\mathrm{parno}} + BK)$ | $-2.712315 \pm 0.168908 j$ |
+| $\lambda(A_{\mathrm{neparno}} + BK)$ | $-3.352491$, $-2.072138$ |
+| $\lambda_{\max}\!\left(M_{\mathrm{parno}}\right)$ | $-0.910478 < 0$ |
+| $\lambda_{\max}\!\left(M_{\mathrm{neparno}}\right)$ | $-0.329090 < 0$ |
+| $\rho(\Phi_{\mathrm{cikl}}^{\mathrm{zk}})$ | $0.069720 \ll 1$ |
+| $\alpha$ (iz $\dot V \leq -2\alpha V$) | $0.288374\ \mathrm{s}^{-1}$ |
+
+Simulacija (`ode45`, `RelTol` $10^{-9}$, po segmentima od 1 s):
+otvoreni krug $\lVert x(20)\rVert = 7.1868$; zatvoreni krug
+$\lVert x(5)\rVert = 1.5176 \cdot 10^{-3}$, $\lVert x(20)\rVert = 4.7232 \cdot 10^{-12}$.
+
+> **Napomena o jednoznačnosti:** LMI je problem dopustivosti i nema jedinstveno
+> rješenje. Bez normalizacije, ili s drugim rješavačem, dobiva se drugi $K$ koji
+> također stabilizira zatvoreni krug. Sve brojke i sve slike u radu odgovaraju
+> gore navedenom $K$.

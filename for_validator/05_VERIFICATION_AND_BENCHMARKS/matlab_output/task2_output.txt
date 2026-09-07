@@ -1,0 +1,44 @@
+=== ZADATAK 2 ===
+
+--- Vrhovi skupa nesigurnosti (8 nejednakosti) ---
+   -0.85*x1  -0.85*x2 <= -10.00
+   -0.85*x1  -1.15*x2 <= -10.00
+   -1.15*x1  -0.85*x2 <= -10.00
+   -1.15*x1  -1.15*x2 <= -10.00
+    0.85*x1  -0.85*x2 <=   3.00
+    0.85*x1  -1.15*x2 <=   3.00
+    1.15*x1  -0.85*x2 <=   3.00
+    1.15*x1  -1.15*x2 <=   3.00
+
+--- Robusni QP (quadprog) ---
+exitflag  = 1
+x_rob*    = [6.500000; 5.264706]   (analiticki [13/2; 179/34] = [6.500000; 5.264706])
+f(x_rob*) = 84.623962            (analiticki 978253/11560 = 84.623962)
+max(G_rob*x - h_rob) = -2.793e-11
+
+--- Provjera aktivnosti ---
+Samo g1^wc aktivno: x = [6.9073, 4.8574], g2^wc(x) = +0.8146 -> nedopustivo
+grad f(x_rob*) = [13.420588, 16.108824]
+aktivni vrhovi : [1 7]
+mu aktivnih    = [17.607439, 1.344118]  (> 0)
+
+  k |   G_rob(k,:)*x_rob   |  h  |  slack  | status
+  1 |        -10.0000     |  -10 |  0.0000 | aktivno
+  2 |        -11.5794     |  -10 |  1.5794 | slack
+  3 |        -11.9500     |  -10 |  1.9500 | slack
+  4 |        -13.5294     |  -10 |  3.5294 | slack
+  5 |          1.0500     |    3 |  1.9500 | slack
+  6 |         -0.5294     |    3 |  3.5294 | slack
+  7 |          3.0000     |    3 |  0.0000 | aktivno
+  8 |          1.4206     |    3 |  1.5794 | slack
+
+--- Usporedba s nominalnim rjesenjem ---
+x_nom* = [5.757576; 4.242424], f = 60.606061
+x_rob* = [6.500000; 5.264706], f = 84.623962
+porast f = 24.017901  (39.63 %)
+
+--- Monte Carlo (N = 100, rng(42)) ---
+krsenja za x_nom* : 54 / 100
+krsenja za x_rob* : 0 / 100
+
+Slika 3.1 izvezena.

@@ -1,206 +1,190 @@
-\section{Robusna stabilizacija sklopnog sustava primjenom linearnih matričnih nejednakosti (LMI)}
+\section{Zadatak 4: robusna stabilizacija sklopnog sustava}
 
-\subsection{Matematički model sustava i analiza pojedinih modova}
+\subsection{Model sustava}
 
-U teoriji upravljanja hibridnim sustavima, sklopni sustavi (engl. \textit{switched linear systems}) predstavljaju važnu klasu sustava čija se dinamika skokovito mijenja između konačnog broja linearnih vremenski invarijantnih (LTI) podsustava (modova)~\cite{liberzon2003switching,jokic2024predavanja}.
-
-Promatramo vremenski promjenjiv sustav u prostoru stanja:
+Promatra se vremenski promjenjiv sustav
 \begin{equation}
-\dot{x}(t) = A(t) x(t) + B u(t), \quad x(t) \in \mathbb{R}^2, \; u(t) \in \mathbb{R},
-\label{eq:switched_sys}
+\dot{x}(t) = A(t) x(t) + B u(t), \qquad x(t) \in \mathbb{R}^2, \quad u(t) \in \mathbb{R},
+\label{eq:sklopni_sustav}
 \end{equation}
-s ulaznom matricom $B = \begin{bmatrix} 1 \\ 0 \end{bmatrix}$. Matrica dinamike $A(t)$ skokovito se mijenja na cjelobrojnim sekundama prema pravilu:
+u kojem se matrica dinamike skokovito mijenja na cjelobrojnim sekundama:
 \begin{equation}
-A(t) = \begin{cases}
-A_{\mathrm{parno}}, & \text{kad je } \lfloor t \rfloor \text{ paran broj (} t \in [0,1), [2,3), \dots \text{)} \\
-A_{\mathrm{neparno}}, & \text{kad je } \lfloor t \rfloor \text{ neparan broj (} t \in [1,2), [3,4), \dots \text{)}
+A(t) =
+\begin{cases}
+A_{\mathrm{parno}}, & \lfloor t \rfloor \ \text{paran}, \quad t \in [0,1) \cup [2,3) \cup \dots \\[2pt]
+A_{\mathrm{neparno}}, & \lfloor t \rfloor \ \text{neparan}, \quad t \in [1,2) \cup [3,4) \cup \dots
 \end{cases}
-\label{eq:switching_law}
+\label{eq:zakon_prespajanja}
 \end{equation}
-gdje su matrice pojedinih modova zadane kao:
+gdje su
 \begin{equation}
-A_{\mathrm{parno}} = \begin{bmatrix} -1 & -\frac{\pi}{6} \\ \frac{3\pi}{2} & -1 \end{bmatrix}, \qquad A_{\mathrm{neparno}} = \begin{bmatrix} -1 & -\frac{3\pi}{2} \\ \frac{\pi}{6} & -1 \end{bmatrix}.
-\label{eq:mode_matrices}
+A_{\mathrm{parno}} = \begin{bmatrix} -1 & -\frac{\pi}{6} \\[2pt] \frac{3\pi}{2} & -1 \end{bmatrix}, \qquad
+A_{\mathrm{neparno}} = \begin{bmatrix} -1 & -\frac{3\pi}{2} \\[2pt] \frac{\pi}{6} & -1 \end{bmatrix}, \qquad
+B = \begin{bmatrix} 1 \\ 0 \end{bmatrix}.
+\label{eq:matrice_modova}
 \end{equation}
+Između dva trenutka prespajanja sustav je linearan i vremenski invarijantan, pa ima dva dinamička moda.
 
-\subsubsection{Spektralna analiza i Hurwitzovo svojstvo modova}
+\subsection{(a) Jesu li matrice modova Hurwitzove?}
 
-Karakteristični polinom matrice $A_{\mathrm{parno}}$ glasi:
+Karakteristični polinom parnog moda glasi
 \begin{equation}
-\det(\lambda I - A_{\mathrm{parno}}) = \det \begin{bmatrix} \lambda + 1 & \frac{\pi}{6} \\ -\frac{3\pi}{2} & \lambda + 1 \end{bmatrix} = (\lambda + 1)^2 - \left( -\frac{\pi}{6} \cdot \frac{3\pi}{2} \right) = (\lambda + 1)^2 + \frac{\pi^2}{4} = 0.
+\det(\lambda I - A_{\mathrm{parno}}) =
+\det \begin{bmatrix} \lambda + 1 & \frac{\pi}{6} \\[2pt] -\frac{3\pi}{2} & \lambda + 1 \end{bmatrix}
+= (\lambda + 1)^2 + \frac{\pi}{6} \cdot \frac{3\pi}{2}
+= (\lambda + 1)^2 + \frac{\pi^2}{4} = 0,
 \end{equation}
-Svojstvene vrijednosti parnog moda su konjugirano kompleksni par:
+odakle je
 \begin{equation}
-\lambda_{1,2}(A_{\mathrm{parno}}) = -1 \pm j \frac{\pi}{2} \approx -1 \pm 1.570796j.
+\lambda_{1,2}(A_{\mathrm{parno}}) = -1 \pm j \frac{\pi}{2} = -1 \pm 1.570796\, j .
 \end{equation}
-Analogno, za matricu $A_{\mathrm{neparno}}$:
+Za neparni mod umnožak izvandijagonalnih elemenata je jednak, $\frac{3\pi}{2} \cdot \frac{\pi}{6} = \frac{\pi^2}{4}$, pa je karakteristični polinom identičan i
 \begin{equation}
-\det(\lambda I - A_{\mathrm{neparno}}) = (\lambda + 1)^2 + \left(\frac{3\pi}{2} \cdot \frac{\pi}{6}\right) = (\lambda + 1)^2 + \frac{\pi^2}{4} = 0 \implies \lambda_{1,2}(A_{\mathrm{neparno}}) = -1 \pm j \frac{\pi}{2}.
+\lambda_{1,2}(A_{\mathrm{neparno}}) = -1 \pm j \frac{\pi}{2}.
 \end{equation}
-Budući da je realni dio svih svojstvenih vrijednosti strogo negativan:
-\begin{equation}
-\mathrm{Re}(\lambda_{1,2}(A_{\mathrm{parno}})) = -1 < 0, \quad \mathrm{Re}(\lambda_{1,2}(A_{\mathrm{neparno}})) = -1 < 0,
-\end{equation}
-obje matrice su \textbf{Hurwitzove}, što znači da je svaki mod u autonomnom radu ($u(t) \equiv 0$) \textbf{strogo asimptotski stabilan} kada nema prespajanja.
+Realni dio svih svojstvenih vrijednosti je $-1 < 0$, pa su \textbf{obje matrice Hurwitzove} i svaki mod je zasebno asimptotski stabilan.
 
-\subsection{Mehanizam destabilizacije i analiza monodromijske matrice}
+\subsection{(b) Simulacija sklopnog sustava}
 
-U teoriji hibridnih sustava poznato je da prespajanje između dva stabilna LTI podsustava može generirati nestabilan sustav~\cite{liberzon2003switching}.
+Autonomni sustav ($u \equiv 0$) simulira se po segmentima duljine $1$ s, jer je unutar svakog segmenta matrica dinamike konstantna. Na svakom segmentu koristi se \texttt{ode45}, a završno stanje segmenta postaje početno stanje sljedećeg.
 
-Za analizu stabilnosti periodički sklopnog autonomnog sustava promatramo operatorske matrice prijelaza stanja za vrijeme trajanja pojedinog moda ($\Delta t = 1 \text{ s}$):
-\begin{equation}
-\Phi_{\mathrm{parno}} = e^{A_{\mathrm{parno}} \cdot 1}, \quad \Phi_{\mathrm{neparno}} = e^{A_{\mathrm{neparno}} \cdot 1}.
-\end{equation}
-Matrica prijelaza stanja preko jednog punog perioda prespajanja $T = 2 \text{ s}$ naziva se \textbf{monodromijska matrica}:
-\begin{equation}
-\Phi_{\mathrm{cycle}} = \Phi_{\mathrm{neparno}} \cdot \Phi_{\mathrm{parno}} = e^{A_{\mathrm{neparno}} \cdot 1} \cdot e^{A_{\mathrm{parno}} \cdot 1}.
-\end{equation}
-Analitičkim i numeričkim izračunom eksponencijala matrica dobivamo:
-\begin{equation}
-\Phi_{\mathrm{parno}} = e^{-1} \begin{bmatrix} 0 & -\frac{1}{3} \\ 3 & 0 \end{bmatrix} \approx \begin{bmatrix} 0.0000 & -0.1226 \\ 1.1036 & 0.0000 \end{bmatrix},
-\end{equation}
-\begin{equation}
-\Phi_{\mathrm{neparno}} = e^{-1} \begin{bmatrix} 0 & -3 \\ \frac{1}{3} & 0 \end{bmatrix} \approx \begin{bmatrix} 0.0000 & -1.1036 \\ 0.1226 & 0.0000 \end{bmatrix},
-\end{equation}
-\begin{equation}
-\Phi_{\mathrm{cycle}} = \Phi_{\mathrm{neparno}} \Phi_{\mathrm{parno}} = e^{-2} \begin{bmatrix} -9 & 0 \\ 0 & -\frac{1}{9} \end{bmatrix} \approx \begin{bmatrix} -1.2180 & 0.0000 \\ 0.0000 & -0.0150 \end{bmatrix}.
-\end{equation}
-Determinanta monodromijske matrice iznosi $\det(\Phi_{\mathrm{cycle}}) = e^{-4} \approx 0.01832$, a svojstvene vrijednosti odgovaraju dijagonalnim elementima:
-\begin{equation}
-\lambda_1(\Phi_{\mathrm{cycle}}) = -9 e^{-2} \approx -1.2180, \quad \lambda_2(\Phi_{\mathrm{cycle}}) = -\frac{1}{9} e^{-2} \approx -0.0150.
-\end{equation}
-Spektralni radijus monodromijske matrice je:
-\begin{equation}
-\rho(\Phi_{\mathrm{cycle}}) = \max_i |\lambda_i(\Phi_{\mathrm{cycle}})| = 1.2180 > 1.
-\end{equation}
-Budući da je $\rho(\Phi_{\mathrm{cycle}}) > 1$, sustav u diskretnim stroboskopskim točkama $t_k = 2k$ zadovoljava relaciju $x(2(k+1)) = \Phi_{\mathrm{cycle}} x(2k)$, što znači da norma stanja duž dominantnog smjera raste po geometrijskoj progresiji s faktorom $1.2180$ u svakom ciklusu.
+\begin{lstlisting}
+A_par = [-1, -pi/6;   3*pi/2, -1];
+A_nep = [-1, -3*pi/2; pi/6,   -1];
+x0 = [1; 0];  T = 20;
+
+tt = [];  xx = [];  xc = x0;
+for kseg = 0:T-1
+    if mod(kseg, 2) == 0, Aa = A_par; else, Aa = A_nep; end
+    o = odeset('RelTol', 1e-9, 'AbsTol', 1e-11);
+    [ts, xs] = ode45(@(t, x) Aa*x, [kseg, kseg+1], xc, o);
+    tt = [tt; ts];  xx = [xx; xs];  xc = xs(end,:)';
+end
+\end{lstlisting}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.92\textwidth]{figures/fig4_1_open_loop_divergence.pdf}
-    \caption{Simulacija otvorenog kruga: vremenski odziv stanja $x_1(t), x_2(t)$ i fazni portret koji prikazuje divergenciju (ekspandirajuću spiralu) uslijed prespajanja.}
-    \label{fig:open_loop_div}
+    \caption{Otvoreni krug uz $x(0) = [1, 0]^{\mathsf{T}}$: vremenski odziv varijabli stanja (lijevo) i trajektorija u prostoru stanja (desno).}
+    \label{fig:otvoreni_krug}
 \end{figure}
 
-Slika~\ref{fig:open_loop_div} prikazuje nestabilnost otvorenog kruga za početni uvjet $x(0) = [1, 0]^T$: unatoč asimptotskoj stabilnosti svakog pojedinog moda, skokovita promjena dinamike u trenucima $t = 1, 2, 3, \dots$ unosi energiju u sustav te trajektorija eksponencijalno divergira.
+Slika~\ref{fig:otvoreni_krug} pokazuje da amplitude rastu, a trajektorija u prostoru stanja opisuje spiralu koja se širi; na kraju simulacije je $\|x(20)\| = 7.19$. \textbf{Sklopni sustav nije stabilan}, iako su oba moda pojedinačno stabilna.
 
-\subsection{Zajednička funkcija Ljapunova (CQLF) i LMI formulacija}
-
-Kako bi se osigurala stabilnost pod proizvoljnim ili periodičkim prespajanjem, projektiramo statički regulator po stanju:
-\begin{equation}
-u(t) = K x(t), \quad K = \begin{bmatrix} k_1 & k_2 \end{bmatrix} \in \mathbb{R}^{1 \times 2}.
-\label{eq:feedback_law}
-\end{equation}
-Zatvoreni krug u pojedinom modu poprima oblik:
-\begin{equation}
-\dot{x}(t) = (A(t) + B K) x(t).
-\end{equation}
-
-Uvodeći kandidata za \textbf{zajedničku kvadratnu funkciju Ljapunova} (engl. \textit{Common Quadratic Lyapunov Function} -- CQLF)~\cite{boyd1994lmi,liberzon2003switching}:
-\begin{equation}
-V(x) = x^T P x, \quad P = P^T \succ 0,
-\label{eq:cqlf_def}
-\end{equation}
-njezina vremenska derivacija duž trajektorija zatvorenog kruga iznosi:
-\begin{equation}
-\dot{V}_i(x) = \dot{x}^T P x + x^T P \dot{x} = x^T \left[ (A_i + B K)^T P + P (A_i + B K) \right] x, \quad i \in \{\mathrm{parno}, \mathrm{neparno}\}.
-\end{equation}
-Za postizanje stroge eksponencijalne stabilnosti zahtijevamo da vrijedi $\dot{V}_i(x) \leq -\epsilon \|x\|^2 < 0$ za sve $x \neq 0$, što je ekvivalentno sustavu matričnih nejednakosti:
+Taj se zaključak može i dokazati. Matrice prijelaza stanja preko jednog segmenta jesu $\Phi_{\mathrm{parno}} = e^{A_{\mathrm{parno}}}$ i $\Phi_{\mathrm{neparno}} = e^{A_{\mathrm{neparno}}}$. Kako je $A_{\mathrm{parno}} = -I + \frac{\pi}{2} M$ uz $M = \left[\begin{smallmatrix} 0 & -1/3 \\ 3 & 0 \end{smallmatrix}\right]$ i $M^2 = -I$, vrijedi $e^{\frac{\pi}{2}M} = \cos\frac{\pi}{2} I + \sin\frac{\pi}{2} M = M$, pa je
 \begin{align}
-P &\succ 0, \label{eq:lyap_p} \\
-(A_{\mathrm{parno}} + B K)^T P + P (A_{\mathrm{parno}} + B K) &\prec 0, \label{eq:lyap_mode1} \\
-(A_{\mathrm{neparno}} + B K)^T P + P (A_{\mathrm{neparno}} + B K) &\prec 0. \label{eq:lyap_mode2}
+\Phi_{\mathrm{parno}} &= e^{-1} \begin{bmatrix} 0 & -\frac{1}{3} \\[2pt] 3 & 0 \end{bmatrix}
+= \begin{bmatrix} 0 & -0.122626 \\ 1.103638 & 0 \end{bmatrix}, \\
+\Phi_{\mathrm{neparno}} &= e^{-1} \begin{bmatrix} 0 & -3 \\[2pt] \frac{1}{3} & 0 \end{bmatrix}
+= \begin{bmatrix} 0 & -1.103638 \\ 0.122626 & 0 \end{bmatrix}.
 \end{align}
-
-\subsection{Kongruentna transformacija i supstitucija varijabli}
-
-Nejednakosti~\eqref{eq:lyap_mode1}--\eqref{eq:lyap_mode2} sadrže bilinearni umnožak nepoznatih matrica $P$ i $K$ ($P B K$), što problem čini nekonveksnim (bilinearna matrična nejednakost -- BMI).
-
-Kako bismo problem egzaktno linearizirali, provodimo \textbf{kongruentnu transformaciju}~\cite{boyd1994lmi,jokic2024predavanja}:
-\begin{enumerate}
-    \item Definiramo regularnu matricu $Q = P^{-1} \succ 0$.
-    \item Pre- i post-množimo nejednakosti~\eqref{eq:lyap_mode1}--\eqref{eq:lyap_mode2} s matricom $Q$:
-    \begin{equation}
-    Q (A_i + B K)^T P Q + Q P (A_i + B K) Q \prec 0 \iff Q A_i^T + A_i Q + Q K^T B^T + B K Q \prec 0.
-    \end{equation}
-    \item Uvodimo novu optimizacijsku varijablu putem supstitucije:
-    \begin{equation}
-    Y = K Q \in \mathbb{R}^{1 \times 2} \iff K = Y Q^{-1}.
-    \label{eq:y_substitution}
-    \end{equation}
-\end{enumerate}
-
-Uvrštavanjem supstitucije dobivamo standardni sustav \textbf{linearnih matričnih nejednakosti (LMI)} po varijablama $Q \in \mathbb{S}^2$ i $Y \in \mathbb{R}^{1 \times 2}$:
+Matrica prijelaza preko jednog punog perioda prespajanja ($T = 2$ s) jest
 \begin{equation}
-\begin{cases}
-Q \succ 0 \\
-A_{\mathrm{parno}} Q + Q A_{\mathrm{parno}}^T + B Y + Y^T B^T \prec 0 \\
-A_{\mathrm{neparno}} Q + Q A_{\mathrm{neparno}}^T + B Y + Y^T B^T \prec 0
-\end{cases}
-\label{eq:lmi_system}
+\Phi_{\mathrm{cikl}} = \Phi_{\mathrm{neparno}} \Phi_{\mathrm{parno}}
+= e^{-2} \begin{bmatrix} -9 & 0 \\ 0 & -\frac{1}{9} \end{bmatrix}
+= \begin{bmatrix} -1.218018 & 0 \\ 0 & -0.015037 \end{bmatrix},
 \end{equation}
-
-Budući da je presjek LMI ograničenja konveksan skup po matricama $(Q, Y)$, problem se rješava metodama semidefinitnog programiranja (SDP) s globalnom konvergencijom. Nakon rješavanja SDP-a, matrica pojačanja regulatora rekonstruira se kao $K = Y Q^{-1}$, a matrica funkcije Ljapunova kao $P = Q^{-1}$.
-
-\subsection{Numerička sinteza regulatora u SDP okruženju}
-
-LMI problem dopustivosti~\eqref{eq:lmi_system} nema jedinstveno rješenje, već definira konveksni skup (stožac dopustivosti) parova matrica $(Q, Y)$. U ovom radu za sintezu regulatora i generiranje simulacija korišteno je rješenje dobiveno u programskom paketu Python (CVXPY + CLARABEL), kojim se minimizira norma upravljačkog pojačanja:
+uz $\det \Phi_{\mathrm{cikl}} = e^{-4} = 0.018316$, u skladu s $\det e^{A} = e^{\operatorname{tr} A}$. Budući da je matrica dijagonalna, njezine svojstvene vrijednosti su dijagonalni elementi, pa je spektralni radijus
 \begin{equation}
-P = \begin{bmatrix} 0.8870 & 0.1305 \\ 0.1305 & 0.8492 \end{bmatrix} \succ 0, \qquad K = \begin{bmatrix} -2.7120 & 0.0926 \end{bmatrix}.
+\rho(\Phi_{\mathrm{cikl}}) = 9 e^{-2} = 1.218018 > 1 .
 \end{equation}
-\noindent\textbf{Napomena:} Alternativno rješenje dobiveno u programskom paketu MATLAB (YALMIP + SDPT3) iznosi $K = [-3.7097, 0.0000]$ uz $P_{\mathrm{YALMIP}} \succ 0$, što također u potpunosti zadovoljava LMI sustav~\eqref{eq:lmi_system} i osigurava stabilnost zatvorenog kruga.
+Stanje u trenucima $t_k = 2k$ zadovoljava $x(2(k+1)) = \Phi_{\mathrm{cikl}}\, x(2k)$, pa uz $\rho > 1$ norma stanja raste po geometrijskoj progresiji. Simulacija na slici~\ref{fig:otvoreni_krug} numerička je ilustracija tog zaključka.
 
-\subsubsection{Provjera svojstvenih vrijednosti zatvorenog kruga}
+\subsection{(c) Sinteza regulatora pomoću linearnih matričnih nejednakosti}
 
-Matrice dinamike zatvorenog kruga za sintetizirani regulator $K = [-2.7120, 0.0926]$ u oba moda iznose:
+Traži se statički regulator $u(t) = Kx(t)$, $K \in \mathbb{R}^{1 \times 2}$, takav da je zatvoreni krug
 \begin{equation}
-A_{\mathrm{cl,parno}} = A_{\mathrm{parno}} + B K = \begin{bmatrix} -3.7120 & -0.4309 \\ 4.7124 & -1.0000 \end{bmatrix},
+\dot{x}(t) = \big(A(t) + BK\big) x(t)
+\label{eq:zatvoreni_krug}
+\end{equation}
+eksponencijalno stabilan. Označimo $\mathcal{A} = \{A_{\mathrm{parno}} + BK, \ A_{\mathrm{neparno}} + BK\}$. Prema pojmu kvadratne stabilnosti~\cite{boyd1994lmi,jokic2024predavanja}, ako postoji simetrična matrica $P$ takva da vrijedi
+\begin{equation}
+P \succ 0, \qquad \bar{A}^{\mathsf{T}} P + P \bar{A} \prec 0 \quad \text{za sve } \bar{A} \in \mathcal{A},
+\label{eq:kvadratna_stabilnost}
+\end{equation}
+tada je funkcija $V(x) = x^{\mathsf{T}} P x$ zajednička kvadratna Ljapunovljeva funkcija za oba moda, a vremenski promjenjiv sustav $\dot{x} = \bar{A}(t) x$ je eksponencijalno stabilan za \emph{svaki} po dijelovima kontinuiran izbor $\bar{A}(t) \in \mathcal{A}$ --- dakle i za zadani zakon prespajanja~\eqref{eq:zakon_prespajanja}. Upravo je to svojstvo potrebno: kao što pokazuje potpoglavlje (b), Hurwitzovost pojedinih modova sama po sebi ne jamči ništa.
+
+Uvjet~\eqref{eq:kvadratna_stabilnost} nije LMI jer sadrži umnožak nepoznanica $P$ i $K$:
+\begin{equation}
+A_i^{\mathsf{T}} P + K^{\mathsf{T}} B^{\mathsf{T}} P + P A_i + P B K \prec 0 .
+\end{equation}
+Množenjem s lijeva i s desna matricom $P^{-1}$ (transformacija kongruencije, koja čuva predznak) i supstitucijom
+\begin{equation}
+\mathcal{Q} = P^{-1}, \qquad Y = K P^{-1}
+\end{equation}
+dobiva se sustav linearnih matričnih nejednakosti u varijablama $(\mathcal{Q}, Y)$:
+\begin{equation}
+\mathcal{Q} \succ 0, \qquad
+A_i \mathcal{Q} + \mathcal{Q} A_i^{\mathsf{T}} + B Y + Y^{\mathsf{T}} B^{\mathsf{T}} \prec 0,
+\qquad i \in \{\mathrm{parno}, \mathrm{neparno}\}.
+\label{eq:lmi_sinteza}
+\end{equation}
+Iz rješenja se rekonstruiraju $P = \mathcal{Q}^{-1}$ i $K = Y P$.
+
+Sustav~\eqref{eq:lmi_sinteza} je homogen: ako je $(\mathcal{Q}, Y)$ dopustiv, dopustiv je i $(t\mathcal{Q}, tY)$ za $t \geq 1$, uz isti $K$. Stroge nejednakosti se stoga numerički realiziraju usklađenim parom normalizacija $\mathcal{Q} \succeq I$ i $A_i \mathcal{Q} + \mathcal{Q} A_i^{\mathsf{T}} + BY + Y^{\mathsf{T}}B^{\mathsf{T}} \preceq -I$, a među dopustivim parovima bira se onaj s najmanjom normom $\|Y\|$, čime se dobiva regulator najmanjeg pojačanja. Problem se rješava u YALMIP-u rješavačem SDPT3.
+
+\begin{lstlisting}
+Qv = sdpvar(2, 2, 'symmetric');
+Yv = sdpvar(1, 2, 'full');
+F  = [Qv >= eye(2), ...
+      A_par*Qv + Qv*A_par' + B*Yv + Yv'*B' <= -eye(2), ...
+      A_nep*Qv + Qv*A_nep' + B*Yv + Yv'*B' <= -eye(2)];
+sol = optimize(F, norm(Yv, 2), sdpsettings('solver', 'sdpt3', 'verbose', 0));
+
+Qs = value(Qv);  Ys = value(Yv);
+P  = inv(Qs);    K  = Ys*P;
+\end{lstlisting}
+
+\begin{lstlisting}[style=outputstyle]
+status : Successfully solved (SDPT3)
+Q = [ 1.354304 -0.385757; -0.385757  1.420003]
+Y = [-4.597618  1.172472]
+P = [ 0.800314  0.217413;  0.217413  0.763286],  eig(P) = 0.563600, 1.000000
+K = [-3.424629 -0.104650]
+\end{lstlisting}
+
+Dobiveni su, dakle,
+\begin{equation}
+P = \begin{bmatrix} 0.800314 & 0.217413 \\ 0.217413 & 0.763286 \end{bmatrix} \succ 0, \qquad
+K = \begin{bmatrix} -3.424629 & -0.104650 \end{bmatrix}.
+\label{eq:rjesenje_lmi}
+\end{equation}
+Sustav~\eqref{eq:lmi_sinteza} je problem dopustivosti i nema jedinstveno rješenje; drugi rješavač ili druga normalizacija daju drugi $K$ koji također stabilizira zatvoreni krug. U ovom su radu svi rezultati i sve slike dobiveni s pojačanjem~\eqref{eq:rjesenje_lmi}.
+
+\subsubsection{Provjera dobivenog rješenja}
+
+Matrice zatvorenog kruga iznose
+\begin{equation}
+A_{\mathrm{parno}} + BK = \begin{bmatrix} -4.424629 & -0.628249 \\ 4.712389 & -1.000000 \end{bmatrix}, \qquad
+A_{\mathrm{neparno}} + BK = \begin{bmatrix} -4.424629 & -4.817039 \\ 0.523599 & -1.000000 \end{bmatrix},
+\end{equation}
+sa svojstvenim vrijednostima
+\begin{equation}
+\lambda(A_{\mathrm{parno}} + BK) = -2.712315 \pm 0.168908\, j, \qquad
+\lambda(A_{\mathrm{neparno}} + BK) = \{-3.352491,\ -2.072138\},
+\end{equation}
+dakle oba su moda zatvorenog kruga Hurwitzova. To je nužan, ali ne i dovoljan uvjet; dokaz stabilnosti sklopnog sustava daje zajednička Ljapunovljeva funkcija. Njezina provjera:
+\begin{equation}
+\lambda_{\max}\big( (A_{\mathrm{parno}} + BK)^{\mathsf{T}} P + P (A_{\mathrm{parno}} + BK) \big) = -0.910478 < 0,
 \end{equation}
 \begin{equation}
-A_{\mathrm{cl,neparno}} = A_{\mathrm{neparno}} + B K = \begin{bmatrix} -3.7120 & -4.6198 \\ 0.5236 & -1.0000 \end{bmatrix}.
+\lambda_{\max}\big( (A_{\mathrm{neparno}} + BK)^{\mathsf{T}} P + P (A_{\mathrm{neparno}} + BK) \big) = -0.329090 < 0,
 \end{equation}
-Svojstvene vrijednosti zatvorenog kruga glase:
+pa~\eqref{eq:kvadratna_stabilnost} vrijedi i $V(x) = x^{\mathsf{T}} P x$ strogo pada duž trajektorija oba moda. Iz $\dot{V} \leq -2\alpha V$ slijedi eksponencijalna ocjena
 \begin{equation}
-\lambda(A_{\mathrm{cl,parno}}) = -2.3560 \pm 0.4387j, \quad \lambda(A_{\mathrm{cl,neparno}}) = -2.3560 \pm 0.7617j.
+V(x(t)) \leq V(x(0))\, e^{-2\alpha t}, \qquad \alpha = 0.288374\ \mathrm{s}^{-1},
 \end{equation}
-Oba moda imaju strogo negativan realni dio ($\mathrm{Re}(\lambda) = -2.356 < 0$).
+odnosno $\|x(t)\| \leq 1.3320\, e^{-0.2884 t} \|x(0)\|$. Spektralni radijus monodromijske matrice zatvorenog kruga iznosi $\rho(\Phi_{\mathrm{cikl}}^{\mathrm{zk}}) = 0.069720 \ll 1$, što je znatno brža kontrakcija od zajamčene ocjene jer se ona odnosi na proizvoljno prespajanje, a ne samo na zadano periodičko.
 
-Za matrice derivacije funkcije Ljapunova $M_i = A_{\mathrm{cl},i}^T P + P A_{\mathrm{cl},i}$ maksimalne svojstvene vrijednosti iznose:
-\begin{equation}
-\lambda_{\max}(M_{\mathrm{parno}}) = -9.498 \times 10^{-2} < 0, \quad \lambda_{\max}(M_{\mathrm{neparno}}) = -5.492 \times 10^{-2} < 0,
-\end{equation}
-što dokazuje da funkcija $V(x) = x^T P x$ strogo pada duž svih trajektorija.
+\subsubsection{Simulacija zatvorenog kruga}
 
-Nadalje, minimalna stopa disipacije energije unutar svakog moda iznosi $\beta_i = -\lambda_{\max}(P^{-1/2} M_i P^{-1/2})$, pri čemu je $\beta_1 = 0.0978 \text{ s}^{-1}$ za parni mod te $\beta_2 = 0.0742 \text{ s}^{-1}$ za neparni mod. Minimalna zajamčena stopa disipacije za proizvoljno prespajanje iznosi:
-\begin{equation}
-\beta = \min(\beta_1, \beta_2) = 0.0742 \text{ s}^{-1},
-\end{equation}
-što definira teorijsku eksponencijalnu ovojnicu $V(x(t)) \leq V(x(0)) e^{-\beta t}$.
-
-Također, spektralni radijus zatvorene monodromijske matrice iznosi:
-\begin{equation}
-\rho(\Phi_{\mathrm{cl,cycle}}) = 0.1320 \ll 1,
-\end{equation}
-što potvrđuje brzu kontrakciju stanja u svakom ciklusu.
-
-\subsection{Simulacija zatvorenog kruga i dokaz eksponencijalne stabilnosti}
-
-Za početni uvjet $x(0) = [1, 0]^T$ provedena je simulacija zatvorenog sustava metodom Runge-Kutta 4/5 (\texttt{ode45} / \texttt{solve\_ivp}).
+Zatvoreni krug simulira se istim postupkom kao u potpoglavlju (b), uz zamjenu $A_i \rightarrow A_i + BK$.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.92\textwidth]{figures/fig4_2_closed_loop_stabilization.pdf}
-    \caption{Simulacija zatvorenog kruga: stabilizirani vremenski odziv stanja i fazni portret s eliptičnim nivo-plohama funkcije Ljapunova $x^T P x = c$.}
-    \label{fig:closed_loop_stab}
+    \caption{Zatvoreni krug uz $x(0) = [1, 0]^{\mathsf{T}}$: vremenski odziv (lijevo) i trajektorija u prostoru stanja s nivo-elipsama $x^{\mathsf{T}} P x = c$ (desno).}
+    \label{fig:zatvoreni_krug}
 \end{figure}
 
-Kao što je prikazano na slici~\ref{fig:closed_loop_stab}, stanja $x_1(t)$ i $x_2(t)$ konvergiraju prema ishodištu unutar prvih $\approx 3 \text{ s}$. Fazni portret pokazuje da trajektorija kontinuirano siječe nivo-elipse funkcije Ljapunova prema unutrašnjosti.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.82\textwidth]{figures/fig4_3_lyapunov_decay.pdf}
-    \caption{Vremenska disipacija energije zajedničke funkcije Ljapunova $V(x(t))$ u logaritamskom mjerilu uz usporedbu s teorijskom eksponencijalnom ovojnicom $V_0 e^{-\beta t}$ ($\beta = 0.0742 \text{ s}^{-1}$).}
-    \label{fig:lyap_decay}
-\end{figure}
-
-Slika~\ref{fig:lyap_decay} prikazuje vremenski tijek energije Ljapunova $V(x(t)) = x(t)^T P x(t)$ u logaritamskom mjerilu. Monoton pad krivulje potvrđuje postojanje jedinstvene zajedničke funkcije Ljapunova i dokazuje \textbf{uniformnu eksponencijalnu stabilnost} zatvorenog sustava.
+Slika~\ref{fig:zatvoreni_krug} pokazuje da stanja konvergiraju prema ishodištu: već je $\|x(5)\| = 1.52 \cdot 10^{-3}$, a $\|x(20)\| = 4.72 \cdot 10^{-12}$. Zbog kompleksnog para polova parnog moda odziv je prigušeno oscilatoran. Trajektorija u prostoru stanja siječe nivo-elipse funkcije $V(x) = x^{\mathsf{T}} P x$ prema unutrašnjosti, u skladu s $\dot{V} < 0$.

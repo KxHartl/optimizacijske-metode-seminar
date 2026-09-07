@@ -1,24 +1,26 @@
-%% Master Runner Script for OMRiUS Seminar MATLAB Simulations
+%% Pokrece sve cetiri skripte i sprema konzolni ispis u docs/code/.
+%  Pokrenuti iz mape src:   >> cd src;  run_all
+%  Svaka brojka koja se pojavljuje u seminaru mora postojati u tim datotekama.
+
 clear; close all; clc;
+addpath(fullfile(pwd, 'common'));
+outDir = fullfile(pwd, '..', 'docs', 'code');
+if ~exist(outDir, 'dir'), mkdir(outDir); end
 
-fprintf('==========================================\n');
-fprintf('Executing Task 1: QP Analysis\n');
-fprintf('==========================================\n');
-task1_qp_analysis;
+tasks = {'task1_qp_analysis', 'task2_robust_qp', ...
+         'task3_road_leveling', 'task4_lmi_switched_stabilization'};
 
-fprintf('\n==========================================\n');
-fprintf('Executing Task 2: Robust QP\n');
-fprintf('==========================================\n');
-task2_robust_qp;
+for k = 1:numel(tasks)
+    logFile = fullfile(outDir, sprintf('task%d_output.txt', k));
+    if exist(logFile, 'file'), delete(logFile); end
+    diary(logFile); diary on;
+    runOne(tasks{k});
+    diary off;
+    fprintf('[run_all] %s -> %s\n', tasks{k}, logFile);
+end
+fprintf('\n[run_all] Sve skripte izvrsene bez greske.\n');
 
-fprintf('\n==========================================\n');
-fprintf('Executing Task 3: Road Leveling LP\n');
-fprintf('==========================================\n');
-task3_road_leveling;
-
-fprintf('\n==========================================\n');
-fprintf('Executing Task 4: Switched LMI Stabilization\n');
-fprintf('==========================================\n');
-task4_lmi_switched_stabilization;
-
-fprintf('\nAll MATLAB simulations executed successfully.\n');
+function runOne(scriptName)
+    % Vlastiti radni prostor da 'clear' u skripti ne obrise varijable pozivatelja.
+    run(scriptName);
+end

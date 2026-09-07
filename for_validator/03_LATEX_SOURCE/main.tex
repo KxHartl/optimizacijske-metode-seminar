@@ -72,8 +72,8 @@
 \counterwithin{equation}{section}
 
 % --- Depth ---
-\setcounter{secnumdepth}{4}
-\setcounter{tocdepth}{4}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
 
 % --- Croatian names (addto — babel croatian overrida renewcommand) ---
 \addto\captionscroatian{%
@@ -95,8 +95,51 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 
-% --- Color (za upozorenja o nepopunjenim placeholderima) ---
+% --- Color ---
 \usepackage{xcolor}
+
+% --- MATLAB kod i ispis rjesavaca ---
+\usepackage{listings}
+\lstdefinestyle{matlabstyle}{
+  language=Matlab,
+  basicstyle=\ttfamily\footnotesize,
+  keywordstyle=\bfseries,
+  commentstyle=\itshape,
+  stringstyle=\normalfont,
+  numbers=none,
+  frame=single,
+  framesep=4pt,
+  rulecolor=\color{black!45},
+  breaklines=true,
+  breakatwhitespace=false,
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false,
+  tabsize=2,
+  aboveskip=8pt,
+  belowskip=8pt,
+  extendedchars=true,
+  literate={č}{{\v c}}1 {ć}{{\'c}}1 {ž}{{\v z}}1 {š}{{\v s}}1 {đ}{{\dj}}1
+           {Č}{{\v C}}1 {Ć}{{\'C}}1 {Ž}{{\v Z}}1 {Š}{{\v S}}1 {Đ}{{\DJ}}1
+}
+\lstdefinestyle{outputstyle}{
+  basicstyle=\ttfamily\footnotesize,
+  keywordstyle=\normalfont,
+  commentstyle=\normalfont,
+  numbers=none,
+  frame=single,
+  framesep=4pt,
+  rulecolor=\color{black!25},
+  backgroundcolor=\color{black!4},
+  breaklines=true,
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false,
+  aboveskip=8pt,
+  belowskip=8pt,
+}
+\lstset{style=matlabstyle}
+\renewcommand{\lstlistingname}{Ispis}
 
 % --- Paragraph spacing ---
 \setlength{\parindent}{1.25cm}
@@ -119,6 +162,7 @@
 \newcommand{\seminartitleshort}{OMRiUS — Seminarski rad}
 \newcommand{\professorname}{Prof. dr. sc. Andrej Jokić}
 \newcommand{\authorname}{Krešimir Hartl}
+\newcommand{\authorid}{0035\,XXX\,XXX}  % JMBAG / maticni broj
 \newcommand{\locationdate}{Zagreb, 2026.}
 
 % ============================================================
@@ -137,7 +181,8 @@
   % Tabular: lijevo "Profesor:" / bold ime — desno "Student:" / bold ime
   \begin{tabular}{p{0.45\textwidth}>{\raggedleft\arraybackslash}p{0.45\textwidth}}
     \textmd{Profesor:} & \textmd{Student:} \\[0.3cm]
-    \textbf{\professorname} & \textbf{\authorname}
+    \textbf{\professorname} & \textbf{\authorname} \\[0.15cm]
+                            & \authorid
   \end{tabular}
   \vspace{1.5cm}
   \par
@@ -150,8 +195,6 @@
 
 \tableofcontents
 \clearpage
-\listoffigures\clearpage
-\listoftables\clearpage
 
 % ---- BODY (arapske stranice) ----
 \pagenumbering{arabic}
