@@ -13,7 +13,27 @@
 
 ## Trenutni fokus
 
-- [x] **Sveučilišni udžbenik i vodič za pripremu usmene obrane i ispita (rujan 2026.)**:
+- [ ] **Udžbenik v2 — LaTeX, vođen zadacima, s okvirima izvora** (`docs/udzbenik/`):
+  - Nastao jer Markdown verzija nije pokazivala **odakle koja tvrdnja dolazi** —
+    pandoc daje samo obične citatne blokove, pa su slajdovi s predavanja, tekst
+    zadatka i rješenje iz seminara izgledali identično.
+  - **Boja označava isključivo podrijetlo teksta**: crveno = doslovni slajd s
+    predavanja/vježbi (citiran i brojem slajda i brojem PDF stranice, jer ih
+    beamer overlayi razdvajaju), sivo = doslovni tekst zadatka sa skena,
+    plavo = doslovni izvadak iz seminara v1.2, žuto = definicija ili formula.
+    Sve ostalo je bez ispune, da četiri boje ostanu jedini glasan signal.
+  - **Gotovo**: Dio 0 (rječnik svakog simbola s izgovorom, računski alat, čitanje
+    i crtanje grafova) i Zadatak 1 u cijelosti (a–f + modul za obranu).
+    93 stranice, `dist/v1.2/OMRiUS_udzbenik_v2.pdf`.
+  - **Preostaje**: Zadaci 2, 3 i 4 po istom predlošku od devet koraka.
+  - Build: `python src/build_udzbenik.py` (Tectonic; sam renderira slike koje
+    nedostaju). Slajdovi: `python src/extract_slides.py` iz manifesta u gitu;
+    PNG-ovi su izvedeni i gitignorirani.
+  - Za odabir slajdova postoji indeks teksta svih 535 slajdova u
+    `data/processed/lectures_text_07092026_185942/` (`INDEX.md`, `find.py`).
+  - Detalji i pravila: `docs/udzbenik/README.md`.
+
+- [x] **Sveučilišni udžbenik i vodič za pripremu usmene obrane i ispita (rujan 2026.)** — verzija v1, Markdown, ostaje netaknuta:
   - Samostalan udžbenik od 11 poglavlja (Poglavlja 0–10 u `docs/textbook/` i master verzija `docs/UDZBENIK_OMRIUS_PRIPREMA_OBRANE.md`, preko 250 kB teksta).
   - **Poglavlje 0 (Matematički rječnik i govorni vodič)**: detaljno objašnjenje svih simbola od nule ($\mathbb{R}^n, \langle x, y \rangle, \coloneqq, \succeq, \succ$), fizikalna značenja, vodič za govorno izražavanje pred ispitivačem i 10 doslovnih modela rečenica.
   - **Umetnute slike i vodiči za crtanje na ploči**: Umetnuto svih 7 slika seminara u visoko-kvalitetnom PNG formatu, uz detaljne dekonstrukcije elemenata i korak-po-korak vodiče s ASCII skicama i govornim predlošcima za crtanje na ploči (Zadatak 1 geometrija i nivo-elipse, Zadatak 2 robusna anvelopa i Monte Carlo, Zadatak 3 niveleta ceste i zasićenje zakrivljenosti, Zadatak 4 odmotavajuća spirala otvorenog kruga i Ljapunovljeva elipsoidna kontrakcija zatvorenog kruga).
