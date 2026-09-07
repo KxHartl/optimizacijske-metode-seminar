@@ -1,1 +1,176 @@
-% placeholder
+\chapter{Zadatak 1 --- od riječi do matrica}
+\label{ch:z1-formulacija}
+
+\section{Što se ovdje radi}
+
+Zadatak je zapisan u ,,školskom`` obliku, s pojedinačnim koeficijentima. Sve
+metode koje slijede --- KKT uvjeti, dualnost, \texttt{quadprog} --- traže matrični
+zapis. Ovo poglavlje taj prijevod izvodi do kraja i utvrđuje notaciju koja
+vrijedi do kraja zadatka.
+
+\begin{predznanje}
+\begin{itemize}[nosep,leftmargin=*]
+  \item Kvadratna forma i čitanje $Q$ i $c$ iz funkcije cilja --- \S\ref{sec:kvadratna-forma}.
+  \item Množenje matrice i vektora --- \S\ref{sec:mnozenje}.
+  \item Zapis poluprostora $a\trans x \leq b$ --- \S\ref{sec:poluprostor}.
+  \item Značenje simbola $\coloneqq$, $\leq$ po komponentama, $x\trans$ --- Poglavlje~\ref{ch:rjecnik}.
+\end{itemize}
+\end{predznanje}
+
+\section{Standardni oblik koji koristi profesor}
+\label{sec:z1-standardni-oblik}
+
+\begin{izvor}{Predavanje 5 --- LP i QP, slajd 29/34 (PDF str.~33)}
+\slajd[0.86]{p05-qp}
+
+\textbf{Transkripcija.} \emph{Kvadratno programiranje (QP).} Zadano: matrice
+$Q$, $A$, $G$ i vektori $c$, $b$, $h$.
+\[
+\begin{aligned}
+\text{minimiziraj} \quad & \tfrac{1}{2}x\trans Q x + c\trans x \\
+\text{uz ograničenja} \quad & Ax = b, \\
+& Gx \leq h,
+\end{aligned}
+\]
+gdje je $x \in \R^n$ vektor projektnih varijabli.
+\begin{itemize}[nosep,leftmargin=*]
+  \item Funkcija cilja je kvadratna dok su ograničenja linearne funkcije u
+        projektnim varijablama.
+  \item Matrica $Q$ mora biti pozitivno definitna (tada imamo (striktnu)
+        konveksnost i nužno konačan minimum).
+\end{itemize}
+
+\textbf{Što ovo znači za naš zadatak:} ovo je definicija klase kojoj Zadatak 1
+pripada. Ograničenja jednakosti nemamo, pa se dio $Ax = b$ ispušta. Ostaje
+$\min \tfrac12 x\trans Qx + c\trans x$ uz $Gx \leq h$, a naš je posao samo
+popuniti $Q$, $c$, $G$ i $h$ brojevima.
+\end{izvor}
+
+\section{Funkcija cilja u matričnom obliku}
+\label{sec:z1-cilj-matricno}
+
+Zadana funkcija cilja je
+\begin{equation}
+f(x) = x_1^2 + 2x_2^2 - 0{,}3\,x_1x_2 + 2x_1 - 3x_2 .
+\label{eq:z1-f-skalarno}
+\end{equation}
+
+\begin{korak}[Očitavanje $Q$ i $c$]
+Po pravilima iz \S\ref{sec:kvadratna-forma}:
+\begin{enumerate}[leftmargin=*]
+  \item Uz $x_1^2$ stoji koeficijent $1$, a u standardnom obliku je taj koeficijent
+        $\tfrac{1}{2}Q_{11}$, pa je $Q_{11} = 2$.
+  \item Uz $x_2^2$ stoji $2$, dakle $Q_{22} = 4$.
+  \item Uz $x_1x_2$ stoji $-0{,}3$; u standardnom obliku mješoviti član iznosi
+        $\tfrac{1}{2}\cdot 2Q_{12} = Q_{12}$, pa je $Q_{12} = Q_{21} = -0{,}3$.
+  \item Linearni članovi daju $c_1 = 2$ i $c_2 = -3$.
+\end{enumerate}
+\end{korak}
+
+\begin{formula}{Matrice funkcije cilja Zadatka 1}
+\begin{equation}
+Q = \begin{bmatrix} 2 & -0{,}3 \\ -0{,}3 & 4 \end{bmatrix}, \qquad
+c = \begin{bmatrix} 2 \\ -3 \end{bmatrix},
+\qquad
+f(x) = \tfrac{1}{2}x\trans Q x + c\trans x .
+\label{eq:z1-Qc}
+\end{equation}
+\end{formula}
+
+Provjera unatrag:
+$\tfrac12 x\trans Q x = \tfrac12(2x_1^2 - 0{,}6x_1x_2 + 4x_2^2) = x_1^2 - 0{,}3x_1x_2 + 2x_2^2$,
+i $c\trans x = 2x_1 - 3x_2$. Zbroj je točno \eqref{eq:z1-f-skalarno}.
+
+\section{Ograničenja u obliku $Gx - h \leq 0$}
+\label{sec:z1-ogranicenja}
+
+Uvrštavanjem zadanih koeficijenata $a_{11} = -1$, $a_{12} = -1$, $a_{21} = 1$,
+$a_{22} = -1$ u (1b) i (1c) dobiva se
+\begin{align}
+-x_1 - x_2 &\leq -10, \label{eq:z1-ogr1-sirovo} \\
+ x_1 - x_2 &\leq 3 . \label{eq:z1-ogr2-sirovo}
+\end{align}
+
+Prebacivanjem desne strane ulijevo, kako bi ograničenja imala oblik ,,funkcija
+$\leq 0$``:
+\begin{formula}{Ograničenja Zadatka 1}
+\begin{align}
+g_1(x) &= -x_1 - x_2 + 10 \leq 0, \label{eq:z1-g1} \\
+g_2(x) &= x_1 - x_2 - 3 \leq 0, \label{eq:z1-g2}
+\end{align}
+odnosno matrično $Gx - h \leq 0$ uz
+\begin{equation}
+G = \begin{bmatrix} -1 & -1 \\ 1 & -1 \end{bmatrix}, \qquad
+h = \begin{bmatrix} -10 \\ 3 \end{bmatrix}.
+\label{eq:z1-Gh}
+\end{equation}
+\end{formula}
+
+Provjera: $Gx - h = \begin{bsmallmatrix} -x_1 - x_2 \\ x_1 - x_2 \end{bsmallmatrix}
+- \begin{bsmallmatrix} -10 \\ 3\end{bsmallmatrix}
+= \begin{bsmallmatrix} -x_1 - x_2 + 10 \\ x_1 - x_2 - 3 \end{bsmallmatrix}
+= \begin{bsmallmatrix} g_1(x) \\ g_2(x) \end{bsmallmatrix}$. Slaže se s
+\eqref{eq:z1-g1}--\eqref{eq:z1-g2}.
+
+\begin{zamka}[Zamka: predznak pri prebacivanju]
+Ograničenje \eqref{eq:z1-ogr1-sirovo} ima negativnu desnu stranu, $-10$. Pri
+prebacivanju se dobiva $+10$, ne $-10$:
+\[
+-x_1 - x_2 \leq -10
+\;\Longleftrightarrow\;
+-x_1 - x_2 + 10 \leq 0 .
+\]
+Ako se ovdje promaši predznak, cijeli dopustivi skup ispadne na krivoj strani
+pravca, a KKT sustav onda ima rješenje s $\mu_1 < 0$, pa se odbaci točan slučaj.
+Kontrola: uvrsti neku očito dopustivu točku, npr.\ $x = (7,\,6)$, i provjeri da
+je $g_1 < 0$. Ovdje: $g_1(7,6) = -7 - 6 + 10 = -3 < 0$. \checkmark
+\end{zamka}
+
+\begin{zamka}[Zamka: $h$ nije ,,desna strana`` u uobičajenom smislu]
+U zapisu $Gx - h \leq 0$ vektor $h$ sadrži \emph{izvorne} desne strane
+$(-10,\; 3)$, a ne one prebačene. Predznak se pojavljuje tek u $Gx - h$. Ako
+umjesto toga napišeš $h = (10,\,-3)$, matrični i skalarni zapis prestaju biti
+isti problem. \texttt{quadprog} očekuje baš $Gx \leq h$, dakle $h = (-10,\;3)$.
+\end{zamka}
+
+\section{Dopustivi skup}
+\label{sec:z1-dopustivi-skup}
+
+\begin{pojam}{Dopustivi skup Zadatka 1}
+\begin{equation}
+\feas = \{\, x \in \R^2 \mid Gx - h \leq 0 \,\}
+      = \{\, x \in \R^2 \mid x_1 + x_2 \geq 10 \ \text{ i } \ x_1 - x_2 \leq 3 \,\}.
+\label{eq:z1-feas}
+\end{equation}
+\end{pojam}
+
+Riječima: presjek dvaju zatvorenih poluprostora. Prvi traži da zbroj varijabli
+bude barem $10$; drugi da $x_1$ ne prestigne $x_2$ za više od $3$. Presjek je
+neograničeno klinasto područje čiji je vrh sjecište pravaca,
+\begin{equation}
+x_1 + x_2 = 10 \ \wedge \ x_1 - x_2 = 3
+\;\Longrightarrow\;
+x = \begin{bmatrix} 6{,}5 \\ 3{,}5 \end{bmatrix}.
+\label{eq:z1-vrh}
+\end{equation}
+Ta točka će se pojaviti kao Slučaj 4 pri rješavanju KKT uvjeta.
+
+\begin{predznanje}
+Notacija koja od ovog trenutka vrijedi do kraja Zadatka 1:
+\begin{itemize}[nosep,leftmargin=*]
+  \item $x = [x_1,\, x_2]\trans \in \R^2$ --- projektne varijable;
+  \item $Q$, $c$ iz \eqref{eq:z1-Qc}; $G$, $h$ iz \eqref{eq:z1-Gh};
+  \item $g_1$, $g_2$ iz \eqref{eq:z1-g1}--\eqref{eq:z1-g2};
+  \item $\mu = [\mu_1,\, \mu_2]\trans \geq 0$ --- Lagrangeovi množitelji;
+  \item $\feas$ --- dopustivi skup \eqref{eq:z1-feas}.
+\end{itemize}
+\end{predznanje}
+
+\begin{izgovor}
+,,Problem sam najprije sveo na standardni oblik kvadratnog programa s
+predavanja: minimiziraj jedna polovina iks transponirano ku iks plus ce
+transponirano iks, uz ge iks minus ha manje ili jednako nuli. Matrica ku je dva,
+minus nula tri, minus nula tri, četiri; vektor ce je dva, minus tri. Ograničenja
+sam prebacio tako da desno stoji nula, pa je ge matrica minus jedan minus jedan,
+jedan minus jedan, a ha vektor minus deset, tri.``
+\end{izgovor}

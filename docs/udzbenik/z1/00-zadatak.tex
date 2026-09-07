@@ -1,1 +1,118 @@
-% placeholder
+\chapter{Zadatak 1 --- što je točno zadano}
+\label{ch:z1-zadatak}
+
+\section{Izvorni tekst, doslovno}
+\label{sec:z1-izvorni}
+
+Ovo je stranica koju je mentor potpisao. Ništa u sivom okviru nije dodano,
+prepričano ni protumačeno.
+
+\begin{zadatak}{Zadatak 1 (QP, konveksnost, KKT, dualnost)}
+\skenzad[0.99]{z1-original}
+\end{zadatak}
+
+\subsection{Prijepis, znak po znak}
+
+Zbog čitljivosti isti tekst slijedi i pretipkan. Formulacija je nepromijenjena.
+
+\begin{zadatak}{Zadatak 1 --- prijepis}
+\textbf{Zadatak 1. (QP, konveksnost, KKT, dualnost)} Zadan je optimizacijski problem
+\begin{align}
+&\min_{x} \quad x_1^2 + 2x_2^2 - 0.3x_1x_2 + 2x_1 - 3x_2 \tag{1a} \\
+&\text{uz ograničenja} \quad a_{11}x_1 + a_{12}x_2 \leq -10, \tag{1b} \\
+&\phantom{\text{uz ograničenja}} \quad a_{21}x_1 + a_{22}x_2 \leq 3, \tag{1c}
+\end{align}
+gdje su numeričke vrijednosti koeficijenata
+$a_{11} = -1$, $a_{12} = -1$, $a_{21} = 1$, $a_{22} = -1$.
+
+\begin{enumerate}[label=\alph*),leftmargin=*]
+  \item Je li ovo konveksan optimizacijski problem? Obrazložiti odgovor.
+  \item Postavite KKT uvjete optimalnosti i riješite ih (odredite vrijednosti
+        projektnih varijabli i Lagrangeovih množitelja koji zadovoljavaju te uvjete).
+  \item Nacrtajte dozvoljeni skup, nivo krivulje funkcije cilja te izračunajte i
+        skicirati gradijente ograničenja i funkcije cilja u točki koja zadovoljava
+        KKT uvjete.
+  \item Riješite problem u MATLABu (quadprog i/ili yalmip) --- odredite primarne i
+        dualne varijable u optimumu te ih usporedite s rezultatima (Lagrangeovim
+        množiteljima) iz (b).
+  \item Postavite i riješite Lagrangeov dualan problem (koristite MATLAB za
+        numeričko rješavanje dualnog problema). Usporedite vrijednost izračunatih
+        dualnih varijabli s onima dobivenim pod (d) i (b).
+  \item Što možete reći o osjetljivosti optimalne vrijednosti ($p^\star =$ opt.
+        vrijednost primarnog problema) na perturbacije u ograničenjima (na
+        perturbacije koeficijenata $b_1$ i $b_2$)?
+\end{enumerate}
+\end{zadatak}
+
+\section{Što u zadatku \emph{ne} piše}
+\label{sec:z1-nije-receno}
+
+Ovo je najvažnija stranica cijelog poglavlja. Sve što slijedi ispod nije dio
+zadatka --- to su odluke i tumačenja koja mora donijeti onaj tko zadatak rješava.
+Na obrani se očekuje da ih znaš navesti \emph{kao svoje odluke}, a ne da ih
+predstaviš kao da su zadane.
+
+\begin{longtable}{@{}p{0.36\linewidth} p{0.60\linewidth}@{}}
+\toprule
+\textbf{Što nije rečeno} & \textbf{Kako je protumačeno i zašto} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Što nije rečeno} & \textbf{Kako je protumačeno i zašto} \\
+\midrule
+\endhead
+Što su $b_1$ i $b_2$ iz podzadatka f). & U tekstu zadatka slovo $b$ se prije toga
+uopće ne pojavljuje. Iz konteksta su to desne strane ograničenja (1b) i (1c),
+dakle $b_1 = -10$ i $b_2 = 3$. Perturbacija ,,koeficijenata $b_1$ i $b_2$``
+znači pomicanje tih desnih strana. \\[6pt]
+U kojem obliku pisati ograničenja. & Zadatak ih daje kao $a\trans x \leq b$.
+Notacija s predavanja i vježbi je $Gx - h \leq 0$, dakle sve na lijevu stranu i
+nula desno. U ovom udžbeniku i u seminaru koristi se profesorova notacija, jer
+KKT uvjeti u njoj imaju najjednostavniji oblik. \\[6pt]
+Treba li koristiti \texttt{quadprog} ili \texttt{yalmip}. & Zadatak kaže
+,,quadprog i/ili yalmip``, dakle bilo koje. U seminaru je odabran
+\texttt{quadprog}, jer izravno vraća i Lagrangeove množitelje u polju
+\texttt{lambda.ineqlin}, što je upravo ono što podzadatak d) traži usporediti. \\[6pt]
+Koliko decimala navesti. & Nije zadano. Rješenje je egzaktno racionalno
+($190/33$ i $140/33$), pa se u seminaru navodi razlomak, a decimale se pišu na
+šest mjesta uz njega. \\[6pt]
+Treba li dokazati da minimum postoji. & Ne traži se izrijekom, ali se
+podrazumijeva pod ,,obrazložiti odgovor`` u a). Bez dokaza egzistencije tvrdnja
+da je nađena točka \emph{globalni} minimum nije potpuna. \\[6pt]
+Treba li provjeriti Slaterov uvjet. & Ne spominje se. Ipak je nužan: bez njega
+KKT uvjeti su samo nužni, ne i dovoljni, pa se ne bi smjelo tvrditi da je
+KKT točka optimum. U seminaru se provjerava točkom $x = (7,\,6)$. \\
+\bottomrule
+\end{longtable}
+
+\begin{zamka}[Zamka: ,,koraci rješavanja`` koji nisu profesorovi]
+U repozitoriju uz zadatak postoji i prijepis \texttt{TASK/zadatak\_omrius.md} u
+kojem uz svaki podzadatak stoji numerirani popis \emph{Koraka rješavanja}
+(,,zapisati Lagrangian``, ,,razmotriti sve kombinacije aktivnih ograničenja`` i
+slično). Taj popis \textbf{nije} dio zadatka --- napisan je naknadno kao pomoć.
+Ako se na obrani pozoveš na njega kao na tekst zadatka, izlažeš se pitanju koje
+ne možeš dobro odgovoriti. Sve što je zadano stane u sivi okvir iz
+\S\ref{sec:z1-izvorni}.
+\end{zamka}
+
+\section{Karta poglavlja}
+\label{sec:z1-karta}
+
+\begin{longtable}{@{}p{0.07\linewidth} p{0.42\linewidth} p{0.45\linewidth}@{}}
+\toprule
+& \textbf{Podzadatak} & \textbf{Gdje je obrađen} \\
+\midrule
+\endhead
+a) & Konveksnost & Poglavlje~\ref{ch:z1-konveksnost} \\
+b) & KKT uvjeti i njihovo rješavanje & Poglavlje~\ref{ch:z1-kkt} \\
+c) & Grafički prikaz & Poglavlje~\ref{ch:z1-graficki} \\
+d) & Numeričko rješenje (\texttt{quadprog}) & Poglavlje~\ref{ch:z1-matlab} \\
+e) & Lagrangeov dualni problem & Poglavlje~\ref{ch:z1-dual} \\
+f) & Osjetljivost optimalne vrijednosti & Poglavlje~\ref{ch:z1-osjetljivost} \\
+--- & Pitanja, zamke i modelski odgovori & Poglavlje~\ref{ch:z1-obrana} \\
+\bottomrule
+\end{longtable}
+
+Prije toga, u Poglavlju~\ref{ch:z1-formulacija}, zadatak se prevodi iz riječi u
+matrični zapis --- korak koji zadatak ne traži izrijekom, a bez kojega se
+nijedan od podzadataka ne može uredno riješiti.

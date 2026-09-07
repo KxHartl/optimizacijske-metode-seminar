@@ -1,1 +1,312 @@
-% placeholder
+\chapter{Zadatak 1a --- je li problem konveksan}
+\label{ch:z1-konveksnost}
+
+\section{Što se ovdje traži}
+
+Treba dokazati --- ne samo tvrditi --- da problem pripada klasi konveksnih
+optimizacijskih problema. To znači pokazati dvije stvari odvojeno: da je funkcija
+cilja konveksna i da je dopustivi skup konveksan.
+
+\begin{zadatak}{Zadatak 1, podzadatak a)}
+a) Je li ovo konveksan optimizacijski problem? Obrazložiti odgovor.
+\end{zadatak}
+
+\begin{predznanje}
+\begin{itemize}[nosep,leftmargin=*]
+  \item Što je konveksan skup i konveksna funkcija --- \S\ref{sec:prostori}, Poglavlje~\ref{ch:rjecnik}.
+  \item Razlika između $\leq$, $\psd$ i $\pd$ --- \S\ref{sec:relacije}.
+  \item Računanje svojstvenih vrijednosti $2\times2$ matrice --- \S\ref{sec:svojstvene}.
+  \item Provjera definitnosti preko minora --- \S\ref{sec:definitnost}.
+  \item Hessian kvadratne funkcije --- \S\ref{sec:gradijent-hessian}.
+\end{itemize}
+\end{predznanje}
+
+\section{Definicija koju treba zadovoljiti}
+\label{sec:z1a-definicija}
+
+\begin{izvor}{Predavanje 2 --- Definicije, klasifikacija, konveksnost, slajd 70/71 (PDF str.~71)}
+\slajd[0.86]{p02-konveksan-problem}
+
+\textbf{Transkripcija.} \emph{Konveksan optimizacijski problem}
+\[
+\begin{aligned}
+\text{minimiziraj} \quad & f(x) \\
+\text{uz ograničenja} \quad & h_i(x) = 0, && i = 1, \dots, m \\
+& g_j(x) \leq 0, && j = 1, \dots, m
+\end{aligned}
+\]
+gdje su $f(x)$ i $g_j(x)$, $j = 1, \dots, m$, konveksne funkcije, a $h_i(x)$,
+$i = 1, \dots, m$, afine funkcije.
+
+\textbf{Na što treba paziti u ovoj definiciji:} uvjet nije simetričan. Od
+funkcija nejednakosti $g_j$ traži se samo konveksnost, ali od funkcija jednakosti
+$h_i$ traži se \emph{afinost}, što je jače. Razlog: skup $\{x \mid h(x) = 0\}$
+konveksne funkcije $h$ općenito nije konveksan (ploha, ne poluprostor), dok
+$\{x \mid g(x) \leq 0\}$ konveksne $g$ uvijek jest.
+\end{izvor}
+
+\begin{pojam}{Konveksan optimizacijski problem --- kontrolna lista}
+Problem je konveksan ako vrijedi \emph{sve troje}:
+\begin{enumerate}[nosep,leftmargin=*]
+  \item funkcija cilja $f$ je konveksna;
+  \item svaka funkcija ograničenja nejednakosti $g_j$ je konveksna;
+  \item svaka funkcija ograničenja jednakosti $h_i$ je afina.
+\end{enumerate}
+U Zadatku 1 ograničenja jednakosti nema, pa se treća točka ispušta.
+\end{pojam}
+
+\section{Kriterij drugog reda}
+\label{sec:z1a-kriterij}
+
+\begin{izvor}{Predavanje 2 --- Definicije, klasifikacija, konveksnost, slajd 69/71 (PDF str.~70)}
+\slajd[0.86]{p02-uvjeti-drugog-reda}
+
+\textbf{Transkripcija.} \emph{Konveksne funkcije --- uvjeti drugog reda.} Neka je
+$f: \R^n \to \R$ diferencijabilna funkcija s konveksnom domenom. Tada vrijedi:
+\begin{itemize}[nosep,leftmargin=*]
+  \item $f$ je konveksna funkcija \textbf{ako i samo ako} $\grad^2 f(x) \psd 0$
+        za sve $x$ u domeni;
+  \item ako je $\grad^2 f(x) \pd 0$ za sve $x$ u domeni, tada je $f$
+        \textbf{striktno} konveksna funkcija.
+\end{itemize}
+
+\textbf{Pažljivo pročitaj razliku:} prva tvrdnja je ekvivalencija (,,ako i samo
+ako``), druga je samo implikacija u jednom smjeru. Striktno konveksna funkcija ne
+mora imati svugdje pozitivno definitan Hessian --- primjer je $f(x) = x^4$, koja
+je striktno konveksna, a $f''(0) = 0$. Zato se iz $\grad^2 f \psd 0$ smije
+zaključiti konveksnost, ali iz striktne konveksnosti ne smije se zaključiti
+$\grad^2 f \pd 0$.
+\end{izvor}
+
+\section{Izvod za naš problem}
+\label{sec:z1a-izvod}
+
+\begin{korak}[Korak 1: Hesseova matrica funkcije cilja]
+Funkcija cilja je kvadratna, $f(x) = \tfrac12 x\trans Q x + c\trans x$, pa je po
+\eqref{eq:grad-hess-kvadratne}
+\begin{equation}
+\grad^2 f(x) = Q = \begin{bmatrix} 2 & -0{,}3 \\ -0{,}3 & 4 \end{bmatrix}
+\qquad \text{za svaki } x \in \R^2 .
+\end{equation}
+Hessian je konstantan, pa je dovoljno ispitati ga jednom --- nema potrebe za
+provjerom ,,u svakoj točki``, kako doslovno traži kriterij.
+\end{korak}
+
+\begin{korak}[Korak 2: svojstvene vrijednosti]
+Karakteristična jednadžba \eqref{eq:karakteristicna-2x2} uz
+$\tr Q = 6$ i $\det Q = 2\cdot4 - (-0{,}3)^2 = 8 - 0{,}09 = 7{,}91$:
+\begin{equation}
+\det(\lambda I - Q) = (\lambda - 2)(\lambda - 4) - 0{,}09
+= \lambda^2 - 6\lambda + 7{,}91 = 0,
+\end{equation}
+\begin{equation}
+\lambda_{1,2} = \frac{6 \pm \sqrt{36 - 4\cdot 7{,}91}}{2}
+             = \frac{6 \pm \sqrt{4{,}36}}{2}
+\;\Longrightarrow\;
+\lambda_1 = 1{,}955969, \quad \lambda_2 = 4{,}044031 .
+\end{equation}
+Obje su strogo pozitivne, dakle $Q \pd 0$.
+\end{korak}
+
+\begin{korak}[Korak 3: neovisna provjera preko minora]
+Po kriteriju s Predavanja 2 (\S\ref{sec:definitnost}):
+\begin{equation}
+D_1 = Q_{11} = 2 > 0, \qquad
+D_2 = \det Q = 7{,}91 > 0 .
+\end{equation}
+Oba su pozitivna, pa je $Q \pd 0$ --- isti zaključak, dobiven neovisnim putem.
+\end{korak}
+
+\begin{korak}[Korak 4: konveksnost funkcije cilja]
+Iz $\grad^2 f(x) = Q \pd 0$ za sve $x$ i kriterija drugog reda slijedi da je $f$
+\textbf{striktno} konveksna na cijelom $\R^2$.
+\end{korak}
+
+\begin{korak}[Korak 5: konveksnost ograničenja]
+Funkcije $g_1(x) = -x_1 - x_2 + 10$ i $g_2(x) = x_1 - x_2 - 3$ su \emph{afine}:
+oblika $a\trans x + \beta$. Afina funkcija je konveksna (i konkavna istovremeno),
+jer joj je Hessian nul-matrica, a $0 \psd 0$. Dakle oba ograničenja nejednakosti
+zadovoljavaju uvjet iz definicije.
+\end{korak}
+
+\begin{korak}[Korak 6: konveksnost dopustivog skupa]
+Svako pojedinačno ograničenje definira poluprostor
+$\feas_i = \{x \mid g_i(x) \leq 0\}$, a poluprostor je konveksan skup. Po svojstvu
+s Predavanja 2 (\S\ref{sec:poluprostor}, slajd 58/71) presjek konveksnih skupova
+je konveksan, pa je
+\begin{equation}
+\feas = \feas_1 \cap \feas_2
+\end{equation}
+zatvoren konveksan skup.
+\end{korak}
+
+\begin{korak}[Korak 7: zaključak i još dvije tvrdnje koje se očekuju]
+Funkcija cilja je konveksna, ograničenja su konveksna, ograničenja jednakosti
+nema --- \textbf{problem je konveksan}. Uz to:
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Egzistencija minimuma.} Kako je $Q \pd 0$, funkcija $f$ je
+        \emph{koercivna}: $f(x) \to +\infty$ kad $\norm{x} \to \infty$. Skup
+        $\feas$ je zatvoren i neprazan (npr.\ $x = (7,6) \in \feas$), pa minimum
+        postoji, iako je $\feas$ neograničen.
+  \item \textbf{Jedinstvenost.} Stroga konveksnost daje jedinstven minimizator:
+        dvije različite optimalne točke dale bi na spojnici manju vrijednost od
+        obiju, što je proturječje.
+\end{itemize}
+\end{korak}
+
+\section{Slaterov uvjet}
+\label{sec:z1a-slater}
+
+Ovo zadatak ne traži izrijekom, ali bez toga se pod (b) ne smije reći da je
+KKT točka optimum.
+
+\begin{izvor}{Predavanje 4 --- Lagrangeova dualnost, slajd 11/26 (PDF str.~16)}
+\slajd[0.86]{p04-jaka-dualnost}
+
+\textbf{Transkripcija.} \emph{Teorem Lagrangeove dualnosti.}
+\begin{itemize}[nosep,leftmargin=*]
+  \item Slaba dualnost uvijek vrijedi: $\dopt \leq \popt$.
+  \item Kad je primaran problem konveksan i kad su zadovoljeni Slaterovi uvjeti,
+        vrijedi jaka dualnost: $\dopt = \popt$.
+\end{itemize}
+Jaka dualnost u kompaktnoj formi:
+\[
+\max_{\{\lambda,\mu \mid \mu \geq 0\}} \ \inf_x \bigl(f(x) + \lambda\trans h(x) + \mu\trans g(x)\bigr)
+= \inf_{\{x \mid g(x) \leq 0,\, h(x) = 0\}} f(x).
+\]
+
+\textbf{Zašto nam ovo treba već sada:} jaka dualnost je pretpostavka pod kojom
+KKT uvjeti postaju \emph{dovoljni}, a ne samo nužni. Bez nje bi rješenje KKT
+sustava bilo tek kandidat.
+\end{izvor}
+
+\begin{pojam}{Slaterov uvjet}
+Za konveksan problem Slaterov uvjet je zadovoljen ako postoji \emph{strogo}
+dopustiva točka, dakle $\bar{x}$ takva da je $g_j(\bar{x}) < 0$ za sva
+ograničenja nejednakosti (stroga nejednakost, ne $\leq$).
+\end{pojam}
+
+Za naš problem uzmimo $\bar{x} = (7,\, 6)$:
+\begin{equation}
+g_1(\bar{x}) = -7 - 6 + 10 = -3 < 0, \qquad
+g_2(\bar{x}) = 7 - 6 - 3 = -2 < 0 .
+\end{equation}
+Slaterov uvjet je zadovoljen. Dakle vrijedi jaka dualnost, a KKT uvjeti su
+\textbf{nužni i dovoljni} za optimalnost.
+
+\section{Kako je to riješeno u seminaru}
+\label{sec:z1a-seminar}
+
+\begin{seminar}{Seminar v1.2, §2.2 --- ,,(a) Je li problem konveksan?``}
+Hesseova matrica funkcije cilja jednaka je matrici $Q$. Njezine svojstvene
+vrijednosti slijede iz karakteristične jednadžbe
+\[
+\det(\lambda I - Q) = (\lambda - 2)(\lambda - 4) - 0.09 = \lambda^2 - 6\lambda + 7.91 = 0,
+\]
+\[
+\lambda_{1,2} = \frac{6 \pm \sqrt{4.36}}{2} \implies \lambda_1 = 1.955969, \quad \lambda_2 = 4.044031.
+\]
+Obje su strogo pozitivne, pa je $Q \succ 0$ i funkcija cilja je strogo konveksna.
+Funkcije ograničenja $g_1$ i $g_2$ su afine, dakle konveksne, pa je dopustivi skup
+\[
+\mathcal{F} = \{x \in \mathbb{R}^2 \mid Gx - h \leq 0\}
+\]
+presjek dvaju zatvorenih poluprostora, tj.\ zatvoren konveksan skup.
+
+Riječ je, dakle, o konveksnom optimizacijskom problemu. Kako je $Q \succ 0$,
+funkcija $f$ je koercivna ($f(x) \to \infty$ kada $\|x\| \to \infty$), a skup
+$\mathcal{F}$ je zatvoren i neprazan, pa minimum postoji; stroga konveksnost daje
+njegovu jedinstvenost. Za točku $x = [7, 6]^{\mathsf{T}}$ vrijedi $g_1(x) = -3 < 0$
+i $g_2(x) = -2 < 0$, pa je Slaterov uvjet zadovoljen. Prema tome su KKT uvjeti
+nužni i dovoljni za optimalnost i vrijedi jaka dualnost.
+\end{seminar}
+
+Numerička potvrda iz MATLAB-a (\texttt{docs/code/task1\_output.txt}):
+
+\begin{lstlisting}[style=outputstyle]
+--- (a) Konveksnost ---
+eig(Q) = 1.955969, 4.044031
+det(Q) = 7.910000,  Q > 0 : 1
+\end{lstlisting}
+
+\section{Isti podzadatak na vježbama}
+\label{sec:z1a-vjezbe}
+
+Na Vježbama 3 profesor je riješio zadatak istoga tipa, s podzadacima a)--f)
+raspoređenima točno kao u ovom seminaru. Vrijedi vidjeti koliko je kratko
+očekivano obrazloženje pod a).
+
+\begin{izvor}{Vježbe 3 --- Primjer 2: Dualnost, KKT, osjetljivost, slajd 17/36 (PDF str.~22)}
+\slajd[0.86]{v3-primjer2-konveksnost}
+
+\textbf{Transkripcija.} \emph{a) Da li je ovo konveksan opt.\ problem?}
+Funkcije ograničenja nejednakosti su konveksne (ovdje su one afine, pa stoga i
+konveksne). Hessian:
+\[
+H = \begin{bmatrix}
+\dfrac{\partial^2 f}{\partial x_1^2} & \dfrac{\partial^2 f}{\partial x_1 \partial x_2} \\[8pt]
+\dfrac{\partial^2 f}{\partial x_2 \partial x_1} & \dfrac{\partial^2 f}{\partial x_2^2}
+\end{bmatrix}
+= \begin{bmatrix} 2 & 0 \\ 0 & 2 \end{bmatrix} .
+\]
+
+\textbf{Usporedba s našim zadatkom:} u profesorovu primjeru funkcija cilja je
+$(x_1-3)^2 + (x_2-2)^2$, pa je Hessian dijagonalan i definitnost se vidi
+napamet. Kod nas mješoviti član $-0{,}3\,x_1x_2$ daje vandijagonalne elemente, pa
+se definitnost mora stvarno izračunati --- ali struktura obrazloženja je
+identična: prvo ograničenja, pa Hessian, pa zaključak.
+\end{izvor}
+
+\section{Zamke}
+\label{sec:z1a-zamke}
+
+\begin{zamka}[Zamka 1: ,,funkcija cilja je konveksna`` nije cijeli odgovor]
+Zadatak pita je li \emph{problem} konveksan, ne funkcija. Odgovor mora pokriti i
+dopustivi skup. Student koji stane na $Q \pd 0$ odgovorio je na pola pitanja.
+\end{zamka}
+
+\begin{zamka}[Zamka 2: pozivanje na predznake elemenata matrice]
+$Q$ ima negativan element $-0{,}3$. To ne govori ništa o definitnosti
+(\S\ref{sec:relacije}). Jedini valjani argumenti su svojstvene vrijednosti,
+vodeći glavni minori ili izravno $z\trans Q z > 0$.
+\end{zamka}
+
+\begin{zamka}[Zamka 3: prešućena egzistencija minimuma]
+Dopustivi skup je \emph{neograničen}. Konveksnost sama po sebi ne jamči da se
+minimum postiže --- primjer: $\min e^{x}$ na $\R$ je konveksan problem bez
+minimuma. Ovdje minimum postoji jer je $f$ koercivna, a to treba reći.
+\end{zamka}
+
+\begin{zamka}[Zamka 4: brkanje ,,konveksna`` i ,,striktno konveksna``]
+Iz $Q \pd 0$ slijedi \emph{striktna} konveksnost, a odatle jedinstvenost
+rješenja. Da je bilo samo $Q \psd 0$, problem bi i dalje bio konveksan, ali bi
+optimalnih točaka moglo biti beskonačno mnogo. Razlika je bitna, jer se u (b)
+tvrdi da je nađeno rješenje \emph{to} rješenje.
+\end{zamka}
+
+\section{Modelski odgovor}
+\label{sec:z1a-odgovor}
+
+\begin{izgovor}[Odgovor u pet rečenica]
+,,Da, problem je konveksan, i to iz dva odvojena razloga.
+
+Prvo, funkcija cilja: zapisao sam je kao jedna polovina iks transponirano ku iks
+plus ce transponirano iks, gdje je ku dva, minus nula tri, minus nula tri,
+četiri. Hesseova matrica kvadratne funkcije jednaka je matrici ku i konstantna
+je. Njezine svojstvene vrijednosti su jedan zarez devet pet šest i četiri zarez
+nula četiri, obje strogo pozitivne, a isto potvrđuju i vodeći glavni minori, dva
+i sedam zarez devet jedan. Dakle ku je pozitivno definitna i funkcija cilja je
+striktno konveksna.
+
+Drugo, dopustivi skup: oba ograničenja su afina, dakle konveksna, a svako
+definira poluprostor. Presjek konveksnih skupova je konveksan, pa je dopustivi
+skup zatvoren konveksan skup. Ograničenja jednakosti nema.
+
+Dodao bih još dvoje. Minimum postoji jer je funkcija koercivna, a dopustivi skup
+zatvoren i neprazan --- to je važno jer je skup neograničen. I jedinstven je,
+zbog stroge konveksnosti.
+
+Napokon, Slaterov uvjet je zadovoljen: točka sedam, šest daje $g_1 = -3$ i
+$g_2 = -2$, oboje strogo negativno. Zato vrijedi jaka dualnost i KKT uvjeti su
+nužni i dovoljni, što koristim u sljedećem podzadatku.``
+\end{izgovor}
