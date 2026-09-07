@@ -1,1 +1,311 @@
-% placeholder
+\chapter{Zadatak 1f --- osjetljivost optimalne vrijednosti}
+\label{ch:z1-osjetljivost}
+
+\section{Što se ovdje traži}
+
+Odgovoriti koliko se optimalna vrijednost mijenja ako se ograničenja malo
+pomaknu --- i to obrazložiti, ne samo navesti broj.
+
+\begin{zadatak}{Zadatak 1, podzadatak f)}
+f) Što možete reći o osjetljivosti optimalne vrijednosti ($p^\star =$ opt.\
+vrijednost primarnog problema) na perturbacije u ograničenjima (na perturbacije
+koeficijenata $b_1$ i $b_2$)?
+\end{zadatak}
+
+\begin{zamka}[Prvo razjasniti: što su $b_1$ i $b_2$]
+U tekstu zadatka slovo $b$ se prije podzadatka f) nigdje ne pojavljuje ---
+ograničenja su zapisana s koeficijentima $a_{ij}$ i brojevima $-10$ i $3$ na
+desnoj strani. Iz konteksta su $b_1$ i $b_2$ upravo te desne strane:
+\begin{equation}
+b_1 = -10, \qquad b_2 = 3, \qquad\text{dakle}\qquad h = \begin{bmatrix} b_1 \\ b_2 \end{bmatrix}.
+\end{equation}
+,,Perturbacija koeficijenata $b_1$ i $b_2$`` znači pomicanje tih desnih strana,
+tj.\ stezanje ili popuštanje ograničenja. To je tumačenje, ne citat --- na
+obrani ga izgovori kao svoje tumačenje.
+\end{zamka}
+
+\begin{predznanje}
+\begin{itemize}[nosep,leftmargin=*]
+  \item Optimalni množitelji $\muopt = (404/33,\; 0)$ --- \eqref{eq:z1b-rjesenje}.
+  \item Jaka dualnost vrijedi (Slater) --- \S\ref{sec:z1a-slater}.
+  \item Perturbacijski vektor $v$ --- \S\ref{sec:oznake-optimizacije}.
+  \item Rezerva neaktivnog ograničenja, $g_2(\xopt) = -49/33$ --- \S\ref{sec:z1b-slucaj2}.
+\end{itemize}
+\end{predznanje}
+
+\section{Perturbirani problem}
+\label{sec:z1f-perturbirani}
+
+\begin{izvor}{Predavanje 4 --- Lagrangeova dualnost, slajd 23/26 (PDF str.~31)}
+\slajd[0.86]{p04-perturbirani-problem}
+
+\textbf{Transkripcija.} \emph{Perturbiran optimizacijski problem.}
+\[
+\begin{aligned}
+\text{Primaran:} \quad \min_x \ & f(x) \\
+\text{uz ogr.} \quad & h_i(x) = u_i, && i = 1, \dots, m \\
+& g_j(x) \leq v_j, && j = 1, \dots, p
+\end{aligned}
+\qquad
+\begin{aligned}
+\text{Dualan:} \quad \max_{\lambda,\mu} \ & \dual(\lambda,\mu) - \lambda\trans u - \mu\trans v \\
+\text{uz ogr.} \quad & \mu \geq 0
+\end{aligned}
+\]
+$u = [u_1 \dots u_m]\trans$, $v = [v_1 \dots v_p]\trans$ su perturbacijski
+parametri. Neka je $\popt(u,v)$ opt.\ vrijednost primarnog problema, kao funkcija
+od $u$ i $v$; $\popt(0,0)$ je optimalna vrijednost neperturbiranog primarnog
+problema.
+
+\textbf{Ključna zapažanja:}
+\begin{itemize}[nosep,leftmargin=*]
+  \item Perturbacija ulazi na \emph{desnu} stranu ograničenja. $v_j > 0$
+        \emph{popušta} $j$-to ograničenje (dopustivi skup raste), $v_j < 0$ ga
+        \emph{steže}.
+  \item Dualni problem se mijenja samo za dodatni linearni član $-\mu\trans v$ ---
+        i baš zato je veza između $\mu$ i osjetljivosti tako izravna.
+\end{itemize}
+\end{izvor}
+
+Za naš zadatak, s $g(x) = Gx - h$, perturbirani problem glasi
+\begin{equation}
+\popt(v) = \min\left\{ \tfrac12 x\trans Q x + c\trans x \ \middle|\ Gx - h \leq v \right\},
+\label{eq:z1f-perturbirani}
+\end{equation}
+a to je isto što i pomicanje desnih strana s $h$ na $h + v$, dakle
+$b_1 \to b_1 + v_1$ i $b_2 \to b_2 + v_2$.
+
+\section{Globalna granica}
+\label{sec:z1f-globalna}
+
+\begin{izvor}{Predavanje 4 --- Lagrangeova dualnost, slajd 25/26 (PDF str.~33)}
+\slajd[0.86]{p04-globalna-osjetljivost}
+
+\textbf{Transkripcija.} Iz $\popt(u,v) \geq \popt(0,0) - \lambda^{\star\mathsf{T}}u - \mu^{\star\mathsf{T}}v$
+slijede implikacije:
+\begin{itemize}[nosep,leftmargin=*]
+  \item ako je $\mu_j^{\star}$ \textbf{velik}: $\popt$ znatno raste ako
+        ,,stisnemo`` ograničenje $g_j(x) \leq 0$ na $g_j(x) \leq v_j$ gdje je $v_j < 0$;
+  \item ako je $\mu_j^{\star}$ \textbf{malen}: $\popt$ se ne smanjuje znatno ako
+        ,,relaksiramo`` ograničenje na $g_j(x) \leq v_j$ gdje je $v_j > 0$.
+\end{itemize}
+(Slajd navodi i analogne implikacije za množitelje $\lambda_i$ ograničenja
+jednakosti, kojih u našem zadatku nema.)
+
+\textbf{Zašto je ovo \emph{globalna} tvrdnja:} ovo je nejednakost, ne
+aproksimacija, i vrijedi za \emph{svaku} veličinu perturbacije --- ne samo za
+malu. Cijena je što daje samo jednostranu granicu.
+\end{izvor}
+
+\begin{formula}{Globalna donja granica}
+\begin{equation}
+\popt(v) \;\geq\; \popt(0) - \muopt{}\trans v
+\qquad\text{za svaki } v .
+\label{eq:z1f-globalna}
+\end{equation}
+Uz $\muopt = (404/33,\; 0)$ i $\popt(0) = 2000/33$:
+\begin{equation}
+\popt(v) \;\geq\; \frac{2000}{33} - \frac{404}{33}\,v_1 .
+\end{equation}
+\end{formula}
+
+\section{Lokalna osjetljivost}
+\label{sec:z1f-lokalna}
+
+\begin{izvor}{Predavanje 4 --- Lagrangeova dualnost, slajd 26/26 (PDF str.~34)}
+\slajd[0.86]{p04-lokalna-osjetljivost}
+
+\textbf{Transkripcija.} \emph{Lokalna osjetljivost.} Pretpostavimo jaku dualnost
+za neperturbiran problem i neka su $\lambda^{\star}$, $\muopt$ optimalne dualne
+varijable primarnog problema. Ako je $\popt(u,v)$ diferencijabilno u $(0,0)$,
+tada vrijedi
+\[
+\lambda_i^{\star} = -\frac{\partial \popt(0,0)}{\partial u_i},
+\qquad
+\mu_i^{\star} = -\frac{\partial \popt(0,0)}{\partial v_i}.
+\]
+
+\textbf{Dvije pretpostavke koje se ne smiju prešutjeti:} jaka dualnost (kod nas
+osigurana Slaterovim uvjetom) i \emph{diferencijabilnost} $\popt$ u nuli. Druga
+zna pasti --- $\popt(v)$ je konveksna po $v$, ali može imati lom ondje gdje se
+mijenja aktivni skup.
+\end{izvor}
+
+\begin{formula}{Osjetljivost --- ,,cijena u sjeni``}
+\begin{equation}
+\left.\frac{\partial \popt}{\partial v_i}\right|_{v = 0} = -\mu_i^{\star} .
+\label{eq:z1f-osjetljivost}
+\end{equation}
+Lagrangeov množitelj je, do na predznak, \textbf{cijena} $i$-tog ograničenja:
+koliko se optimalna vrijednost popravi po jedinici popuštanja.
+\end{formula}
+
+\begin{korak}[Brojevi za naš zadatak]
+Uz $\muopt = (404/33,\; 0)$:
+\begin{equation}
+\frac{\partial \popt}{\partial v_1} = -\frac{404}{33} = -12{,}242424,
+\qquad
+\frac{\partial \popt}{\partial v_2} = 0 .
+\end{equation}
+Čitanje:
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Prvo ograničenje.} Popuštanje za $\Delta b_1 > 0$ smanjuje
+        $\popt$ za približno $12{,}2424 \cdot \Delta b_1$. Stezanje ga za isto
+        toliko povećava. Ovo je ograničenje koje ,,stoji`` --- ono drži rješenje.
+  \item \textbf{Drugo ograničenje.} U prvom redu nema nikakvog utjecaja, jer je
+        $g_2$ u optimumu neaktivno pa je $\mu_2^{\star} = 0$. Optimum ga
+        jednostavno ne dodiruje.
+\end{itemize}
+\end{korak}
+
+\subsection{Dokle vrijedi ,,nema utjecaja``}
+
+\begin{korak}[Rezerva do promjene aktivnog skupa]
+Tvrdnja $\partial\popt/\partial v_2 = 0$ vrijedi samo dok $g_2$ ostaje neaktivno.
+Rezerva iznosi
+\begin{equation}
+\abs{g_2(\xopt)} = \frac{49}{33} = 1{,}484848 .
+\end{equation}
+Ako se drugo ograničenje stegne za više od toga --- dakle $v_2 < -49/33$ ---
+ono postaje aktivno, aktivni skup se mijenja, $\mu_2$ postaje pozitivan, i od tog
+trenutka perturbacija \emph{jest} skupa. Baš na toj granici $\popt(v)$ ima lom i
+nije diferencijabilna, pa pretpostavka s Predavanja 4 prestaje vrijediti.
+\end{korak}
+
+\begin{zamka}[Zamka: ,,$\mu_2 = 0$ znači da ograničenje ne treba``]
+Ne znači. Ograničenje $g_2$ i dalje je dio problema i i dalje omeđuje dopustivi
+skup. Znači samo da u \emph{ovom} optimumu nije aktivno, pa infinitezimalna
+promjena njegove desne strane ne mijenja rješenje. Za promjenu veću od rezerve
+$1{,}4848$ ograničenje postaje ono koje veže. Reci to eksplicitno --- to je
+razlika između odgovora i naučenog odgovora.
+\end{zamka}
+
+\begin{zamka}[Zamka: predznak]
+Formula ima minus: $\partial\popt/\partial v_i = -\mu_i^{\star}$, a $\mu_i^{\star} \geq 0$,
+pa je derivacija $\leq 0$. Smisao: popuštanje ograničenja ($v_i > 0$) povećava
+dopustivi skup, a minimum po većem skupu ne može biti veći. Ako ti u odgovoru
+ispadne da popuštanje \emph{povećava} $\popt$, negdje si izgubio predznak.
+\end{zamka}
+
+\section{Numerička provjera}
+\label{sec:z1f-provjera}
+
+\begin{seminar}{Seminar v1.2, §2.7 --- ,,(f) Osjetljivost optimalne vrijednosti``}
+Perturbacija desnih strana ograničenja uvodi se vektorom $v = [v_1, v_2]^{\mathsf{T}}$:
+\[
+p^*(v) = \min \left\{ \tfrac{1}{2} x^{\mathsf{T}} Q x + c^{\mathsf{T}} x \ \middle| \ Gx - h \leq v \right\},
+\]
+pri čemu $v_i$ odgovara pomaku desne strane $b_i$ $i$-tog ograničenja. Za
+konveksan problem sa zadovoljenim Slaterovim uvjetom vrijedi
+\[
+\frac{\partial p^*}{\partial v_i}\bigg|_{v = 0} = -\mu_i^*.
+\]
+Uz $\mu^* = [404/33,\ 0]^{\mathsf{T}}$ slijedi
+\[
+\frac{\partial p^*}{\partial v_1} = -\frac{404}{33} = -12.242424, \qquad
+\frac{\partial p^*}{\partial v_2} = 0.
+\]
+Optimalna vrijednost osjetljiva je samo na perturbaciju prvog ograničenja:
+opuštanje ograničenja $g_1$ za $\Delta b_1 > 0$ smanjuje $p^*$ za približno
+$12.2424 \, \Delta b_1$. Perturbacija drugog ograničenja nema utjecaja u prvom
+redu jer je $g_2$ u optimumu neaktivno, tj.\ $\mu_2^* = 0$; to vrijedi sve dok je
+perturbacija dovoljno mala da se aktivni skup ne promijeni (rezerva do aktivacije
+iznosi $|g_2(x^*)| = 1.484848$).
+
+\begin{lstlisting}[style=matlabstyle]
+dlt = 1e-4;
+[~, f_v1] = quadprog(Q, c, G, h + [dlt; 0], [], [], [], [], [], opts);
+[~, f_v2] = quadprog(Q, c, G, h + [0; dlt], [], [], [], [], [], opts);
+dp1 = (f_v1 - f_qp)/dlt;
+dp2 = (f_v2 - f_qp)/dlt;
+\end{lstlisting}
+
+\begin{lstlisting}[style=outputstyle]
+dp*/dv1 numericki = -12.242364,  -mu1* = -12.242424,  odstupanje = 5.99e-05
+dp*/dv2 numericki = 0.000000,  -mu2* = 0.000000,  odstupanje = 0.00e+00
+\end{lstlisting}
+
+Jednostrana numerička derivacija odstupa od $-\mu_1^*$ za $5.99 \cdot 10^{-5}$,
+što je reda veličine samog koraka $\delta$ i u skladu s teorijskim rezultatom.
+\end{seminar}
+
+\begin{korak}[Zašto odstupanje nije nula]
+Korištena je \emph{jednostrana} razlika, $\bigl(\popt(\delta) - \popt(0)\bigr)/\delta$,
+čija je pogreška reda $O(\delta)$. Uz $\delta = 10^{-4}$ očekuje se odstupanje
+reda $10^{-4}$ do $10^{-5}$ --- dobiveno je $5{,}99\cdot 10^{-5}$, dakle točno
+onoliko koliko metoda daje. Da je korištena centralna razlika,
+$\bigl(\popt(\delta) - \popt(-\delta)\bigr)/(2\delta)$, pogreška bi bila $O(\delta^2)$.
+Odstupanje, dakle, nije greška u teoriji nego svojstvo odabrane numeričke sheme.
+\end{korak}
+
+\section{Isti podzadatak na vježbama}
+\label{sec:z1f-vjezbe}
+
+\begin{izvor}{Vježbe 3 --- Primjer 2, slajd 34/36 (PDF str.~41)}
+\slajd[0.86]{v3-primjer2-osjetljivost}
+
+\textbf{Transkripcija.} \emph{e) Što možete reći o osjetljivosti optimalne
+vrijednosti na perturbacije u ograničenjima?} Budući da je
+$\mu^{\star} = [0,\ 2,\ 0,\ 2]\trans$, imamo
+\[
+\frac{\partial \popt(0,0,0,0)}{\partial v_1} = 0,\quad
+\frac{\partial \popt}{\partial v_2} = -2,\quad
+\frac{\partial \popt}{\partial v_3} = 0,\quad
+\frac{\partial \popt}{\partial v_4} = -2 .
+\]
+
+\textbf{Struktura odgovora je identična našoj:} pročitaj množitelje, stavi minus,
+i to je cijela osjetljivost. Ograničenja s nultim množiteljem su neaktivna i ne
+utječu. Razlika je samo u tome što u profesorovu primjeru \emph{dva} ograničenja
+imaju množitelj različit od nule, a kod nas jedno.
+\end{izvor}
+
+\section{Modelski odgovori}
+\label{sec:z1f-odgovori}
+
+\begin{pitanje}{Što biste rekli inženjeru koji pita treba li uložiti u popuštanje ograničenja?}
+\textbf{Odgovor.} Da se isplati ulagati isključivo u prvo ograničenje, i to sve
+dok je cijena jedinice popuštanja manja od $12{,}24$ u jedinicama funkcije cilja.
+Ulaganje u drugo ograničenje ne donosi ništa --- ono nije aktivno, pa se rješenje
+ne bi pomaknulo. Množitelj je doslovno \emph{cijena u sjeni}: koliko bi platio za
+jedinicu labavosti.
+\end{pitanje}
+
+\begin{pitanje}{Je li $\popt(v)$ linearna funkcija od $v$?}
+\textbf{Odgovor.} Nije, nego konveksna i po dijelovima glatka. Derivacija
+$-\muopt$ vrijedi lokalno, dok se aktivni skup ne promijeni. Nejednakost
+$\popt(v) \geq \popt(0) - \muopt{}\trans v$ vrijedi globalno, i geometrijski
+znači da je afina funkcija na desnoj strani \emph{potporna ravnina} konveksne
+funkcije $\popt$ u točki $v = 0$.
+\end{pitanje}
+
+\begin{pitanje}{Kako biste odredili osjetljivost da je problem nekonveksan?}
+\textbf{Odgovor.} Ovako ne bih. Izvod se oslanja na jaku dualnost, koja kod
+nekonveksnih problema općenito ne vrijedi --- ostaje samo slaba dualnost, pa se
+iz množitelja dobiva jednostrana granica, ne derivacija. Osjetljivost bi se onda
+procjenjivala numerički, ponovnim rješavanjem perturbiranog problema, uz svijest
+da rješavač može završiti u drugom lokalnom minimumu.
+\end{pitanje}
+
+\begin{izgovor}
+,,Prvo bih razjasnio oznaku: $b_1$ i $b_2$ iz teksta zadatka su desne strane
+ograničenja, minus deset i tri. Perturbaciju uvodim vektorom ve, tako da
+ograničenja postanu ge iks minus ha manje ili jednako ve.
+
+Budući da je problem konveksan i Slaterov uvjet zadovoljen, vrijedi jaka
+dualnost, pa parcijalna derivacija optimalne vrijednosti po $v_i$ u nuli iznosi
+minus mi i-to optimalno. Kod nas je mi jednak četiristo četiri kroz trideset tri i
+nula, pa je osjetljivost po prvom ograničenju minus dvanaest zarez dva četiri, a
+po drugom nula.
+
+Inženjerski: samo prvo ograničenje ima cijenu. Popuštanje prvog ograničenja za
+jedinicu smanjuje optimalnu vrijednost za dvanaest zarez dva četiri. Drugo
+ograničenje je neaktivno, ima rezervu jedan zarez četiri osam, i sve dok
+perturbacija ne premaši tu rezervu, na optimum ne utječe. Preko te granice
+aktivni skup se mijenja i optimalna vrijednost ima lom.
+
+Provjerio sam i numerički, konačnim razlikama s korakom deset na minus četiri:
+dobio sam minus dvanaest zarez dva četiri dva tri šest četiri, uz odstupanje šest
+puta deset na minus pet --- što je red veličine samog koraka, jer je razlika
+jednostrana.``
+\end{izgovor}

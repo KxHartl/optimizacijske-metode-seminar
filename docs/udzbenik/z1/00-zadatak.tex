@@ -8,7 +8,7 @@ Ovo je stranica koju je mentor potpisao. Ništa u sivom okviru nije dodano,
 prepričano ni protumačeno.
 
 \begin{zadatak}{Zadatak 1 (QP, konveksnost, KKT, dualnost)}
-\skenzad[0.99]{z1-original}
+\skenzad[0.96]{z1-original}
 \end{zadatak}
 
 \subsection{Prijepis, znak po znak}
@@ -94,6 +94,55 @@ Ako se na obrani pozoveš na njega kao na tekst zadatka, izlažeš se pitanju ko
 ne možeš dobro odgovoriti. Sve što je zadano stane u sivi okvir iz
 \S\ref{sec:z1-izvorni}.
 \end{zamka}
+
+\section{Isti zadatak već je riješen na vježbama}
+\label{sec:z1-vjezbe3}
+
+Ovo je najkorisnija činjenica o Zadatku 1: na Vježbama 3 profesor je riješio
+zadatak \emph{iste strukture}, s podzadacima raspoređenima gotovo identično.
+Ako želiš znati koliko se detalja očekuje i kojom se notacijom odgovara, gledaj
+u to.
+
+\begin{izvor}{Vježbe 3 --- Primjer 2: Dualnost, KKT, osjetljivost, slajd 16/36 (PDF str.~20)}
+\slajd[0.86]{v3-primjer2-zadatak}
+
+\textbf{Transkripcija.}
+\[
+\min_x \ f(x) = (x_1-3)^2 + (x_2-2)^2
+\quad\text{uz ogr.}\quad
+\begin{aligned}
+-x_1 &\leq 0 && (g_1) \\
+x_1 - 2 &\leq 0 && (g_2) \\
+-x_2 &\leq 0 && (g_3) \\
+x_2 - 1 &\leq 0 && (g_4)
+\end{aligned}
+\]
+\begin{enumerate}[label=\alph*),nosep,leftmargin=*]
+  \item Da li je ovo konveksan opt.\ problem?
+  \item Riješi opt.\ problem direktno rješavajući KKT uvjete.
+  \item Riješi problem u MATLAB-u (\texttt{quadprog} i/ili \texttt{yalmip}) ---
+        odredi primarne i dualne varijable u optimumu.
+  \item Postavi i riješi dualan problem (koristite MATLAB za rješavanje).
+  \item Što možete reći o osjetljivosti optimalne vrijednosti ($\popt =$ opt.\
+        vrijednost primarnog problema) na perturbacije u ograničenjima?
+  \item Ponovite (d) i (e), ali sad s promijenjenim ograničenjima $g_2$ i $g_4$
+        ($g_1$ i $g_3$ ostaju ista): $g_2(x) = x_1 - 1.5 \leq 0$,
+        $g_4(x) = x_2 - 1.5 \leq 0$.
+\end{enumerate}
+
+\textbf{Usporedba s našim zadatkom:}
+\begin{itemize}[nosep,leftmargin=*]
+  \item Podzadaci a), b), c/d), d/e) i e/f) poklapaju se jedan na jedan; samo je
+        numeracija pomaknuta jer naš zadatak ima i zaseban grafički podzadatak c).
+  \item Profesorov primjer ima četiri ograničenja, pa $2^4 = 16$ kombinacija
+        aktivnosti; naš ima dva, pa $2^2 = 4$. Postupak je isti.
+  \item Njegova funkcija cilja nema mješoviti član, pa je Hessian dijagonalan.
+        To je jedina bitna razlika u računu.
+  \item Njegov podzadatak f) --- ponoviti sve s promijenjenim ograničenjima ---
+        kod nas ne postoji, ali pokazuje što ispitivač smatra prirodnim
+        potpitanjem: ,,a što ako promijenimo ovaj broj?``
+\end{itemize}
+\end{izvor}
 
 \section{Karta poglavlja}
 \label{sec:z1-karta}

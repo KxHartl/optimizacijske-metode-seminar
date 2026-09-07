@@ -1,1 +1,237 @@
-% placeholder
+\chapter{Zadatak 1 --- priprema za obranu}
+\label{ch:z1-obrana}
+
+\section{Brojevi koje moraš znati napamet}
+\label{sec:z1o-brojevi}
+
+Ovo je jedina tablica u udžbeniku koju treba naučiti doslovno. Sve ostalo se
+izvodi.
+
+\begin{longtable}{@{}p{0.30\linewidth} p{0.30\linewidth} p{0.34\linewidth}@{}}
+\toprule
+\textbf{Veličina} & \textbf{Egzaktno} & \textbf{Decimalno} \\
+\midrule
+\endhead
+$\lambda(Q)$ & --- & $1{,}955969$ \ i \ $4{,}044031$ \\
+$\det Q$ & $791/100$ & $7{,}91$ \\
+$x^{0}$ (neogr.\ min.) & $(-710/791,\; 540/791)$ & $(-0{,}897598,\; 0{,}682680)$ \\
+$g_1(x^{0})$ & $8080/791$ & $10{,}214918$ \\
+$\xopt$ & $(190/33,\; 140/33)$ & $(5{,}757576,\; 4{,}242424)$ \\
+$\muopt$ & $(404/33,\; 0)$ & $(12{,}242424,\; 0)$ \\
+$\popt = \dopt$ & $2000/33$ & $60{,}606061$ \\
+$g_2(\xopt)$ (rezerva) & $-49/33$ & $-1{,}484848$ \\
+$\grad f(\xopt)$ & $(404/33,\; 404/33)$ & $(12{,}242424,\; 12{,}242424)$ \\
+Vrh dopustivog skupa & $(13/2,\; 7/2)$ & $(6{,}5,\; 3{,}5)$ \\
+Množitelji u vrhu & $(23/2,\; -49/20)$ & $(11{,}50,\; -2{,}45)$ \\
+Slaterova točka & $(7,\; 6)$ & $g_1 = -3$, $g_2 = -2$ \\
+$\partial\popt/\partial v$ & $(-404/33,\; 0)$ & $(-12{,}242424,\; 0)$ \\
+\bottomrule
+\end{longtable}
+
+\begin{izgovor}[Trik za pamćenje]
+Sve što je važno ima nazivnik $33$. $x_1^{\star} = 190/33$, $x_2^{\star} = 140/33$,
+$\mu_1^{\star} = 404/33$, $\popt = 2000/33$, rezerva $= -49/33$. Zapamti pet
+brojnika --- $190$, $140$, $404$, $2000$, $-49$ --- i nazivnik $33$, i imaš cijeli
+zadatak. Provjera: $190 + 140 = 330 = 10\cdot33$, što je upravo aktivno
+ograničenje $x_1 + x_2 = 10$.
+\end{izgovor}
+
+\section{Zadatak u pet rečenica}
+\label{sec:z1o-sazetak}
+
+\begin{izgovor}[Ako imaš samo minutu]
+,,Zadatak 1 je kvadratni program s dva ograničenja nejednakosti. Problem je
+konveksan --- Hesseova matrica je pozitivno definitna, ograničenja su afina --- i
+Slaterov uvjet vrijedi, pa su KKT uvjeti nužni i dovoljni.
+
+Riješio sam KKT sustav nabrajanjem sve četiri kombinacije aktivnosti. Tri
+otpadaju: jedna zbog nedopustivosti, dvije zbog negativnog množitelja. Preostaje
+slučaj u kojem je aktivno samo prvo ograničenje, s rješenjem sto devedeset kroz
+trideset tri i sto četrdeset kroz trideset tri.
+
+\texttt{quadprog} daje isto do na jedanaestu decimalu, i vraća iste množitelje.
+
+Dualni problem sam izveo analitički --- opet kvadratni program, u varijabli mi --- i
+riješio numerički; dualni procjep je numerička nula, kako i mora biti uz jaku
+dualnost.
+
+Osjetljivost slijedi izravno iz množitelja: samo prvo ograničenje ima cijenu,
+dvanaest zarez dva četiri po jedinici; drugo je neaktivno i nema utjecaja dok
+perturbacija ne premaši rezervu od jedan zarez četiri osam.``
+\end{izgovor}
+
+\section{Pitanja koja se očekuju}
+\label{sec:z1o-pitanja}
+
+\subsection{O konveksnosti}
+
+\begin{pitanje}{Kako biste dokazali konveksnost da funkcija cilja nije kvadratna?}
+\textbf{Odgovor.} Kriterij drugog reda vrijedi i tada, samo Hessian više nije
+konstantan, pa treba pokazati $\grad^2 f(x) \psd 0$ \emph{za sve $x$ u domeni}.
+Ako to nije izvedivo, ostaje definicija preko tetive,
+$f(\alpha x_1 + (1-\alpha)x_2) \leq \alpha f(x_1) + (1-\alpha)f(x_2)$, ili
+sastavljanje funkcije od poznatih konveksnih gradivnih blokova pravilima koja ih
+čuvaju --- zbroj, maksimum, kompozicija s afinim preslikavanjem.
+\end{pitanje}
+
+\begin{pitanje}{Što ako je $Q$ samo pozitivno semidefinitna, a ne definitna?}
+\textbf{Odgovor.} Problem je i dalje konveksan, ali funkcija cilja nije strogo
+konveksna, pa rješenje ne mora biti jedinstveno --- može postojati cijeli
+optimalni segment. Osim toga, $Q^{-1}$ tada ne postoji, pa izvod dualne funkcije
+iz podzadatka (e) u ovom obliku propada i treba ga voditi preko pseudoinverza,
+uz uvjet dopustivosti na $c + G\trans\mu$.
+\end{pitanje}
+
+\begin{pitanje}{Zašto je bilo važno provjeriti Slaterov uvjet?}
+\textbf{Odgovor.} Jer bez njega KKT uvjeti ostaju samo nužni. Iz nužnosti slijedi
+da optimum \emph{ako postoji} zadovoljava KKT; ne slijedi da točka koja
+zadovoljava KKT jest optimum. Slater daje jaku dualnost, a odatle i dovoljnost ---
+teorem s Predavanja 4, slajd 17/26.
+\end{pitanje}
+
+\subsection{O KKT uvjetima}
+
+\begin{pitanje}{Objasnite fizikalno uvjet komplementarnosti.}
+\textbf{Odgovor.} Ograničenje koje ne dodiruje rješenje ne smije na njega ni
+djelovati. Ako je $g_j(\xopt) < 0$, ograničenje je ,,daleko`` i njegova sila,
+$\mu_j$, mora biti nula. Obrnuto, ako je sila različita od nule, ograničenje mora
+biti aktivno --- rješenje leži na njemu. Umnožak $\mu_j g_j = 0$ zapisuje upravo
+tu ekskluzivnost.
+\end{pitanje}
+
+\begin{pitanje}{Što bi značilo da je gradijent aktivnog ograničenja nul-vektor?}
+\textbf{Odgovor.} Da uvjet regularnosti pada. Gradijenti aktivnih ograničenja
+tada nisu linearno nezavisni, KKT teorem se ne smije primijeniti i množitelji ne
+moraju postojati. Kod nas je $\grad g_1 = (-1,-1) \neq 0$, i to je jedini aktivan
+gradijent, pa je linearna nezavisnost trivijalno zadovoljena.
+\end{pitanje}
+
+\begin{pitanje}{Zašto se u Slučaju 2 množitelj $\mu_1$ mogao eliminirati?}
+\textbf{Odgovor.} Jer je u obje skalarne jednadžbe stacionarnosti ušao s istim
+koeficijentom, $-1$, budući da su obje komponente $\grad g_1$ jednake $-1$.
+Izjednačavanjem izraza za $\mu_1$ iz dviju jednadžbi množitelj ispada, i ostaje
+jedna linearna veza između $x_1$ i $x_2$, koja se s uvjetom aktivnosti rješava
+kao sustav $2\times2$.
+\end{pitanje}
+
+\subsection{O dualnosti}
+
+\begin{pitanje}{Što bi značio pozitivan dualni procjep?}
+\textbf{Odgovor.} Da jaka dualnost ne vrijedi --- dakle da problem nije konveksan
+ili da nije zadovoljen uvjet kvalifikacije ograničenja. Kod nas je oboje
+zadovoljeno, pa je procjep nula; izračunatih $2{,}48\cdot10^{-10}$ je tolerancija
+rješavača.
+\end{pitanje}
+
+\begin{pitanje}{Koliko varijabli ima dualni problem?}
+\textbf{Odgovor.} Onoliko koliko primar ima ograničenja --- ovdje dvije. Primar
+ima dvije varijable i dva ograničenja, pa su iste veličine. Kod problema s mnogo
+varijabli i malo ograničenja dual može biti bitno manji, i to je jedan od
+praktičnih razloga zašto se uopće koristi.
+\end{pitanje}
+
+\subsection{O osjetljivosti}
+
+\begin{pitanje}{Zašto u formuli osjetljivosti stoji minus?}
+\textbf{Odgovor.} Zato što $v_i > 0$ popušta ograničenje i povećava dopustivi
+skup, a minimum po većem skupu ne može porasti. Kako je $\mu_i^{\star} \geq 0$,
+derivacija $-\mu_i^{\star}$ je nepozitivna --- popuštanje smanjuje ili ne mijenja
+$\popt$.
+\end{pitanje}
+
+\begin{pitanje}{Vrijedi li rezultat za veliku perturbaciju?}
+\textbf{Odgovor.} Kao derivacija --- ne, samo lokalno, dok se aktivni skup ne
+promijeni. Ali globalna nejednakost
+$\popt(v) \geq \popt(0) - \muopt{}\trans v$ vrijedi za svaki $v$, jer slijedi iz
+slabe dualnosti primijenjene na perturbirani problem.
+\end{pitanje}
+
+\section{Popis zamki}
+\label{sec:z1o-zamke}
+
+\begin{longtable}{@{}p{0.05\linewidth} p{0.42\linewidth} p{0.47\linewidth}@{}}
+\toprule
+\textbf{\#} & \textbf{Zamka} & \textbf{Kako je izbjeći} \\
+\midrule
+\endhead
+1 & Faktor $\tfrac12$ ispred kvadratne forme & Uvijek raspiši
+$\tfrac12 x\trans Qx$ natrag i usporedi sa zadanom funkcijom (\S\ref{sec:kvadratna-forma}). \\[5pt]
+2 & Dijeljenje mješovitog člana na pola & $Q_{12} = -0{,}3$, ne $-0{,}15$;
+polovina je već u faktoru ispred. \\[5pt]
+3 & Predznak pri prebacivanju $-10$ & $-x_1-x_2 \leq -10 \Leftrightarrow -x_1-x_2+10 \leq 0$
+(\S\ref{sec:z1-ogranicenja}). \\[5pt]
+4 & Odgovor samo o funkciji cilja & Zadatak pita je li \emph{problem} konveksan --- i
+dopustivi skup mora u odgovor. \\[5pt]
+5 & Zaključivanje o definitnosti iz predznaka elemenata & Samo svojstvene
+vrijednosti, minori, ili $z\trans Qz$ (\S\ref{sec:relacije}). \\[5pt]
+6 & Prešućena egzistencija minimuma & Skup je neograničen; treba spomenuti
+koercivnost. \\[5pt]
+7 & Rješavanje samo ,,pogođenog`` slučaja & Ispiši tablicu svih $2^m$ kombinacija,
+kao profesor na Vježbama 3. \\[5pt]
+8 & Negativan $\mu$ shvaćen kao greška u računu & To je rezultat --- dokaz da ta
+kombinacija nije optimalna. \\[5pt]
+9 & Zaboravljena provjera neaktivnog ograničenja & U Slučaju 2 treba pokazati i
+$g_2(\xopt) < 0$. \\[5pt]
+10 & Vrh dopustivog skupa uzet kao optimum & Ondje je $\mu_2 = -2{,}45 < 0$;
+vrh otpada. \\[5pt]
+11 & Elipsa nacrtana tako da siječe rub & U optimumu mora \emph{dodirivati}
+(\S\ref{sec:z1c-crtanje}). \\[5pt]
+12 & Krivi smjer $\grad f(\xopt)$ & Pokazuje \emph{u} dopustivi skup; van pokazuje
+$-\grad f$. \\[5pt]
+13 & Puna matrica bez $\tfrac12$ predana \texttt{quadprog}-u & Rješavač
+podrazumijeva $\tfrac12$; predaje se $Q$. \\[5pt]
+14 & Izostavljen konstantni član kod dualnog problema & Bez
+$-\tfrac12 c\trans Q^{-1}c$ procjep ispadne $1{,}92$ umjesto nule. \\[5pt]
+15 & ,,$\mu_2 = 0$ znači da ograničenje ne treba`` & Znači samo da nije aktivno;
+rezerva je $1{,}4848$. \\[5pt]
+16 & Izgubljen minus u osjetljivosti & Popuštanje smanjuje $\popt$; derivacija je
+nepozitivna. \\
+\bottomrule
+\end{longtable}
+
+\section{Redoslijed izlaganja pred pločom}
+\label{sec:z1o-redoslijed}
+
+\begin{ploca}[Kako izložiti cijeli Zadatak 1]
+\begin{enumerate}[leftmargin=*]
+  \item \textbf{Zapiši problem} u matričnom obliku, gore lijevo na ploči, i ostavi
+        ga ondje --- na njega ćeš se pozivati cijelo vrijeme.
+  \item \textbf{Konveksnost} u tri reda: $\grad^2 f = Q$, svojstvene vrijednosti
+        $1{,}956$ i $4{,}044$, ograničenja afina. Dopiši Slaterovu točku $(7,6)$.
+  \item \textbf{Tablica četiriju slučajeva} u desnom gornjem kutu. Prekriži tri,
+        zaokruži jedan.
+  \item \textbf{Slučaj 2 do kraja}: tri jednadžbe, eliminacija $\mu_1$,
+        $6{,}6x_1 = 38$, rezultat. Uokviri $\xopt$ i $\muopt$.
+  \item \textbf{Slika} u donjoj polovici ploče, po postupku iz
+        \S\ref{sec:z1c-crtanje}. Ostavi joj dovoljno mjesta --- to je dio na kojem
+        se najviše dobiva.
+  \item \textbf{Dual} u dva reda: $\tilde{x} = -Q^{-1}(c + G\trans\mu)$, pa
+        $\dual(\mu)$. Naglasi da je opet QP i da je $\dopt = \popt$.
+  \item \textbf{Osjetljivost} u jednom redu: $\partial\popt/\partial v = -\muopt$,
+        pa brojevi i rezerva.
+\end{enumerate}
+\end{ploca}
+
+\begin{zamka}[Zamka: brisanje ploče]
+Ne briši matrični zapis problema ni tablicu slučajeva. Ispitivač se vraća na njih
+pitanjima tipa ,,a što bi bilo da je ovdje umjesto tri bilo pet``. Ako je ploča
+prazna, počinješ ispočetka i gubiš vrijeme.
+\end{zamka}
+
+\section{Veze prema ostalim zadacima}
+\label{sec:z1o-veze}
+
+\begin{predznanje}
+Što se iz Zadatka 1 nosi dalje:
+\begin{itemize}[leftmargin=*]
+  \item \textbf{U Zadatak 2}: isti problem, ali s nesigurnim koeficijentima
+        $a_{ij}$. Robusna formulacija svodi se na konačno mnogo ograničenja, pa
+        se opet rješava KKT uvjetima --- ista tablica aktivnosti, više redaka.
+  \item \textbf{U Zadatak 3}: ista logika ,,funkcija cilja plus afina
+        ograničenja``, samo je cilj $\ell_1$-norma, pa se pomoćnim varijablama
+        svodi na linearni program.
+  \item \textbf{U Zadatak 4}: pojam pozitivne definitnosti prelazi s Hesseove
+        matrice na Ljapunovljevu matricu $P$; umjesto $Q \pd 0$ traži se
+        $P \pd 0$ i $M \nd 0$, a to su linearne matrične nejednakosti.
+\end{itemize}
+\end{predznanje}

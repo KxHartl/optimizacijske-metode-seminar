@@ -1,4 +1,4 @@
-\chapter{Zadatak 1d --- numeričko rješenje u MATLAB-u}
+\chapter{Zadatak 1d --- rješenje u MATLAB-u}
 \label{ch:z1-matlab}
 
 \section{Što se ovdje traži}
@@ -50,6 +50,34 @@ Sučelje traži $Ax \leq b$, dakle desnu stranu \emph{prije} prebacivanja. Naš
 $h = (-10,\; 3)$ ide izravno. Ako se preda $(10,\, -3)$, dopustivi skup je
 zrcaljen i rješenje je besmisleno.
 \end{zamka}
+
+\section{Kako je to izgledalo na vježbama}
+\label{sec:z1d-vjezbe}
+
+\begin{izvor}{Vježbe 3 --- Primjer 2, slajd 25/36 (PDF str.~30)}
+\slajd[0.86]{v3-primjer2-quadprog}
+
+\textbf{Što je na slajdu.} Snimka MATLAB-ove sesije: poziv \texttt{quadprog} za
+profesorov primjer, s ispisanim rješenjem i množiteljima. Kod je strukturno
+identičan našemu --- definiraju se $Q$, $c$, $G$, $h$, pa se pozove rješavač.
+
+\textbf{Što iz toga treba zapamtiti:} profesor \emph{pokazuje kod na slajdu}.
+Znači da se na obrani očekuje da znaš objasniti svaki argument poziva, a ne samo
+rezultat.
+\end{izvor}
+
+\begin{izvor}{Vježbe 3 --- Primjer 2, slajd 28/36 (PDF str.~33)}
+\slajd[0.86]{v3-primjer2-yalmip}
+
+\textbf{Što je na slajdu.} Isti problem riješen preko YALMIP-a, koji kao rješavač
+koristi \texttt{quadprog}. Varijable se deklariraju sa \texttt{sdpvar},
+ograničenja se skupljaju u listu, pa se pozove \texttt{optimize}.
+
+\textbf{Zašto to zadatak spominje kao alternativu:} YALMIP je modelirajući sloj,
+ne rješavač. Za problem koji je već u standardnom obliku ne donosi ništa; postaje
+nezamjenjiv u Zadatku 4, gdje ograničenja nisu $Gx \leq h$ nego matrične
+nejednakosti.
+\end{izvor}
 
 \section{Kod i stvarni ispis}
 \label{sec:z1d-kod}

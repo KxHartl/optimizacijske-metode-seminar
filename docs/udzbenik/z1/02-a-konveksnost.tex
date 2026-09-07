@@ -55,6 +55,37 @@ Problem je konveksan ako vrijedi \emph{sve troje}:
 U Zadatku 1 ograničenja jednakosti nema, pa se treća točka ispušta.
 \end{pojam}
 
+\section{Konveksan skup --- definicija na kojoj sve stoji}
+\label{sec:z1a-konveksan-skup}
+
+\begin{izvor}{Predavanje 2 --- Definicije, klasifikacija, konveksnost, slajd 55/71 (PDF str.~56)}
+\slajd[0.86]{p02-konveksan-skup}
+
+\textbf{Transkripcija.} Konveksan skup $S$ definiran je sljedećim svojstvom:
+dužina između bilo koje dvije različite točke iz $S$ se i sáma u potpunosti
+nalazi u $S$.
+
+Dužina između dvije točke $x_1, x_2 \in \R^n$, $x_1 \neq x_2$, je skup $D$, gdje je
+\[
+D \coloneqq \{\, x \mid x = \alpha x_1 + (1-\alpha)x_2 \,\}, \qquad 0 \leq \alpha \leq 1 .
+\]
+\emph{Konveksan skup:} skup $S$ je konveksan skup ako
+\[
+x_1, x_2 \in S \;\Longrightarrow\; \alpha x_1 + (1-\alpha)x_2 \in S
+\quad \text{za sve } \alpha \in [0,1].
+\]
+
+\textbf{Kako se to čita naglas:} ,,alfa iks jedan plus jedan minus alfa iks dva``
+je opća točka na spojnici dviju točaka; za $\alpha = 1$ dobiva se $x_1$, za
+$\alpha = 0$ dobiva se $x_2$, a za međuvrijednosti sve točke između. Uvjet dakle
+kaže: uzmi bilo koje dvije točke skupa, spoji ih ravnom crtom --- crta ne smije
+nigdje izaći iz skupa.
+
+\textbf{Zašto je to ovdje bitno:} poluprostor očito zadovoljava taj uvjet, jer
+ako su obje krajnje točke s iste strane pravca, cijela je spojnica s te strane.
+Odatle konveksnost svakog $\feas_i$, a onda i presjeka.
+\end{izvor}
+
 \section{Kriterij drugog reda}
 \label{sec:z1a-kriterij}
 
@@ -221,7 +252,7 @@ i $g_2(x) = -2 < 0$, pa je Slaterov uvjet zadovoljen. Prema tome su KKT uvjeti
 nužni i dovoljni za optimalnost i vrijedi jaka dualnost.
 \end{seminar}
 
-Numerička potvrda iz MATLAB-a (\texttt{docs/code/task1\_output.txt}):
+Numerička potvrda iz MATLAB-a (\texttt{docs/code/\allowbreak task1\_output.txt}):
 
 \begin{lstlisting}[style=outputstyle]
 --- (a) Konveksnost ---
