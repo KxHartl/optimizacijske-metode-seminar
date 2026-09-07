@@ -1,0 +1,213 @@
+\chapter{Zadatak 2 --- svođenje na konačno mnogo nejednakosti}
+\label{ch:z2-vrhovi}
+
+\section{Što se ovdje radi}
+
+Pokazuje se da je supremum linearne funkcije po pravokutniku postignut u nekom
+od četiriju vrhova, pa se beskonačan skup ograničenja svodi na osam običnih
+linearnih nejednakosti. Ovo je matematička srž Zadatka 2.
+
+\begin{predznanje}
+\begin{itemize}[nosep,leftmargin=*]
+  \item Skupovi $\mathcal{P}_1$, $\mathcal{P}_2$ --- \eqref{eq:z2-P}.
+  \item Uvjet sa supremumom --- \eqref{eq:z2-sup}.
+  \item Konveksna kombinacija i konveksna ljuska --- slajd niže.
+\end{itemize}
+\end{predznanje}
+
+\section{Konveksna ljuska}
+\label{sec:z2-ljuska}
+
+\begin{izvor}{Predavanje 2 --- Definicije, klasifikacija, konveksnost, slajd 59/71 (PDF str.~60)}
+\slajd[0.86]{p02-konveksna-ljuska}
+
+\textbf{Transkripcija.} \emph{Konveksna kombinacija} točaka (vektora)
+$x_1, x_2, \dots, x_n$ je točka (vektor) $x$ u formi
+\[
+x = \gamma_1 x_1 + \gamma_2 x_2 + \dots + \gamma_n x_n,
+\qquad \gamma_1 + \dots + \gamma_n = 1, \quad \gamma_i \geq 0 .
+\]
+\emph{Konveksna ljuska} skupa $S$ je skup svih konveksnih kombinacija točaka iz
+$S$. Konveksna ljuska skupa $S$ je najmanji konveksni skup koji sadrži $S$. Skup
+je konveksan ako i samo ako je jednak svojoj konveksnoj ljusci.
+
+\textbf{Zašto je to ovdje ključno:} pravokutnik je konveksan, pa je jednak
+konveksnoj ljusci svojih četiriju vrhova. Svaka točka pravokutnika, dakle svaka
+moguća realizacija koeficijenata, može se zapisati kao težinski prosjek vrhova s
+nenegativnim težinama koje se zbrajaju u jedan.
+\end{izvor}
+
+\section{Teorem o vrhovima}
+\label{sec:z2-teorem-vrhovi}
+
+\begin{formula}{Supremum linearne funkcije po poliedru}
+Neka je $\mathcal{P} = \mathrm{co}\bigl(v^{(1)}, \dots, v^{(N)}\bigr)$ konveksna
+ljuska konačno mnogo točaka. Tada za svaki $x$ vrijedi
+\begin{equation}
+\sup_{a \in \mathcal{P}} a\trans x \leq h
+\qquad\Longleftrightarrow\qquad
+\bigl(v^{(k)}\bigr)\trans x \leq h \quad \text{za } k = 1, \dots, N .
+\label{eq:z2-teorem-vrhovi}
+\end{equation}
+\end{formula}
+
+\begin{korak}[Dokaz, oba smjera]
+\begin{enumerate}[leftmargin=*]
+  \item \textbf{($\Leftarrow$) Iz vrhova slijedi cijeli skup.} Neka je
+        $a \in \mathcal{P}$ proizvoljan. Po definiciji konveksne ljuske postoje
+        težine $\gamma_k \geq 0$, $\sum_k \gamma_k = 1$, takve da je
+        $a = \sum_k \gamma_k v^{(k)}$. Tada je, zbog linearnosti skalarnog
+        produkta po prvom argumentu,
+        \[
+          a\trans x = \sum_k \gamma_k \bigl(v^{(k)}\bigr)\trans x
+                   \;\leq\; \sum_k \gamma_k\, h
+                   \;=\; h \sum_k \gamma_k \;=\; h .
+        \]
+        Ključan je korak u sredini: svaki član je najviše $h$ po pretpostavci, a
+        težine su nenegativne, pa se nejednakost smije množiti njima i zbrajati.
+  \item \textbf{($\Rightarrow$) Iz cijelog skupa slijede vrhovi.} Trivijalno:
+        vrhovi \emph{jesu} elementi skupa $\mathcal{P}$, pa uvjet koji vrijedi za
+        sve članove vrijedi napose i za njih.
+\end{enumerate}
+Ekvivalencija je \textbf{egzaktna} --- nije riječ o aproksimaciji ni o
+konzervativnoj ocjeni. Robusni problem i problem s vrhovima imaju identičan
+dopustivi skup.
+\end{korak}
+
+\begin{zamka}[Zamka: ,,uzeo sam najgori slučaj, valjda je to dovoljno``]
+Argument mora ići preko konveksne kombinacije. Nije dovoljno reći ,,linearna
+funkcija je monotona pa je najgore u kutu`` --- to je intuicija, ne dokaz, i pada
+čim skup nesigurnosti nije pravokutnik. Za elipsoidnu nesigurnost, na primjer,
+vrhova nema, a supremum se računa preko norme; Predavanje 8 to obrađuje na
+zadnja dva slajda.
+\end{zamka}
+
+\section{Osam nejednakosti}
+\label{sec:z2-osam}
+
+\begin{korak}[Nabrajanje vrhova]
+Svaki pravokutnik u ravnini ima $2^2 = 4$ vrha --- sve kombinacije donje i gornje
+granice po objema koordinatama. Uz dva ograničenja to daje $2 \cdot 4 = 8$
+linearnih nejednakosti:
+\begin{equation}
+\begin{aligned}
+-0{,}85 x_1 - 0{,}85 x_2 &\leq -10, &\qquad 0{,}85 x_1 - 0{,}85 x_2 &\leq 3, \\
+-0{,}85 x_1 - 1{,}15 x_2 &\leq -10, &\qquad 0{,}85 x_1 - 1{,}15 x_2 &\leq 3, \\
+-1{,}15 x_1 - 0{,}85 x_2 &\leq -10, &\qquad 1{,}15 x_1 - 0{,}85 x_2 &\leq 3, \\
+-1{,}15 x_1 - 1{,}15 x_2 &\leq -10, &\qquad 1{,}15 x_1 - 1{,}15 x_2 &\leq 3.
+\end{aligned}
+\label{eq:z2-osam}
+\end{equation}
+\end{korak}
+
+\begin{formula}{Robusni problem kao obični QP}
+\begin{equation}
+\min_x \ \tfrac12 x\trans Q x + c\trans x
+\quad \text{uz} \quad
+G_{\mathrm{rob}}\, x \leq h_{\mathrm{rob}},
+\label{eq:z2-qp}
+\end{equation}
+gdje je $G_{\mathrm{rob}} \in \R^{8\times2}$ sastavljena od vrhova, a
+$h_{\mathrm{rob}} = [-10,\,-10,\,-10,\,-10,\ 3,\,3,\,3,\,3]\trans$. Funkcija
+cilja je nepromijenjena, pa je ovo \textbf{isti tip problema kao Zadatak 1} ---
+samo s osam ograničenja umjesto dva.
+\end{formula}
+
+\begin{izvor}{Predavanje 8 --- Robusno optimiranje, slajd 16/21 (PDF str.~16)}
+\slajd[0.86]{p08-primjer2-konacno}
+
+\textbf{Što je na slajdu.} Profesorov Primjer 2: robusni problem prepisan kao
+\emph{ekvivalentan LP problem (konačan broj nejednakosti!)}. Nominalna matrica
+$A$ zbraja se s perturbacijskim matricama u kojima varijacije $\delta_i$ dolaze
+na granice svojih intervala ($\pm 0{,}05$).
+
+\textbf{Podudarnost s našim postupkom:} isti korak, samo drukčije zapisan.
+Profesor perturbacije stavlja na granice intervala; mi nabrajamo vrhove
+pravokutnika. To je isto: vrh pravokutnika \emph{jest} kombinacija granica.
+Uskličnik u naslovu slajda je poanta cijelog zadatka --- beskonačno je postalo
+konačno.
+\end{izvor}
+
+\section{Profesorova općenita metoda i zašto je ovdje ne trebamo}
+\label{sec:z2-dualna-metoda}
+
+Ovo je najvjerojatnije potpitanje na obrani, jer Predavanje 8 glavni rezultat
+izvodi \emph{drugim} putem od onoga kojim je zadatak riješen.
+
+\begin{izvor}{Predavanje 8 --- Robusno optimiranje, slajd 3/21 (PDF str.~3)}
+\slajd[0.86]{p08-ekvivalentan-lp}
+
+\textbf{Transkripcija.} Robusan LP
+$\min_x c\trans x$ uz $a_i\trans x \leq b_i$ za sve
+$a_i \in \mathcal{P}_i = \{a \mid C_i a \leq d_i\}$
+\emph{ekvivalentan je sljedećem LP-u}:
+\[
+\min_{x,\ \{\mu_i\}_{i=1,\dots,m}} \ c\trans x
+\qquad \text{uz ogr.} \quad
+\begin{aligned}
+d_i\trans \mu_i &\leq b_i, & & i = 1,\dots,m \\
+C_i\trans \mu_i &= x, & & i = 1,\dots,m \\
+\mu_i &\geq 0, & & i = 1,\dots,m
+\end{aligned}
+\]
+
+\textbf{Što ovaj rezultat radi:} unutarnji problem
+$\sup_{a \in \mathcal{P}_i} a\trans x$ zamjenjuje njegovim \emph{dualnim}
+problemom, pa umjesto maksimizacije unutar ograničenja dobivamo dodatne
+varijable $\mu_i$ i dodatna linearna ograničenja. Skup nesigurnosti opisan je
+nejednakostima ($C_i a \leq d_i$), a ne vrhovima.
+\end{izvor}
+
+\begin{izvor}{Predavanje 8 --- Robusno optimiranje, slajd 4/21 (PDF str.~4)}
+\slajd[0.86]{p08-dokaz-dualnost}
+
+\textbf{Transkripcija (dokaz).} Za fiksan $i$, problem
+$\sup_{a \in \mathcal{P}_i} a\trans x$ ekvivalentan je problemu
+\[
+\inf_a \ -a\trans x \quad \text{uz ogr.} \quad C_i a \leq d_i . \qquad (\ast)
+\]
+Optimizacijski problem $(\ast)$ je LP za koji vrijedi jaka dualnost, pa njegovu
+optimalnu vrijednost možemo dobiti iz Lagrangeovog dualnog problema. Za $(\ast)$
+imamo Lagrangian
+\[
+\Lag(a, \mu_i) = -a\trans x + \mu_i\trans (C_i a - d_i),
+\]
+gdje je $\mu_i \in \R^{m_i}$ vektor dualnih varijabli.
+
+\textbf{Uoči odakle dolazi:} ovo je \emph{isti} aparat kao u Zadatku 1e ---
+Lagrangian, dualna funkcija, jaka dualnost. Robusna optimizacija ovdje nije nova
+teorija, nego primjena dualnosti na unutarnji problem najgoreg slučaja.
+\end{izvor}
+
+\begin{korak}[Zašto su dvije metode ovdje jednake]
+\begin{enumerate}[leftmargin=*]
+  \item Obje su \textbf{egzaktne} --- nijedna nije aproksimacija. Daju identičan
+        dopustivi skup, pa i identično rješenje.
+  \item \textbf{Vrhovi} su praktičniji kad je skup nesigurnosti mali pravokutnik:
+        $2^2 = 4$ vrha po ograničenju, dakle osam nejednakosti, i problem ostaje
+        u istim dvjema varijablama $x_1, x_2$.
+  \item \textbf{Dualna reformulacija} je praktičnija kad broj vrhova eksplodira.
+        Za nesigurnost u $n$ koeficijenata pravokutnik ima $2^n$ vrhova ---
+        eksponencijalno mnogo --- dok dualna metoda dodaje samo $m_i$ novih
+        varijabli po ograničenju, dakle linearno mnogo.
+  \item Za naš zadatak, s $n = 2$, osam nejednakosti je posve neproblematično, pa
+        je odabrana metoda vrhova. Kad bi koeficijenata bilo dvadeset, imali
+        bismo preko milijun nejednakosti i metoda bi propala.
+\end{enumerate}
+\end{korak}
+
+\begin{izgovor}
+,,Skup nesigurnosti je pravokutnik, dakle konveksna ljuska svojih četiriju
+vrhova. Linearna funkcija po konveksnoj ljusci postiže maksimum u nekom od
+generatora, što se dokazuje u jednom retku: zapišem proizvoljnu točku kao
+konveksnu kombinaciju vrhova, uvrstim, i iskoristim da su težine nenegativne i
+zbrajaju se u jedan. Obrat je trivijalan jer su vrhovi elementi skupa.
+
+Zato je robusno ograničenje egzaktno ekvivalentno s četiri nejednakosti po
+ograničenju, ukupno osam. Robusni problem time postaje običan kvadratni program.
+
+Profesor na Predavanju 8 isti rezultat izvodi preko dualnosti unutarnjeg
+problema, što daje dodatne dualne varijable umjesto dodatnih nejednakosti. Za
+naša dva koeficijenta po retku metoda vrhova je jednostavnija; da ih je bilo
+dvadeset, broj vrhova bi bio dva na dvadesetu i morao bih na dualnu formulaciju.``
+\end{izgovor}

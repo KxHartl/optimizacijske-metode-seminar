@@ -32,3 +32,11 @@ v3-primjer2-quadprog	Vjezbe 3	30	-
 v3-primjer2-yalmip	Vjezbe 3	33	-
 v3-primjer2-dual-izvod	Vjezbe 3	37	-
 v3-primjer2-osjetljivost	Vjezbe 3	41	-
+# --- Zadatak 2: robusna optimizacija ---
+p02-konveksna-ljuska	02_Definicije_klasifikacija_konveksnost	60	-
+p08-robusan-lp	08_Robusno_optimiranje	2	-
+p08-ekvivalentan-lp	08_Robusno_optimiranje	3	-
+p08-dokaz-dualnost	08_Robusno_optimiranje	4	-
+p08-primjer1-nominalno	08_Robusno_optimiranje	8	-
+p08-primjer1-robusno	08_Robusno_optimiranje	9	-
+p08-primjer2-konacno	08_Robusno_optimiranje	16	-

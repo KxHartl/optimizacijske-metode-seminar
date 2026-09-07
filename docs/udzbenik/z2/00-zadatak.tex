@@ -1,0 +1,89 @@
+\chapter{Zadatak 2 --- što je točno zadano}
+\label{ch:z2-zadatak}
+
+\section{Izvorni tekst, doslovno}
+\label{sec:z2-izvorni}
+
+\begin{zadatak}{Zadatak 2 (Robustan QP)}
+\skenzad[0.96]{z2-original}
+\end{zadatak}
+
+\begin{zadatak}{Zadatak 2 --- prijepis}
+\textbf{Zadatak 2. (Robustan QP)} Za optimizacijski problem iz Zadatka 1
+pretpostavimo da su koeficijenti $a_{ij}$, $i = 1,2$, $j = 1,2$ nesigurni u
+sljedećem smislu. Jedino što znamo je da se njihove stvarne vrijednosti nalaze u
+intervalu od $\pm 15\%$ od numeričkih vrijednosti zadanih u Zadatku 1: stvarna
+vrijednost $a_{ij,\text{stvarno}}$ se nalazi u intervalu od $0.85 a_{ij}$ do
+$1.15 a_{ij}$, gdje je $a_{ij}$ numerička vrijednost iz Zadatka 1. Riješite ovako
+zadan robustan optimizacijski problem. Nacrtajte dozvoljen skup za niz slučajno
+izabranih koeficijenata iz dozvoljenih intervala te na istoj slici označite gdje
+se nalazi točka optimuma.
+\end{zadatak}
+
+\section{Što u zadatku \emph{ne} piše}
+\label{sec:z2-nije-receno}
+
+Zadatak 2 je najkraće formuliran od sva četiri, a traži najviše vlastitih odluka.
+
+\begin{longtable}{@{}p{0.36\linewidth} p{0.60\linewidth}@{}}
+\toprule
+\textbf{Što nije rečeno} & \textbf{Kako je protumačeno i zašto} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Što nije rečeno} & \textbf{Kako je protumačeno i zašto} \\
+\midrule
+\endhead
+Što znači ,,riješiti robustan problem``. & Da se traži $x$ koji je dopustiv za
+\emph{svaku} realizaciju koeficijenata iz intervala, i među takvima najbolji. To
+je najgori slučaj (\emph{worst case}), a ne očekivana vrijednost ni neka
+vjerojatnosna garancija --- zadatak ne spominje nikakvu razdiobu. \\[6pt]
+Jesu li koeficijenti nezavisni. & Zadatak daje interval za svaki $a_{ij}$
+zasebno, bez ikakve veze među njima. Uzima se dakle da svaki varira nezavisno,
+pa je skup nesigurnosti \emph{pravokutnik} (kvadar), a ne npr.\ elipsoid ili
+skup s ograničenim zbrojem odstupanja. \\[6pt]
+Što se događa s $\pm15\%$ kad je nominalna vrijednost negativna. & Za
+$a_{11} = -1$ interval ,,od $0.85a_{ij}$ do $1.15a_{ij}$`` doslovno znači od
+$-0.85$ do $-1.15$, dakle u rastućem poretku $[-1.15,\, -0.85]$. Zadatak
+navodi granice u tom redoslijedu, pa ih treba preurediti; vidi
+zamku u \S\ref{sec:z2-intervali}. \\[6pt]
+Je li i funkcija cilja nesigurna. & Nije --- nesigurnost je izričito vezana samo
+uz $a_{ij}$. Matrice $Q$ i $c$ ostaju iste kao u Zadatku 1, kao i desne strane
+$-10$ i $3$. \\[6pt]
+Koliko realizacija nacrtati. & Kaže se samo ,,niz slučajno izabranih``. U
+seminaru je uzeto $100$, uz \texttt{rng(42)} radi ponovljivosti. \\[6pt]
+Treba li usporediti s nominalnim rješenjem. & Ne traži se izrijekom, ali je to
+jedini način da se pokaže \emph{čemu} robusnost služi i koliko košta. U seminaru
+je dodana usporedba i brojanje kršenja po realizacijama. \\
+\bottomrule
+\end{longtable}
+
+\begin{zamka}[Zamka: ,,dozvoljen skup za niz slučajnih koeficijenata``]
+Zadatak traži da se nacrta dopustivi skup \emph{za realizacije}, ne skup
+nesigurnosti. To su dvije različite stvari u dva različita prostora:
+\begin{itemize}[nosep,leftmargin=*]
+  \item \textbf{skup nesigurnosti} $\mathcal{P}_i$ živi u prostoru
+        \emph{koeficijenata} $(a_{i1}, a_{i2})$ --- to je pravokutnik;
+  \item \textbf{dopustivi skup} živi u prostoru \emph{projektnih varijabli}
+        $(x_1, x_2)$ --- i za svaku realizaciju koeficijenata izgleda malo
+        drukčije.
+\end{itemize}
+Slika koju zadatak traži je u prostoru $(x_1, x_2)$: mnogo blago različitih
+rubnih pravaca, po jedan par za svaku realizaciju.
+\end{zamka}
+
+\section{Karta poglavlja}
+\label{sec:z2-karta}
+
+\begin{longtable}{@{}p{0.48\linewidth} p{0.48\linewidth}@{}}
+\toprule
+\textbf{Korak} & \textbf{Gdje je obrađen} \\
+\midrule
+\endhead
+Skup nesigurnosti i robusna formulacija & Poglavlje~\ref{ch:z2-nesigurnost} \\
+Svođenje na konačno mnogo nejednakosti & Poglavlje~\ref{ch:z2-vrhovi} \\
+Analitičko rješenje, KKT provjera, MATLAB & Poglavlje~\ref{ch:z2-rjesenje} \\
+Slučajne realizacije, slika, usporedba & Poglavlje~\ref{ch:z2-realizacije} \\
+Pitanja, zamke i modelski odgovori & Poglavlje~\ref{ch:z2-obrana} \\
+\bottomrule
+\end{longtable}

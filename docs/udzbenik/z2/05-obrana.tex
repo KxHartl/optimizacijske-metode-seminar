@@ -1,0 +1,170 @@
+\chapter{Zadatak 2 --- priprema za obranu}
+\label{ch:z2-obrana}
+
+\section{Brojevi koje moraš znati napamet}
+\label{sec:z2o-brojevi}
+
+\begin{longtable}{@{}p{0.32\linewidth} p{0.30\linewidth} p{0.32\linewidth}@{}}
+\toprule
+\textbf{Veličina} & \textbf{Egzaktno} & \textbf{Decimalno} \\
+\midrule
+\endhead
+Intervali koeficijenata & --- & $[-1{,}15,\,-0{,}85]$, osim $a_{21} \in [0{,}85,\,1{,}15]$ \\
+Broj vršnih nejednakosti & $2 \cdot 2^2$ & $8$ \\
+Najgore prvo ograničenje & $x_1 + x_2 \geq 200/17$ & $11{,}764706$ \\
+Najgore drugo ograničenje & $1{,}15x_1 - 0{,}85x_2 \leq 3$ & --- \\
+$x_{\mathrm{rob}}^{\star}$ & $(13/2,\ 179/34)$ & $(6{,}500000,\ 5{,}264706)$ \\
+$f(x_{\mathrm{rob}}^{\star})$ & $978253/11560$ & $84{,}623962$ \\
+$\grad f(x_{\mathrm{rob}}^{\star})$ & --- & $(13{,}420588,\ 16{,}108824)$ \\
+Aktivni vrhovi & $k = 1$ i $k = 7$ & $(-0{,}85,-0{,}85)$, $(1{,}15,-0{,}85)$ \\
+Množitelji & --- & $\mu_1^{\star} = 17{,}607439$, $\mu_7^{\star} = 1{,}344118$ \\
+Odbačeni kandidat & --- & $(6{,}9073,\ 4{,}8574)$, $g_2^{\mathrm{wc}} = +0{,}8146$ \\
+Cijena robusnosti & --- & $+24{,}017901$ $(+39{,}63\%)$ \\
+Monte Carlo kršenja & --- & nominalno $54/100$, robusno $0/100$ \\
+\bottomrule
+\end{longtable}
+
+\begin{izgovor}[Trik za pamćenje]
+$x_1 = 6{,}5$ je \emph{isti broj} kao prva komponenta vrha dopustivog skupa u
+Zadatku 1. Nije slučajnost --- oba puta dolazi iz istog razloga: zbrajanjem
+dviju aktivnih jednadžbi članovi s $x_2$ ispadnu jer imaju suprotne predznake.
+U Zadatku 1 zbroj koeficijenata uz $x_1$ je $1 + 1 = 2$ i desne strane
+$10 + 3 = 13$; ovdje je $0{,}85 + 1{,}15 = 2$ i opet $10 + 3 = 13$. Skaliranje
+za $\pm15\%$ simetrično je oko jedinice, pa se zbroj ne mijenja.
+\end{izgovor}
+
+\section{Zadatak u četiri rečenice}
+\label{sec:z2o-sazetak}
+
+\begin{izgovor}[Ako imaš samo minutu]
+,,Koeficijenti ograničenja nisu poznati točno, nego samo unutar $\pm15\%$ oko
+nominalnih. Skup nesigurnosti za svaki redak je pravokutnik, jer koeficijenti
+variraju nezavisno.
+
+Uvjet mora vrijediti za svaku realizaciju, što je beskonačno mnogo nejednakosti.
+Sažeo sam ih u uvjet na supremum, a onda iskoristio da linearna funkcija po
+konveksnoj ljusci postiže maksimum u vrhu. Time robusno ograničenje postaje
+egzaktno ekvivalentno s četiri nejednakosti po ograničenju, ukupno osam.
+
+Robusni problem je time običan kvadratni program s osam ograničenja. Aktivna su
+dva --- najgori vrhovi --- pa je rješenje šest i pol, pet zarez dva šest pet, s
+oba množitelja strogo pozitivna.
+
+Cijena robusnosti je porast funkcije cilja za trideset devet i pol posto. U
+uzorku od sto realizacija nominalno rješenje krši ograničenja u pedeset četiri
+slučaja, robusno ni u jednom.``
+\end{izgovor}
+
+\section{Pitanja koja se očekuju}
+\label{sec:z2o-pitanja}
+
+\begin{pitanje}{Zašto je dovoljno provjeriti samo vrhove?}
+\textbf{Odgovor.} Jer je skup nesigurnosti pravokutnik, dakle konveksna ljuska
+svojih vrhova, a funkcija $a \mapsto a\trans x$ je linearna u $a$. Svaku točku
+skupa zapišem kao konveksnu kombinaciju vrhova; uvrštavanjem i korištenjem
+nenegativnosti težina dobiva se da je vrijednost u toj točki najviše jednaka
+najvećoj vrijednosti u vrhovima. Obrat je trivijalan jer su vrhovi elementi
+skupa. Ekvivalencija je egzaktna, nije aproksimacija.
+\end{pitanje}
+
+\begin{pitanje}{Bi li to vrijedilo da je skup nesigurnosti elipsoid?}
+\textbf{Odgovor.} Ne bi --- elipsoid nema vrhova. Supremum se tada računa
+analitički: za $\mathcal{P} = \{a_0 + Pu \mid \norm{u}_2 \leq 1\}$ vrijedi
+$\sup_a a\trans x = a_0\trans x + \norm{P\trans x}_2$, pa robusno ograničenje
+postaje $a_0\trans x + \norm{P\trans x}_2 \leq h$. To više nije linearno nego
+konusno ograničenje drugog reda, i problem postaje SOCP. Predavanje 8 to obrađuje
+na zadnja dva slajda.
+\end{pitanje}
+
+\begin{pitanje}{Zašto je za prvo ograničenje najgori koeficijent $-0{,}85$, a ne $-1{,}15$?}
+\textbf{Odgovor.} Jer je ograničenje oblika $a\trans x \leq -10$, dakle traži da
+lijeva strana bude \emph{dovoljno negativna}. Uz $x \geq 0$, koeficijent bliži
+nuli čini lijevu stranu manje negativnom, dakle uvjet teže zadovoljivim. Najgori
+je stoga $-0{,}85$. Za drugo ograničenje, koje traži da lijeva strana ne
+premaši $3$, najgori je najveći koeficijent uz $x_1$, dakle $1{,}15$. Pravilo je
+uvijek isto: bira se ono što \emph{maksimizira lijevu stranu}.
+\end{pitanje}
+
+\begin{pitanje}{Zašto niste nabrojali svih $2^8 = 256$ kombinacija aktivnosti, kao u Zadatku 1?}
+\textbf{Odgovor.} Jer se unaprijed vidi da šest od osam nejednakosti ne mogu biti
+vezujuće. Uz pretpostavku $x \geq 0$, za svako ograničenje jedan vrh implicira
+ostala tri, pa preostaju samo dva kandidata. Provjerio sam obje mogućnosti:
+samo prvi aktivan daje nedopustivu točku, pa moraju biti aktivna oba. Na kraju
+sam provjerio i sve preostale nejednakosti u tablici --- sve imaju strogu
+rezervu. Pretpostavka $x \geq 0$ potvrđena je dobivenim rješenjem.
+\end{pitanje}
+
+\begin{pitanje}{Koliko bi vrhova bilo da nesigurnost ima dvadeset koeficijenata?}
+\textbf{Odgovor.} $2^{20}$, dakle preko milijun nejednakosti po ograničenju ---
+metoda vrhova bi postala neupotrebljiva. Tada se koristi dualna reformulacija s
+Predavanja 8, slajd 3/21, koja dodaje samo onoliko novih varijabli koliko skup
+nesigurnosti ima nejednakosti u svom opisu, dakle linearno mnogo. Obje su metode
+egzaktne; razlikuju se samo po veličini rezultirajućeg problema.
+\end{pitanje}
+
+\begin{pitanje}{Je li robusno rješenje ,,bolje`` od nominalnog?}
+\textbf{Odgovor.} Ne po vrijednosti funkcije cilja --- ondje je gore za
+$39{,}6\%$, i to nužno, jer je robusni dopustivi skup podskup nominalnoga. Bolje
+je po pouzdanosti: dopustivo je za svaku realizaciju, dok je nominalno dopustivo
+za otprilike polovicu. Koji je izbor ispravan ovisi o tome što se plaća skuplje:
+$24$ jedinice funkcije cilja ili $50\%$ vjerojatnost da ograničenje bude
+prekršeno.
+\end{pitanje}
+
+\begin{pitanje}{Što bi se dogodilo da je nesigurnost $\pm 30\%$?}
+\textbf{Odgovor.} Omotnice bi se dodatno pomaknule --- najgore prvo ograničenje
+postalo bi $x_1 + x_2 \geq 10/0{,}70 = 14{,}286$ --- pa bi robusni optimum bio
+još dalje, a cijena robusnosti veća. Struktura rješenja ostala bi ista: opet
+osam vršnih nejednakosti, opet dva aktivna vrha. Pri dovoljno velikoj
+nesigurnosti robusni problem može postati i nedopustiv, ali ovdje ne, jer je
+dopustivi skup neograničen.
+\end{pitanje}
+
+\section{Popis zamki}
+\label{sec:z2o-zamke}
+
+\begin{longtable}{@{}p{0.05\linewidth} p{0.42\linewidth} p{0.47\linewidth}@{}}
+\toprule
+\textbf{\#} & \textbf{Zamka} & \textbf{Kako je izbjeći} \\
+\midrule
+\endhead
+1 & Interval zapisan u krivom poretku za negativnu nominalnu vrijednost &
+$a_{11} \in [-1{,}15,\,-0{,}85]$, ne obrnuto (\S\ref{sec:z2-intervali}). \\[5pt]
+2 & Brkanje skupa nesigurnosti i dopustivog skupa & Prvi je u prostoru
+koeficijenata, drugi u prostoru varijabli. \\[5pt]
+3 & Jedan zajednički skup nesigurnosti za obje matrice retke & Skupovi su
+neovisni, $\mathcal{P}_1$ i $\mathcal{P}_2$ zasebno. \\[5pt]
+4 & ,,Najgori je najveći koeficijent`` & Najgori je onaj koji maksimizira lijevu
+stranu; ovisi o predznaku. \\[5pt]
+5 & Vrhovi obrazloženi intuicijom umjesto dokazom & Argument mora ići preko
+konveksne kombinacije (\S\ref{sec:z2-teorem-vrhovi}). \\[5pt]
+6 & Pretpostavka $x \geq 0$ koja se ne provjeri & Rješenje ima obje komponente
+pozitivne --- to treba izgovoriti. \\[5pt]
+7 & Zaboravljeni preostali vrhovi & Svih osam nejednakosti treba provjeriti;
+rezerve su u tablici. \\[5pt]
+8 & $0/100$ predstavljeno kao dokaz & Dokaz su vršne nejednakosti; realizacije
+ilustriraju. \\[5pt]
+9 & Uniformna razdioba predstavljena kao dio zadatka & Zadatak ne spominje
+razdiobu; ona je odabir za crtanje. \\[5pt]
+10 & Tvrdnja da je robusno rješenje ,,bolje`` & Bolje po pouzdanosti, lošije po
+funkciji cilja --- i to nužno. \\
+\bottomrule
+\end{longtable}
+
+\section{Veza sa Zadatkom 1}
+\label{sec:z2o-veza}
+
+\begin{predznanje}
+Zadatak 2 je Zadatak 1 s više ograničenja. Sve što se prenosi:
+\begin{itemize}[nosep,leftmargin=*]
+  \item ista funkcija cilja, ista matrica $Q$, isti $c$ --- pa iste nivo-elipse i
+        isto središte $x^{0}$;
+  \item ista provjera konveksnosti: $Q \pd 0$, ograničenja afina;
+  \item isti KKT aparat, samo s osam umjesto dva ograničenja;
+  \item ista logika aktivnog skupa: aktivna ograničenja imaju $\mu > 0$,
+        neaktivna $\mu = 0$;
+  \item ista interpretacija množitelja --- $\mu_1^{\star} = 17{,}61$ znači da bi
+        popuštanje najgore verzije prvog ograničenja za jedinicu smanjilo
+        optimalnu vrijednost za otprilike $17{,}61$.
+\end{itemize}
+\end{predznanje}

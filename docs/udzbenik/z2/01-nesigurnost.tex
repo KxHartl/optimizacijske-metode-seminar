@@ -1,0 +1,163 @@
+\chapter{Zadatak 2 --- skup nesigurnosti i robusna formulacija}
+\label{ch:z2-nesigurnost}
+
+\section{Što se ovdje radi}
+
+Prevodi se rečenica ,,koeficijenti su nesigurni unutar $\pm15\%$`` u matematički
+zapis, i formulira se problem koji traži dopustivost za \emph{sve} realizacije.
+
+\begin{predznanje}
+\begin{itemize}[nosep,leftmargin=*]
+  \item Matrice $Q$, $c$, $G$, $h$ iz Zadatka 1 --- \eqref{eq:z1-Qc}, \eqref{eq:z1-Gh}.
+  \item Poluprostor $a\trans x \leq b$ i njegovo crtanje --- \S\ref{sec:poluprostor}.
+  \item Značenje $\sup$ nasuprot $\max$ --- \S\ref{sec:oznake-optimizacije}.
+  \item Konveksan skup i konveksna ljuska --- \S\ref{sec:z1a-konveksan-skup}.
+\end{itemize}
+\end{predznanje}
+
+\section{Intervali za pojedini koeficijent}
+\label{sec:z2-intervali}
+
+Nominalne vrijednosti iz Zadatka 1 su
+\begin{equation}
+a_{11}^{0} = -1, \quad a_{12}^{0} = -1, \quad a_{21}^{0} = 1, \quad a_{22}^{0} = -1 .
+\end{equation}
+Zadatak kaže da se stvarna vrijednost nalazi u intervalu od $0{,}85\,a_{ij}^{0}$
+do $1{,}15\,a_{ij}^{0}$:
+\begin{equation}
+a_{ij} \in \bigl[\,0{,}85\,a_{ij}^{0},\ 1{,}15\,a_{ij}^{0}\,\bigr],
+\qquad i,j \in \{1,2\}.
+\label{eq:z2-interval}
+\end{equation}
+
+\begin{zamka}[Zamka: negativna nominalna vrijednost okreće poredak granica]
+Za $a_{11}^{0} = -1$ doslovno uvrštavanje daje ,,od $-0{,}85$ do $-1{,}15$`` ---
+a to nije interval u standardnom zapisu, jer je lijeva granica \emph{veća} od
+desne. Ispravno je
+\[
+a_{11} \in [-1{,}15,\ -0{,}85].
+\]
+Množenje s negativnim brojem preokreće nejednakost, pa faktor $1{,}15$ daje
+\emph{donju}, a $0{,}85$ \emph{gornju} granicu. Ako se to previdi, u nastavku se
+za najgori slučaj bira kriva granica i cijelo rješenje ispada pogrešno.
+\end{zamka}
+
+\begin{formula}{Intervali koeficijenata}
+\begin{equation}
+a_{11},\, a_{12},\, a_{22} \in [-1{,}15,\ -0{,}85],
+\qquad
+a_{21} \in [0{,}85,\ 1{,}15] .
+\label{eq:z2-intervali}
+\end{equation}
+Samo $a_{21}$ ima pozitivnu nominalnu vrijednost, pa je jedini čiji interval
+ostaje ,,u očekivanom poretku``.
+\end{formula}
+
+\section{Skup nesigurnosti je pravokutnik}
+\label{sec:z2-pravokutnik}
+
+Retke matrice ograničenja označimo
+\begin{equation}
+a_1 = \begin{bmatrix} a_{11} \\ a_{12} \end{bmatrix},
+\qquad
+a_2 = \begin{bmatrix} a_{21} \\ a_{22} \end{bmatrix}.
+\end{equation}
+Kako svaki koeficijent varira nezavisno, svaki $a_i$ se kreće po
+\emph{Kartezijevom produktu} svojih intervala:
+\begin{formula}{Skupovi nesigurnosti}
+\begin{align}
+\mathcal{P}_1 &= [-1{,}15,\ -0{,}85] \times [-1{,}15,\ -0{,}85], \\
+\mathcal{P}_2 &= [\phantom{-}0{,}85,\ \phantom{-}1{,}15] \times [-1{,}15,\ -0{,}85] .
+\label{eq:z2-P}
+\end{align}
+Oba su pravokutnici u ravnini koeficijenata --- dakle poliedri, i to omeđeni, s
+po četiri vrha.
+\end{formula}
+
+\begin{zamka}[Zamka: dva ograničenja imaju \emph{odvojene} skupove nesigurnosti]
+Nesigurnost prvog retka nema veze s nesigurnošću drugog. Ne postoji zajednički
+skup $\mathcal{P}$ za cijelu matricu; postoje dva neovisna, $\mathcal{P}_1$ i
+$\mathcal{P}_2$. Zato se i robusni uvjet postavlja za svako ograničenje zasebno,
+a ne za matricu odjednom. Da su koeficijenti bili povezani (npr.\ zajednički
+faktor skaliranja), skup bi bio manji i rješenje manje konzervativno.
+\end{zamka}
+
+\section{Robusna formulacija}
+\label{sec:z2-formulacija}
+
+\begin{izvor}{Predavanje 8 --- Robusno optimiranje, slajd 2/21 (PDF str.~2)}
+\slajd[0.86]{p08-robusan-lp}
+
+\textbf{Transkripcija.} Promotrimo LP
+\[
+\min_x \ c\trans x \quad \text{uz ogr.} \quad a_i\trans x \leq b_i, \quad i = 1,\dots,m
+\]
+i pretpostavimo da su vektori $a_i \in \R^n$ nesigurni u smislu da ne znamo
+njihove vrijednosti već znamo samo da $a_i \in \mathcal{P}_i$, gdje je
+$\mathcal{P}_i = \{a \mid C_i a \leq d_i\}$ za poznate $C_i \in \R^{m_i \times n}$,
+$d_i \in \R^{m_i}$. Pretpostavka je da skupovi (poliedri) $\mathcal{P}_i$ nisu
+prazni.
+
+\emph{Robusan LP:}
+\[
+\min_x \ c\trans x \quad \text{uz ogr.} \quad a_i\trans x \leq b_i \ \text{ za sve } a_i \in \mathcal{P}_i, \quad i = 1,\dots,m
+\]
+
+\textbf{Dvije stvari koje treba prenijeti na naš zadatak:}
+\begin{itemize}[nosep,leftmargin=*]
+  \item Nesigurnost je u \emph{koeficijentima ograničenja}, ne u funkciji cilja
+        ni u desnim stranama --- točno kao kod nas.
+  \item Riječi ,,za sve $a_i \in \mathcal{P}_i$`` pretvaraju jedno ograničenje u
+        \emph{beskonačno mnogo} ograničenja, po jedno za svaku točku pravokutnika.
+        Cijeli je posao svesti ih na konačno mnogo.
+  \item Predavanje govori o LP-u; naša funkcija cilja je kvadratna. To ne smeta:
+        nesigurnost je samo u ograničenjima, pa se svi zaključci o ograničenjima
+        prenose nepromijenjeni, a funkcija cilja ostaje ista.
+\end{itemize}
+\end{izvor}
+
+\begin{formula}{Robusni problem Zadatka 2}
+\begin{equation}
+\min_{x} \ \tfrac12 x\trans Q x + c\trans x
+\quad \text{uz} \quad
+a_i\trans x \leq h_i \ \text{ za sve } a_i \in \mathcal{P}_i, \ i = 1,2,
+\label{eq:z2-robusni}
+\end{equation}
+gdje su $h_1 = -10$ i $h_2 = 3$ nepromijenjene desne strane.
+\end{formula}
+
+\section{Od ,,za sve`` do supremuma}
+\label{sec:z2-supremum}
+
+\begin{korak}[Prvi ključni korak]
+Uvjet ,,$a_i\trans x \leq h_i$ za \emph{svaki} $a_i \in \mathcal{P}_i$``
+ekvivalentan je jednom jedinom uvjetu na \emph{najgoru} vrijednost:
+\begin{equation}
+a_i\trans x \leq h_i \ \ \forall a_i \in \mathcal{P}_i
+\qquad\Longleftrightarrow\qquad
+\sup_{a_i \in \mathcal{P}_i} a_i\trans x \leq h_i .
+\label{eq:z2-sup}
+\end{equation}
+Obrazloženje u oba smjera:
+\begin{itemize}[nosep,leftmargin=*]
+  \item ($\Rightarrow$) Ako svi članovi skupa zadovoljavaju nejednakost, onda je
+        $h_i$ gornja granica tog skupa vrijednosti, pa je i \emph{najmanja}
+        gornja granica --- supremum --- najviše $h_i$.
+  \item ($\Leftarrow$) Ako je supremum $\leq h_i$, onda je i svaka pojedina
+        vrijednost $\leq h_i$, jer nijedna ne premašuje supremum.
+\end{itemize}
+\end{korak}
+
+Beskonačno mnogo nejednakosti time je zamijenjeno jednom --- ali cijena je što ta
+jedna sadrži optimizacijski problem u sebi. Sljedeće poglavlje pokazuje da se za
+poliedarski skup nesigurnosti taj unutarnji problem rješava egzaktno, i to samo
+gledanjem vrhova.
+
+\begin{izgovor}
+,,Robusni problem tražim tako da ograničenje mora vrijediti za svaku realizaciju
+koeficijenata iz zadanog pravokutnika. To je beskonačno mnogo nejednakosti, pa ih
+sažimam u jednu: supremum od a i transponirano iks, po a i iz skupa nesigurnosti,
+mora biti manji ili jednak desnoj strani. Ekvivalencija vrijedi u oba smjera ---
+supremum je najmanja gornja granica, pa je uvjet na njega isto što i uvjet na
+svaki član.``
+\end{izgovor}

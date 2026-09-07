@@ -1,0 +1,230 @@
+\chapter{Zadatak 2 --- rješenje robusnog problema}
+\label{ch:z2-rjesenje}
+
+\section{Što se ovdje radi}
+
+Rješava se QP s osam ograničenja --- prvo analitički, prepoznavanjem koja su dva
+ograničenja doista vezujuća, pa provjerom KKT uvjeta, i na kraju rješavačem.
+
+\begin{predznanje}
+\begin{itemize}[nosep,leftmargin=*]
+  \item Osam vršnih nejednakosti --- \eqref{eq:z2-osam}.
+  \item KKT uvjeti i postupak s aktivnim skupom --- Poglavlje~\ref{ch:z1-kkt}.
+  \item $\grad f(x) = Qx + c$ --- \eqref{eq:grad-hess-kvadratne}.
+\end{itemize}
+\end{predznanje}
+
+\section{Koja su ograničenja najgora}
+\label{sec:z2-najgora}
+
+Nabrajati sve $2^8 = 256$ kombinacija aktivnosti bilo bi besmisleno. Umjesto
+toga se najprije prepoznaje koja dva od osam ograničenja uopće mogu biti
+vezujuća.
+
+\begin{korak}[Pretpostavka i njezino korištenje]
+\textbf{Pretpostavimo} da optimum leži u pozitivnom kvadrantu, $x_1 \geq 0$ i
+$x_2 \geq 0$. (Pretpostavka se provjerava naknadno, kad rješenje bude poznato ---
+i potvrdit će se.) Uz $x \geq 0$ vrijedi:
+\begin{enumerate}[leftmargin=*]
+  \item \textbf{Prvo ograničenje}, $a_{11}x_1 + a_{12}x_2 \leq -10$ uz oba
+        koeficijenta u $[-1{,}15,\ -0{,}85]$. Lijeva strana je najveća --- dakle
+        uvjet najteži --- kad su koeficijenti \emph{najmanji po apsolutnoj
+        vrijednosti}, tj.\ oba jednaka $-0{,}85$:
+        \begin{equation}
+          -0{,}85 x_1 - 0{,}85 x_2 \leq -10
+          \iff x_1 + x_2 \geq \frac{10}{0{,}85} = \frac{200}{17} = 11{,}764706 .
+          \label{eq:z2-wc1}
+        \end{equation}
+  \item \textbf{Drugo ograničenje}, $a_{21}x_1 + a_{22}x_2 \leq 3$ uz
+        $a_{21} \in [0{,}85,\ 1{,}15]$ i $a_{22} \in [-1{,}15,\ -0{,}85]$. Lijeva
+        strana je najveća kad je $a_{21}$ najveći, a $a_{22}$ najmanji po
+        apsolutnoj vrijednosti:
+        \begin{equation}
+          1{,}15 x_1 - 0{,}85 x_2 \leq 3 .
+          \label{eq:z2-wc2}
+        \end{equation}
+\end{enumerate}
+Preostalih šest nejednakosti implicirano je ovima dvjema, sve dok $x \geq 0$.
+\end{korak}
+
+\begin{zamka}[Zamka: ,,najgori slučaj je uvijek najveći koeficijent``]
+Nije. Ovisi o predznaku varijable \emph{i} predznaku koeficijenta. Za prvo
+ograničenje najgori je $-0{,}85$, dakle koeficijent \emph{najbliži nuli}, jer
+ograničenje traži da lijeva strana bude dovoljno negativna --- a koeficijent
+bliži nuli je čini manje negativnom. Za drugo ograničenje najgori je
+$a_{21} = 1{,}15$, dakle najveći. Uvijek se pita: \emph{koja vrijednost
+koeficijenta čini lijevu stranu najvećom}, jer nejednakost je tipa $\leq$.
+\end{zamka}
+
+\section{Analitičko rješenje}
+\label{sec:z2-analiticki}
+
+\begin{korak}[Prvi pokušaj: aktivno samo \eqref{eq:z2-wc1}]
+Ako bi u optimumu bilo aktivno samo prvo najgore ograničenje, rješenje bi bilo
+\begin{equation}
+x = \begin{bmatrix} 6{,}9073 \\ 4{,}8574 \end{bmatrix},
+\end{equation}
+ali tada je
+\begin{equation}
+1{,}15 \cdot 6{,}9073 - 0{,}85 \cdot 4{,}8574 - 3 = +0{,}8146 > 0,
+\end{equation}
+pa točka \emph{nije} dopustiva za \eqref{eq:z2-wc2}. Ta kombinacija otpada.
+\end{korak}
+
+\begin{korak}[Oba najgora ograničenja aktivna]
+Preostaje da su oba aktivna, dakle jednakosti:
+\begin{equation}
+\begin{cases}
+0{,}85\,x_1 + 0{,}85\,x_2 = 10 \\
+1{,}15\,x_1 - 0{,}85\,x_2 = 3
+\end{cases}
+\end{equation}
+\textbf{Zbrajanjem} članovi s $x_2$ ispadaju:
+\begin{equation}
+(0{,}85 + 1{,}15)\,x_1 = 13
+\;\Longrightarrow\;
+2 x_1 = 13
+\;\Longrightarrow\;
+x_1 = \frac{13}{2} = 6{,}5 .
+\end{equation}
+Uvrštavanjem u prvu:
+\begin{equation}
+x_2 = \frac{200}{17} - \frac{13}{2} = \frac{400 - 221}{34} = \frac{179}{34} = 5{,}264706 .
+\end{equation}
+\end{korak}
+
+\begin{formula}{Robusno rješenje}
+\begin{equation}
+x_{\mathrm{rob}}^{\star} = \begin{bmatrix} 13/2 \\ 179/34 \end{bmatrix}
+= \begin{bmatrix} 6{,}500000 \\ 5{,}264706 \end{bmatrix},
+\qquad
+f(x_{\mathrm{rob}}^{\star}) = \frac{978253}{11560} = 84{,}623962 .
+\label{eq:z2-rjesenje}
+\end{equation}
+Obje komponente su pozitivne, čime je početna pretpostavka $x \geq 0$
+\emph{potvrđena} --- a ne samo korištena.
+\end{formula}
+
+\begin{zamka}[Zamka: pretpostavka koja se ne provjeri]
+Cijeli izbor najgorih koeficijenata počivao je na $x \geq 0$. Da je rješenje
+ispalo s negativnom komponentom, izbor najgorih vrhova bio bi kriv i sve bi
+trebalo ponoviti. Provjera traje jednu rečenicu i mora se izgovoriti.
+\end{zamka}
+
+\section{Provjera KKT uvjeta}
+\label{sec:z2-kkt}
+
+\begin{korak}[Gradijent i množitelji]
+U točki $x_{\mathrm{rob}}^{\star}$ gradijent funkcije cilja iznosi
+\begin{equation}
+\grad f(x_{\mathrm{rob}}^{\star}) = Q x_{\mathrm{rob}}^{\star} + c
+= \begin{bmatrix} 13{,}420588 \\ 16{,}108824 \end{bmatrix}.
+\end{equation}
+Aktivni su vrhovi $k = 1$, s $v^{(1)} = (-0{,}85,\ -0{,}85)$, i $k = 7$, s
+$v^{(7)} = (1{,}15,\ -0{,}85)$. Uvjet stacionarnosti glasi
+\begin{equation}
+\grad f(x_{\mathrm{rob}}^{\star})
++ \mu_1^{\star}\begin{bmatrix} -0{,}85 \\ -0{,}85 \end{bmatrix}
++ \mu_7^{\star}\begin{bmatrix} 1{,}15 \\ -0{,}85 \end{bmatrix}
+= \begin{bmatrix} 0 \\ 0 \end{bmatrix}.
+\end{equation}
+Oduzimanjem druge jednadžbe od prve ispada $\mu_1$ (u obje ima isti koeficijent
+$-0{,}85$):
+\begin{equation}
+13{,}420588 - 16{,}108824 + 2{,}0\,\mu_7^{\star} = 0
+\;\Longrightarrow\;
+\mu_7^{\star} = 1{,}344118,
+\end{equation}
+pa iz druge jednadžbe
+\begin{equation}
+\mu_1^{\star} = \frac{16{,}108824 - 0{,}85 \cdot 1{,}344118}{0{,}85} = 17{,}607439 .
+\end{equation}
+Oba su strogo pozitivna, dakle dualna dopustivost je zadovoljena.
+\end{korak}
+
+Preostalih šest nejednakosti strogo je zadovoljeno, s rezervama u
+tablici~\ref{tab:z2-vrhovi}. Time su svi KKT uvjeti ispunjeni. Kako je problem i
+dalje konveksan --- ista funkcija cilja, afina ograničenja --- KKT uvjeti su
+dovoljni, pa je $x_{\mathrm{rob}}^{\star}$ globalni optimum robusnog problema.
+
+\begin{seminar}{Seminar v1.2, Tablica 3.1 --- vrijednosti svih osam vršnih nejednakosti}
+\begin{center}
+\begin{tabular}{clccl}
+\toprule
+$k$ & \textbf{Vrh} $v^{(k)}$ & $\bigl(v^{(k)}\bigr)^{\mathsf{T}} x_{\mathrm{rob}}^*$ & \textbf{Desna strana} & \textbf{Status} \\
+\midrule
+1 & $(-0.85,\ -0.85)$ & $-10.0000$ & $-10$ & aktivno \\
+2 & $(-0.85,\ -1.15)$ & $-11.5794$ & $-10$ & rezerva $1.5794$ \\
+3 & $(-1.15,\ -0.85)$ & $-11.9500$ & $-10$ & rezerva $1.9500$ \\
+4 & $(-1.15,\ -1.15)$ & $-13.5294$ & $-10$ & rezerva $3.5294$ \\
+5 & $(0.85,\ -0.85)$  & $1.0500$   & $3$   & rezerva $1.9500$ \\
+6 & $(0.85,\ -1.15)$  & $-0.5294$  & $3$   & rezerva $3.5294$ \\
+7 & $(1.15,\ -0.85)$  & $3.0000$   & $3$   & aktivno \\
+8 & $(1.15,\ -1.15)$  & $1.4206$   & $3$   & rezerva $1.5794$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{seminar}
+
+\begin{korak}[Kako se tablica čita]
+Rezerve dolaze u parovima --- $1{,}5794$ dvaput, $1{,}9500$ dvaput, $3{,}5294$
+dvaput. To nije slučajnost: vrhovi se razlikuju samo po tome koji je koeficijent
+pomaknut, a razlika koju taj pomak proizvodi ista je za oba ograničenja jer je
+$x$ isti. Konkretno, promjena drugog koeficijenta s $-0{,}85$ na $-1{,}15$
+mijenja lijevu stranu za $0{,}30 \cdot x_2 = 0{,}30 \cdot 5{,}2647 = 1{,}5794$, a
+promjena prvog za $0{,}30 \cdot x_1 = 0{,}30 \cdot 6{,}5 = 1{,}9500$; kad se
+pomaknu oba, rezerve se zbroje: $3{,}5294$.
+\end{korak}
+
+\section{Rješenje u MATLAB-u}
+\label{sec:z2-matlab}
+
+\begin{seminar}{Seminar v1.2, §3.4 --- ,,Rješenje u MATLAB-u``}
+Matrica $G_{\mathrm{rob}}$ gradi se prolaskom kroz sve kombinacije skalirajućih
+faktora $0.85$ i $1.15$ za oba koeficijenta svakog retka, a dobiveni kvadratni
+program rješava se funkcijom \texttt{quadprog}.
+
+\begin{lstlisting}[style=matlabstyle]
+sc = [0.85, 1.15];
+G_rob = []; h_rob = [];
+for i = 1:2
+    for s1 = sc
+        for s2 = sc
+            G_rob(end+1, :) = [s1*G(i,1), s2*G(i,2)];
+            h_rob(end+1, 1) = h(i);
+        end
+    end
+end
+[x_rob, ~, ef, ~, lam_rob] = quadprog(Q, c, G_rob, h_rob, ...
+                                      [], [], [], [], [], opts);
+\end{lstlisting}
+
+\begin{lstlisting}[style=outputstyle]
+exitflag  = 1
+x_rob*    = [6.500000; 5.264706]
+f(x_rob*) = 84.623962
+max(G_rob*x - h_rob) = -2.793e-11
+\end{lstlisting}
+\end{seminar}
+
+\begin{korak}[Zašto kod izgleda baš tako]
+\begin{enumerate}[leftmargin=*]
+  \item Množi se \emph{nominalna} matrica $G$ faktorima $0{,}85$ i $1{,}15$, a ne
+        pišu se brojevi ručno. Time je nemoguće promašiti predznak: za
+        $G_{11} = -1$ faktor $0{,}85$ automatski daje $-0{,}85$, dakle gornju
+        granicu intervala, kako i treba.
+  \item Dvostruka unutarnja petlja po \texttt{s1} i \texttt{s2} nabraja upravo
+        četiri vrha pravokutnika.
+  \item \texttt{max(G\_rob*x - h\_rob) = -2.793e-11} je provjera dopustivosti:
+        najveće prekoračenje među svih osam nejednakosti je negativno do na
+        toleranciju, dakle nijedna nije prekršena.
+\end{enumerate}
+\end{korak}
+
+\begin{lstlisting}[style=outputstyle]
+--- Provjera aktivnosti ---
+Samo g1^wc aktivno: x = [6.9073, 4.8574], g2^wc(x) = +0.8146 -> nedopustivo
+grad f(x_rob*) = [13.420588, 16.108824]
+aktivni vrhovi : [1 7]
+mu aktivnih    = [17.607439, 1.344118]  (> 0)
+\end{lstlisting}
