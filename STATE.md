@@ -13,6 +13,11 @@
 
 ## Trenutni fokus
 
+- [ ] Dubinska komparativna recenzija v1.2 prema izvornom zadatku i seminarima Matije i Ivana (plan potvrđen 2026-09-07).
+  - Primarni artefakt: `dist/v1.2/OMRiUS_seminar_Kresimir_Hartl.pdf`; kopija u `for_validator` ima drugi SHA-256 i ne smatra se istom verzijom bez provjere.
+  - U tijeku: RAG indeksiranje Ivanova PDF-a, neovisna matematička provjera i usporedba podudarnosti; završni nalaz ide u `docs/REVIEW.md`.
+  - Recenzija ne mijenja sadržaj seminara, MATLAB kod ni grafove.
+
 - [x] Verzija v1.0 (38 str.) i šest neovisnih recenzija u `for_validator/`.
 - [x] **v1.2 — pročišćavanje rada** (rujan 2026.):
   - [x] MATLAB je jedini izvor rezultata i slika; Python implementacija uklonjena.
