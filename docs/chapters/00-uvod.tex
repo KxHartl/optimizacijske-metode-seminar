@@ -1,10 +1,10 @@
 \section{Uvod}
 
-U ovom seminarskom radu rješavaju se četiri zadatka iz kolegija \textit{Optimizacijske metode u razvoju i upravljanju sustava}. Redom su to: kvadratni program s dva ograničenja nejednakosti, njegova robusna inačica uz intervalnu nesigurnost koeficijenata, formulacija nivelacije uzdužnog profila ceste kao linearnog programa te sinteza regulatora po varijablama stanja za sklopni linearni sustav pomoću linearnih matričnih nejednakosti.
+U ovom seminarskom radu rješavaju se četiri zadatka iz kolegija \textit{Optimizacijske metode u razvoju i upravljanju sustava}. Obrađuju se kvadratni program s dva ograničenja nejednakosti, njegova robusna inačica uz intervalnu nesigurnost koeficijenata, nivelacija uzdužnog profila ceste kao linearni program te sinteza regulatora po varijablama stanja za sklopni linearni sustav pomoću linearnih matričnih nejednakosti.
 
-Zajednička nit svih zadataka je konveksnost: nakon što se problem zapiše u standardnom obliku (LP, QP ili SDP), lokalni optimum je ujedno globalan, a KKT uvjeti odnosno linearne matrične nejednakosti daju provjerljiv certifikat optimalnosti ili stabilnosti~\cite{boyd2004convex,jokic2024predavanja}.
+Svaki zadatak svodi se na izravno provjerljiv konačno-dimenzijski problem. U prva dva zadatka optimalnost se provjerava KKT uvjetima, u trećem se apsolutna odstupanja prevode u linearni program, a u četvrtom zajednička kvadratna Ljapunovljeva funkcija daje certifikat stabilnosti zatvorenog sustava.
 
-Svi proračuni provedeni su u MATLAB-u (verzija R2025b): \texttt{quadprog} za kvadratne programe u zadacima 1 i 2, \texttt{linprog} za linearni program u zadatku 3 te YALMIP sa rješavačem SDPT3 za semidefinitni program u zadatku 4. Skripte se nalaze u prilogu; svaka brojka i svaka slika u radu proizlazi iz jednog pokretanja tih skripti.
+Svi proračuni provedeni su u MATLAB-u R2025b. Za kvadratne programe u zadacima 1 i 2 primijenjen je \texttt{quadprog}, za linearni program u zadatku 3 \texttt{linprog}, a za semidefinitni program u zadatku 4 YALMIP s rješavačem SDPT3. Potpune skripte i pripadajući konzolni ispisi predaju se u elektroničkom prilogu, u mapama \texttt{src/} i \texttt{docs/code/}. Sve navedene brojke i slike proizlaze iz tih skripti.
 
 Poglavlja slijede numeraciju zadataka:
 \begin{itemize}

@@ -1,35 +1,13 @@
 \section{Zaključak}
 
 \paragraph{Zadatak 1}
-Problem je konveksan: Hesseova matrica ima svojstvene vrijednosti $1.955969$ i $4.044031$, dakle $Q \succ 0$, a ograničenja su afina. Od četiri kombinacije aktivnosti ograničenja KKT uvjete zadovoljava samo ona s aktivnim $g_1$, što daje
-\begin{equation*}
-x^* = \left( \tfrac{190}{33},\ \tfrac{140}{33} \right) = (5.757576,\ 4.242424), \qquad
-\mu^* = \left( \tfrac{404}{33},\ 0 \right), \qquad
-p^* = \tfrac{2000}{33} = 60.606061 .
-\end{equation*}
-Rješavač \texttt{quadprog} vraća iste primarne i dualne varijable. Dualni problem je opet kvadratni program u $\mu$; njegovo rješenje $\mu^*$ podudara se s množiteljima iz KKT uvjeta, a dualni procjep iznosi $2.48 \cdot 10^{-10}$, pa jaka dualnost vrijedi, kako i predviđa zadovoljen Slaterov uvjet. Optimalna vrijednost osjetljiva je samo na perturbaciju prvog ograničenja, $\partial p^* / \partial v_1 = -12.242424$, dok je $\partial p^* / \partial v_2 = 0$ jer je $g_2$ neaktivno.
+Hesseova matrica ima svojstvene vrijednosti $1.955969$ i $4.044031$, pa je zadani QP strogo konveksan i ima jedinstveno rješenje. KKT uvjete zadovoljava slučaj s aktivnim $g_1$: $x^*=(190/33,140/33)=(5.757576,4.242424)$, $\mu^*=(404/33,0)$ i $p^*=2000/33=60.606061$. Graf potvrđuje dodir optimalne nivo-krivulje s granicom $g_1=0$. Funkcija \texttt{quadprog} vraća iste primarne i dualne varijable, a dualni problem daje procjep $2.48\cdot10^{-10}$. Lokalno, bez promjene aktivnog skupa, vrijedi $\partial p^*/\partial v=(-12.242424,0)$.
 
 \paragraph{Zadatak 2}
-Uz nesigurnost koeficijenata od $\pm 15\%$ svako se robusno ograničenje svodi na četiri nejednakosti u vrhovima pravokutnog skupa nesigurnosti, pa robusni problem postaje kvadratni program s osam linearnih nejednakosti. Njegovo rješenje je
-\begin{equation*}
-x_{\mathrm{rob}}^* = \left( \tfrac{13}{2},\ \tfrac{179}{34} \right) = (6.500000,\ 5.264706), \qquad
-f(x_{\mathrm{rob}}^*) = 84.623962 ,
-\end{equation*}
-uz dva aktivna vrha i strogo pozitivne pripadajuće množitelje $\mu = (17.607439,\ 1.344118)$. U uzorku od 100 slučajnih realizacija ($\texttt{rng(42)}$) nominalno rješenje krši ograničenja u 54 slučaja, a robusno ni u jednom; dopustivost na cijelom skupu nesigurnosti jamči zadovoljenje svih osam vršnih nejednakosti. Za tu se dopustivost plaća porast funkcije cilja od $24.017901$, odnosno $39.63\%$.
+Intervalna nesigurnost od $\pm15\%$ svodi se na osam vršnih nejednakosti. KKT certifikat za dva aktivna vrha daje $x_{\mathrm{rob}}^*=(13/2,179/34)=(6.500000,5.264706)$ i $f(x_{\mathrm{rob}}^*)=84.623962$. U svih je osam vrhova rješenje dopustivo. U uzorku od 100 realizacija uz \texttt{rng(42)} nominalno rješenje krši ograničenja 54 puta, a robusno nijednom. Uzorak služi samo kao ilustracija; vršne nejednakosti daju robusni certifikat. Vrijednost cilja raste za $39.63\%$.
 
 \paragraph{Zadatak 3}
-Nakon diskretizacije konačnim razlikama i uvođenja pomoćnih varijabli $z_i \geq |y_i - h_i|$ problem pripada klasi \textbf{linearnog programiranja}, s $2(N+1)$ varijabli i $6N$ nejednakosti. Rezultati za četiri zadana slučaja jesu:
-\begin{equation*}
-\begin{array}{lcc}
-\text{slučaj A}, N = 20:  & J^* = 1.916180\ \mathrm{m}^2 \qquad & \text{slučaj B}, N = 20:  \ J^* = 2.453727\ \mathrm{m}^2 \\
-\text{slučaj A}, N = 100: & J^* = 1.965940\ \mathrm{m}^2 \qquad & \text{slučaj B}, N = 100: \ J^* = 2.506047\ \mathrm{m}^2
-\end{array}
-\end{equation*}
-Gušća mreža povećava vrijednost kriterija za oko $2\%$ jer pravokutna kvadratura na rijetkoj mreži podcjenjuje integral. Pooštravanje ograničenja brzine promjene nagiba s $b_2 = 0.5$ na $b_2 = 0.2\ \mathrm{m}^{-1}$ zahtijeva glađu niveletu i povećava volumen zemljanih radova za $27.47\%$; u oba slučaja aktivna su i ograničenje nagiba i ograničenje brzine promjene nagiba.
+Uvođenjem $z_i\geq|y_i-h_i|$ dobiva se LP s $2(N+1)$ varijabli i $6N$ nejednakosti. Površine su $J^*=1.916180$ i $1.965940\ \mathrm{m}^2$ za slučaj A pri $N=20$ i $100$, odnosno $2.453727$ i $2.506047\ \mathrm{m}^2$ za slučaj B. Za širinu $w=1\ \mathrm{m}$ pripadni volumen jest $V=wJ$ u $\mathrm{m}^3$. Pri gušćoj mreži opažen je rast diskretnog optimuma od $2.60\%$ i $2.13\%$; dvije mreže nisu dovoljne za utvrđivanje reda ni predznaka pogreške. Smanjenje $b_2$ na $0.2\ \mathrm{m}^{-1}$ povećava $J$ za $27.47\%$ pri $N=100$.
 
 \paragraph{Zadatak 4}
-Obje matrice modova su Hurwitzove, sa svojstvenim vrijednostima $-1 \pm j\pi/2$. Unatoč tome \textbf{sklopni sustav nije stabilan}: matrica prijelaza preko jednog perioda prespajanja iznosi $\Phi_{\mathrm{cikl}} = e^{-2}\,\mathrm{diag}(-9,\ -1/9)$, pa je $\rho(\Phi_{\mathrm{cikl}}) = 9e^{-2} = 1.218018 > 1$ i norma stanja raste, što potvrđuje i simulacija. Zahtjev da postoji zajednička kvadratna Ljapunovljeva funkcija preveden je kongruentnom transformacijom i supstitucijom $\mathcal{Q} = P^{-1}$, $Y = KP^{-1}$ u sustav linearnih matričnih nejednakosti. Njegovim rješavanjem dobiven je regulator
-\begin{equation*}
-K = \begin{bmatrix} -3.424629 & -0.104650 \end{bmatrix},
-\end{equation*}
-uz $P \succ 0$ za koji je $\lambda_{\max}\big((A_i + BK)^{\mathsf{T}} P + P(A_i + BK)\big)$ jednak $-0.910478$ odnosno $-0.329090$ za dva moda. Zatvoreni krug je time eksponencijalno stabilan uz zajamčenu stopu $\alpha = 0.288374\ \mathrm{s}^{-1}$, a simulacija pokazuje pad norme stanja na $1.52 \cdot 10^{-3}$ unutar 5 sekundi.
+Oba su moda Hurwitzova sa svojstvenim vrijednostima $-1\pm j\pi/2$. Ipak, otvoreni sklopni sustav nije stabilan jer je $\Phi_{\mathrm{cikl}}=e^{-2}\operatorname{diag}(-9,-1/9)$ i $\rho=1.218018>1$; za zadani $x(0)=e_1$ vrijedi $\|x(2k)\|=(9e^{-2})^k$. LMI sintezom dobiven je $K=[-3.424629,-0.104650]$ i zajednička matrica $P\succ0$. Najveće svojstvene vrijednosti dviju Ljapunovljevih matrica iznose $-0.910478$ i $-0.329090$, pa je zatvoreni sustav eksponencijalno stabilan uz zajamčenu stopu $\alpha=0.288374\ \mathrm{s}^{-1}$. Simulacija daje $\|x(5)\|=1.52\cdot10^{-3}$.
