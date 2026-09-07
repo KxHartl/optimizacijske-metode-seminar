@@ -88,18 +88,31 @@ fprintf('\n--- Monte Carlo (N = %d, rng(42)) ---\n', Nmc);
 fprintf('krsenja za x_nom* : %d / %d\n', viol_nom, Nmc);
 fprintf('krsenja za x_rob* : %d / %d\n', viol_rob, Nmc);
 
-%% 8. Slika 3.1 - realizacije, robusne granice, oba optimuma
+%% 8. Slika 3.1 - reprezentativne realizacije, robusni presjek, oba optimuma
 fg = figure('Position', [100 100 720 600], 'Visible', 'off', 'Color', 'w');
 hold on;
 t = linspace(0, 14, 200);
+
+% Robusni dopustivi presjek unutar prikazanog okvira [0,12]^2 lezi iznad
+% obje granice najgoreg slucaja. Zasjenjuje se samo taj presjek, a ne svaki
+% od Nmc slucajnih dopustivih skupova.
+x_top = (0.85*12 + 3)/1.15;
+x_int = 13/2;
+y_int = 179/34;
+hFeas = patch([0, x_top, x_int, 0], [12, 12, y_int, 10/0.85], ...
+              [0.90 0.90 0.90], 'EdgeColor', 'none', 'FaceAlpha', 0.8);
+
+% Monte Carlo provjera i dalje koristi svih Nmc = 100 realizacija. Za citljiv
+% graf prikazuje se ravnomjerno odabran reprezentativni podskup od 12 uzoraka.
+plot_idx = unique(round(linspace(1, Nmc, 12)));
 hMC = [];
-for k = 1:Nmc
+for k = plot_idx
     Gk = Gs(:,:,k);
     y1 = (h(1) - Gk(1,1)*t)/Gk(1,2);
     y2 = (h(2) - Gk(2,1)*t)/Gk(2,2);
-    p1 = plot(t, y1, '-', 'Color', [0.78 0.78 0.78], 'LineWidth', 0.5);
-    plot(t, y2, '-', 'Color', [0.78 0.78 0.78], 'LineWidth', 0.5);
-    if k == 1, hMC = p1; end
+    p1 = plot(t, y1, '-', 'Color', [0.68 0.68 0.68], 'LineWidth', 0.55);
+    plot(t, y2, '-', 'Color', [0.68 0.68 0.68], 'LineWidth', 0.55);
+    if isempty(hMC), hMC = p1; end
 end
 hNomB = plot(t, 10 - t, 'k--', 'LineWidth', 1.6);
 plot(t, t - 3, 'k--', 'LineWidth', 1.6);
@@ -109,10 +122,14 @@ hNom  = plot(x_nom(1), x_nom(2), 'ko', 'MarkerSize', 9, 'MarkerFaceColor', 'w', 
 hRob  = plot(x_rob(1), x_rob(2), 'kp', 'MarkerSize', 16, 'MarkerFaceColor', 'k');
 text(x_nom(1)-1.7, x_nom(2)-0.5, 'x^*_{nom}', 'FontSize', 11);
 text(x_rob(1)+0.3, x_rob(2)+0.4, 'x^*_{rob}', 'FontSize', 11);
+text(1.0, 11.35, {'robusno dopustivo:', 'iznad obje najgore granice'}, ...
+     'FontSize', 10, 'HorizontalAlignment', 'left', ...
+     'BackgroundColor', 'w', 'Margin', 3);
 xlim([0 12]); ylim([0 12]); axis square;
 xlabel('x_1'); ylabel('x_2');
-legend([hMC hNomB hRobB hNom hRob], ...
-       {'100 slucajnih realizacija', 'nominalne granice', 'granice najgoreg slucaja', ...
+legend([hFeas hMC hNomB hRobB hNom hRob], ...
+       {'robusni dopustivi presjek', '12 od 100 slucajnih realizacija', ...
+        'nominalne granice', 'granice najgoreg slucaja', ...
         'nominalni optimum', 'robusni optimum'}, 'Location', 'northeast', 'FontSize', 9);
 exportgraphics(fg, fullfile(fig_dir(), 'fig2_1_robust_envelope_monte_carlo.pdf'), 'ContentType', 'vector');
 close(fg);

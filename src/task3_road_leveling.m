@@ -17,7 +17,7 @@ res  = struct([]);
 
 fprintf('=== ZADATAK 3 ===\n');
 fprintf('h(0) = %.4f,  h(L) = %.4f\n', hfun(0), hfun(L));
-fprintf('\n Slucaj |   N |   dx  |   J* [m^2] | max|Dy| | max|D2y| | var | nejed. | exitflag\n');
+fprintf('\n Slucaj |   N |   dx  |   J* [m^2] | max|Dy| [-] | max|D2y| [m^-1] | var | nejed. | exitflag\n');
 
 for k = 1:numel(cases)
     N  = cases(k).N;  b1 = cases(k).b1;  b2 = cases(k).b2;
