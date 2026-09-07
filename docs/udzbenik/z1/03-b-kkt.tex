@@ -1,1 +1,569 @@
-% placeholder
+\chapter{Zadatak 1b --- KKT uvjeti i njihovo rješavanje}
+\label{ch:z1-kkt}
+
+\section{Što se ovdje traži}
+
+Treba postaviti sustav KKT uvjeta i riješiti ga \emph{do kraja}: naći brojčane
+vrijednosti $\xopt$ i $\muopt$ koje ga zadovoljavaju, i pritom pokazati zašto
+ostali kandidati otpadaju.
+
+\begin{zadatak}{Zadatak 1, podzadatak b)}
+b) Postavite KKT uvjete optimalnosti i riješite ih (odredite vrijednosti
+projektnih varijabli i Lagrangeovih množitelja koji zadovoljavaju te uvjete).
+\end{zadatak}
+
+\begin{predznanje}
+\begin{itemize}[nosep,leftmargin=*]
+  \item Matrice $Q$, $c$, $G$, $h$ i funkcije $g_1$, $g_2$ --- Poglavlje~\ref{ch:z1-formulacija}.
+  \item Problem je konveksan, Slater vrijedi --- Poglavlje~\ref{ch:z1-konveksnost}.
+  \item Gradijent kvadratne funkcije, $\grad f = Qx + c$ --- \S\ref{sec:gradijent-hessian}.
+  \item Značenje $\mu$, $\Lag$, $\popt$ --- \S\ref{sec:oznake-optimizacije}.
+  \item Rješavanje sustava dviju linearnih jednadžbi --- \S\ref{sec:inverz}.
+\end{itemize}
+\end{predznanje}
+
+\section{Teorem: što KKT uvjeti jesu}
+\label{sec:z1b-teorem}
+
+\begin{izvor}{Predavanje 3 --- Uvjeti optimalnosti, slajd 40/49 (PDF str.~59)}
+\slajd[0.86]{p03-kkt-teorem}
+
+\textbf{Transkripcija.} \emph{Teorem: Karush--Kuhn--Tucker uvjeti.} Neka je
+$\xopt$ regularna točka. Ako je $\xopt \in \R^n$ lokalni minimizator, tada
+postoje Lagrangeovi množitelji $\lambda = (\lambda_1, \dots, \lambda_m)$ i
+$\mu = (\mu_1, \dots, \mu_p)$ takvi da su sljedeći uvjeti zadovoljeni:
+\begin{align*}
+\grad f(\xopt) + \sum_{i=1}^{m}\lambda_i \grad h_i(\xopt) + \sum_{j=1}^{p}\mu_j \grad g_j(\xopt) &= 0 & & \\
+h_i(\xopt) &= 0, & & i = 1, \dots, m \\
+g_j(\xopt) &\leq 0, & & j = 1, \dots, p \\
+\mu_j\, g_j(\xopt) &= 0, & & j = 1, \dots, p \\
+\mu_j &\geq 0, & & j = 1, \dots, p
+\end{align*}
+Gornji uvjeti zovu se Karush--Kuhn--Tucker nužni uvjeti optimalnosti, ili
+skraćeno KKT uvjeti.
+
+\textbf{Dvije riječi koje se lako preskoče:}
+\begin{itemize}[nosep,leftmargin=*]
+  \item \textbf{,,regularna točka``} --- uvjet kvalifikacije ograničenja. Znači da
+        su gradijenti aktivnih ograničenja u toj točki linearno nezavisni. Bez
+        toga teorem ne vrijedi i množitelji ne moraju postojati.
+  \item \textbf{,,nužni``} --- teorem tvrdi samo da optimum \emph{mora}
+        zadovoljavati te uvjete. Da bi vrijedilo i obrnuto, treba konveksnost;
+        vidi \S\ref{sec:z1b-dovoljni}.
+\end{itemize}
+\end{izvor}
+
+\begin{izvor}{Predavanje 3 --- Uvjeti optimalnosti, slajd 42/49 (PDF str.~61)}
+\slajd[0.86]{p03-kkt-preko-lagrangiana}
+
+\textbf{Transkripcija.} Isti teorem, zapisan preko Lagrangeove funkcije:
+\begin{align*}
+\grad_x \Lag(\xopt, \lambda, \mu) = 0 \;&\Longrightarrow\;
+   \grad f(\xopt) + \textstyle\sum_i \lambda_i \grad h_i(\xopt) + \sum_j \mu_j \grad g_j(\xopt) = 0 \\
+\grad_\lambda \Lag(\xopt, \lambda, \mu) = 0 \;&\Longrightarrow\; h_i(\xopt) = 0 \\
+\grad_\mu \Lag(\xopt, \lambda, \mu) \leq 0 \;&\Longrightarrow\; g_j(\xopt) \leq 0 \\
+\mu_j g_j(\xopt) &= 0, \qquad \mu_j \geq 0
+\end{align*}
+
+\textbf{Zašto je ovaj zapis koristan:} pokazuje da tri od pet skupina uvjeta nisu
+ništa drugo nego deriviranje jedne jedine funkcije --- Lagrangiana --- po
+njezinim trima skupinama argumenata. Na obrani je to dobar način da pokažeš da
+razumiješ strukturu, a ne da si zapamtio pet redaka.
+\end{izvor}
+
+\section{KKT uvjeti za naš problem}
+\label{sec:z1b-nas-sustav}
+
+\begin{korak}[Korak 1: Lagrangeova funkcija]
+Ograničenja jednakosti nema, pa otpada cijeli dio s $\lambda$. Uz
+$g(x) = Gx - h$:
+\begin{equation}
+\Lag(x, \mu) \coloneqq \tfrac{1}{2}x\trans Q x + c\trans x + \mu\trans (Gx - h),
+\qquad \mu = \begin{bmatrix} \mu_1 \\ \mu_2 \end{bmatrix}.
+\label{eq:z1b-lagrangian}
+\end{equation}
+Čita se: ,,Lagranžijan od iks i mi jednak je funkciji cilja plus mi transponirano
+puta ge iks minus ha``.
+\end{korak}
+
+\begin{formula}{KKT sustav Zadatka 1}
+\begin{align}
+Qx + c + G\trans \mu &= 0, & &(\star) \quad \text{stacionarnost} \label{eq:z1b-stac} \\
+g_1(x) \leq 0, \quad g_2(x) &\leq 0, & &(g) \quad \text{primarna dopustivost} \label{eq:z1b-prim} \\
+\mu_1 g_1(x) = 0, \quad \mu_2 g_2(x) &= 0, & &(\star\star) \quad \text{komplementarnost} \label{eq:z1b-compl} \\
+\mu_1 \geq 0, \quad \mu_2 &\geq 0. & &(\star\star\star) \quad \text{dualna dopustivost} \label{eq:z1b-dual}
+\end{align}
+\end{formula}
+
+\begin{korak}[Korak 2: stacionarnost raspisana po komponentama]
+Uz $\grad f(x) = Qx + c$ i $G\trans = \begin{bsmallmatrix} -1 & 1 \\ -1 & -1\end{bsmallmatrix}$,
+uvjet $(\star)$ glasi
+\begin{equation}
+\underbrace{\begin{bmatrix} 2x_1 - 0{,}3x_2 + 2 \\ -0{,}3x_1 + 4x_2 - 3 \end{bmatrix}}_{\grad f(x)}
++ \mu_1 \underbrace{\begin{bmatrix} -1 \\ -1 \end{bmatrix}}_{\grad g_1}
++ \mu_2 \underbrace{\begin{bmatrix} 1 \\ -1 \end{bmatrix}}_{\grad g_2}
+= \begin{bmatrix} 0 \\ 0 \end{bmatrix},
+\label{eq:z1b-stac-raspis}
+\end{equation}
+odnosno dvije skalarne jednadžbe
+\begin{align}
+2x_1 - 0{,}3x_2 + 2 - \mu_1 + \mu_2 &= 0, \label{eq:z1b-stac1} \\
+-0{,}3x_1 + 4x_2 - 3 - \mu_1 - \mu_2 &= 0. \label{eq:z1b-stac2}
+\end{align}
+Stupci matrice $G\trans$ su upravo gradijenti ograničenja --- zato $G\trans \mu$
+i jest ,,zbroj gradijenata ograničenja s težinama $\mu$``.
+\end{korak}
+
+\begin{pojam}{Geometrijsko značenje uvjeta stacionarnosti}
+Uvjet $(\star)$ kaže da je $-\grad f(\xopt)$ jednak nenegativnoj linearnoj
+kombinaciji gradijenata ograničenja. Riječima: smjer u kojem bi funkcija cilja
+najbrže padala pokazuje ravno ,,u zid`` --- van dopustivog skupa. Da to nije
+tako, postojao bi dopustiv smjer koji smanjuje cilj, pa točka ne bi bila optimum.
+\end{pojam}
+
+\section{Zašto se gleda $2^m$ slučajeva}
+\label{sec:z1b-slucajevi}
+
+Uvjet komplementarnosti $\mu_j g_j(x) = 0$ je umnožak koji mora biti nula, pa za
+svako ograničenje vrijedi barem jedno od dvoga:
+\begin{itemize}[nosep,leftmargin=*]
+  \item ograničenje je \textbf{aktivno}: $g_j(\xopt) = 0$, a $\mu_j$ smije biti
+        pozitivan;
+  \item ograničenje je \textbf{neaktivno}: $g_j(\xopt) < 0$, i tada nužno
+        $\mu_j = 0$.
+\end{itemize}
+Uz $m = 2$ ograničenja to daje $2^2 = 4$ kombinacije. Postupak je: za svaku
+kombinaciju \emph{pretpostavi} da vrijedi, riješi preostali sustav jednadžbi, pa
+provjeri jesu li svi KKT uvjeti zadovoljeni. Kombinacije koje daju
+$\mu_j < 0$ ili nedopustivu točku odbacuju se.
+
+\begin{izvor}{Vježbe 3 --- Primjer 2: Dualnost, KKT, osjetljivost, slajd 18/36 (PDF str.~23)}
+\slajd[0.86]{v3-primjer2-kkt}
+
+\textbf{Transkripcija.} \emph{b) Riješi opt.\ problem direktno rješavajući KKT
+uvjete.} Lagrangian:
+\[
+\Lag(x,\mu) = (x_1-3)^2 + (x_2-2)^2 + \mu_1(-x_1) + \mu_2(x_1-2) + \mu_3(-x_2) + \mu_4(x_2-1)
+\]
+KKT uvjeti:
+\[
+\begin{bmatrix} 2x_1 - 6 \\ 2x_2 - 4\end{bmatrix}
++ \begin{bmatrix}-1\\0\end{bmatrix}\mu_1
++ \begin{bmatrix}1\\0\end{bmatrix}\mu_2
++ \begin{bmatrix}0\\-1\end{bmatrix}\mu_3
++ \begin{bmatrix}0\\1\end{bmatrix}\mu_4 = 0 \quad (\star)
+\]
+uz $-x_1 \leq 0$, $x_1 - 2 \leq 0$, $-x_2 \leq 0$, $x_2 - 1 \leq 0$,
+$\mu_1(-x_1) = 0$, $\mu_2(x_1-2) = 0$, $\mu_3(-x_2) = 0$, $\mu_4(x_2-1) = 0$
+$(\star\star)$, i $\mu_1, \mu_2, \mu_3, \mu_4 \geq 0$ $(\star\star\star)$.
+
+\textbf{Odakle oznake $(\star)$, $(\star\star)$, $(\star\star\star)$:} to je
+profesorova oznaka za tri skupine uvjeta --- stacionarnost, komplementarnost,
+nenegativnost množitelja. Ista se oznaka koristi u seminaru, namjerno, da se
+notacija poklopi s vježbama.
+\end{izvor}
+
+\begin{izvor}{Vježbe 3 --- Primjer 2, slajd 19/36 (PDF str.~24)}
+\slajd[0.86]{v3-primjer2-tablica}
+
+\textbf{Transkripcija.} Tablica svih $2^4 = 16$ kombinacija aktivnosti za četiri
+ograničenja, s legendom: \emph{1 --- ograničenje je aktivno ($g_i(x) = 0$);
+0 --- ograničenje nije aktivno ($g_i(x) < 0$)}.
+
+\textbf{Zašto to prepisujemo:} profesor očekuje da se \emph{sve} kombinacije
+navedu, pa tek onda odbace. U našem zadatku ih je četiri, ne šesnaest, ali forma
+odgovora je ista: tablica, pa provjera slučaj po slučaj.
+\end{izvor}
+
+\begin{table}[H]
+\centering
+\caption{Sve kombinacije aktivnosti ograničenja u Zadatku 1. Oznaka 1 znači
+aktivno ($g_i = 0$, $\mu_i \geq 0$), 0 znači neaktivno ($g_i < 0$, $\mu_i = 0$).}
+\label{tab:z1b-slucajevi}
+\begin{tabular}{cccl}
+\toprule
+\textbf{Slučaj} & $g_1$ & $g_2$ & \textbf{Geometrijski} \\
+\midrule
+1 & 0 & 0 & unutrašnjost dopustivog skupa \\
+2 & 1 & 0 & na rubu $x_1 + x_2 = 10$ \\
+3 & 0 & 1 & na rubu $x_1 - x_2 = 3$ \\
+4 & 1 & 1 & u vrhu, sjecištu obaju pravaca \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Slučaj 1: nijedno ograničenje nije aktivno}
+\label{sec:z1b-slucaj1}
+
+\begin{korak}
+Pretpostavka: $\mu_1 = \mu_2 = 0$. Uvjet $(\star)$ svodi se na $Qx + c = 0$, tj.\
+na neograničeni minimum:
+\begin{equation}
+x^{0} = -Q^{-1}c = -\frac{100}{791}\begin{bmatrix}4 & 0{,}3 \\ 0{,}3 & 2\end{bmatrix}
+\begin{bmatrix}2 \\ -3\end{bmatrix}
+= -\frac{100}{791}\begin{bmatrix}7{,}1 \\ -5{,}4\end{bmatrix}
+= \begin{bmatrix}-710/791 \\ 540/791\end{bmatrix}
+= \begin{bmatrix}-0{,}897598 \\ 0{,}682680\end{bmatrix}.
+\end{equation}
+Provjera uvjeta $(g)$:
+\begin{equation}
+g_1(x^{0}) = 0{,}897598 - 0{,}682680 + 10 = 10{,}214918 > 0 .
+\end{equation}
+Točka nije dopustiva. \textbf{Slučaj se odbacuje.}
+\end{korak}
+
+Fizikalno: neograničeni minimum leži daleko dolje lijevo, a ograničenje
+$x_1 + x_2 \geq 10$ ga isključuje. Zato optimum mora završiti na rubu.
+
+\section{Slučaj 2: aktivno je samo $g_1$}
+\label{sec:z1b-slucaj2}
+
+\begin{korak}[Postavljanje]
+Pretpostavka: $g_1(x) = 0$, $\mu_1 \geq 0$, $g_2(x) < 0$, $\mu_2 = 0$.
+Aktivnost daje
+\begin{equation}
+-x_1 - x_2 + 10 = 0 \quad\Longleftrightarrow\quad x_1 + x_2 = 10 .
+\label{eq:z1b-s2-aktivno}
+\end{equation}
+Uz $\mu_2 = 0$ jednadžbe \eqref{eq:z1b-stac1}--\eqref{eq:z1b-stac2} postaju
+\begin{align}
+2x_1 - 0{,}3x_2 + 2 &= \mu_1, \label{eq:z1b-s2-a} \\
+-0{,}3x_1 + 4x_2 - 3 &= \mu_1 . \label{eq:z1b-s2-b}
+\end{align}
+Tri nepoznanice ($x_1$, $x_2$, $\mu_1$), tri jednadžbe
+\eqref{eq:z1b-s2-aktivno}--\eqref{eq:z1b-s2-b}.
+\end{korak}
+
+\begin{korak}[Rješavanje]
+\begin{enumerate}[leftmargin=*]
+  \item Izjednači desne strane \eqref{eq:z1b-s2-a} i \eqref{eq:z1b-s2-b} --- obje
+        su $\mu_1$, pa množitelj ispada iz računa:
+        \[
+          2x_1 - 0{,}3x_2 + 2 = -0{,}3x_1 + 4x_2 - 3
+          \;\Longrightarrow\;
+          2{,}3x_1 - 4{,}3x_2 + 5 = 0 .
+        \]
+  \item Uvrsti $x_2 = 10 - x_1$ iz \eqref{eq:z1b-s2-aktivno}:
+        \[
+          2{,}3x_1 - 4{,}3(10 - x_1) + 5 = 0
+          \;\Longrightarrow\;
+          2{,}3x_1 - 43 + 4{,}3x_1 + 5 = 0
+          \;\Longrightarrow\;
+          6{,}6\,x_1 = 38 .
+        \]
+  \item Odatle
+        \[
+          x_1^{\star} = \frac{38}{6{,}6} = \frac{380}{66} = \frac{190}{33} = 5{,}757576,
+          \qquad
+          x_2^{\star} = 10 - \frac{190}{33} = \frac{330 - 190}{33} = \frac{140}{33} = 4{,}242424 .
+        \]
+  \item Množitelj iz \eqref{eq:z1b-s2-a}:
+        \[
+          \mu_1^{\star} = 2\cdot\frac{190}{33} - 0{,}3\cdot\frac{140}{33} + 2
+          = \frac{380 - 42 + 66}{33} = \frac{404}{33} = 12{,}242424 .
+        \]
+\end{enumerate}
+\end{korak}
+
+\begin{korak}[Provjera preostalih KKT uvjeta]
+\begin{enumerate}[leftmargin=*]
+  \item $(\star\star\star)$: $\mu_1^{\star} = 404/33 > 0$ \checkmark,
+        $\mu_2^{\star} = 0 \geq 0$ \checkmark.
+  \item $(g)$ za $g_1$: aktivno po pretpostavci, $g_1 = 0 \leq 0$ \checkmark.
+  \item $(g)$ za $g_2$:
+        $g_2(\xopt) = \dfrac{190}{33} - \dfrac{140}{33} - 3 = \dfrac{50 - 99}{33}
+         = -\dfrac{49}{33} = -1{,}484848 < 0$ \checkmark.
+  \item $(\star\star)$: $\mu_1 g_1 = \mu_1 \cdot 0 = 0$ \checkmark;
+        $\mu_2 g_2 = 0 \cdot (-1{,}4848) = 0$ \checkmark.
+\end{enumerate}
+Svi uvjeti su zadovoljeni. \textbf{Ovo je rješenje.}
+\end{korak}
+
+\begin{formula}{Rješenje Zadatka 1}
+\begin{equation}
+\xopt = \begin{bmatrix} 190/33 \\ 140/33 \end{bmatrix}
+      = \begin{bmatrix} 5{,}757576 \\ 4{,}242424 \end{bmatrix},
+\qquad
+\muopt = \begin{bmatrix} 404/33 \\ 0 \end{bmatrix},
+\qquad
+\popt = f(\xopt) = \frac{2000}{33} = 60{,}606061 .
+\label{eq:z1b-rjesenje}
+\end{equation}
+\end{formula}
+
+\begin{korak}[Provjera vrijednosti $\popt$]
+Uvrštavanjem u \eqref{eq:z1-f-skalarno}, sve svedeno na nazivnik $33^2 = 1089$:
+\[
+\underbrace{\frac{36100}{1089}}_{x_1^2}
++ \underbrace{\frac{39200}{1089}}_{2x_2^2}
+- \underbrace{\frac{7980}{1089}}_{0{,}3x_1x_2}
++ \underbrace{\frac{12540}{1089}}_{2x_1}
+- \underbrace{\frac{13860}{1089}}_{3x_2}
+= \frac{66000}{1089} = \frac{2000}{33} = 60{,}606061 . \quad\checkmark
+\]
+\end{korak}
+
+\section{Slučaj 3: aktivno je samo $g_2$}
+\label{sec:z1b-slucaj3}
+
+\begin{korak}
+Pretpostavka: $\mu_1 = 0$, $g_2(x) = 0$, dakle $x_1 - x_2 = 3$.
+Jednadžbe \eqref{eq:z1b-stac1}--\eqref{eq:z1b-stac2} uz $\mu_1 = 0$:
+\[
+2x_1 - 0{,}3x_2 + 2 = -\mu_2, \qquad -0{,}3x_1 + 4x_2 - 3 = \mu_2 .
+\]
+Zbrajanjem tih dviju jednadžbi $\mu_2$ ispada:
+\[
+1{,}7x_1 + 3{,}7x_2 - 1 = 0 .
+\]
+Uvrštavanjem $x_1 = x_2 + 3$: $1{,}7x_2 + 5{,}1 + 3{,}7x_2 - 1 = 0$, dakle
+$5{,}4x_2 = -4{,}1$, pa je
+\[
+x_2 = -\frac{41}{54} = -0{,}759259, \qquad
+x_1 = 3 - \frac{41}{54} = \frac{121}{54} = 2{,}240741 ,
+\]
+\[
+\mu_2 = -0{,}3\cdot\frac{121}{54} + 4\cdot\left(-\frac{41}{54}\right) - 3
+      = -\frac{3623}{540} = -6{,}709259 .
+\]
+\textbf{Odbacuje se}, i to iz dva neovisna razloga: $(\star\star\star)$ je
+narušen jer je $\mu_2 < 0$, a osim toga je i $g_1(x) = 8{,}518519 > 0$, dakle
+točka nije dopustiva.
+\end{korak}
+
+\section{Slučaj 4: oba ograničenja aktivna}
+\label{sec:z1b-slucaj4}
+
+\begin{korak}
+Oba aktivna ograničenja daju sjecište pravaca, već izračunato u
+\eqref{eq:z1-vrh}: $x = (6{,}5,\; 3{,}5)$. Uvrštavanjem u
+\eqref{eq:z1b-stac1}--\eqref{eq:z1b-stac2}:
+\begin{align}
+2(6{,}5) - 0{,}3(3{,}5) + 2 &= 13 - 1{,}05 + 2 = 13{,}95, \\
+-0{,}3(6{,}5) + 4(3{,}5) - 3 &= -1{,}95 + 14 - 3 = 9{,}05,
+\end{align}
+pa sustav glasi
+\begin{equation}
+\begin{bmatrix} -1 & 1 \\ -1 & -1 \end{bmatrix}
+\begin{bmatrix} \mu_1 \\ \mu_2 \end{bmatrix}
+= -\begin{bmatrix} 13{,}95 \\ 9{,}05 \end{bmatrix}
+\;\Longrightarrow\;
+\begin{cases} \mu_1 - \mu_2 = 13{,}95 \\ \mu_1 + \mu_2 = 9{,}05 \end{cases}
+\;\Longrightarrow\;
+\mu_1 = 11{,}50, \quad \mu_2 = -2{,}45 .
+\end{equation}
+\textbf{Odbacuje se}: $(\star\star\star)$ je narušen jer je $\mu_2 < 0$.
+\end{korak}
+
+\begin{zamka}[Zamka: vrh nije automatski optimum]
+Vrh dopustivog skupa izgleda kao ,,najbolji kandidat`` i mnogi ga izaberu bez
+računa. Ovdje nije rješenje. Negativan $\mu_2$ ima jasno geometrijsko značenje:
+da bi $x = (6{,}5,\, 3{,}5)$ bio optimum, ograničenje $g_2$ bi moralo \emph{gurati}
+u pogrešnom smjeru. Drugim riječima, ako s vrha kliznemo uzduž ruba $g_1$ prema
+gore lijevo, ostajemo dopustivi, a cilj pada --- upravo do točke iz Slučaja 2.
+\end{zamka}
+
+\begin{izvor}{Vježbe 3 --- Primjer 2, slajd 20/36 (PDF str.~25)}
+\slajd[0.86]{v3-primjer2-slucaj10}
+
+\textbf{Transkripcija.} \emph{Pretpostavka: u optimumu imamo slučaj br.\ 10. Da
+li tada možemo zadovoljiti sve KKT uvjete?} Slučaj br.\ 10:
+$g_1(x) = -x_1 = 0$, $\mu_1 \geq 0$; $g_2(x) = x_1 - 2 < 0$, $\mu_2 = 0$;
+$g_3(x) = -x_2 < 0$, $\mu_3 = 0$; $g_4(x) = x_2 - 1 = 0$, $\mu_4 \geq 0$.
+Prema pretpostavci imamo $x_1 = 0$, $x_2 = 1$, $\mu_2 = 0$, $\mu_3 = 0$.
+Gradijentna jednadžba $(\star)$ tada postaje
+$\begin{bsmallmatrix}-6 \\ -2\end{bsmallmatrix} - \begin{bsmallmatrix}\mu_1 \\ \mu_3\end{bsmallmatrix} = 0$,
+odnosno imamo $\mu_1 = -6$ i $\mu_3 = -2$. Prema uvjetima $(\star\star\star)$
+moramo imati $\mu_i \geq 0$, pa stoga točka optimuma sigurno ne zadovoljava
+pretpostavke iz slučaja br.\ 10.
+
+\textbf{Ovo je predložak za odbacivanje slučaja} --- identičan onome kojim smo
+odbacili naše slučajeve 3 i 4: pretpostavi, izračunaj množitelje, pokaži da je
+neki negativan, odbaci.
+\end{izvor}
+
+\begin{izvor}{Vježbe 3 --- Primjer 2, slajd 21/36 (PDF str.~26)}
+\slajd[0.86]{v3-primjer2-slucaj6}
+
+\textbf{Transkripcija.} \emph{Slučaj br.\ 6:} $g_1(x) = -x_1 < 0$, $\mu_1 = 0$;
+$g_2(x) = x_1 - 2 = 0$, $\mu_2 \geq 0$; $g_3(x) = -x_2 < 0$, $\mu_3 = 0$;
+$g_4(x) = x_2 - 1 = 0$, $\mu_4 \geq 0$. Prema pretpostavci $x_1 = 2$, $x_2 = 1$.
+Gradijentna jednadžba daje $\mu_2 = 2$ i $\mu_4 = 2$. Provjerimo još preostale
+KKT uvjete: $g_1(x) = -2 < 0$ i $g_3(x) = -1 < 0$. Svi KKT uvjeti su zadovoljeni.
+\emph{Zbog jake dualnosti}, ovo ($x_1 = 2$, $x_2 = 1$) je rješenje primarnog
+problema.
+
+\textbf{Uoči zadnju rečenicu.} Profesor ne kaže samo ,,svi uvjeti su
+zadovoljeni``, nego se izričito poziva na \emph{jaku dualnost} kao razlog zašto
+je time dokazana optimalnost. To je isti korak koji je kod nas napravljen
+provjerom Slaterova uvjeta u \S\ref{sec:z1a-slater}.
+\end{izvor}
+
+\section{Zašto je nađena točka doista optimum}
+\label{sec:z1b-dovoljni}
+
+\begin{izvor}{Predavanje 4 --- Lagrangeova dualnost, slajd 17/26 (PDF str.~23)}
+\slajd[0.86]{p04-kkt-konveksni}
+
+\textbf{Transkripcija.} \emph{KKT uvjeti za konveksne probleme.}
+\begin{itemize}[nosep,leftmargin=*]
+  \item \textbf{Teorem.} Ako $\xopt, \lambda^{\star}, \muopt$ zadovoljavaju KKT
+        uvjete za konveksan problem, onda su optimalni.
+  \item \textbf{Dokaz (skica s predavanja).} Iz komplementarnosti slijedi
+        $f(\xopt) = \Lag(\xopt, \lambda^{\star}, \muopt)$. Iz gradijentne
+        jednakosti i konveksnosti ($f$, $h_i$ i $g_j$ su konveksne funkcije)
+        slijedi $\dual(\lambda^{\star}, \muopt) = \Lag(\xopt, \lambda^{\star}, \muopt)$.
+        Zaključujemo da je $f(\xopt) = \dual(\lambda^{\star}, \muopt)$, a budući da
+        $f(\xopt)$ ne može biti manji od $\dual(\lambda^{\star}, \muopt)$, nalazimo
+        se nužno u optimumu.
+  \item \textbf{Teorem.} Ako imamo konveksan optimizacijski problem sa
+        zadovoljenim Slaterovim uvjetima, onda je $x$ optimalan \emph{ako i samo
+        ako} postoje $\lambda^{\star}, \muopt$ koji zadovoljavaju KKT uvjete.
+\end{itemize}
+
+\textbf{Ovo je karika koja zatvara zadatak.} Predavanje 3 daje samo nužnost.
+Ovaj slajd daje dovoljnost --- i to je razlog zašto se u
+Poglavlju~\ref{ch:z1-konveksnost} uopće provjeravao Slaterov uvjet.
+\end{izvor}
+
+\begin{korak}[Lanac zaključivanja, u četiri karike]
+\begin{enumerate}[leftmargin=*]
+  \item Problem je konveksan (Poglavlje~\ref{ch:z1-konveksnost}).
+  \item Slaterov uvjet je zadovoljen, točkom $(7,6)$.
+  \item Dakle vrijedi jaka dualnost, a KKT uvjeti su nužni \emph{i} dovoljni.
+  \item Točka $\xopt = (190/33,\; 140/33)$ zadovoljava sve KKT uvjete, pa je
+        globalni optimum. Stroga konveksnost dodatno jamči da je jedini.
+\end{enumerate}
+\end{korak}
+
+\section{Kako je to riješeno u seminaru}
+\label{sec:z1b-seminar}
+
+\begin{seminar}{Seminar v1.2, §2.3 --- ,,(b) KKT uvjeti i njihovo rješavanje``, Slučaj 2}
+Aktivno ograničenje daje $x_1 + x_2 = 10$, a $(\star)$ dvije jednadžbe s
+nepoznanicama $x_1, x_2, \mu_1$:
+\[
+\begin{bmatrix} 2 & -0.3 & -1 \\ -0.3 & 4 & -1 \\ -1 & -1 & 0 \end{bmatrix}
+\begin{bmatrix} x_1 \\ x_2 \\ \mu_1 \end{bmatrix}
+= \begin{bmatrix} -2 \\ 3 \\ -10 \end{bmatrix}.
+\]
+Izjednačavanjem izraza za $\mu_1$ iz prve i druge jednadžbe dobiva se
+$2.3x_1 - 4.3x_2 + 5 = 0$, a uvrštavanjem $x_2 = 10 - x_1$ slijedi $6.6 x_1 = 38$,
+odnosno
+\[
+x_1^* = \frac{190}{33} = 5.757576, \qquad x_2^* = \frac{140}{33} = 4.242424,
+\]
+\[
+\mu_1^* = 2x_1^* - 0.3x_2^* + 2 = \frac{380 - 42 + 66}{33} = \frac{404}{33} = 12.242424.
+\]
+Preostali KKT uvjeti su zadovoljeni: $\mu_1^* > 0$ i $\mu_2^* = 0$ zadovoljavaju
+$(\star\star\star)$, a
+\[
+g_2(x^*) = \frac{190}{33} - \frac{140}{33} - 3 = -\frac{49}{33} = -1.484848 < 0
+\]
+zadovoljava $(g)$ i $(\star\star)$. Ovo je, dakle, rješenje problema:
+\[
+x^* = \begin{bmatrix} 190/33 \\ 140/33 \end{bmatrix}, \qquad
+\mu^* = \begin{bmatrix} 404/33 \\ 0 \end{bmatrix}, \qquad
+p^* = f(x^*) = \frac{2000}{33} = 60.606061.
+\]
+\end{seminar}
+
+Seminar zapisuje Slučaj 2 kao jedan sustav $3\times3$ u nepoznanicama
+$(x_1, x_2, \mu_1)$. To je isti sustav koji je gore riješen supstitucijom ---
+prva dva retka su \eqref{eq:z1b-stac1}--\eqref{eq:z1b-stac2} uz $\mu_2 = 0$, a
+treći redak je uvjet aktivnosti $-x_1 - x_2 = -10$.
+
+Ispis programa (\texttt{docs/code/task1\_output.txt}) za cijeli podzadatak:
+
+\begin{lstlisting}[style=outputstyle]
+--- (b) KKT, 4 kombinacije aktivnosti ---
+Slucaj 1 (0,0): x = [-0.897598, 0.682680], g1 = 10.214918  -> odbacen (g1 > 0)
+Slucaj 2 (1,0): x = [5.757576, 4.242424], mu1 = 12.242424, g2 = -1.484848 -> KKT OK
+                p* = f(x*) = 60.606061   (= 2000/33 = 60.606061)
+Slucaj 3 (0,1): x = [2.240741, -0.759259], mu2 = -6.709259, g1 = 8.518519 -> odbacen
+Slucaj 4 (1,1): x = [6.500000, 3.500000], mu = [11.500000, -2.450000] -> odbacen (mu2 < 0)
+grad f(x*) = [12.242424, 12.242424];  -mu1*grad g1 = [12.242424, 12.242424]
+\end{lstlisting}
+
+\section{Zamke}
+\label{sec:z1b-zamke}
+
+\begin{zamka}[Zamka 1: preskakanje slučajeva]
+Ako se odmah ,,pogodi`` da je aktivno $g_1$ i riješi samo taj slučaj, rješenje je
+točno, ali dokaz nije potpun --- nije pokazano da drugi slučajevi ne daju
+alternativni KKT par. Profesor na vježbama izričito ispisuje tablicu svih
+kombinacija. Napravi isto.
+\end{zamka}
+
+\begin{zamka}[Zamka 2: $\mu_j < 0$ nije ,,greška u računu``]
+Kad iz nekog slučaja ispadne negativan množitelj, to nije znak da si pogriješio,
+nego \emph{rezultat} --- dokaz da ta kombinacija aktivnosti nije optimalna. Na
+obrani to reci upravo tako, jer pokazuje da razumiješ ulogu uvjeta
+$(\star\star\star)$.
+\end{zamka}
+
+\begin{zamka}[Zamka 3: predznak u komplementarnosti]
+Uvjet je $\mu_j g_j(\xopt) = 0$, dakle umnožak, a ne $\mu_j = g_j(\xopt)$ niti
+$\mu_j + g_j = 0$. Iz njega slijedi ekskluzivnost: ne mogu istovremeno biti
+$\mu_j > 0$ \emph{i} $g_j < 0$.
+\end{zamka}
+
+\begin{zamka}[Zamka 4: zaboravljena provjera neaktivnog ograničenja]
+U Slučaju 2 lako je stati nakon što se nađu $x^{\star}$ i $\mu_1^{\star}$. Ostaje
+provjeriti da je $g_2(\xopt) < 0$ --- da druga pretpostavka slučaja doista vrijedi.
+Bez te provjere nije dokazano da je pretpostavljena kombinacija konzistentna.
+\end{zamka}
+
+\section{Modelski odgovori}
+\label{sec:z1b-odgovori}
+
+\begin{pitanje}{Zašto je Slučaj 4, sjecište obaju ograničenja, odbačen?}
+\textbf{Odgovor.} Zato što iz uvjeta stacionarnosti u toj točki slijedi
+$\mu_2 = -2{,}45$, a dualna dopustivost zahtijeva $\mu_j \geq 0$. Geometrijski:
+u vrhu bi ograničenje $g_2$ moralo djelovati u smjeru u kojem cilj raste, što
+znači da postoji dopustiv pomak duž ruba $g_1$ koji cilj smanjuje. Taj pomak vodi
+upravo u točku iz Slučaja 2.
+\end{pitanje}
+
+\begin{pitanje}{Što bi značilo da je $\mu_1^{\star} = 0$?}
+\textbf{Odgovor.} Da je prvo ograničenje neaktivno u optimumu, dakle da bi
+optimum bio neograničeni minimum $x^{0}$. Kako je $\mu_1^{\star} = 404/33$ znatno
+veći od nule, ograničenje je ne samo aktivno nego i ,,jako`` --- pod (f) će se
+pokazati da upravo taj broj mjeri koliko bi optimalna vrijednost pala kad bi se
+ograničenje popustilo.
+\end{pitanje}
+
+\begin{pitanje}{Koliko biste kombinacija morali provjeriti da ima pet ograničenja?}
+\textbf{Odgovor.} $2^5 = 32$. Broj kombinacija raste eksponencijalno s brojem
+ograničenja, pa je ovakvo iscrpno rješavanje KKT sustava izvedivo samo za male
+probleme. Za veće se koriste numerički algoritmi --- na primjer metode unutarnje
+točke, koje \texttt{quadprog} koristi pod (d) --- koji ne nabrajaju aktivne
+skupove nego ih otkrivaju u tijeku iteracija.
+\end{pitanje}
+
+\begin{izgovor}[Odgovor pred pločom]
+,,Lagranžijan sam napisao kao funkciju cilja plus mi transponirano puta ge iks
+minus ha. KKT uvjeti su tada četiri skupine: stacionarnost, primarna
+dopustivost, komplementarnost i nenegativnost množitelja.
+
+Zbog komplementarnosti svako ograničenje je ili aktivno, s množiteljem koji
+smije biti pozitivan, ili neaktivno, i tada mu je množitelj nula. To daje četiri
+kombinacije, koje sam sve provjerio.
+
+Slučaj bez aktivnih ograničenja daje neograničeni minimum minus nula devet,
+nula šest osam, koji nije dopustiv. Slučaj s aktivnim samo drugim ograničenjem i
+slučaj s oba aktivna daju negativan mi dva, minus šest zarez sedam odnosno minus
+dva zarez četiri pet, pa oba otpadaju.
+
+Ostaje slučaj u kojem je aktivno samo prvo ograničenje. Tada su tri jednadžbe s
+tri nepoznanice, a rješenje je iks jednak sto devedeset kroz trideset tri i sto
+četrdeset kroz trideset tri, s mi jedan jednakim četiristo četiri kroz trideset
+tri. Provjerio sam da je drugo ograničenje strogo negativno, minus četrdeset
+devet kroz trideset tri, pa je kombinacija konzistentna.
+
+Budući da je problem konveksan i Slaterov uvjet zadovoljen, KKT uvjeti su nužni i
+dovoljni, pa je ta točka globalni optimum, a zbog stroge konveksnosti i jedini.
+Optimalna vrijednost je dvije tisuće kroz trideset tri, odnosno šezdeset zarez
+šest nula šest.``
+\end{izgovor}
