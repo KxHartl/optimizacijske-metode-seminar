@@ -158,12 +158,89 @@ To znači da je problem linearnog programiranja **degeneriran** (optimalna vrije
 
 ## 6.7 Povezivanje sa Slikama 4.1, 4.2 i 4.3 seminara
 
-1. **Slika 4.1 (`fig3_1_road_case_A.pdf`):**  
-   Prikazuje profil nivelete za slučaj A ($b_2 = 0.5$). Vidljivo je da niveleta vrlo vjerno prati prirodni teren jer joj dopuštena zakrivljenost omogućuje brže prilagođavanje brežuljcima i udolinama.
-2. **Slika 4.2 (`fig3_2_road_case_B.pdf`):**  
-   Prikazuje profil nivelete za slučaj B ($b_2 = 0.2$). Krivulja nivelete je znatno "ispeglana", s blagim vertikalnim radijusima. Vidljiva su velika odstupanja od prirodnog reljefa, posebice na stacionaži oko $x \approx 6\,\mathrm{m}$ gdje nastaje veliki nasip.
-3. **Slika 4.3 (`fig3_3_road_constraint_check.pdf`):**  
-   Dijagram verifikacije ograničenja. Prikazuje vrijednosti nagiba $|\nabla y_i|$ i druge derivacije $|\nabla^2 y_i|$ duž trase. Vidljivo je da druga derivacija za slučaj B točno udara u gornju granicu $0.2\,\mathrm{m}^{-1}$ duž većeg dijela trase, što grafički potvrđuje aktivnost ograničenja.
+Vizualna analiza rezultata Zadatka 3 ključna je za razumijevanje inženjerskog kompromisa između troškova zemljanih radova i dinamičke udobnosti prometnice.
+
+### Slika 4.1: Slučaj A — Visoka dopuštena zakrivljenost ($b_2 = 0.5\,\mathrm{m}^{-1}$)
+
+![Profil nivelete ceste za slučaj A (b2 = 0.5)](../figures/fig3_1_road_case_A.png)
+
+- **Dekonstrukcija:** Crna točkasta linija prikazuje prirodni reljef terena $h(x)$. Plava puna linija prikazuje optimalnu niveletu ceste $y(x)$.
+- **Inženjerski uvid:** Kako je dopuštena veća vertikalna zakrivljenost ($b_2 = 0.5$), niveleta se vrlo agilno prilagođava udolinama i brežuljcima terena. Površina između plave i crne linije je vrlo mala ($J^* = 1.966\,\mathrm{m}^2$). Zemljani radovi su minimalni.
+
+---
+
+### Slika 4.2: Slučaj B — Stroga dinamička udobnost ($b_2 = 0.2\,\mathrm{m}^{-1}$)
+
+![Profil nivelete ceste za slučaj B (b2 = 0.2)](../figures/fig3_2_road_case_B.png)
+
+- **Dekonstrukcija:** Crvena puna linija prikazuje niveletu uz visoke zahtjeve udobnosti.
+- **Inženjerski uvid:** Strogo ograničenje $b_2 = 0.2$ prisiljava trasu na znatno veće vertikalne radijuse zaokruženja ($R \geq 5\,\mathrm{m}$). Niveleta više ne može pratiti prirodnu depresiju terena na stacionaži $x \in [4, 8]\,\mathrm{m}$. Nastaje **veliki nasip** na $x \approx 6\,\mathrm{m}$ visine preko $0.8\,\mathrm{m}$. Trošak zemljanih radova raste za čak **+25.0%** ($J^* = 2.457\,\mathrm{m}^2$).
+
+---
+
+### Slika 4.3: Dijagram verifikacije ograničenja i zasićenje zakrivljenosti
+
+![Verifikacija ograničenja nagiba i zakrivljenosti duž trase ceste](../figures/fig3_3_road_constraint_check.png)
+
+- **Gornji graf (Nagib $|y'(x)|$):** Za oba slučaja nagib trase ostaje unutar zadanih $\pm 0.5$ (maksimalni nagib je oko $0.42$, što znači da ograničenje nagiba nije aktivno).
+- **Donji graf (Zakrivljenost $|y''(x)|$):**  
+  - Za Slučaj A (plavo): zakrivljenost doseže vršne vrijednosti oko $0.45$, povremeno dotičući granicu $0.5$.
+  - Za Slučaj B (crveno): zakrivljenost **dugotrajno leži točno na gornjoj granici $0.20\,\mathrm{m}^{-1}$** duž dionice $x \in [4, 7]\,\mathrm{m}$. Ograničenje zakrivljenosti je **aktivno i zasićeno**, što dokazuje da je upravo kinematika vozila usko grlo koje poskupljuje trasu!
+
+---
+
+### Vodič za crtanje profila ceste na ploči pred ispitivačem (Korak po korak)
+
+Ako profesor Jokić zatraži: *"Skicirajte na ploči kako ograničenje druge derivacije mijenja profil nivelete i zašto to poskupljuje zemljane radove!"*, nacrtajte sljedeće:
+
+```
+  Visina y [m] ^
+               |                               Terenski greben
+             4 +------------------------------* h(10)=4.0
+               |                           .-'
+               |                 .---.    /  --.-.-. Niveleta B (b2=0.2)
+               |                /     \  /.-'        [Ispeglana, veliki nasip!]
+             2 +    .-.        /       \/
+               |   /   \      /         
+             1 +--*     \    /          
+               | h(0)=1  '--' Terenska depresija (x ~ 6m)
+               +----+---------+---------+------> Udaljenost x [m]
+               0    2         6         10
+```
+
+#### Korak 1: Crtanje koordinatnog sustava i rubnih točaka
+- Horizontalna os je stacionaža trase $x \in [0, 10]\,\mathrm{m}$.
+- Vertikalna os je nadmorska visina $y \in [0, 5]\,\mathrm{m}$.
+- Označite početnu točku $(0, 1.0)$ i završnu točku $(10, 4.0)$ — to su fiksirani Dirichletovi rubni uvjeti.
+
+#### Korak 2: Skiciranje prirodnog terena $h(x)$
+- Nacrtajte valoviti profil: počinje na $1.0\,\mathrm{m}$, lagano se uzdiže oko $x \approx 2\,\mathrm{m}$, zatim se spušta u uvalu na $x \approx 5-6\,\mathrm{m}$, i na kraju strmo raste do $4.0\,\mathrm{m}$.
+- Napišite uz krivulju: *"Prirodni reljef $h(x)$"*.
+
+#### Korak 3: Crtanje nivelete Slučaja A ($b_2 = 0.5$)
+- Povucite liniju koja vjerno prati uvalu i brežuljak, držeći se blizu terena.
+- Objasnite: *"Za $b_2 = 0.5$ zakrivljenost dopušta brzu promjenu nagiba. Niveleta ulazi u uvalu, pa je površina zemljanih radova minimalna ($J^* = 1.97$)."*
+
+#### Korak 4: Crtanje nivelete Slučaja B ($b_2 = 0.2$) i osjenčavanje nasipa
+- Pokažite kako za $b_2 = 0.2$ cesta ne smije imati oštar radijus.
+- Povucite znatno ravniju, položeniju liniju koja "preskače" uvalu na $x \approx 6\,\mathrm{m}$.
+- Osjenčajte prostor između nivelete B i prirodnog terena na $x \approx 6\,\mathrm{m}$.
+- Recite profesoru: *"Ovdje nastaje veliki nasip! Cesta 'lebdi' iznad uvale jer bi spuštanje u uvalu stvorilo preveliko centrifugalno ubrzanje za putnike. Upravo taj nasip povećava ukupni volumen za 25%."*
+
+#### Korak 5: Skiciranje grafa druge derivacije $|y''|$
+- Ispod glavnog grafa nacrtajte malu horizontalnu os za drugu derivaciju.
+- Povucite isprekidanu crtu na razini $b_2 = 0.2$.
+- Nacrtajte kako krivulja druge derivacije za slučaj B 'udara' u tu crtu i drži se horizontalno na njoj duž uvale.
+- Napišite: *"Zasićenje ograničenja (aktivna veza)"*.
+
+---
+
+### Govorni predložak pri crtanju na ploči:
+> *"Profesore, skica prikazuje ključni fizikalno-inženjerski konflikt u Zadatku 3.  
+> Funkcija cilja minimizira površinu zemljanih radova $\ell_1$-normom. Kada bismo gledali samo trošak iskopa i nasipa, niveleta bi točno pratila teren.  
+> Međutim, druga derivacija $y''(x)$ fizikalno predstavlja vertikalnu zakrivljenost ceste, koja pri brzini $v_0$ generira vertikalno centrifugalno ubrzanje na putnike $a_z = v_0^2 y''(x)$.  
+> Kada postrožimo zahtjev udobnosti s $b_2 = 0.5$ na $b_2 = 0.2\,\mathrm{m}^{-1}$ (Slučaj B), minimalni radijus vertikalnog zaokruženja povećava se s $2\,\mathrm{m}$ na $5\,\mathrm{m}$. Niveleta više ne smije naglo ponirati u uvalu na 6. metru trase, već je mora premostiti blagim lukom.  
+> Time nastaje masivan nasip, a ograničenje druge derivacije ostaje zasićeno duž čitave depresije terena. To povećava volumen zemljanih radova za čak 25% ($2.457\,\mathrm{m}^2$ naspram $1.966\,\mathrm{m}^2$), što je izravna cijena putničke udobnosti."*
 
 ---
 

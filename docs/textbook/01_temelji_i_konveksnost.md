@@ -13,25 +13,87 @@
 
 ## 1.1 First Principles: Vektorski i matrični prostori, unutrašnji produkti i definitnost
 
-Kako bismo optimizacijske metode proučavali na sveučilišnoj inženjerskoj razini, moramo krenuti od nultih pretpostavki (*First Principles*). To znači da svaki simbol, operaciju i geometrijski objekt definiramo precizno prije njegove primjene.
+### Pristup od nule: Kako intuitivno zamisliti optimizaciju?
+Zamislimo da se nalazimo u gustom planinskom krajoliku prekrivenom gustom maglom. Naš zadatak je pronaći najnižu točku u kotlini (minimum).
+- **Projektne varijable $x = [x_1, x_2]^\mathsf{T}$:** To su naše GPS koordinate (npr. geografska širina i dužina). To su veličine koje inženjer slobodno bira ili podešava.
+- **Funkcija cilja $f(x)$:** To je nadmorska visina terena na koordinatama $(x_1, x_2)$. Želimo se spustiti što je niže moguće ($f(x) \to \min$).
+- **Ograničenja $g_i(x) \leq 0$:** To su ograde u prostoru (npr. provalija, minsko polje, granica parcele). Ne smijemo prijeći preko ograde.
+- **Optimizacija:** Traženje one točke unutar dopuštenog dijela parcele na kojoj je nadmorska visina najniža moguća.
 
-### Vektori i koordinatni sustav
-Promatramo realni $n$-dimenzionalni euklidski prostor označen sa $\mathbb{R}^n$. Element tog prostora je vektor-stupac $x \in \mathbb{R}^n$:
+> [!TIP]
+> **Referenca na rječnik:** Za detaljan popis svih simbola, logičkih operatora i njihovih izgovora pogledajte **Poglavlje 0: Matematički rječnik i govorni vodič za usmeni ispit**.
+
+---
+
+### Euklidski prostor $\mathbb{R}^n$ — Što je to zapravo?
+U inženjerstvu promatramo realni $n$-dimenzionalni euklidski prostor označen sa $\mathbb{R}^n$.
+- **Što znači simbol $\mathbb{R}$?** Simbol $\mathbb{R}$ označava skup svih realnih brojeva (brojevi poput $3$, $-5.2$, $\sqrt{2}$, $\pi$).
+- **Što znači eksponent $n$?** Eksponent $n$ označava dimenziju prostora, odnosno broj koordinata.
+  - Za $n = 1$: to je običan realni pravac ($\mathbb{R}$).
+  - Za $n = 2$: to je ravnina (poput lista papira ili ploče) gdje svaka točka ima dvije koordinate: $x = [x_1, x_2]^\mathsf{T}$. To je prostor u kojem rješavamo Zadatke 1, 2 i 4!
+  - Za $n = 3$: to je trodimenzionalni fizikalni prostor u kojem živimo ($x_1, x_2, x_3$).
+  - Za $n > 3$: to je višedimenzionalni prostor parametara (u Zadatku 3 imamo $N+1 = 21$ ili $101$ koordinatu visine nivelete!).
+- **Zašto se zove "euklidski"?** Zato što u njemu vrijedi Euklidska geometrija i Pitagorin poučak za udaljenost: udaljenost točke od ishodišta računa se preko korijena sume kvadrata.
+
+Element tog prostora je vektor-stupac $x \in \mathbb{R}^n$:
 $$x = \begin{bmatrix} x_1 \\ x_2 \\ \vdots \\ x_n \end{bmatrix}, \qquad x_i \in \mathbb{R}, \quad i \in \{1, 2, \dots, n\}.$$
-U kontekstu inženjerske optimizacije, komponente $x_i$ nazivamo **projektnim varijablama** (*decision variables* ili *design variables*). To su parametri sustava koje inženjer ima slobodu birati (npr. debljina stijenke, upravljački napon, visina nivelete ceste, raspodjela mase).
 
-### Skalarni (unutrašnji) produkt i norma
+> **Govorni predložak (kako pročitati pred pločom):**  
+> *"x je vektor-stupac iz n-dimenzionalnog realnog prostora r-n, čije su komponente x-1 do x-n projektne varijable sustava."*
+
+---
+
+### Što predstavlja simbol `:=` ?
+U matematičkom tekstu često susrećemo simbol `:=` (dvotočka jednako).  
+- **Značenje:** `:=` označava **jednakost po definiciji** (*equal by definition*).
+- **Razlika od običnog `=`:** Običan znak jednakosti ($A = B$) tvrdi da su dvije prethodno poznate veličine jednake (npr. $2 + 2 = 4$ ili $f(x^*) = 60.6$). Znak `:=` uvodi **sasvim novu oznaku ili pojam** i definira ga pomoću izraza s desne strane (npr. $q(x) := x^\mathsf{T} A x$).
+- **Govorni izgovor:** *"definirano kao"* ili *"jednako po definiciji"*.
+
+---
+
+### Skalarni (unutrašnji) produkt $\langle x, y \rangle$ i transponiranje $(\cdot)^\mathsf{T}$
 Za dva vektora $x, y \in \mathbb{R}^n$, standardni euklidski skalarni produkt definiran je kao:
-$$\langle x, y \rangle := x^{\mathsf{T}} y = \sum_{i=1}^n x_i y_i,$$
-gdje je $(\cdot)^{\mathsf{T}}$ operacija transponiranja (pretvaranje stupca u redak). Skalarni produkt inducira **euklidsku normu** ($\ell_2$-normu) koja predstavlja fizikalnu duljinu vektora u prostoru:
-$$\|x\|_2 := \sqrt{x^{\mathsf{T}} x} = \sqrt{\sum_{i=1}^n x_i^2}.$$
-Uz euklidsku normu, u inženjerstvu i kolegiju OMRiUS ključne su još dvije p-norme:
-1. **$\ell_1$-norma (Manhattan ili taksi norma):** $\|x\|_1 := \sum_{i=1}^n |x_i|$. U Zadacima 3 i 4 vidjet ćemo da $\ell_1$-norma mjeri volumen iskopa/nasipa ili služi za poticanje rijetkosti (*sparsity*).
-2. **$\ell_\infty$-norma (Chebyshevjeva norma):** $\|x\|_\infty := \max_{1 \leq i \leq n} |x_i|$, koja mjeri maksimalno vršno odstupanje u sustavu.
+$$\langle x, y \rangle := x^{\mathsf{T}} y = \sum_{i=1}^n x_i y_i = x_1 y_1 + x_2 y_2 + \dots + x_n y_n.$$
 
-### Simetrične matrice i parcijalni poredak definitnosti
+- **Što je operacija transponiranja $(\cdot)^\mathsf{T}$?**  
+  Ako je $x$ vektor-stupac dimenzije $n \times 1$, njegovo transponiranje $x^\mathsf{T}$ pretvara stupac u vektor-redak dimenzije $1 \times n$:
+  $$x = \begin{bmatrix} x_1 \\ x_2 \end{bmatrix} \implies x^\mathsf{T} = \begin{bmatrix} x_1 & x_2 \end{bmatrix}.$$
+  Kada pomnožimo redak dimenzije $1 \times n$ sa stupcem dimenzije $n \times 1$, matrično množenje daje skalar (jedan broj) dimenzije $1 \times 1$:
+  $$x^\mathsf{T} y = \begin{bmatrix} x_1 & x_2 \end{bmatrix} \begin{bmatrix} y_1 \\ y_2 \end{bmatrix} = x_1 y_1 + x_2 y_2.$$
+- **Što predstavlja oznaka $\langle x, y \rangle$?**  
+  To su šiljaste zagrade (*angle brackets*) koje u naprednoj matematici označavaju unutrašnji produkt. U euklidskom prostoru $\mathbb{R}^n$ oznake $\langle x, y \rangle$ i $x^\mathsf{T} y$ su **potpuni sinonimi**.
+- **Geometrijsko značenje skalarnog produkta:**  
+  $$\langle x, y \rangle = \|x\|_2 \|y\|_2 \cos \varphi,$$
+  gdje je $\varphi$ kut između vektora.
+  - Ako je $\langle x, y \rangle > 0$, kut je šiljast ($\varphi < 90^\circ$). Vektori "djelomično pokazuju u istom smjeru".
+  - Ako je $\langle x, y \rangle = 0$, kut je točno $90^\circ$ — **vektori su ortogonalni (okomiti)**!
+  - Ako je $\langle x, y \rangle < 0$, kut je tupi ($\varphi > 90^\circ$). Vektori se "opiru" jedan drugome.
+
+> **Govorni predložak:**  
+> *"Skalarni produkt vektora x i y, označen kao x-transponirano puta y ili unutrašnji produkt x zarez y, jednak je sumi umnožaka odgovarajućih koordinata."*
+
+---
+
+### Euklidska norma i duljina vektora
+Skalarni produkt inducira **euklidsku normu** ($\ell_2$-normu) koja predstavlja geometrijsku duljinu vektora u prostoru (udaljenost točke od ishodišta):
+$$\|x\|_2 := \sqrt{\langle x, x \rangle} = \sqrt{x^{\mathsf{T}} x} = \sqrt{\sum_{i=1}^n x_i^2} = \sqrt{x_1^2 + x_2^2 + \dots + x_n^2}.$$
+To je doslovno Pitagorin poučak u $n$ dimenzija!
+
+Uz euklidsku normu, u inženjerstvu i kolegiju OMRiUS ključne su još dvije norme:
+1. **$\ell_1$-norma (Manhattan ili taksi norma):**  
+   $$\|x\|_1 := \sum_{i=1}^n |x_i| = |x_1| + |x_2| + \dots + |x_n|.$$
+   U Zadatku 3 vidjet ćemo da $\ell_1$-norma točno mjeri fizikalni volumen zemljanih radova (iskopa i nasipa).
+2. **$\ell_\infty$-norma (Chebyshevjeva norma):**  
+   $$\|x\|_\infty := \max_{1 \leq i \leq n} |x_i|.$$
+   Mjeri najveće vršno pojedinačno odstupanje među svim koordinatama.
+
+---
+
+### Simetrične matrice i Loewnerov parcijalni poredak ($\succeq$ i $\succ$)
 Skup svih realnih simetričnih matrica dimenzija $n \times n$ označavamo sa $\mathbb{S}^n$:
 $$\mathbb{S}^n := \{A \in \mathbb{R}^{n \times n} \mid A = A^{\mathsf{T}}\}.$$
+Simetrična matrica je matrica koja je zrcalna s obzirom na glavnu dijagonalu ($A_{ij} = A_{ji}$).
+
 Za simetričnu matricu $A \in \mathbb{S}^n$ promatramo **kvadratnu formu** $q(x) = x^{\mathsf{T}} A x$. 
 
 > **Definicija 1.1 (Pozitivna semidefinitnost i definitnost):**
@@ -43,7 +105,14 @@ Za simetričnu matricu $A \in \mathbb{S}^n$ promatramo **kvadratnu formu** $q(x)
 >    $$x^{\mathsf{T}} A x > 0, \quad \forall x \in \mathbb{R}^n \setminus \{0\}.$$
 >    Ekvivalentno: sve svojstvene vrijednosti matrice $A$ su strogo pozitivne ($\lambda_i(A) > 0, \, \forall i$).
 
-Relacija $A \succeq B$ (odnosno $A - B \succeq 0$) naziva se **Loewnerov parcijalni poredak**. To nije obična skalarna nejednakost, već **linearna matrična nejednakost (LMI)**, koja predstavlja temelj koničnog i semidefinitnog programiranja (Predavanje 6 i Zadatak 4).
+- **Što znače simboli $\succeq$ i $\succ$?**  
+  To nisu obične skalarne nejednakosti ($\geq$ i $>$), već **matrične nejednakosti**.  
+  Relacija $A \succeq B$ znači da je razlika matrica $(A - B)$ pozitivno semidefinitna.  
+  Taj parcijalni poredak matrica naziva se **Loewnerov poredak**.  
+  Linearna nejednakost u kojoj nepoznate matrice stoje u Loewnerovom poretku naziva se **Linearna matrična nejednakost (LMI - Linear Matrix Inequality)**, što je temelj Zadatka 4!
+
+> **Govorni predložak:**  
+> *"Matrica A je pozitivno definitna, u oznaci A strogo veće od nula u smislu Loewnera, ako je kvadratna forma x-transponirano A x strogo pozitivna za svaki vektor x različit od nul-vektora, što je ekvivalentno činjenici da su sve svojstvene vrijednosti matrice A strogo veće od nula."*
 
 ---
 

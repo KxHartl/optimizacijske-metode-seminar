@@ -208,10 +208,79 @@ $$\frac{\Delta f}{f(x_{\mathrm{nom}}^*)} \times 100\% = \frac{24.017901}{60.6060
 
 ## 4.6 Povezivanje sa Slikom 3.1 seminara (`fig2_1_robust_envelope_monte_carlo.pdf`)
 
-Na slici 3.1 seminara Krešimira Hartla prikazana je geometrija robusnog rješenja:
-1. **Snop sivih pravaca:** Prikazuje 100 slučajnih realizacija granica ograničenja iz Monte Carlo eksperimenta. Pravci tvore gustu "anvelopu" ili pojas nesigurnosti.
-2. **Položaj točke $x_{\mathrm{nom}}^*$:** Nominalna točka leži točno po sredini sivog pojasa prvog ograničenja. Zato polovina realizacija prolazi "ispod" nje (dopustivo), a polovina "iznad" nje (kršenje ograničenja).
-3. **Položaj točke $x_{\mathrm{rob}}^*$:** Robusna točka leži točno na sjecištu **najudaljenijih rubnih pravaca** anvelope (vrhovi $k=1$ i $k=7$). Čitav sivi snop realizacija leži s jedne strane robusne točke, što vizualno demonstrira zašto je stopa kršenja točno 0%.
+U Zadatku 2 vizualizacija robusnosti i Monte Carlo simulacije ključna je za demonstraciju uspješnosti sinteze.
+
+![Robusna anvelopa nesigurnosti, nominalno rješenje i Monte Carlo simulacija](../figures/fig2_1_robust_envelope_monte_carlo.png)
+
+#### Detaljna dekonstrukcija elemenata grafa:
+1. **Koordinatne osi:** Horizontalna os je $x_1$, vertikalna os je $x_2$.
+2. **Sivi snop pravaca (Monte Carlo anvelopa):** Prikazuje 100 slučajnih realizacija granica ograničenja. Zbog varijacija koeficijenata $a_{ij} \in [\pm 15\%]$, nominalni pravci se ne pomiču paralelno, već se rotiraju i translatiraju, tvoreći sivi pojas ili anvelopu nesigurnosti.
+3. **Crveni križić — Nominalni optimum $x_{\mathrm{nom}}^* = (5.76, 4.24)$:**
+   - Leži točno u sredini sivog pojasa prvog ograničenja!
+   - Čak **54 od 100 sivih linija** prolaze iznad i desno od crvene točke, što znači da je u tim realizacijama točka nedopustiva. To vizualno objašnjava zašto je nominalni projekt doživio slom u 54% slučajeva!
+4. **Zelena kružnica — Robusni optimum $x_{\mathrm{rob}}^* = (6.50, 5.26)$:**
+   - Nalazi se pomaknuta prema gore i desno (dublje u dopušteno područje).
+   - Leži točno na sjecištu **vanjskih rubnih linija anvelope** (vrhovi $k=1$ i $k=7$).
+   - Nijedan jedini sivi pravac (0 od 100) ne siječe zelenu točku niti zalazi u njezino dopušteno područje. Time je grafički dokazana stopostotna pouzdanost robusnog rješenja.
+5. **Cijena robusnosti:** Udaljenost između crvene točke $(5.76, 4.24)$ i zelene točke $(6.50, 5.26)$ izravno vizualizira "cijenu robusnosti" — morali smo se pomaknuti na višu nivo-elipsu ($f$ je porastao sa $60.61$ na $84.62$) kako bismo zajamčili sigurnost.
+
+---
+
+### Vodič za crtanje robusne anvelope na ploči pred ispitivačem (Korak po korak za kredu i ploču)
+
+Ako profesor Jokić zatraži: *"Skicirajte na ploči zašto je nominalno rješenje palo na Monte Carlo testu, a robusno izdržalo!"*, slijedite ovaj postupak:
+
+```
+         x2 ^
+            |                      /  / / Najgori rub k=7 (1.15 x1 - 0.85 x2 = 3)
+            |                     /  / /  
+            |                    /  / /   / Anvelopa drugog ograničenja
+            |                   /  / /   /
+            |                  /  / / x_rob* (6.5, 5.26) [Sjecište k=1 i k=7]
+            |                 /  / / /
+            |    \  \  \     /  / / /
+            |     \  \  \   /  / / /
+            |      \  x_nom*  / / /
+            |       \  \  \  / / /
+            |        \  \  \/ / /
+            |         \  \  \  /
+            +----------\--\--\+----------------> x1
+                        \  \  \ Najgori rub k=1 (0.85 x1 + 0.85 x2 = 10)
+                         \  \ Anvelopa prvog ograničenja
+```
+
+#### Korak 1: Crtanje koordinatnih osi i nominalnog rješenja
+- Nacrtajte osi $x_1$ i $x_2$.
+- Povucite nominalni pravac $x_1 + x_2 = 10$ i označite točku $x_{\mathrm{nom}}^* = (5.76, 4.24)$ na njemu.
+- Recite profesoru: *"Ovo je nominalni optimum iz Zadatka 1. On leži točno na granici."*
+
+#### Korak 2: Crtanje pojasa nesigurnosti prvog ograničenja
+- Objasnite: *"Zbog tolerancije od $\pm 15\%$, koeficijenti $a_{11}$ i $a_{12}$ variraju u intervalu $[-1.15, -0.85]$."*
+- Pokažite zašto je najnepovoljniji scenarij onaj s najmanjim apsolutnim vrijednostima:
+  $$-0.85 x_1 - 0.85 x_2 \leq -10 \iff x_1 + x_2 \geq \frac{10}{0.85} \approx 11.76.$$
+- Povucite pravac $x_1 + x_2 = 11.76$ (pomaknut udesno i gore u odnosu na nominalni).
+- Povucite i suprotni rub $x_1 + x_2 = \frac{10}{1.15} \approx 8.70$.
+- Između ta dva ruba povucite nekoliko paralelnih ili blago zarotiranih crtica i recite:
+  *"Ovo je pojas nesigurnosti prvog ograničenja. Vidimo da nominalna točka leži točno u sredini tog pojasa. Zato svaka realizacija u kojoj je zbroj koeficijenata manji od nominalnog čini nominalnu točku nedopustivom — odatle stopa otkaza od 54%!"*
+
+#### Korak 3: Crtanje pojasa nesigurnosti drugog ograničenja
+- Nominalni pravac je $x_1 - x_2 = 3$.
+- Najnepovoljniji rub (vrh $k=7$) dobiva se kada se $a_{21}$ poveća na $+1.15$, a $a_{22}$ po apsolutnoj vrijednosti smanji na $-0.85$:
+  $$1.15 x_1 - 0.85 x_2 \leq 3 \iff x_2 \geq \frac{1.15}{0.85} x_1 - \frac{3}{0.85} \approx 1.35 x_1 - 3.53.$$
+- Povucite ovaj najstrmiji pravac s lijeve strane nominalnog pravca.
+
+#### Korak 4: Konstrukcija robusnog optimuma $x_{\mathrm{rob}}^*$
+- Pronađite sjecište dvaju najnepovoljnijih pravaca:
+  $$\begin{cases} 0.85 x_1 + 0.85 x_2 = 10 \\ 1.15 x_1 - 0.85 x_2 = 3 \end{cases} \implies x_{\mathrm{rob}}^* = \begin{bmatrix} 6.500000 \\ 5.264706 \end{bmatrix}.$$
+- Označite točku $x_{\mathrm{rob}}^*$ na ploči.
+- Objasnite profesoru: *"Robusni optimum postavljen je u sjecište najgorih rubova anvelope. On se nalazi izvan dosega bilo koje moguće realizacije unutar zadanih $\pm 15\%$ tolerancija. Zato na Monte Carlo simulaciji ima stopu otkaza od točno 0%."*
+
+---
+
+### Govorni predložak pri crtanju na ploči:
+> *"Profesore, skica na ploči jasno objašnjava zašto je nominalni sustav nepouzdan, a robusni stopostotno siguran.  
+> Nominalno rješenje $x_{\mathrm{nom}}^*$ optimizirano je bez svijesti o nesigurnosti i smjestilo se točno na nominalnu granicu. Kada koeficijenti variraju za $\pm 15\%$, stvarna granica ograničenja oscilira unutar ovog šrafiranog pojasa anvelope. Nominalna točka ostaje 'zarobljena' usred tog pojasa, pa je više od polovice slučajnih poremećaja (točno 54%) prebacuje u nedopušteno područje.  
+> Robusnom optimizacijom prešli smo na ekvivalentni problem konveksne ljuske od 8 determinističkih ograničenja. Rješenje $x_{\mathrm{rob}}^* = (6.50, 5.26)$ pomaknulo se u sjecište najgorih rubova (vrhovi 1 i 7), čime je čitav pojas nesigurnosti ostao iza leđa rješenja. To jamči stopu kršenja od 0%, uz cijenu robusnosti od +39.63% porasta funkcije cilja."*
 
 ---
 

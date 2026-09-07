@@ -28,6 +28,13 @@ Ovaj dokument zamišljen je i napisan kao **samostalan, matematički rigorozan i
 
 Udžbenik je podijeljen u **5 tematskih cjelina** i **10 specijaliziranih poglavlja**:
 
+### UVODNI MODUL: PREDZNANJE, NOTACIJA I GOVORNI VODIČ
+- [Poglavlje 0: Matematički rječnik i govorni vodič za usmeni ispit](00_matematicki_rjecnik_i_govorni_vodic.md)
+  - Sveobuhvatni rječnik simbola, oznaka, funkcija i matrica od nule ($\mathbb{R}^n, \langle x, y \rangle, \coloneqq, \succeq, \succ$).
+  - Detaljno objašnjenje zašto se i kako koji pojam koristi, uz intuitivna objašnjenja za početnike.
+  - Vodič za usmeni ispit: kako točno govorno izgovoriti svaki pojam i simbol pred ispitivačem.
+  - 10 doslovnih govornih modela inženjerskih rečenica za usmeni ispit.
+
 ### DIO I: TEMELJI KONVEKSNE OPTIMIZACIJE I ANALIZA STATIČKIH PROBLEMA
 - [Poglavlje 1: Matematički aparat, klasifikacija i konveksnost](01_temelji_i_konveksnost.md)
   - First Principles matematički rječnik ($\mathbb{R}^n, \mathbb{S}^n, \succeq, \succ$).

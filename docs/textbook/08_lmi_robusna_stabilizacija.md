@@ -220,10 +220,74 @@ Usporedba ponašanja otvorenog i zatvorenog kruga (iz `task4_output.txt`):
   - $\|x(5)\| = 1.5176 \times 10^{-3}$
   - $\|x(20)\| = \mathbf{4.7232 \times 10^{-12}}$ (POTPUNO SMIRIVANJE U ISHODIŠTE).
 
-### Analiza Slike 5.2 (`fig4_2_closed_loop_stabilization.pdf`):
-1. **Vremenski odziv:** Stanja $x_1(t)$ i $x_2(t)$ te upravljački signal $u(t) = Kx(t)$ eksponencijalno trnu i unutar prvih nekoliko sekundi postaju praktički nula.
-2. **Fazni portret ($x_1$ vs. $x_2$):** Trajektorija zatvorenog kruga tvori spiralu koja se **munjevito uvija u ishodište**.
-3. **Elipsoidi Ljapunovljeve funkcije:** Prikazani su koncentrični elipsoidi $x^{\mathsf{T}} P x = c$. Trajektorija u svakom trenutku siječe elipsoide izvana prema unutra, što grafički dokazuje da je $\dot{V} < 0$ u svakoj točki prostora stanja.
+---
+
+### Prikaz simulacije zatvorenog kruga (Slika 5.2 seminara)
+
+![Stabilizacija sklopnog sustava pomoću stanjske povratne veze: Vremenski odzivi i kontrakcija Ljapunovljevog elipsoida u faznoj ravnini](../figures/fig4_2_closed_loop_stabilization.png)
+
+#### Detaljna dekonstrukcija elemenata grafa:
+1. **Lijevi gornji graf — Vremenski odziv stanja $x_1(t)$ i $x_2(t)$:**
+   - Stanja eksponencijalno trnu prema nuli unutar svega 3–4 sekunde. Već na $t = 5\,\mathrm{s}$ amplituda je pala ispod $0.002$, a na $t = 20\,\mathrm{s}$ iznosi $10^{-12}$.
+2. **Lijevi donji graf — Upravljački signal $u(t) = Kx(t)$:**
+   - Upravljanje počinje s početnom vrijednošću $u(0) = k_1 x_1(0) + k_2 x_2(0) = -0.5739 \cdot 1.0 = -0.5739$.
+   - Upravljanje je glatko, bez zasićenja i munjevito konvergira u nulu kako se stanja smiruju.
+3. **Desni graf — Fazni portret s Ljapunovljevim elipsoidima:**
+   - Crveni koncentrični elipsoidi prikazuju nivo-krivulje zajedničke Ljapunovljeve funkcije $V(x) = x^{\mathsf{T}} P x = c$.
+   - Plava trajektorija počinje u točki $x(0) = [1, 0]^\mathsf{T}$ na vanjskom elipsoidu.
+   - **Ključni geometrijski uvid:** Trajektorija u svakoj točki i u oba moda presijeca crvene elipsoide **isključivo izvana prema unutra**! Nikada ne dolazi do tangiranja ili kretanja prema van. To vizualno dokazuje da je $\dot{V}(x) < 0$ u svakom trenutku.
+
+---
+
+### Vodič za crtanje Ljapunovljevog elipsoida na ploči pred ispitivačem
+
+Ako profesor Jokić zatraži: *"Nacrtajte na ploči Ljapunovljevu elipsu i objasnite kako ona garantira stabilnost sklopnog sustava!"*, izvedite sljedeće korake:
+
+```
+            x2 ^
+               |          .-'""'-.   Ljapunovljeva elipsa V(x)=c
+               |        .'   /|   '.  (x^T P x = c)
+               |       /    / |     \
+               |      ;    v  |      ;  Vektor toka x_dot
+               |      |    .  +      |  (ulazi u elipsu!)
+          -----+------+---+----------+-----> x1
+               |      |    \         |
+               |      ;     '.      ;
+               |       \      '-..-'
+               |        '.        .'
+               |          '-....-'
+```
+
+#### Korak 1: Crtanje koordinatnih osi i Ljapunovljeve elipse
+- Nacrtajte osi fazne ravnine $x_1$ i $x_2$.
+- Nacrtajte nagnutu elipsu sa središtem u ishodištu.
+- Napišite jednadžbu elipse: $V(x) = x^{\mathsf{T}} P x = c$.
+- Objasnite: *"Budući da je matrica $P \succ 0$ pozitivno definitna, skup $V(x) \leq c$ je kompaktna eliptička invarijantna domena u ravnini."*
+
+#### Korak 2: Crtanje vektora normale na elipsu
+- U proizvoljnoj točki $x$ na rubu elipse povucite vanjsku normalu.
+- Normala na nivo-krivulju je gradijent Ljapunovljeve funkcije: $\nabla V(x) = 2 P x$.
+- Nacrtajte strelicu normale koja pokazuje prema van (u smjeru rasta funkcije $V$).
+
+#### Korak 3: Crtanje vektora toka zatvorenog sustava $\dot{x}$
+- U istoj točki nacrtajte vektor brzine zatvorenog kruga: $\dot{x} = (A_i + BK) x$.
+- **Ključan detalj:** Vektor $\dot{x}$ mora pokazivati **prema unutrašnjosti elipse**!
+- Objasnite skalarni produkt:
+  $$\dot{V}(x) = \nabla V(x)^{\mathsf{T}} \dot{x} = (2 P x)^{\mathsf{T}} (A_i + BK) x = x^{\mathsf{T}} \left[ (A_i + BK)^{\mathsf{T}} P + P (A_i + BK) \right] x.$$
+- Recite profesoru: *"Zato što je LMI uvjetom osigurano da je matrica $(A_i + BK)^{\mathsf{T}} P + P (A_i + BK) \prec 0$, skalarni produkt normale i vektora brzine je uvijek strogo negativan ($\dot{V} < 0$). Kut između normale i toka je tupi kut ($\varphi > 90^\circ$)."*
+
+#### Korak 4: Crtanje spiralne trajektorije koja konvergira u ishodište
+- Pokažite kako trajektorija koja krene iz točke $x(0) = [1, 0]^\mathsf{T}$ monotono propada kroz sve manje i manje elipsoide razine $c_1 > c_2 > c_3 \dots \to 0$.
+- Zaključite: *"Budući da ista matrica $P$ zadovoljava LMI za oba moda, prespajanje više ne može 'pumpati' energiju. Kroz koje god modove sustav skakao, funkcija $V(x(t))$ monotono opada prema nuli, što jamči globalnu eksponencijalnu stabilnost."*
+
+---
+
+### Govorni predložak pri crtanju na ploči:
+> *"Profesore, skica na ploči sažima bit Ljapunovljeve teorije stabilnosti preko LMI-ja.  
+> U otvorenom krugu nismo imali zajedničku funkciju energije, pa je prespajanje širilo trajektoriju duž različitih osi rastezanja.  
+> Sintezom stanjske povratne veze $u = Kx$ pomoću YALMIP-a pronašli smo matricu $P \succ 0$ i vektor pojačanja $K = [-0.5739, -0.6124]$ koji istovremeno zadovoljavaju obje Ljapunovljeve matrične nejednakosti.  
+> Geometrijski, razinske krivulje funkcije $V(x) = x^{\mathsf{T}} P x$ čine familiju koncentričnih elipsi. Vektor brzine sustava $\dot{x}$ u svakom dinamičkom modu zatvara tupi kut s vanjskom normalom elipse $2Px$.  
+> To znači da trajektorija u svakom trenutku vremena probija elipsoide prema unutrašnjosti ($\dot{V} < 0$). Niti jedno prespajanje ne može povećati vrijednost funkcije $V$. Sustav ima zajamčenu eksponencijalnu stopu prigušenja od najmanje $\alpha = 0.2884\,\mathrm{s}^{-1}$ za bilo koje, pa čak i zlonamjerno prespajanje, dok u stvarnoj periodičkoj simulaciji konvergira još brže, sa spektralnim radijusom ciklusa od svega $0.0697$."*
 
 ---
 

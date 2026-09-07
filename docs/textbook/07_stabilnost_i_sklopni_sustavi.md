@@ -193,9 +193,71 @@ for kseg = 0:T-1
 end
 ```
 
-### Karakteristike odziva na Slici 5.1 (`fig4_1_open_loop_divergence.pdf`):
-- **Vremenski odziv:** Stanja $x_1(t)$ i $x_2(t)$ pokazuju oscilacije čija amplituda progresivno buja. Na $t = 20\,\mathrm{s}$ vršna vrijednost prelazi $7.0$.
-- **Fazni portret ($x_1$ vs. $x_2$):** Trajektorija tvori spiralu koja se **odmotava prema van**, demonstrirajući divergenciju otvorenog kruga.
+### Prikaz simulacije otvorenog kruga (Slika 5.1 seminara)
+
+![Divergencija otvorenog kruga sklopnog sustava: Vremenski odziv i odmotavajuća spirala faznog portreta](../figures/fig4_1_open_loop_divergence.png)
+
+#### Detaljna dekonstrukcija elemenata grafa:
+1. **Lijevi graf — Vremenski odziv stanja $x_1(t)$ i $x_2(t)$:**
+   - Horizontalna os je vrijeme $t \in [0, 20]\,\mathrm{s}$.
+   - Vertikalna os je amplituda stanja.
+   - Prikazuje periodičke oscilacije koje u svakom koraku prespajanja (svake 2 sekunde) rastu za faktor $\rho(\Phi_{\mathrm{cikl}}) \approx 1.218$. Na $t = 20\,\mathrm{s}$ amplituda prelazi $\pm 7.0$ (eksponencijalna divergencija).
+2. **Desni graf — Fazni portret ($x_1$ vs. $x_2$):**
+   - Početni uvjet je $x(0) = [1, 0]^\mathsf{T}$ (zeleni kružić na osi $x_1$).
+   - Trajektorija tvori spiralu koja se **odmotava prema van** (centrifugalno širenje).
+   - Svaki prolazak kroz ravninu je na većem radijusu nego prethodni. Sustav je nedvojbeno nestabilan!
+
+---
+
+### Vodič za skiciranje faznog portreta sklopnog sustava na ploči pred ispitivačem
+
+Ako profesor Jokić zatraži: *"Skicirajte na ploči fazni portret ovog sustava i objasnite zašto dolazi do divergencije unatoč Hurwitzovim podsustavima!"*, postupite ovako:
+
+```
+            x2 ^
+               |        ^ / Trajektorija moda 2 (spljoštena duž x2)
+               |       / /
+               |      / /     Trajektorija moda 1 (izdužena duž x2)
+               |     | |     /
+          -----+-----+-------+-----> x1
+               |     | |   x(0)=[1, 0]
+               |      \ \   /
+               |       \ \ v
+               |        \ \
+```
+
+#### Korak 1: Crtanje koordinatnih osi fazne ravnine
+- Nacrtajte osi $x_1$ i $x_2$. Označite početnu točku $x(0) = [1, 0]^\mathsf{T}$ na pozitivnom dijelu osi $x_1$.
+
+#### Korak 2: Objašnjenje geometrije Moda 1 (Parni mod)
+- Matrica je $A_{\mathrm{parno}} = \begin{bmatrix} -1 & -\pi/6 \\ 3\pi/2 & -1 \end{bmatrix}$. Član ispod dijagonale ($3\pi/2 \approx 4.71$) znatno je veći od člana iznad ($-\pi/6 \approx -0.52$).
+- To znači da mod 1 snažno ubrzava stanje $x_2$: trajektorije su **izdužene duž vertikalne osi $x_2$**.
+- Kroz interval $t \in [0, 1]\,\mathrm{s}$, stanje rotira u smjeru kazaljke na satu za kut $\pi/2$ (četvrtinu kruga), uz faktor prigušenja $e^{-1}$, ali zbog asimetrije matrice izdužuje se duž osi $x_2$:
+  $$x(1) = \Phi_{\mathrm{parno}} x(0) = e^{-1} \begin{bmatrix} 0 \\ 3 \end{bmatrix} \approx \begin{bmatrix} 0 \\ 1.1036 \end{bmatrix}.$$
+- Nacrtajte luk od točke $(1, 0)$ do točke $(0, 1.10)$ na osi $x_2$.
+- Istaknite: *"Početna amplituda bila je $1.0$, a na kraju prvog moda stanje je $1.10$ — sustav je zapravo narastao!"*
+
+#### Korak 3: Objašnjenje geometrije Moda 2 (Neparni mod)
+- U trenutku $t = 1\,\mathrm{s}$ sustav prelazi u neparni mod: $A_{\mathrm{neparno}} = \begin{bmatrix} -1 & -3\pi/2 \\ \pi/6 & -1 \end{bmatrix}$.
+- Ovdje je gornji član $-3\pi/2$ velik, pa su trajektorije **izdužene duž horizontalne osi $x_1$**.
+- U sljedećoj sekundi ($t \in [1, 2]\,\mathrm{s}$), trajektorija rotira za još $\pi/2$ i završava na negativnom dijelu osi $x_1$:
+  $$x(2) = \Phi_{\mathrm{neparno}} x(1) = e^{-1} \begin{bmatrix} 0 & -3 \\ 1/3 & 0 \end{bmatrix} \begin{bmatrix} 0 \\ 3 e^{-1} \end{bmatrix} = e^{-2} \begin{bmatrix} -9 \\ 0 \end{bmatrix} \approx \begin{bmatrix} -1.218 \\ 0 \end{bmatrix}.$$
+- Nacrtajte luk od $(0, 1.10)$ do $(-1.22, 0)$ na negativnoj osi $x_1$.
+
+#### Korak 4: Crtanje odmotavajuće spirale
+- Pokažite da je nakon punog ciklusa ($2\,\mathrm{s}$) točka završila na udaljenosti $1.218$ od ishodišta, umjesto početnih $1.0$.
+- Nastavite crtati spiralu: u sljedećem krugu točka doseže $(-1.218) \times (-1.218) = 1.48$, zatim $1.81$, itd.
+- Nacrtajte spiralu koja se odmotava prema van.
+
+---
+
+### Govorni predložak pri crtanju na ploči:
+> *"Profesore, skica na ploči vizualizira mehanizam nestabilnosti.  
+> Oba moda zasebno imaju prigušenje $e^{-1 \cdot t}$, ali imaju različito orijentirane eliptičke trajektorije u faznoj ravnini.  
+> Parni mod je izdužen duž osi $x_2$ s faktorom rastezanja 3. Kroz prvu sekundu on zakreće točku $(1,0)$ na os $x_2$ i rasteže je na $3 e^{-1} \approx 1.10$.  
+> U tom trenutku skačemo u neparni mod koji je izdužen duž osi $x_1$ s faktorom rastezanja 3. On zakreće točku na os $x_1$ i ponovno je rasteže za faktor 3.  
+> Ukupni faktor rastezanja u jednom ciklusu je $3 \times 3 = 9$, dok je prirodno prigušenje samo $e^{-2} \approx 0.135$.  
+> Umnožak daje $9 e^{-2} \approx 1.218 > 1$. Prespajanje se događa u najgorim mogućim trenucima — točno kada je stanje poravnato s osi maksimalnog rastezanja svakog moda! To djeluje kao parametarska rezonancija koja pumpa energiju u sustav i uzrokuje spiralnu divergenciju otvorenog kruga."*
 
 ---
 

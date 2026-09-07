@@ -242,12 +242,95 @@ U podzadatku (c) traži se geometrijska verifikacija rješenja. Pogledajmo što 
    Odavde je:
    $$\nabla f(x^*) = -\mu_1^* \nabla g_1 = -12.242424 \begin{bmatrix} -1 \\ -1 \end{bmatrix} = 12.242424 \begin{bmatrix} 1 \\ 1 \end{bmatrix}.$$
 
-### Geometrijsko značenje na Slici 2.1 (`fig1_1_qp_primal_geometry.pdf`):
-- Nivo-krivulje funkcije cilja $f(x) = c$ su elipse nagnute u ravnini zbog mješovitog člana $-0.3 x_1 x_2$.
-- Pravac aktivnog ograničenja $x_1 + x_2 = 10$ je tangenta na elipsu razine $f(x) = 60.606$ točno u točki $x^*$.
-- Vektor gradijenta funkcije cilja $\nabla f(x^*)$ okomit je na tangentu elipse i usmjeren prema van (u smjeru rasta funkcije).
-- Vektor gradijenta ograničenja $\nabla g_1 = [-1, -1]^{\mathsf{T}}$ okomit je na pravac ograničenja i usmjeren prema nedopuštenom području.
-- Budući da su ti vektori antiparalelni ($\nabla f(x^*) = -\mu_1^* \nabla g_1$ uz $\mu_1^* > 0$), nivo-elipsa i pravac ograničenja se **glatko dodiruju**, a svako kretanje duž pravca vodi u elipse s većom vrijednošću funkcije cilja.
+---
+
+### Grafički prikaz geometrije problema (Slika 2.1 seminara)
+
+![Geometrija Zadatka 1: Nivo-elipse funkcije cilja, dopustivi skup i ravnoteža gradijenata](../figures/fig1_1_qp_primal_geometry.png)
+
+#### Detaljna dekonstrukcija elemenata grafa:
+1. **Koordinatne osi:** Horizontalna os je projektna varijabla $x_1$, a vertikalna os je projektna varijabla $x_2$.
+2. **Slobodni minimum (plavi križić):** Točka $x_{\mathrm{unc}} = (-0.898, 0.683)$ leži u drugom kvadrantu (lijevo gore od ishodišta). To bi bio globalni minimum da nema nikakvih ograničenja ($f = -2.21$).
+3. **Koncentrične elipse (nivo-krivulje):** Prikazuju linije konstantne vrijednosti funkcije cilja $f(x) = c$. Što je elipsa veća, to je vrijednost troška $f(x)$ veća. Elipse su blago nagnute zbog spregnutog člana $-0.3 x_1 x_2$.
+4. **Crveni pravac ($g_1 = 0$):** Pravac $-x_1 - x_2 + 10 = 0 \iff x_1 + x_2 = 10$. Siječe osi u točkama $(10, 0)$ i $(0, 10)$. Dopušteni poluprostor leži **iznad i desno** od pravca ($x_1 + x_2 \geq 10$).
+5. **Plavi pravac ($g_2 = 0$):** Pravac $x_1 - x_2 - 3 = 0 \iff x_2 = x_1 - 3$. Siječe osi u $(3, 0)$ i $(0, -3)$. Dopušteni poluprostor leži **iznad i lijevo** od pravca ($x_2 \geq x_1 - 3$).
+6. **Zeleno osjenčani skup $\mathcal{F}$:** Konveksni, neomeđeni klin u prvom kvadrantu omeđen ovim dvama pravcima.
+7. **Točka sjecišta $(6.5, 3.5)$:** Vrh zelenog klina gdje se pravci sijeku. Vidimo da nivo-elipsa prolazi kroz tu točku s vrijednošću $f = 63.63$, što je veće od optimalne vrijednosti $60.61$.
+8. **Točka globalnog optimuma $x^* = (5.758, 4.242)$ (crvena točka):** Nalazi se točno na crvenom pravcu $g_1 = 0$, s lijeve strane od točke sjecišta.
+9. **Dodir nivo-elipse i pravca:** Nivo-elipsa razine $f = 60.606$ tangira pravac $g_1 = 0$ točno u točki $x^*$.
+10. **Vektori gradijenata (strelice u $x^*$):**
+    - Crna strelica $\nabla f(x^*)$ pokazuje okomito na elipsu prema gore i desno (smjer najbržeg rasta funkcije).
+    - Crvena strelica $\nabla g_1$ pokazuje okomito na pravac prema dolje i lijevo (vanjska normala prema nedopuštenom području).
+    - Strelice su savršeno kolinearne i suprotnih smjerova: $\nabla f(x^*) = -\mu_1^* \nabla g_1$, što vizualno dokazuje KKT ravnotežu!
+
+---
+
+### Vodič za crtanje grafa Zadatka 1 na ploči pred ispitivačem (Korak po korak za kredu i ploču)
+
+Ako profesor Jokić na usmenom ispitu kaže: *"Kolega, uzmite kredu i nacrtajte geometriju vašeg prvog zadatka na ploči!"*, izvedite sljedeći postupak u 7 koraka:
+
+```
+                  x2 ^
+                     |                  / g2(x)=0: x2 = x1 - 3
+                  10 +   \             /
+                     |    \           /    Dopustivi skup F
+                     |     \         /     (osjenčano)
+                   5 +------\-------* (6.5, 3.5)
+                     |       x*    / \
+                     |        \   /   \
+                     |         \ /     \
+                  ---+----------+-------+---> x1
+                   0 |          3       10
+                     |   g1(x)=0: x1 + x2 = 10
+```
+
+#### Korak 1: Crtanje koordinatnih osi
+- Nacrtajte horizontalnu os i označite je sa $x_1$, te vertikalnu os i označite je sa $x_2$.
+- Na osi $x_1$ označite točke $3$, $6.5$ i $10$. Na osi $x_2$ označite $3.5$ i $10$.
+
+#### Korak 2: Crtanje pravca prvog ograničenja $g_1(x) = 0$
+- Spojite točke $(0, 10)$ na osi $x_2$ i $(10, 0)$ na osi $x_1$ ravnom crtom (nagib $-1$).
+- Napišite uz pravac jednadžbu: $x_1 + x_2 = 10$.
+- Recite profesoru: *"Ograničenje glasi $-x_1 - x_2 \leq -10$, što množenjem s $-1$ daje $x_1 + x_2 \geq 10$. Dakle, dopušteno područje je iznad i desno od pravca."*
+- Nacrtajte malu strelicu normale $\nabla g_1 = [-1, -1]^\mathsf{T}$ koja iz pravca pokazuje prema ishodištu (u nedopušteno područje).
+
+#### Korak 3: Crtanje pravca drugog ograničenja $g_2(x) = 0$
+- Nacrtajte pravac $x_2 = x_1 - 3$. On siječe os $x_1$ u točki $(3, 0)$, a prolazi kroz točku $(6.5, 3.5)$. Nagib pravca je $+1$ (kut od $45^\circ$).
+- Recite profesoru: *"Ograničenje je $x_1 - x_2 \leq 3 \iff x_2 \geq x_1 - 3$. Dakle, dopušteno područje je iznad i lijevo od ovog pravca."*
+
+#### Korak 4: Šrafiranje dopustivog skupa $\mathcal{F}$
+- Osjenčajte područje koje se nalazi istovremeno iznad oba pravca.
+- Istaknite točku sjecišta pravaca:
+  $$\begin{cases} x_1 + x_2 = 10 \\ x_1 - x_2 = 3 \end{cases} \implies x_{\mathrm{sjecište}} = \begin{bmatrix} 6.5 \\ 3.5 \end{bmatrix}.$$
+- Recite profesoru: *"Dopustivi skup $\mathcal{F}$ je neomeđeni konveksni poliedarski konus s vrhom u točki $(6.5, 3.5)$."*
+
+#### Korak 5: Crtanje točke slobodnog minimuma i nivo-elipsi
+- Označite točku slobodnog minimuma $x_{\mathrm{unc}} \approx (-0.9, 0.7)$ u drugom kvadrantu.
+- Objasnite: *"Budući da je $Q \succ 0$, funkcija cilja je eliptički paraboloid čije su nivo-krivulje elipse sa središtem u točki slobodnog minimuma."*
+- Skicirajte dvije-tri manje koncentrične elipse oko slobodnog minimuma.
+- Pokažite rukom kako elipse rastu povećanjem vrijednosti $f(x)$ i šire se prema prvom kvadrantu.
+
+#### Korak 6: Određivanje točke prvog kontakta (Optimum $x^*$)
+- Nacrtajte elipsu koja prvi put dodiruje zeleno dopustivo područje.
+- **Ključan detalj:** Ta elipsa **ne dodiruje** vrh $(6.5, 3.5)$, već dodiruje crveni pravac $g_1 = 0$ u točki $x^* = (5.76, 4.24)$ koja se nalazi ulijevo i gore od sjecišta!
+- Označite točku $x^*$ masnom točkom i napišite koordinate: $x_1^* = \frac{190}{33} \approx 5.76$, $x_2^* = \frac{140}{33} \approx 4.24$.
+
+#### Korak 7: Crtanje vektora gradijenata u optimumu
+- U točki $x^*$ povucite tangentu (to je sam pravac $g_1 = 0$).
+- Nacrtajte strelicu gradijenta cilja $\nabla f(x^*)$ okomitu na pravac, usmjerenu prema gore-desno.
+- Nacrtajte strelicu gradijenta ograničenja $\nabla g_1$ okomitu na pravac, usmjerenu prema dolje-lijevo.
+- Napišite na ploči formulu ravnoteže:
+  $$\nabla f(x^*) = -\mu_1^* \nabla g_1(x^*), \qquad \mu_1^* = 12.24 > 0.$$
+
+---
+
+### Govorni predložak pri crtanju na ploči (izgovorite ovo pred profesorom):
+> *"Profesore, na ploči sam skicirao geometrijsku strukturu problema.  
+> Dopustivi skup $\mathcal{F}$ je konveksan skup nastao presjekom dvaju poluprostora, s vrhom u sjecištu pravaca na koordinatama $(6.5, 3.5)$.  
+> Slobodni minimum funkcije leži u drugom kvadrantu na $(-0.9, 0.68)$. Kako povećavamo vrijednost funkcije cilja, nivo-elipse rastu i šire se prema dopustivom skupu.  
+> Prva nivo-elipsa koja dotakne dopustivi skup dodiruje ga tangencijalno u točki $x^* = (5.76, 4.24)$ na pravcu prvog ograničenja.  
+> U toj točki nivo-elipsa i pravac dijele istu tangentu. Zato su njihove normale kolinearne, ali suprotnih smjerova: gradijent funkcije cilja $\nabla f$ 'gura' prema van, dok gradijent ograničenja $-\mu_1 \nabla g_1$ pruža reakciju podloge.  
+> Budući da je multiplikator $\mu_1 = 12.24$ strogo pozitivan, zadovoljen je KKT uvjet dualne dopustivosti i stacionarnosti. Drugo ograničenje u ovoj točki ima rezervu od $1.48$, pa je njegov multiplikator $\mu_2 = 0$. Sjecište pravaca $(6.5, 3.5)$ se odbacuje jer bi tamo multiplikator $\mu_2$ bio negativan ($-2.45$), što znači da funkcija cilja opada kretanjem duž pravca $g_1=0$ upravo prema našem optimumu $x^*$."*
 
 ---
 

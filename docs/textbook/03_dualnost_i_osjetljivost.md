@@ -12,7 +12,19 @@
 
 ## 3.1 Koncept Lagrangeove dualnosti: Dualna funkcija, slaba i jaka dualnost
 
-Lagrangeova dualnost jedan je od najdubljih i najljepših koncepata u matematičkoj optimizaciji. Ona nam omogućuje da težak optimizacijski problem s ograničenjima transformiramo u komplementaran problem koji često ima jednostavnija ograničenja ili daje zajamčene donje granice optimalne vrijednosti (prof. Jokić, Predavanje 4).
+### Pristup za početnike: Što je uopće "dualnost" i zašto nam treba?
+Zamislite da vodite proizvodnu radionicu. Imate ograničene resurse (npr. sate rada strojeva i zalihe sirovina) i želite proizvesti proizvode $x$ tako da minimizirate troškove proizvodnje $f(x)$ uz poštivanje kapaciteta $g_i(x) \leq 0$. To je **primarni problem**.
+
+Sada zamislite vanjskog poduzetnika (otkupljivača) koji vam želi iznajmiti ili otkupiti vaše strojeve i sirovine. On vam postavlja pitanje:
+*"Koliku jediničnu cijenu $\mu_i \geq 0$ ti moram platiti po satu rada stroja ili kilogramu sirovine, tako da ti se više isplati prepustiti resurse meni nego samostalno proizvoditi?"*
+To je **dualni problem**:
+- Optimizacijske varijable više nisu fizički proizvodi $x$, već **cijene resursa $\mu_i$** (*dualne varijable* ili *Lagrangeovi množitelji*).
+- Poduzetnik želi maksimizirati ponuđenu cijenu, ali tako da vam njegova ponuda i dalje bude prihvatljiva.
+- **Slaba dualnost ($\theta(\mu) \leq p^*$):** Što god poduzetnik ponudio, njegova ponuda nikada ne može premašiti stvarni trošak optimalne proizvodnje. Dualna funkcija uvijek daje **sigurnu donju granicu** troška!
+- **Jaka dualnost ($d^* = p^*$):** Kod konveksnih inženjerskih problema uz Slaterov uvjet, postoji točka u kojoj se ove dvije perspektive savršeno podudaraju! Najveća moguća donja granica jednaka je točno minimalnom primarnom trošku.
+- **Cijena u sjeni (*Shadow Price*):** Optimalna vrijednost $\mu_i^*$ govori vam točno koliko bi vam pao ukupni trošak ako biste uspjeli opustiti $i$-to ograničenje za jednu jedinicu!
+
+---
 
 ### Minimax formulacija primarnog problema
 Promotrimo primarni problem optimizacije:
@@ -28,9 +40,14 @@ $$\max_{\mu \geq 0} \mathcal{L}(x, \mu) = \max_{\mu \geq 0} \left[ f(x) + \sum_{
 Dakle, primarni problem možemo zapisati u ekvivalentnom bezuvjetnom obliku:
 $$p^* = \min_{x \in \mathbb{R}^n} \left[ \max_{\mu \geq 0} \mathcal{L}(x, \mu) \right]. \tag{3.3}$$
 
+---
+
 ### Lagrangeova dualna funkcija
 Lagrangeova dualna funkcija $\theta: \mathbb{R}^m \to \mathbb{R} \cup \{-\infty\}$ nastaje jednostavnom **zamjenom redoslijeda minimizacije i maksimizacije**:
 $$\theta(\mu) := \inf_{x \in \mathbb{R}^n} \mathcal{L}(x, \mu) = \inf_{x \in \mathbb{R}^n} \left[ f(x) + \mu^{\mathsf{T}} g(x) \right]. \tag{3.4}$$
+
+> **Govorni predložak:**  
+> *"Lagrangeova dualna funkcija theta od mi definirana je kao infimum Lagrangiana po svim točkama x iz prostora r-n za fiksni vektor Lagrangeovih multiplikatora mi."*
 
 > **Teorem 3.1 (Konkavnost dualne funkcije):**  
 > Dualna funkcija $\theta(\mu)$ je **uvijek konkavna**, čak i ako je polazni primarni problem (funkcija $f$ ili funkcije $g_i$) izrazito nekonveksan!  

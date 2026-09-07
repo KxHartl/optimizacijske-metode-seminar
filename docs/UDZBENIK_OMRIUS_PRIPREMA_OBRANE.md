@@ -28,6 +28,13 @@ Ovaj dokument zamišljen je i napisan kao **samostalan, matematički rigorozan i
 
 Udžbenik je podijeljen u **5 tematskih cjelina** i **10 specijaliziranih poglavlja**:
 
+### UVODNI MODUL: PREDZNANJE, NOTACIJA I GOVORNI VODIČ
+- [Poglavlje 0: Matematički rječnik i govorni vodič za usmeni ispit](00_matematicki_rjecnik_i_govorni_vodic.md)
+  - Sveobuhvatni rječnik simbola, oznaka, funkcija i matrica od nule ($\mathbb{R}^n, \langle x, y \rangle, \coloneqq, \succeq, \succ$).
+  - Detaljno objašnjenje zašto se i kako koji pojam koristi, uz intuitivna objašnjenja za početnike.
+  - Vodič za usmeni ispit: kako točno govorno izgovoriti svaki pojam i simbol pred ispitivačem.
+  - 10 doslovnih govornih modela inženjerskih rečenica za usmeni ispit.
+
 ### DIO I: TEMELJI KONVEKSNE OPTIMIZACIJE I ANALIZA STATIČKIH PROBLEMA
 - [Poglavlje 1: Matematički aparat, klasifikacija i konveksnost](01_temelji_i_konveksnost.md)
   - First Principles matematički rječnik ($\mathbb{R}^n, \mathbb{S}^n, \succeq, \succ$).
@@ -113,6 +120,179 @@ Kako bi priprema bila maksimalno efikasna, preporučuje se sljedeći radni postu
 4. **Analiza grafova:** Za svaku sliku u seminaru budite spremni objasniti što prikazuje svaka os, svaka krivulja, gdje se nalazi optimum i zašto sustav reagira upravo na taj način.
 
 
+
+\newpage
+
+---
+
+# POGLAVLJE 0: Matematički rječnik, leksikon oznaka i govorni vodič za usmeni ispit
+
+> **Svrha ovog poglavlja:**  
+> Ovo poglavlje je **polazna točka za svakoga tko prvi put ulazi u svijet matematičke optimizacije**.  
+> Ovdje se ne pretpostavlja apsolutno nikakvo predznanje: svaki matematički simbol, znak jednakosti, kuka, indeks, slovo grčkog alfabeta i prostorni koncept detaljno su objašnjeni na jednostavnom inženjerskom jeziku.  
+> Uz svaku oznaku naveden je **doslovan govorni izgovor** kako biste na usmenom ispitu pred profesorom Jokićem govorili s punim matematičkim i stručnim autoritetom.
+
+---
+
+## 0.1 Logički i temeljni matematički simboli
+
+| Simbol / Znak | Naziv simbola | Kako se izgovara na ispitu | Što točno znači (Intuicija za početnika) | Primjer u našem seminaru |
+| :---: | :--- | :--- | :--- | :--- |
+| $:=$ | Jednakost po definiciji | *"jednako po definiciji"* ili *"definiramo kao"* | Za razliku od obične jednakosti $=$ koja tvrdi da su dvije već postojeće stvari jednake (npr. $2+2=4$), znak $:=$ **uvodi novu kraticu ili novu oznaku** za neki izraz. Lijeva strana do tog trenutka nije postojala, već je upravo definiramo desnom stranom. | $\mathcal{Q} := P^{-1}$ (Novu matricu $\mathcal{Q}$ definiramo kao inverz postojeće matrice $P$). |
+| $\in$ | Znak pripadnosti skupu | *"je element od"* ili *"pripada skupu"* | Označava da se neki objekt (broj, vektor, matrica) nalazi unutar određene skupine ili prostora. | $x \in \mathbb{R}^2$ (Vektor $x$ ima dvije realne komponente, dakle točka je u ravnini). |
+| $\notin$ | Znak nepripadnosti | *"nije element od"* ili *"ne pripada"* | Objekt se ne nalazi u tom skupu. | $x \notin \mathcal{F}$ (Točka $x$ leži izvan dopustivog skupa, tj. krši neko ograničenje). |
+| $\forall$ | Univerzalni kvantifikator | *"za svaki"* ili *"za bilo koji"* | Tvrdnja koja slijedi mora vrijediti za apsolutno svaki element bez ijedne iznimke. | $\forall x \in \mathbb{R}^n$ (Tvrdnja vrijedi za bilo koji vektor u prostoru). |
+| $\exists$ | Egzistencijalni kvantifikator | *"postoji"* ili *"možemo naći barem jedan"* | Tvrdi da postoji barem jedan element koji ima traženo svojstvo. | $\exists x \in \mathcal{F}$ takav da je $Gx < h$ (Postoji barem jedna točka u unutrašnjosti). |
+| $\implies$ | Implikacija | *"povlači"* ili *"iz toga slijedi"* | Ako je istinita lijeva tvrdnja, onda je nužno istinita i desna tvrdnja. | $Q \succ 0 \implies f(x)$ je strogo konveksna. |
+| $\iff$ | Ekvivalencija | *"ako i samo ako"* ili *"ekvivalentno je"* | Dvije tvrdnje znače potpuno istu stvar: lijeva povlači desnu, a desna povlači lijevu. | $a^{\mathsf{T}} x \leq h, \forall a \in \mathcal{P} \iff (v^{(k)})^{\mathsf{T}} x \leq h, \forall k$. |
+| $\subset, \subseteq$ | Podskup | *"je podskup od"* | Svi elementi prvog skupa nalaze se i u drugom skupu. | $\mathcal{F} \subset \mathbb{R}^n$ (Dopustivo područje je dio prostora). |
+| $\cap$ | Presjek skupova | *"presjek"* | Područje koje pripada i prvom i drugom skupu istovremeno (logički "I"). | $\mathcal{F} = \{x \mid g_1(x) \leq 0\} \cap \{x \mid g_2(x) \leq 0\}$. |
+| $\cup$ | Unija skupova | *"unija"* | Područje koje pripada prvom, drugom ili obama skupovima (logički "ILI"). | $t \in [0, 1) \cup [2, 3)$ (Vremenski intervali u kojima je aktivan parni mod). |
+| $\setminus$ | Skupovna razlika | *"manje"* ili *"bez"* | Prvi skup iz kojeg su izbačeni svi elementi drugog skupa. | $\mathbb{R}^n \setminus \{0\}$ (Čitav prostor osim samog ishodišta, tj. svi vektori osim nul-vektora). |
+| $\min, \max$ | Minimum i Maksimum | *"minimum"*, *"maksimum"* | **Najmanja odnosno najveća vrijednost** koju funkcija poprima na zadanom skupu, uz uvjet da se ta vrijednost stvarno dostiže u nekoj točki skupa. | $\min_x f(x)$ uz $Gx \leq h$. |
+| $\inf, \sup$ | Infimum i Supremum | *"infimum"*, *"supremum"* | **Najveća donja međa** (infimum) odnosno **najmanja gornja međa** (supremum). Koristi se kada nismo sigurni dostiže li funkcija minimum (npr. funkcija $e^{-x}$ za $x \geq 0$ nema minimum jer se nula dostiže tek u beskonačnosti, ali njezin infimum je točno 0). | $\theta(\mu) = \inf_x \mathcal{L}(x, \mu)$ (Tražimo donju među Lagrangiana po cijelom prostoru). |
+
+---
+
+## 0.2 Vektori, prostori i euklidska geometrija
+
+Što zapravo znače pojmovi poput *vektor*, *dimenzija* i *Euklidski prostor*? Razjasnimo ih od nule:
+
+### 1. Što je skup $\mathbb{R}$?
+Slovo $\mathbb{R}$ označava **skup svih realnih brojeva**. To su svi mogući brojevi koje možete zamisliti na neprekidnom brojevnom pravcu: pozitivni, negativni, nula, razlomci (npr. $140/33$), korijeni ($\sqrt{4.36}$) i brojevi poput $\pi$. U inženjerstvu realnim brojevima mjerimo fizikalne veličine: duljinu u metrima, napon u voltima, masu u kilogramima.
+
+### 2. Što je $\mathbb{R}^n$ i zašto se zove "Euklidski prostor"?
+- $\mathbb{R}^1 = \mathbb{R}$ je **jednodimenzionalni prostor** (jedna os, običan pravac). Točka je definirana jednim brojem $x_1$.
+- $\mathbb{R}^2$ je **dvodimenzionalni prostor** (ravnina, poput lista papira). Točka ili vektor ima dvije koordinate: $x = \begin{bmatrix} x_1 \\ x_2 \end{bmatrix}$. Primjer: naš Zadatak 1 i Zadatak 2 odvijaju se u $\mathbb{R}^2$.
+- $\mathbb{R}^3$ je **trodimenzionalni prostor** (fizički prostor sobe). Točka ima tri koordinate: širinu, dužinu i visinu.
+- $\mathbb{R}^n$ je **$n$-dimenzionalni prostor**. Iako ga ljudsko oko ne može vizualizirati za $n \geq 4$, matematički je to jednostavno popis od $n$ brojeva: $x = [x_1, x_2, \dots, x_n]^{\mathsf{T}}$. U Zadatku 3 naša cesta ima $N=100$ podintervala, pa imamo $n = 101$ visinsku točku nivelete — naš vektor $y$ živi u prostoru $\mathbb{R}^{101}$!
+- **Zašto se zove "Euklidski prostor"?** Ime je dobio po starogrčkom matematičaru Euklidu iz Aleksandrije (oko 300. pr. Kr.) koji je postavio aksiome geometrije u kojoj vrijedi **Pitagorin teorem**. Prostor $\mathbb{R}^n$ nazivamo euklidskim jer je udaljenost između dvije točke definirana generaliziranim Pitagorinim teoremom:
+  $$d(x, y) = \sqrt{(x_1 - y_1)^2 + (x_2 - y_2)^2 + \dots + (x_n - y_n)^2}.$$
+
+---
+
+### 3. Anatomija vektora: Stupac vs. Redak i Transponiranje $(\cdot)^{\mathsf{T}}$
+U matematičkoj optimizaciji i matričnom računu postoji strogi standard: **svaki vektor po defaultu je stupac**:
+$$x = \begin{bmatrix} x_1 \\ x_2 \end{bmatrix} \in \mathbb{R}^{2 \times 1}.$$
+Oznaka $(\cdot)^{\mathsf{T}}$ (ili $(\cdot)'$ u MATLAB-u) označava **transponiranje** — operaciju kojom se reci i stupci zamjenjuju. Dakle, transponiranjem vektor-stupac postaje vektor-redak:
+$$x^{\mathsf{T}} = \begin{bmatrix} x_1 & x_2 \end{bmatrix} \in \mathbb{R}^{1 \times 2}.$$
+- *Kako se izgovara na ispitu:* *"iks transponirano"*.
+
+---
+
+### 4. Skalarni (unutrašnji) produkt: Simboli $\langle x, y \rangle$ i $x^{\mathsf{T}} y$
+- **Što je simbol $\langle x, y \rangle$?** To je standardna matematička oznaka za **skalarni produkt** (unutrašnji umnožak) dvaju vektora $x$ i $y$.
+- **Što je $x^{\mathsf{T}} y$?** To je matrični zapis istog tog skalarnog produkta (množenje retka dimenzija $1 \times n$ sa stupcem dimenzija $n \times 1$, što kao rezultat daje običan broj — skalar dimenzija $1 \times 1$):
+  $$\langle x, y \rangle := x^{\mathsf{T}} y = x_1 y_1 + x_2 y_2 + \dots + x_n y_n = \sum_{i=1}^n x_i y_i.$$
+- *Kako se izgovara na ispitu:* *"skalarni umnožak vektora x i y"* ili *"iks transponirano puta y"*.
+- **Geometrijska intuicija:** Skalarni produkt mjeri **kut i međusobno preklapanje** dvaju vektora:
+  $$x^{\mathsf{T}} y = \|x\|_2 \|y\|_2 \cos \angle(x, y).$$
+  - Ako dva vektora pokazuju u istom smjeru, skalarni produkt je maksimalno pozitivan.
+  - Ako su dva vektora **međusobno okomita (ortogonalna)**, kut je $90^\circ$, pa je $\cos(90^\circ) = 0 \implies x^{\mathsf{T}} y = 0$.
+  - Ako pokazuju u suprotnim smjerovima, skalarni produkt je negativan.
+
+---
+
+### 5. Norme vektora: Što znače oznake $\|x\|_2$, $\|x\|_1$ i $\|x\|_\infty$?
+Norma je funkcija koja svakom vektoru pridružuje nenegativan realan broj koji predstavlja njegovu **fizikalnu veličinu ili duljinu**. Oznaka su dvostruke okomite crte $\|\cdot\|$.
+
+| Oznaka norme | Naziv | Matematička formula | Govorni izgovor na ispitu | Fizikalna intuicija i primjena |
+| :---: | :--- | :--- | :--- | :--- |
+| $\|x\|_2$ | Euklidska norma ($\ell_2$-norma) | $\|x\|_2 := \sqrt{x_1^2 + \dots + x_n^2} = \sqrt{x^{\mathsf{T}} x}$ | *"euklidska norma od iks"* ili *"dva-norma od iks"* | Prava geometrijska udaljenost izmjerena ravnalom ("zračna linija"). U Zadacima 1 i 2 funkcija cilja sadrži euklidske kvadrate, a u Zadatku 4 minimiziramo pojačanje $\min \|Y\|_2$. |
+| $\|x\|_1$ | Manhattan / taksi norma ($\ell_1$-norma) | $\|x\|_1 := \sum_{i=1}^n \|x_i\| = \|x_1\| + \dots + \|x_n\|$ | *"jedan-norma od iks"* ili *"el-jedan norma"* | Udaljenost u gradu s pravilnim blokovima ulica gdje se ne može ići dijagonalno nego samo po koordinatnim osima (kao taksi na Manhattanu). U Zadatku 3 mjeri **ukupni volumen zemljanih radova** (površinu između ceste i terena). U Poglavlju 9 služi za **LASSO** regularizaciju. |
+| $\|x\|_\infty$ | Maksimalna / Chebyshevjeva norma | $\|x\|_\infty := \max_{1 \leq i \leq n} \|x_i\|$ | *"beskonačno-norma od iks"* ili *"maks-norma"* | Mjeri najveće vršno odstupanje jedne pojedinačne komponente. Koristi se u tolerancijama strojne obrade gdje je bitan najgori komad. |
+
+---
+
+## 0.3 Matrice, definitnost i parcijalni poredak (LMI)
+
+| Oznaka | Naziv | Kako se izgovara na ispitu | Značenje za početnika |
+| :---: | :--- | :--- | :--- |
+| $\mathbb{R}^{m \times n}$ | Prostor matrica | *"er em puta en"* | Tablica realnih brojeva koja ima $m$ vodoravnih redaka i $n$ okomitih stupaca. |
+| $\mathbb{S}^n$ | Prostor simetričnih matrica | *"es en"* | Kvadratne matrice dimenzija $n \times n$ koje su jednake vlastitom transponiranom obliku ($A = A^{\mathsf{T}}$). Elementi zrcaljeni preko glavne dijagonale su identični ($A_{ij} = A_{ji}$). Hesseove matrice funkcija drugog reda uvijek leže u $\mathbb{S}^n$. |
+| $x^{\mathsf{T}} A x$ | Kvadratna forma | *"kvadratna forma iks transponirano A iks"* | Skalarni izraz u kojem matrica $A$ "težinski množi" vektor $x$ sam sa sobom. Rezultat je običan broj (skalar). U Zadatku 1 imamo $\frac{1}{2} x^{\mathsf{T}} Q x = x_1^2 + 2x_2^2 - 0.3x_1 x_2$. |
+| $A \succ 0$ | Strogo pozitivno definitna matrica | *"matrica A je strogo pozitivno definitna"* ili *"A je veće od nula u smislu Loewnera"* | Za svaki vektor $x \neq 0$ vrijedi $x^{\mathsf{T}} A x > 0$. Geometrijski, graf funkcije $x^{\mathsf{T}} A x$ izgleda kao **savršena trodimenzionalna zdjela (paraboloid) okrenuta prema gore**. Sve svojstvene vrijednosti matrice $A$ su strogo pozitivne ($\lambda_i > 0$). |
+| $A \succeq 0$ | Pozitivno semidefitna matrica | *"matrica A je pozitivno semidefitna"* | Za svaki vektor vrijedi $x^{\mathsf{T}} A x \geq 0$. Zdjela može na dnu imati ravni žlijeb duž kojeg funkcija miruje. Najmanja svojstvena vrijednost može biti nula ($\lambda_{\min} \geq 0$). |
+| $A \succ B$ | Loewnerov poredak | *"A je veće od B u smislu pozitivne definitnosti"* | Skraćeni zapis za nejednakost: $A - B \succ 0$. To **nije** usporedba element-po-element, već znači da je matrica razlike $(A - B)$ pozitivno definitna! |
+| $\lambda_i(A)$ | Svojstvena (vlastita) vrijednost | *"lambda i od A"* ili *"svojstvena vrijednost matrice A"* | Skalari $\lambda$ za koje postoji vektor $v \neq 0$ takav da je $A v = \lambda v$. U optimizaciji predstavljaju **glavne zakrivljenosti nivo-elipsi**. U dinamičkim sustavima (Zadatak 4) predstavljaju **polove sustava** (brzinu i prigušenje titranja). |
+| $\det(A)$ | Determinanta matrice | *"determinanta od A"* | Broj pridružen kvadratnoj matrici koji mjeri koliko matrica rasteže ili stišće volumen prostora. Ako je $\det(A) \neq 0$, matrica je regularna i posjeduje inverz $A^{-1}$. |
+| $\mathrm{Tr}(A)$ | Trag matrice (*Trace*) | *"trag od A"* | Zbroj elemenata na glavnoj dijagonali: $\mathrm{Tr}(A) = \sum A_{ii}$. Zanimljivo inženjersko svojstvo: trag je uvijek točno jednak zbroju svih svojstvenih vrijednosti! |
+| $\kappa(P)$ | Uvjetovanost matrice (*Condition number*) | *"kapa od P"* ili *"broj uvjetovanosti"* | Omjer najveće i najmanje svojstvene vrijednosti: $\kappa(P) = \lambda_{\max}/\lambda_{\min}$. Mjeri izduženost elipsoida. Ako je $\kappa = 1$, elipsoid je savršena kugla. U Zadatku 4 imamo $\kappa(P) = 1.7743$, pa je $\sqrt{\kappa} = 1.3320$. |
+
+---
+
+## 0.4 Funkcije, derivacije i analiza
+
+| Oznaka | Naziv | Govorni izgovor na ispitu | Što fizikalno znači |
+| :---: | :--- | :--- | :--- |
+| $\nabla f(x)$ | Gradijent funkcije | *"nabla f od iks"* ili *"gradijent od f"* | Vektor prvih parcijalnih derivacija: $\nabla f(x) = \begin{bmatrix} \frac{\partial f}{\partial x_1} \\ \vdots \\ \frac{\partial f}{\partial x_n} \end{bmatrix}$. **Fizikalno:** strelica koja pokazuje u smjeru **najbržeg uspona (najvećeg rasta)** funkcije. Njegov iznos $\|\nabla f\|$ govori koliko je brijeg strm. |
+| $-\nabla f(x)$ | Vektor najbržeg pada | *"minus gradijent od f"* | Strelica koja pokazuje točno u smjeru **najbržeg spuštanja niz brijeg**. Prema njemu bi se kotrljala kuglica puštena na plohu funkcije. |
+| $\nabla^2 f(x)$ | Hesseova matrica (Hessian) | *"nabla kvadrat f od iks"* ili *"Hesseova matrica"* | Matrica drugih parcijalnih derivacija: $[\nabla^2 f(x)]_{ij} = \frac{\partial^2 f}{\partial x_i \partial x_j}$. Mjeri **zakrivljenost plohe**. Ako ubrzanje promjene nagiba raste u svim smjerovima, Hessian je $\succ 0$ i funkcija je konveksna zdjela. |
+| $d \in \mathbb{R}^n$ | Dozvoljeni smjer (*Feasible direction*) | *"vektor dozvoljenog smjera d"* | Vektor duž kojeg se možemo malo pomaknuti iz trenutne točke $x$, a da pritom ostanemo unutar dopuštenog područja (ne probijemo nijedan zid ograničenja). |
+| $\mathrm{epi}(f)$ | Epigraf funkcije | *"epigraf funkcije f"* | Skup svih točaka koje leže **na grafu funkcije ili iznad njega**. Funkcija je konveksna ako i samo ako je njezin epigraf konveksan skup u prostoru $\mathbb{R}^{n+1}$. |
+| $\mathrm{co}(\mathcal{S})$ | Konveksna ljuska (*Convex Hull*) | *"konveksna ljuska skupa S"* | Najmanji konveksni skup koji obuhvaća sve točke skupa $\mathcal{S}$. Zamislite točke kao čavle zabijene u dasku: ako oko njih rastegnete gumicu i pustite je da se stisne, oblik koji gumica zauzme je konveksna ljuska! U Zadatku 2 konveksna ljuska 4 vrha tvori pravokutnik nesigurnosti. |
+
+---
+
+## 0.5 Optimizacija, KKT i dualnost
+
+| Oznaka | Naziv | Govorni izgovor na ispitu | Što točno znači |
+| :---: | :--- | :--- | :--- |
+| $p^*$ | Optimalna vrijednost primara | *"pe sa zvjezdicom"* ili *"optimalna vrijednost funkcije cilja"* | Najmanji trošak koji se može postići uz poštivanje svih zadanih ograničenja. U Zadatku 1 imamo $p^* = 60.606061$. |
+| $x^*$ | Optimalno rješenje (točka optimuma) | *"iks sa zvjezdicom"* ili *"optimalna točka"* | Koordinate u kojima se postiže minimalni trošak $p^*$. U Zadatku 1 to je točka $x^* = (190/33, 140/33)$. |
+| $\mathcal{F}$ | Dopustivi skup (*Feasible set*) | *"kaligrafsko ef"* ili *"dopustivi skup"* | Skup svih točaka $x$ koje zadovoljavaju sva ograničenja istovremeno: $\mathcal{F} = \{x \mid Gx \leq h\}$. |
+| $\mathcal{A}(x)$ | Aktivni skup ograničenja | *"aktivni skup ograničenja"* | Indeksi onih ograničenja koja su u promatranoj točki zadovoljena točno na granici (kao jednakost, $g_i(x) = 0$). U Zadatku 1 je $\mathcal{A}(x^*) = \{1\}$. |
+| $\mathcal{L}(x, \mu)$ | Lagrangeova funkcija (Lagrangian) | *"Lagrangian"* ili *"Lagrangeova funkcija od iks i mi"* | Funkcija koja spaja funkciju cilja i sva ograničenja pomnožena s njihovim množiteljima: $\mathcal{L} = f(x) + \sum \mu_i g_i(x)$. Predstavlja ravnotežu potencijalne energije i rada reakcija veza. |
+| $\mu_i$ | Lagrangeov množitelj (multiplikator) | *"mi i"* ili *"Lagrangeov množitelj i-tog ograničenja"* | Mjera napetosti ili intenziteta sile kojom se $i$-to ograničenje odupire proboju. Naziva se i **cijena u sjeni** (*shadow price*). U Zadatku 1 imamo $\mu_1^* = 404/33 \approx 12.2424$. |
+| $\theta(\mu)$ | Lagrangeova dualna funkcija | *"teta od mi"* ili *"dualna funkcija"* | Funkcija dobivena pronalaženjem najniže točke Lagrangiana po varijabli $x$: $\theta(\mu) = \inf_x \mathcal{L}(x, \mu)$. Uvijek je konkavna i daje zajamčenu donju granicu primarnog optimuma. |
+| $d^*$ | Optimalna vrijednost duala | *"de sa zvjezdicom"* | Najveća moguća donja međa primarnog troška: $d^* = \max_{\mu \geq 0} \theta(\mu)$. |
+| $p^* - d^*$ | Dualni procjep (*Duality Gap*) | *"dualni procjep"* | Razlika između najboljeg primarnog troška i najbolje dualne procjene. Ako je problem konveksan i vrijedi Slaterov uvjet, procjep je točno nula ($p^* - d^* = 0$, jaka dualnost). |
+| $v$ | Perturbacijski vektor | *"vektor perturbacije ve"* | Mala promjena desne strane ograničenja: $g_i(x) \leq v_i$. Prema teoremu o osjetljivosti je $\partial p^*/\partial v_i = -\mu_i^*$. |
+
+---
+
+## 0.6 Dinamički sustavi, stabilnost i LMI sinteza
+
+| Oznaka | Naziv | Govorni izgovor na ispitu | Što točno znači |
+| :---: | :--- | :--- | :--- |
+| $\dot{x}(t)$ | Vremenska derivacija stanja | *"iks točka od t"* | Brzina promjene varijabli stanja u vremenu: $\dot{x}(t) := \frac{\mathrm{d}x(t)}{\mathrm{d}t}$. Sustav $\dot{x} = Ax$ opisuje kako brzine ovise o trenutnom položaju u prostoru stanja. |
+| $\lfloor t \rfloor$ | Funkcija najvećeg cijelog broja (*Floor*) | *"najveće cijelo od t"* ili *"floor od t"* | Zaokruživanje realnog vremena $t$ na prvi manji ili jednaki cijeli broj (npr. $\lfloor 0.7 \rfloor = 0$, $\lfloor 1.4 \rfloor = 1$, $\lfloor 2.99 \rfloor = 2$). U Zadatku 4 određuje kada sustav mijenja mod. |
+| Hurwitzova matrica | Hurwitzova matrica dinamike | *"matrica A je Hurwitzova"* | Kvadratna matrica čije sve svojstvene vrijednosti leže strogo u lijevoj poluravnini kompleksne ravnine ($\mathrm{Re}(\lambda_i) < 0$). Jamči da LTI sustav bez prespajanja asimptotski konvergira u nulu. |
+| $e^{At}$ | Matrični eksponent | *"e na A puta t"* ili *"matrični eksponent"* | Matrica prijelaza stanja LTI sustava. Množenjem s početnim stanjem $x(0)$ daje točan položaj stanja u trenutku $t$: $x(t) = e^{At} x(0)$. |
+| $\Phi_{\mathrm{cikl}}$ | Monodromijska matrica ciklusa | *"monodromijska matrica ciklusa"* ili *"fi ciklusa"* | Diskretna matrica prijelaza preko jednog punog perioda prespajanja ($T=2\,\mathrm{s}$): $\Phi_{\mathrm{cikl}} = e^{A_{\mathrm{nep}}} e^{A_{\mathrm{par}}}$. Povezuje stanje na kraju ciklusa s početkom ciklusa: $x(2k) = (\Phi_{\mathrm{cikl}})^k x(0)$. |
+| $\rho(M)$ | Spektralni radijus matrice | *"ro od M"* ili *"spektralni radijus"* | Maksimalna apsolutna vrijednost (modul) svojstvenih vrijednosti matrice: $\rho(M) := \max_i \|\lambda_i(M)\|$. Ako je $\rho > 1$, diskretni sustav divergira u beskonačnost! U Zadatku 4b imamo $\rho = 1.218 > 1$. |
+| CQLF | Zajednička kvadratna Ljapunovljeva funkcija | *"zajednička kvadratna Ljapunovljeva funkcija"* (kratica CQLF) | Skalarna funkcija energije $V(x) = x^{\mathsf{T}} P x$ ($P \succ 0$) s istom matricom $P$ za sve modove, koja monotono opada duž trajektorija bez obzira na prespajanje. |
+| BMI | Bilinearna matrična nejednakost | *"be-em-i"* ili *"bilinearna matrična nejednakost"* | Matrična nejednakost u kojoj se dvije optimizacijske nepoznanice množe (član $PBK$). Problem je nekonveksan i NP-težak. |
+| LMI | Linearna matrična nejednakost | *"el-em-i"* ili *"linearna matrična nejednakost"* | Matrična nejednakost u kojoj sve nepoznanice ulaze afino (linearno). Problem je konveksan i rješava se u polinomijalnom vremenu. |
+| Kongruencija | Transformacija kongruencije | *"transformacija kongruencije"* | Množenje simetrične matrice s lijeva s $T$ i s desna s $T^{\mathsf{T}}$ uz regularnu $T$. Prema Sylvesterovom teoremu, kongruencija čuva predznake svojstvenih vrijednosti (očuvava negativnu definitnost!). |
+| GEVP | Poopćeni problem svojstvenih vrijednosti | *"ge-ve-pe"* ili *"poopćeni problem svojstvenih vrijednosti"* | Problem oblika $\det(M - \lambda P) = 0$. Koristi se za izračun stope eksponencijalnog prigušenja $\alpha = 0.2884\,\mathrm{s}^{-1}$. |
+| $\alpha$ | Stopa eksponencijalnog prigušenja | *"alfa"* | Brzina kojom se stanja guše prema ishodištu: $\|x(t)\| \leq \sqrt{\kappa(P)} e^{-\alpha t} \|x(0)\|$. |
+
+---
+
+## 0.7 Vodič za usmeni ispit: "Kako točno izgovoriti pred ispitivačem"
+
+Kada na usmenom ispitu izvodite formule na ploči ili odgovarate na pitanja profesora Jokića, **ključno je koristiti besprijekoran akademski rječnik**. 
+
+Evo tablice 10 najčešćih rečenica na ispitu i kako ih izgovoriti poput pravog inženjerskog eksperta:
+
+| Što pišete na ploči | Kako to NE BI smjeli reći (Laicistički / Zbunjeno) | Kako to TREBATE reći (Profesionalni inženjerski govor) |
+| :--- | :--- | :--- |
+| $\nabla f(x^*) = -\mu_1^* \nabla g_1$ | *"Ovdje se strelice poništavaju pa je to nula."* | *"U točki optimuma gradijent funkcije cilja leži u stožcu vanjskih normala aktivnih ograničenja; gradijent cilja i gradijent aktivnog ograničenja su strogo kolinearni i suprotnog smjera uz pozitivan Lagrangeov multiplikator."* |
+| $\mu_2 = -2.45 < 0$ u sjecištu | *"Ovdje je broj negativan pa točka otpada."* | *"U točki sjecišta narušen je uvjet dualne dopustivosti. Negativan multiplikator znači da bi veza morala djelovati kao privlačna sila, dok nejednakost dopušta samo odbojne reakcije. Funkcija cilja opada kretanjem prema unutrašnjosti dopustivog skupa."* |
+| $Q \succ 0 \implies \lambda_i > 0$ | *"Matrica je pozitivna pa je sve konveksno."* | *"Hesseova matrica funkcije cilja je strogo pozitivno definitna jer su obje njezine svojstvene vrijednosti strogo veće od nule. Iz toga slijedi da je funkcija cilja strogo konveksna i koercivna, što jamči egzistenciju i jedinstvenost globalnog minimuma."* |
+| $\rho(\Phi_{\mathrm{cikl}}) = 1.218 > 1$ | *"Umnožak matrica je veći od jedan pa to raste."* | *"Iako su pojedinačne matrice modova Hurwitzove, spektralni radijus monodromijske matrice ciklusa strogo je veći od jedan. Stanje u stroboskopskim trenucima geometrijski raste faktorom 1.218 po ciklusu uslijed parametarske rezonancije i neusklađenosti energetskih elipsoida."* |
+| $A_i \mathcal{Q} + \mathcal{Q} A_i^{\mathsf{T}} + B Y + Y^{\mathsf{T}} B^{\mathsf{T}} \prec 0$ | *"Pomnožili smo s P minus jedan da maknemo P puta K."* | *"Izvorni nelinearni problem bilinearne matrične nejednakosti (BMI) linearizirali smo primjenom transformacije kongruencije s inverzom Ljapunovljeve matrice $P^{-1} \succ 0$. Uvođenjem supstitucije varijabli $\mathcal{Q} = P^{-1}$ i $Y = K P^{-1}$, dobili smo afinu formulaciju koju egzaktno rješavamo u YALMIP-u kao linearnu matričnu nejednakost."* |
+| $\partial p^* / \partial v_1 = -\mu_1^*$ | *"Derivacija je množitelj samo s minusom."* | *"Prema teoremu o lokalnoj osjetljivosti, parcijalna derivacija optimalne vrijednosti po perturbaciji desne strane ograničenja jednaka je negativnom Lagrangeovom multiplikatoru. Multiplikator predstavlja granični trošak ili cijenu u sjeni aktivnog ograničenja."* |
+| $J^*$ raste pri $N = 20 \to 100$ | *"Prije je bilo manje jer je bilo manje točaka."* | *"Diskretni kriterij je pravokutna kvadraturna aproksimacija kontinuiranog integrala zemljanih radova. Na rijetkoj mreži integral je podcijenjen za red veličine $O(\Delta x)$ jer valoviti reljef izmiče čvorovima; zgušnjavanjem mreže numerička suma konvergira odozdo prema stvarnoj vrijednosti integrala."* |
+| Nema stupaca "iskop" i "nasip" | *"Nisam ih stavio jer se to ne može znati."* | *"Linearni program nivelacije trase je matematički degeneriran. Postoji beskonačno mnogo profila nivelete s identičnom optimalnom vrijednošću funkcije cilja, ali različitom preraspodjelom između iskopa i nasipa. Navođenje pojedinačnih kubatura bilo bi numerički proizvoljno."* |
+| $\sup_{a \in \mathcal{P}} a^{\mathsf{T}} x \leq h$ | *"Uzeli smo kutove pa je to to."* | *"Budući da je skup nesigurnosti konveksan poliedar, a funkcija u ograničenju linearna po nesigurnim parametrima, supremum se egzaktno dostiže u nekom od vrhova. Ekvivalencija je egzaktna, pa formulacija s 8 nejednakosti nema relaksacijskog procjepa."* |
+| $\begin{bmatrix} A & B \\ B^{\mathsf{T}} & C \end{bmatrix} \succ 0$ | *"Rastavili smo matricu na komade."* | *"Primjenom teorema o Schurovom komplementu, blok-matrica je strogo pozitivno definitna ako i samo ako je blok $A \succ 0$ i njegov Schurov komplement $C - B^{\mathsf{T}} A^{-1} B \succ 0$. Dokaz se temelji na blok-kongruenciji koja matricu svodi na blok-dijagonalni oblik."* |
+
+
+
+\newpage
+
 ---
 
 # POGLAVLJE 1: Temelji optimizacije, matematički aparat i konveksnost
@@ -130,25 +310,87 @@ Kako bi priprema bila maksimalno efikasna, preporučuje se sljedeći radni postu
 
 ## 1.1 First Principles: Vektorski i matrični prostori, unutrašnji produkti i definitnost
 
-Kako bismo optimizacijske metode proučavali na sveučilišnoj inženjerskoj razini, moramo krenuti od nultih pretpostavki (*First Principles*). To znači da svaki simbol, operaciju i geometrijski objekt definiramo precizno prije njegove primjene.
+### Pristup od nule: Kako intuitivno zamisliti optimizaciju?
+Zamislimo da se nalazimo u gustom planinskom krajoliku prekrivenom gustom maglom. Naš zadatak je pronaći najnižu točku u kotlini (minimum).
+- **Projektne varijable $x = [x_1, x_2]^\mathsf{T}$:** To su naše GPS koordinate (npr. geografska širina i dužina). To su veličine koje inženjer slobodno bira ili podešava.
+- **Funkcija cilja $f(x)$:** To je nadmorska visina terena na koordinatama $(x_1, x_2)$. Želimo se spustiti što je niže moguće ($f(x) \to \min$).
+- **Ograničenja $g_i(x) \leq 0$:** To su ograde u prostoru (npr. provalija, minsko polje, granica parcele). Ne smijemo prijeći preko ograde.
+- **Optimizacija:** Traženje one točke unutar dopuštenog dijela parcele na kojoj je nadmorska visina najniža moguća.
 
-### Vektori i koordinatni sustav
-Promatramo realni $n$-dimenzionalni euklidski prostor označen sa $\mathbb{R}^n$. Element tog prostora je vektor-stupac $x \in \mathbb{R}^n$:
+> [!TIP]
+> **Referenca na rječnik:** Za detaljan popis svih simbola, logičkih operatora i njihovih izgovora pogledajte **Poglavlje 0: Matematički rječnik i govorni vodič za usmeni ispit**.
+
+---
+
+### Euklidski prostor $\mathbb{R}^n$ — Što je to zapravo?
+U inženjerstvu promatramo realni $n$-dimenzionalni euklidski prostor označen sa $\mathbb{R}^n$.
+- **Što znači simbol $\mathbb{R}$?** Simbol $\mathbb{R}$ označava skup svih realnih brojeva (brojevi poput $3$, $-5.2$, $\sqrt{2}$, $\pi$).
+- **Što znači eksponent $n$?** Eksponent $n$ označava dimenziju prostora, odnosno broj koordinata.
+  - Za $n = 1$: to je običan realni pravac ($\mathbb{R}$).
+  - Za $n = 2$: to je ravnina (poput lista papira ili ploče) gdje svaka točka ima dvije koordinate: $x = [x_1, x_2]^\mathsf{T}$. To je prostor u kojem rješavamo Zadatke 1, 2 i 4!
+  - Za $n = 3$: to je trodimenzionalni fizikalni prostor u kojem živimo ($x_1, x_2, x_3$).
+  - Za $n > 3$: to je višedimenzionalni prostor parametara (u Zadatku 3 imamo $N+1 = 21$ ili $101$ koordinatu visine nivelete!).
+- **Zašto se zove "euklidski"?** Zato što u njemu vrijedi Euklidska geometrija i Pitagorin poučak za udaljenost: udaljenost točke od ishodišta računa se preko korijena sume kvadrata.
+
+Element tog prostora je vektor-stupac $x \in \mathbb{R}^n$:
 $$x = \begin{bmatrix} x_1 \\ x_2 \\ \vdots \\ x_n \end{bmatrix}, \qquad x_i \in \mathbb{R}, \quad i \in \{1, 2, \dots, n\}.$$
-U kontekstu inženjerske optimizacije, komponente $x_i$ nazivamo **projektnim varijablama** (*decision variables* ili *design variables*). To su parametri sustava koje inženjer ima slobodu birati (npr. debljina stijenke, upravljački napon, visina nivelete ceste, raspodjela mase).
 
-### Skalarni (unutrašnji) produkt i norma
+> **Govorni predložak (kako pročitati pred pločom):**  
+> *"x je vektor-stupac iz n-dimenzionalnog realnog prostora r-n, čije su komponente x-1 do x-n projektne varijable sustava."*
+
+---
+
+### Što predstavlja simbol `:=` ?
+U matematičkom tekstu često susrećemo simbol `:=` (dvotočka jednako).  
+- **Značenje:** `:=` označava **jednakost po definiciji** (*equal by definition*).
+- **Razlika od običnog `=`:** Običan znak jednakosti ($A = B$) tvrdi da su dvije prethodno poznate veličine jednake (npr. $2 + 2 = 4$ ili $f(x^*) = 60.6$). Znak `:=` uvodi **sasvim novu oznaku ili pojam** i definira ga pomoću izraza s desne strane (npr. $q(x) := x^\mathsf{T} A x$).
+- **Govorni izgovor:** *"definirano kao"* ili *"jednako po definiciji"*.
+
+---
+
+### Skalarni (unutrašnji) produkt $\langle x, y \rangle$ i transponiranje $(\cdot)^\mathsf{T}$
 Za dva vektora $x, y \in \mathbb{R}^n$, standardni euklidski skalarni produkt definiran je kao:
-$$\langle x, y \rangle := x^{\mathsf{T}} y = \sum_{i=1}^n x_i y_i,$$
-gdje je $(\cdot)^{\mathsf{T}}$ operacija transponiranja (pretvaranje stupca u redak). Skalarni produkt inducira **euklidsku normu** ($\ell_2$-normu) koja predstavlja fizikalnu duljinu vektora u prostoru:
-$$\|x\|_2 := \sqrt{x^{\mathsf{T}} x} = \sqrt{\sum_{i=1}^n x_i^2}.$$
-Uz euklidsku normu, u inženjerstvu i kolegiju OMRiUS ključne su još dvije p-norme:
-1. **$\ell_1$-norma (Manhattan ili taksi norma):** $\|x\|_1 := \sum_{i=1}^n |x_i|$. U Zadacima 3 i 4 vidjet ćemo da $\ell_1$-norma mjeri volumen iskopa/nasipa ili služi za poticanje rijetkosti (*sparsity*).
-2. **$\ell_\infty$-norma (Chebyshevjeva norma):** $\|x\|_\infty := \max_{1 \leq i \leq n} |x_i|$, koja mjeri maksimalno vršno odstupanje u sustavu.
+$$\langle x, y \rangle := x^{\mathsf{T}} y = \sum_{i=1}^n x_i y_i = x_1 y_1 + x_2 y_2 + \dots + x_n y_n.$$
 
-### Simetrične matrice i parcijalni poredak definitnosti
+- **Što je operacija transponiranja $(\cdot)^\mathsf{T}$?**  
+  Ako je $x$ vektor-stupac dimenzije $n \times 1$, njegovo transponiranje $x^\mathsf{T}$ pretvara stupac u vektor-redak dimenzije $1 \times n$:
+  $$x = \begin{bmatrix} x_1 \\ x_2 \end{bmatrix} \implies x^\mathsf{T} = \begin{bmatrix} x_1 & x_2 \end{bmatrix}.$$
+  Kada pomnožimo redak dimenzije $1 \times n$ sa stupcem dimenzije $n \times 1$, matrično množenje daje skalar (jedan broj) dimenzije $1 \times 1$:
+  $$x^\mathsf{T} y = \begin{bmatrix} x_1 & x_2 \end{bmatrix} \begin{bmatrix} y_1 \\ y_2 \end{bmatrix} = x_1 y_1 + x_2 y_2.$$
+- **Što predstavlja oznaka $\langle x, y \rangle$?**  
+  To su šiljaste zagrade (*angle brackets*) koje u naprednoj matematici označavaju unutrašnji produkt. U euklidskom prostoru $\mathbb{R}^n$ oznake $\langle x, y \rangle$ i $x^\mathsf{T} y$ su **potpuni sinonimi**.
+- **Geometrijsko značenje skalarnog produkta:**  
+  $$\langle x, y \rangle = \|x\|_2 \|y\|_2 \cos \varphi,$$
+  gdje je $\varphi$ kut između vektora.
+  - Ako je $\langle x, y \rangle > 0$, kut je šiljast ($\varphi < 90^\circ$). Vektori "djelomično pokazuju u istom smjeru".
+  - Ako je $\langle x, y \rangle = 0$, kut je točno $90^\circ$ — **vektori su ortogonalni (okomiti)**!
+  - Ako je $\langle x, y \rangle < 0$, kut je tupi ($\varphi > 90^\circ$). Vektori se "opiru" jedan drugome.
+
+> **Govorni predložak:**  
+> *"Skalarni produkt vektora x i y, označen kao x-transponirano puta y ili unutrašnji produkt x zarez y, jednak je sumi umnožaka odgovarajućih koordinata."*
+
+---
+
+### Euklidska norma i duljina vektora
+Skalarni produkt inducira **euklidsku normu** ($\ell_2$-normu) koja predstavlja geometrijsku duljinu vektora u prostoru (udaljenost točke od ishodišta):
+$$\|x\|_2 := \sqrt{\langle x, x \rangle} = \sqrt{x^{\mathsf{T}} x} = \sqrt{\sum_{i=1}^n x_i^2} = \sqrt{x_1^2 + x_2^2 + \dots + x_n^2}.$$
+To je doslovno Pitagorin poučak u $n$ dimenzija!
+
+Uz euklidsku normu, u inženjerstvu i kolegiju OMRiUS ključne su još dvije norme:
+1. **$\ell_1$-norma (Manhattan ili taksi norma):**  
+   $$\|x\|_1 := \sum_{i=1}^n |x_i| = |x_1| + |x_2| + \dots + |x_n|.$$
+   U Zadatku 3 vidjet ćemo da $\ell_1$-norma točno mjeri fizikalni volumen zemljanih radova (iskopa i nasipa).
+2. **$\ell_\infty$-norma (Chebyshevjeva norma):**  
+   $$\|x\|_\infty := \max_{1 \leq i \leq n} |x_i|.$$
+   Mjeri najveće vršno pojedinačno odstupanje među svim koordinatama.
+
+---
+
+### Simetrične matrice i Loewnerov parcijalni poredak ($\succeq$ i $\succ$)
 Skup svih realnih simetričnih matrica dimenzija $n \times n$ označavamo sa $\mathbb{S}^n$:
 $$\mathbb{S}^n := \{A \in \mathbb{R}^{n \times n} \mid A = A^{\mathsf{T}}\}.$$
+Simetrična matrica je matrica koja je zrcalna s obzirom na glavnu dijagonalu ($A_{ij} = A_{ji}$).
+
 Za simetričnu matricu $A \in \mathbb{S}^n$ promatramo **kvadratnu formu** $q(x) = x^{\mathsf{T}} A x$. 
 
 > **Definicija 1.1 (Pozitivna semidefinitnost i definitnost):**
@@ -160,7 +402,14 @@ Za simetričnu matricu $A \in \mathbb{S}^n$ promatramo **kvadratnu formu** $q(x)
 >    $$x^{\mathsf{T}} A x > 0, \quad \forall x \in \mathbb{R}^n \setminus \{0\}.$$
 >    Ekvivalentno: sve svojstvene vrijednosti matrice $A$ su strogo pozitivne ($\lambda_i(A) > 0, \, \forall i$).
 
-Relacija $A \succeq B$ (odnosno $A - B \succeq 0$) naziva se **Loewnerov parcijalni poredak**. To nije obična skalarna nejednakost, već **linearna matrična nejednakost (LMI)**, koja predstavlja temelj koničnog i semidefinitnog programiranja (Predavanje 6 i Zadatak 4).
+- **Što znače simboli $\succeq$ i $\succ$?**  
+  To nisu obične skalarne nejednakosti ($\geq$ i $>$), već **matrične nejednakosti**.  
+  Relacija $A \succeq B$ znači da je razlika matrica $(A - B)$ pozitivno semidefinitna.  
+  Taj parcijalni poredak matrica naziva se **Loewnerov poredak**.  
+  Linearna nejednakost u kojoj nepoznate matrice stoje u Loewnerovom poretku naziva se **Linearna matrična nejednakost (LMI - Linear Matrix Inequality)**, što je temelj Zadatka 4!
+
+> **Govorni predložak:**  
+> *"Matrica A je pozitivno definitna, u oznaci A strogo veće od nula u smislu Loewnera, ako je kvadratna forma x-transponirano A x strogo pozitivna za svaki vektor x različit od nul-vektora, što je ekvivalentno činjenici da su sve svojstvene vrijednosti matrice A strogo veće od nula."*
 
 ---
 
@@ -367,6 +616,9 @@ Budući da točka $x_{\mathrm{test}} = [7, 6]^{\mathsf{T}}$ strogo zadovoljava o
    *Ispravak:* $Q \succeq 0$ jamči da je svaki lokalni minimum globalni, ali jedinstvenost jamči **isključivo stroga konveksnost** ($Q \succ 0$) ili geometrija ograničenja koja siječe prostor u jednoj točki.
 3. **Zanemarivanje omeđenosti:** Pretpostavka da Weierstrassov teorem automatski vrijedi na $\mathcal{F}$. Dopustivi skup $\mathcal{F}$ u Zadatku 1 je **neomeđen**. Postojanje minimuma mora se argumentirati **koercivnošću** funkcije cilja ($f(x) \to \infty$ kada $\|x\| \to \infty$).
 
+
+
+\newpage
 
 ---
 
@@ -614,12 +866,95 @@ U podzadatku (c) traži se geometrijska verifikacija rješenja. Pogledajmo što 
    Odavde je:
    $$\nabla f(x^*) = -\mu_1^* \nabla g_1 = -12.242424 \begin{bmatrix} -1 \\ -1 \end{bmatrix} = 12.242424 \begin{bmatrix} 1 \\ 1 \end{bmatrix}.$$
 
-### Geometrijsko značenje na Slici 2.1 (`fig1_1_qp_primal_geometry.pdf`):
-- Nivo-krivulje funkcije cilja $f(x) = c$ su elipse nagnute u ravnini zbog mješovitog člana $-0.3 x_1 x_2$.
-- Pravac aktivnog ograničenja $x_1 + x_2 = 10$ je tangenta na elipsu razine $f(x) = 60.606$ točno u točki $x^*$.
-- Vektor gradijenta funkcije cilja $\nabla f(x^*)$ okomit je na tangentu elipse i usmjeren prema van (u smjeru rasta funkcije).
-- Vektor gradijenta ograničenja $\nabla g_1 = [-1, -1]^{\mathsf{T}}$ okomit je na pravac ograničenja i usmjeren prema nedopuštenom području.
-- Budući da su ti vektori antiparalelni ($\nabla f(x^*) = -\mu_1^* \nabla g_1$ uz $\mu_1^* > 0$), nivo-elipsa i pravac ograničenja se **glatko dodiruju**, a svako kretanje duž pravca vodi u elipse s većom vrijednošću funkcije cilja.
+---
+
+### Grafički prikaz geometrije problema (Slika 2.1 seminara)
+
+![Geometrija Zadatka 1: Nivo-elipse funkcije cilja, dopustivi skup i ravnoteža gradijenata](figures/fig1_1_qp_primal_geometry.png)
+
+#### Detaljna dekonstrukcija elemenata grafa:
+1. **Koordinatne osi:** Horizontalna os je projektna varijabla $x_1$, a vertikalna os je projektna varijabla $x_2$.
+2. **Slobodni minimum (plavi križić):** Točka $x_{\mathrm{unc}} = (-0.898, 0.683)$ leži u drugom kvadrantu (lijevo gore od ishodišta). To bi bio globalni minimum da nema nikakvih ograničenja ($f = -2.21$).
+3. **Koncentrične elipse (nivo-krivulje):** Prikazuju linije konstantne vrijednosti funkcije cilja $f(x) = c$. Što je elipsa veća, to je vrijednost troška $f(x)$ veća. Elipse su blago nagnute zbog spregnutog člana $-0.3 x_1 x_2$.
+4. **Crveni pravac ($g_1 = 0$):** Pravac $-x_1 - x_2 + 10 = 0 \iff x_1 + x_2 = 10$. Siječe osi u točkama $(10, 0)$ i $(0, 10)$. Dopušteni poluprostor leži **iznad i desno** od pravca ($x_1 + x_2 \geq 10$).
+5. **Plavi pravac ($g_2 = 0$):** Pravac $x_1 - x_2 - 3 = 0 \iff x_2 = x_1 - 3$. Siječe osi u $(3, 0)$ i $(0, -3)$. Dopušteni poluprostor leži **iznad i lijevo** od pravca ($x_2 \geq x_1 - 3$).
+6. **Zeleno osjenčani skup $\mathcal{F}$:** Konveksni, neomeđeni klin u prvom kvadrantu omeđen ovim dvama pravcima.
+7. **Točka sjecišta $(6.5, 3.5)$:** Vrh zelenog klina gdje se pravci sijeku. Vidimo da nivo-elipsa prolazi kroz tu točku s vrijednošću $f = 63.63$, što je veće od optimalne vrijednosti $60.61$.
+8. **Točka globalnog optimuma $x^* = (5.758, 4.242)$ (crvena točka):** Nalazi se točno na crvenom pravcu $g_1 = 0$, s lijeve strane od točke sjecišta.
+9. **Dodir nivo-elipse i pravca:** Nivo-elipsa razine $f = 60.606$ tangira pravac $g_1 = 0$ točno u točki $x^*$.
+10. **Vektori gradijenata (strelice u $x^*$):**
+    - Crna strelica $\nabla f(x^*)$ pokazuje okomito na elipsu prema gore i desno (smjer najbržeg rasta funkcije).
+    - Crvena strelica $\nabla g_1$ pokazuje okomito na pravac prema dolje i lijevo (vanjska normala prema nedopuštenom području).
+    - Strelice su savršeno kolinearne i suprotnih smjerova: $\nabla f(x^*) = -\mu_1^* \nabla g_1$, što vizualno dokazuje KKT ravnotežu!
+
+---
+
+### Vodič za crtanje grafa Zadatka 1 na ploči pred ispitivačem (Korak po korak za kredu i ploču)
+
+Ako profesor Jokić na usmenom ispitu kaže: *"Kolega, uzmite kredu i nacrtajte geometriju vašeg prvog zadatka na ploči!"*, izvedite sljedeći postupak u 7 koraka:
+
+```
+                  x2 ^
+                     |                  / g2(x)=0: x2 = x1 - 3
+                  10 +   \             /
+                     |    \           /    Dopustivi skup F
+                     |     \         /     (osjenčano)
+                   5 +------\-------* (6.5, 3.5)
+                     |       x*    / \
+                     |        \   /   \
+                     |         \ /     \
+                  ---+----------+-------+---> x1
+                   0 |          3       10
+                     |   g1(x)=0: x1 + x2 = 10
+```
+
+#### Korak 1: Crtanje koordinatnih osi
+- Nacrtajte horizontalnu os i označite je sa $x_1$, te vertikalnu os i označite je sa $x_2$.
+- Na osi $x_1$ označite točke $3$, $6.5$ i $10$. Na osi $x_2$ označite $3.5$ i $10$.
+
+#### Korak 2: Crtanje pravca prvog ograničenja $g_1(x) = 0$
+- Spojite točke $(0, 10)$ na osi $x_2$ i $(10, 0)$ na osi $x_1$ ravnom crtom (nagib $-1$).
+- Napišite uz pravac jednadžbu: $x_1 + x_2 = 10$.
+- Recite profesoru: *"Ograničenje glasi $-x_1 - x_2 \leq -10$, što množenjem s $-1$ daje $x_1 + x_2 \geq 10$. Dakle, dopušteno područje je iznad i desno od pravca."*
+- Nacrtajte malu strelicu normale $\nabla g_1 = [-1, -1]^\mathsf{T}$ koja iz pravca pokazuje prema ishodištu (u nedopušteno područje).
+
+#### Korak 3: Crtanje pravca drugog ograničenja $g_2(x) = 0$
+- Nacrtajte pravac $x_2 = x_1 - 3$. On siječe os $x_1$ u točki $(3, 0)$, a prolazi kroz točku $(6.5, 3.5)$. Nagib pravca je $+1$ (kut od $45^\circ$).
+- Recite profesoru: *"Ograničenje je $x_1 - x_2 \leq 3 \iff x_2 \geq x_1 - 3$. Dakle, dopušteno područje je iznad i lijevo od ovog pravca."*
+
+#### Korak 4: Šrafiranje dopustivog skupa $\mathcal{F}$
+- Osjenčajte područje koje se nalazi istovremeno iznad oba pravca.
+- Istaknite točku sjecišta pravaca:
+  $$\begin{cases} x_1 + x_2 = 10 \\ x_1 - x_2 = 3 \end{cases} \implies x_{\mathrm{sjecište}} = \begin{bmatrix} 6.5 \\ 3.5 \end{bmatrix}.$$
+- Recite profesoru: *"Dopustivi skup $\mathcal{F}$ je neomeđeni konveksni poliedarski konus s vrhom u točki $(6.5, 3.5)$."*
+
+#### Korak 5: Crtanje točke slobodnog minimuma i nivo-elipsi
+- Označite točku slobodnog minimuma $x_{\mathrm{unc}} \approx (-0.9, 0.7)$ u drugom kvadrantu.
+- Objasnite: *"Budući da je $Q \succ 0$, funkcija cilja je eliptički paraboloid čije su nivo-krivulje elipse sa središtem u točki slobodnog minimuma."*
+- Skicirajte dvije-tri manje koncentrične elipse oko slobodnog minimuma.
+- Pokažite rukom kako elipse rastu povećanjem vrijednosti $f(x)$ i šire se prema prvom kvadrantu.
+
+#### Korak 6: Određivanje točke prvog kontakta (Optimum $x^*$)
+- Nacrtajte elipsu koja prvi put dodiruje zeleno dopustivo područje.
+- **Ključan detalj:** Ta elipsa **ne dodiruje** vrh $(6.5, 3.5)$, već dodiruje crveni pravac $g_1 = 0$ u točki $x^* = (5.76, 4.24)$ koja se nalazi ulijevo i gore od sjecišta!
+- Označite točku $x^*$ masnom točkom i napišite koordinate: $x_1^* = \frac{190}{33} \approx 5.76$, $x_2^* = \frac{140}{33} \approx 4.24$.
+
+#### Korak 7: Crtanje vektora gradijenata u optimumu
+- U točki $x^*$ povucite tangentu (to je sam pravac $g_1 = 0$).
+- Nacrtajte strelicu gradijenta cilja $\nabla f(x^*)$ okomitu na pravac, usmjerenu prema gore-desno.
+- Nacrtajte strelicu gradijenta ograničenja $\nabla g_1$ okomitu na pravac, usmjerenu prema dolje-lijevo.
+- Napišite na ploči formulu ravnoteže:
+  $$\nabla f(x^*) = -\mu_1^* \nabla g_1(x^*), \qquad \mu_1^* = 12.24 > 0.$$
+
+---
+
+### Govorni predložak pri crtanju na ploči (izgovorite ovo pred profesorom):
+> *"Profesore, na ploči sam skicirao geometrijsku strukturu problema.  
+> Dopustivi skup $\mathcal{F}$ je konveksan skup nastao presjekom dvaju poluprostora, s vrhom u sjecištu pravaca na koordinatama $(6.5, 3.5)$.  
+> Slobodni minimum funkcije leži u drugom kvadrantu na $(-0.9, 0.68)$. Kako povećavamo vrijednost funkcije cilja, nivo-elipse rastu i šire se prema dopustivom skupu.  
+> Prva nivo-elipsa koja dotakne dopustivi skup dodiruje ga tangencijalno u točki $x^* = (5.76, 4.24)$ na pravcu prvog ograničenja.  
+> U toj točki nivo-elipsa i pravac dijele istu tangentu. Zato su njihove normale kolinearne, ali suprotnih smjerova: gradijent funkcije cilja $\nabla f$ 'gura' prema van, dok gradijent ograničenja $-\mu_1 \nabla g_1$ pruža reakciju podloge.  
+> Budući da je multiplikator $\mu_1 = 12.24$ strogo pozitivan, zadovoljen je KKT uvjet dualne dopustivosti i stacionarnosti. Drugo ograničenje u ovoj točki ima rezervu od $1.48$, pa je njegov multiplikator $\mu_2 = 0$. Sjecište pravaca $(6.5, 3.5)$ se odbacuje jer bi tamo multiplikator $\mu_2$ bio negativan ($-2.45$), što znači da funkcija cilja opada kretanjem duž pravca $g_1=0$ upravo prema našem optimumu $x^*$."*
 
 ---
 
@@ -656,6 +991,9 @@ U podzadatku (c) traži se geometrijska verifikacija rješenja. Pogledajmo što 
 3. **Zabluda o broju aktivnih ograničenja u $\mathbb{R}^2$:** Česta je zabluda da u dvodimenzionalnom problemu u optimumu uvijek moraju biti aktivna dva ograničenja. Kao što Zadatak 1 jasno pokazuje, optimum leži na glatkom dijelu pravca gdje je aktivno samo **jedno** ograničenje ($g_1 = 0$), dok je drugo neaktivno ($g_2 < 0$).
 
 
+
+\newpage
+
 ---
 
 # POGLAVLJE 3: Lagrangeova dualnost i analiza osjetljivosti (Shadow Prices)
@@ -672,7 +1010,19 @@ U podzadatku (c) traži se geometrijska verifikacija rješenja. Pogledajmo što 
 
 ## 3.1 Koncept Lagrangeove dualnosti: Dualna funkcija, slaba i jaka dualnost
 
-Lagrangeova dualnost jedan je od najdubljih i najljepših koncepata u matematičkoj optimizaciji. Ona nam omogućuje da težak optimizacijski problem s ograničenjima transformiramo u komplementaran problem koji često ima jednostavnija ograničenja ili daje zajamčene donje granice optimalne vrijednosti (prof. Jokić, Predavanje 4).
+### Pristup za početnike: Što je uopće "dualnost" i zašto nam treba?
+Zamislite da vodite proizvodnu radionicu. Imate ograničene resurse (npr. sate rada strojeva i zalihe sirovina) i želite proizvesti proizvode $x$ tako da minimizirate troškove proizvodnje $f(x)$ uz poštivanje kapaciteta $g_i(x) \leq 0$. To je **primarni problem**.
+
+Sada zamislite vanjskog poduzetnika (otkupljivača) koji vam želi iznajmiti ili otkupiti vaše strojeve i sirovine. On vam postavlja pitanje:
+*"Koliku jediničnu cijenu $\mu_i \geq 0$ ti moram platiti po satu rada stroja ili kilogramu sirovine, tako da ti se više isplati prepustiti resurse meni nego samostalno proizvoditi?"*
+To je **dualni problem**:
+- Optimizacijske varijable više nisu fizički proizvodi $x$, već **cijene resursa $\mu_i$** (*dualne varijable* ili *Lagrangeovi množitelji*).
+- Poduzetnik želi maksimizirati ponuđenu cijenu, ali tako da vam njegova ponuda i dalje bude prihvatljiva.
+- **Slaba dualnost ($\theta(\mu) \leq p^*$):** Što god poduzetnik ponudio, njegova ponuda nikada ne može premašiti stvarni trošak optimalne proizvodnje. Dualna funkcija uvijek daje **sigurnu donju granicu** troška!
+- **Jaka dualnost ($d^* = p^*$):** Kod konveksnih inženjerskih problema uz Slaterov uvjet, postoji točka u kojoj se ove dvije perspektive savršeno podudaraju! Najveća moguća donja granica jednaka je točno minimalnom primarnom trošku.
+- **Cijena u sjeni (*Shadow Price*):** Optimalna vrijednost $\mu_i^*$ govori vam točno koliko bi vam pao ukupni trošak ako biste uspjeli opustiti $i$-to ograničenje za jednu jedinicu!
+
+---
 
 ### Minimax formulacija primarnog problema
 Promotrimo primarni problem optimizacije:
@@ -688,9 +1038,14 @@ $$\max_{\mu \geq 0} \mathcal{L}(x, \mu) = \max_{\mu \geq 0} \left[ f(x) + \sum_{
 Dakle, primarni problem možemo zapisati u ekvivalentnom bezuvjetnom obliku:
 $$p^* = \min_{x \in \mathbb{R}^n} \left[ \max_{\mu \geq 0} \mathcal{L}(x, \mu) \right]. \tag{3.3}$$
 
+---
+
 ### Lagrangeova dualna funkcija
 Lagrangeova dualna funkcija $\theta: \mathbb{R}^m \to \mathbb{R} \cup \{-\infty\}$ nastaje jednostavnom **zamjenom redoslijeda minimizacije i maksimizacije**:
 $$\theta(\mu) := \inf_{x \in \mathbb{R}^n} \mathcal{L}(x, \mu) = \inf_{x \in \mathbb{R}^n} \left[ f(x) + \mu^{\mathsf{T}} g(x) \right]. \tag{3.4}$$
+
+> **Govorni predložak:**  
+> *"Lagrangeova dualna funkcija theta od mi definirana je kao infimum Lagrangiana po svim točkama x iz prostora r-n za fiksni vektor Lagrangeovih multiplikatora mi."*
 
 > **Teorem 3.1 (Konkavnost dualne funkcije):**  
 > Dualna funkcija $\theta(\mu)$ je **uvijek konkavna**, čak i ako je polazni primarni problem (funkcija $f$ ili funkcije $g_i$) izrazito nekonveksan!  
@@ -909,6 +1264,9 @@ To znači da imamo **rezervu (slack)** od točno $s_2 = 1.484848\,\mathrm{m}$.
 3. **Zanemarivanje konstante pri izračunu $d^*$:** Prilikom rješavanja dualnog QP-a u MATLAB-u, funkcija `quadprog` vraća vrijednost kvadratne i linearne forme. Student često zaboravi dodati slobodni konstantni član $-\frac{1}{2} c^{\mathsf{T}} Q^{-1} c = -1.9216$ i zatim se čudi zašto postoji prividni procjep između $p^*$ i $d^*$.
 
 
+
+\newpage
+
 ---
 
 # POGLAVLJE 4: Robusno programiranje pod poliedarskom nesigurnošću
@@ -1121,10 +1479,79 @@ $$\frac{\Delta f}{f(x_{\mathrm{nom}}^*)} \times 100\% = \frac{24.017901}{60.6060
 
 ## 4.6 Povezivanje sa Slikom 3.1 seminara (`fig2_1_robust_envelope_monte_carlo.pdf`)
 
-Na slici 3.1 seminara Krešimira Hartla prikazana je geometrija robusnog rješenja:
-1. **Snop sivih pravaca:** Prikazuje 100 slučajnih realizacija granica ograničenja iz Monte Carlo eksperimenta. Pravci tvore gustu "anvelopu" ili pojas nesigurnosti.
-2. **Položaj točke $x_{\mathrm{nom}}^*$:** Nominalna točka leži točno po sredini sivog pojasa prvog ograničenja. Zato polovina realizacija prolazi "ispod" nje (dopustivo), a polovina "iznad" nje (kršenje ograničenja).
-3. **Položaj točke $x_{\mathrm{rob}}^*$:** Robusna točka leži točno na sjecištu **najudaljenijih rubnih pravaca** anvelope (vrhovi $k=1$ i $k=7$). Čitav sivi snop realizacija leži s jedne strane robusne točke, što vizualno demonstrira zašto je stopa kršenja točno 0%.
+U Zadatku 2 vizualizacija robusnosti i Monte Carlo simulacije ključna je za demonstraciju uspješnosti sinteze.
+
+![Robusna anvelopa nesigurnosti, nominalno rješenje i Monte Carlo simulacija](figures/fig2_1_robust_envelope_monte_carlo.png)
+
+#### Detaljna dekonstrukcija elemenata grafa:
+1. **Koordinatne osi:** Horizontalna os je $x_1$, vertikalna os je $x_2$.
+2. **Sivi snop pravaca (Monte Carlo anvelopa):** Prikazuje 100 slučajnih realizacija granica ograničenja. Zbog varijacija koeficijenata $a_{ij} \in [\pm 15\%]$, nominalni pravci se ne pomiču paralelno, već se rotiraju i translatiraju, tvoreći sivi pojas ili anvelopu nesigurnosti.
+3. **Crveni križić — Nominalni optimum $x_{\mathrm{nom}}^* = (5.76, 4.24)$:**
+   - Leži točno u sredini sivog pojasa prvog ograničenja!
+   - Čak **54 od 100 sivih linija** prolaze iznad i desno od crvene točke, što znači da je u tim realizacijama točka nedopustiva. To vizualno objašnjava zašto je nominalni projekt doživio slom u 54% slučajeva!
+4. **Zelena kružnica — Robusni optimum $x_{\mathrm{rob}}^* = (6.50, 5.26)$:**
+   - Nalazi se pomaknuta prema gore i desno (dublje u dopušteno područje).
+   - Leži točno na sjecištu **vanjskih rubnih linija anvelope** (vrhovi $k=1$ i $k=7$).
+   - Nijedan jedini sivi pravac (0 od 100) ne siječe zelenu točku niti zalazi u njezino dopušteno područje. Time je grafički dokazana stopostotna pouzdanost robusnog rješenja.
+5. **Cijena robusnosti:** Udaljenost između crvene točke $(5.76, 4.24)$ i zelene točke $(6.50, 5.26)$ izravno vizualizira "cijenu robusnosti" — morali smo se pomaknuti na višu nivo-elipsu ($f$ je porastao sa $60.61$ na $84.62$) kako bismo zajamčili sigurnost.
+
+---
+
+### Vodič za crtanje robusne anvelope na ploči pred ispitivačem (Korak po korak za kredu i ploču)
+
+Ako profesor Jokić zatraži: *"Skicirajte na ploči zašto je nominalno rješenje palo na Monte Carlo testu, a robusno izdržalo!"*, slijedite ovaj postupak:
+
+```
+         x2 ^
+            |                      /  / / Najgori rub k=7 (1.15 x1 - 0.85 x2 = 3)
+            |                     /  / /  
+            |                    /  / /   / Anvelopa drugog ograničenja
+            |                   /  / /   /
+            |                  /  / / x_rob* (6.5, 5.26) [Sjecište k=1 i k=7]
+            |                 /  / / /
+            |    \  \  \     /  / / /
+            |     \  \  \   /  / / /
+            |      \  x_nom*  / / /
+            |       \  \  \  / / /
+            |        \  \  \/ / /
+            |         \  \  \  /
+            +----------\--\--\+----------------> x1
+                        \  \  \ Najgori rub k=1 (0.85 x1 + 0.85 x2 = 10)
+                         \  \ Anvelopa prvog ograničenja
+```
+
+#### Korak 1: Crtanje koordinatnih osi i nominalnog rješenja
+- Nacrtajte osi $x_1$ i $x_2$.
+- Povucite nominalni pravac $x_1 + x_2 = 10$ i označite točku $x_{\mathrm{nom}}^* = (5.76, 4.24)$ na njemu.
+- Recite profesoru: *"Ovo je nominalni optimum iz Zadatka 1. On leži točno na granici."*
+
+#### Korak 2: Crtanje pojasa nesigurnosti prvog ograničenja
+- Objasnite: *"Zbog tolerancije od $\pm 15\%$, koeficijenti $a_{11}$ i $a_{12}$ variraju u intervalu $[-1.15, -0.85]$."*
+- Pokažite zašto je najnepovoljniji scenarij onaj s najmanjim apsolutnim vrijednostima:
+  $$-0.85 x_1 - 0.85 x_2 \leq -10 \iff x_1 + x_2 \geq \frac{10}{0.85} \approx 11.76.$$
+- Povucite pravac $x_1 + x_2 = 11.76$ (pomaknut udesno i gore u odnosu na nominalni).
+- Povucite i suprotni rub $x_1 + x_2 = \frac{10}{1.15} \approx 8.70$.
+- Između ta dva ruba povucite nekoliko paralelnih ili blago zarotiranih crtica i recite:
+  *"Ovo je pojas nesigurnosti prvog ograničenja. Vidimo da nominalna točka leži točno u sredini tog pojasa. Zato svaka realizacija u kojoj je zbroj koeficijenata manji od nominalnog čini nominalnu točku nedopustivom — odatle stopa otkaza od 54%!"*
+
+#### Korak 3: Crtanje pojasa nesigurnosti drugog ograničenja
+- Nominalni pravac je $x_1 - x_2 = 3$.
+- Najnepovoljniji rub (vrh $k=7$) dobiva se kada se $a_{21}$ poveća na $+1.15$, a $a_{22}$ po apsolutnoj vrijednosti smanji na $-0.85$:
+  $$1.15 x_1 - 0.85 x_2 \leq 3 \iff x_2 \geq \frac{1.15}{0.85} x_1 - \frac{3}{0.85} \approx 1.35 x_1 - 3.53.$$
+- Povucite ovaj najstrmiji pravac s lijeve strane nominalnog pravca.
+
+#### Korak 4: Konstrukcija robusnog optimuma $x_{\mathrm{rob}}^*$
+- Pronađite sjecište dvaju najnepovoljnijih pravaca:
+  $$\begin{cases} 0.85 x_1 + 0.85 x_2 = 10 \\ 1.15 x_1 - 0.85 x_2 = 3 \end{cases} \implies x_{\mathrm{rob}}^* = \begin{bmatrix} 6.500000 \\ 5.264706 \end{bmatrix}.$$
+- Označite točku $x_{\mathrm{rob}}^*$ na ploči.
+- Objasnite profesoru: *"Robusni optimum postavljen je u sjecište najgorih rubova anvelope. On se nalazi izvan dosega bilo koje moguće realizacije unutar zadanih $\pm 15\%$ tolerancija. Zato na Monte Carlo simulaciji ima stopu otkaza od točno 0%."*
+
+---
+
+### Govorni predložak pri crtanju na ploči:
+> *"Profesore, skica na ploči jasno objašnjava zašto je nominalni sustav nepouzdan, a robusni stopostotno siguran.  
+> Nominalno rješenje $x_{\mathrm{nom}}^*$ optimizirano je bez svijesti o nesigurnosti i smjestilo se točno na nominalnu granicu. Kada koeficijenti variraju za $\pm 15\%$, stvarna granica ograničenja oscilira unutar ovog šrafiranog pojasa anvelope. Nominalna točka ostaje 'zarobljena' usred tog pojasa, pa je više od polovice slučajnih poremećaja (točno 54%) prebacuje u nedopušteno područje.  
+> Robusnom optimizacijom prešli smo na ekvivalentni problem konveksne ljuske od 8 determinističkih ograničenja. Rješenje $x_{\mathrm{rob}}^* = (6.50, 5.26)$ pomaknulo se u sjecište najgorih rubova (vrhovi 1 i 7), čime je čitav pojas nesigurnosti ostao iza leđa rješenja. To jamči stopu kršenja od 0%, uz cijenu robusnosti od +39.63% porasta funkcije cilja."*
 
 ---
 
@@ -1184,6 +1611,9 @@ Ako parametri variraju unutar elipsoida $\mathcal{U} = \{a^0 + P u \mid \|u\|_2 
 2. **Tvrdnja da je robusni problem konzervativan:** Studenti često robusnu optimizaciju poistovjećuju s inženjerskim "faktorima sigurnosti" koji su često proizvoljni i konzervativni. Kao što smo dokazali u Teoremu 4.1, worst-case optimizacija nad poliedrom vrhova je **egzaktna**, a ne konzervativna.
 3. **Miješanje broja realizacija s brojem ograničenja:** Prilikom postavljanja Monte Carlo simulacije studenti ponekad misle da se simulacijom rješava problem. Monte Carlo služi **isključivo za naknadnu statističku verifikaciju** ponašanja sustava, dok se samo robusno rješenje dobiva analitički ili determinističkim QP solverom.
 
+
+
+\newpage
 
 ---
 
@@ -1371,6 +1801,9 @@ $$J[y] = \int_0^L |y(x) - h(x)| \, \mathrm{d}x \approx J_{\mathrm{disc}} = \sum_
 3. **Zaboravljanje faktora $\Delta x^2$ u nazivniku matrice $D_2$:** Druga derivacija ima mjernu jedinicu $\mathrm{m}^{-1}$. Ako se u nazivnik stavi $\Delta x$ umjesto $\Delta x^2$, ograničenje zakrivljenosti postaje drastično preblago ili prestrogo ovisno o koraku mreže.
 
 
+
+\newpage
+
 ---
 
 # POGLAVLJE 6: Egzaktna transformacija u Linearni Program (LP) i analiza degeneracije
@@ -1533,12 +1966,89 @@ To znači da je problem linearnog programiranja **degeneriran** (optimalna vrije
 
 ## 6.7 Povezivanje sa Slikama 4.1, 4.2 i 4.3 seminara
 
-1. **Slika 4.1 (`fig3_1_road_case_A.pdf`):**  
-   Prikazuje profil nivelete za slučaj A ($b_2 = 0.5$). Vidljivo je da niveleta vrlo vjerno prati prirodni teren jer joj dopuštena zakrivljenost omogućuje brže prilagođavanje brežuljcima i udolinama.
-2. **Slika 4.2 (`fig3_2_road_case_B.pdf`):**  
-   Prikazuje profil nivelete za slučaj B ($b_2 = 0.2$). Krivulja nivelete je znatno "ispeglana", s blagim vertikalnim radijusima. Vidljiva su velika odstupanja od prirodnog reljefa, posebice na stacionaži oko $x \approx 6\,\mathrm{m}$ gdje nastaje veliki nasip.
-3. **Slika 4.3 (`fig3_3_road_constraint_check.pdf`):**  
-   Dijagram verifikacije ograničenja. Prikazuje vrijednosti nagiba $|\nabla y_i|$ i druge derivacije $|\nabla^2 y_i|$ duž trase. Vidljivo je da druga derivacija za slučaj B točno udara u gornju granicu $0.2\,\mathrm{m}^{-1}$ duž većeg dijela trase, što grafički potvrđuje aktivnost ograničenja.
+Vizualna analiza rezultata Zadatka 3 ključna je za razumijevanje inženjerskog kompromisa između troškova zemljanih radova i dinamičke udobnosti prometnice.
+
+### Slika 4.1: Slučaj A — Visoka dopuštena zakrivljenost ($b_2 = 0.5\,\mathrm{m}^{-1}$)
+
+![Profil nivelete ceste za slučaj A (b2 = 0.5)](figures/fig3_1_road_case_A.png)
+
+- **Dekonstrukcija:** Crna točkasta linija prikazuje prirodni reljef terena $h(x)$. Plava puna linija prikazuje optimalnu niveletu ceste $y(x)$.
+- **Inženjerski uvid:** Kako je dopuštena veća vertikalna zakrivljenost ($b_2 = 0.5$), niveleta se vrlo agilno prilagođava udolinama i brežuljcima terena. Površina između plave i crne linije je vrlo mala ($J^* = 1.966\,\mathrm{m}^2$). Zemljani radovi su minimalni.
+
+---
+
+### Slika 4.2: Slučaj B — Stroga dinamička udobnost ($b_2 = 0.2\,\mathrm{m}^{-1}$)
+
+![Profil nivelete ceste za slučaj B (b2 = 0.2)](figures/fig3_2_road_case_B.png)
+
+- **Dekonstrukcija:** Crvena puna linija prikazuje niveletu uz visoke zahtjeve udobnosti.
+- **Inženjerski uvid:** Strogo ograničenje $b_2 = 0.2$ prisiljava trasu na znatno veće vertikalne radijuse zaokruženja ($R \geq 5\,\mathrm{m}$). Niveleta više ne može pratiti prirodnu depresiju terena na stacionaži $x \in [4, 8]\,\mathrm{m}$. Nastaje **veliki nasip** na $x \approx 6\,\mathrm{m}$ visine preko $0.8\,\mathrm{m}$. Trošak zemljanih radova raste za čak **+25.0%** ($J^* = 2.457\,\mathrm{m}^2$).
+
+---
+
+### Slika 4.3: Dijagram verifikacije ograničenja i zasićenje zakrivljenosti
+
+![Verifikacija ograničenja nagiba i zakrivljenosti duž trase ceste](figures/fig3_3_road_constraint_check.png)
+
+- **Gornji graf (Nagib $|y'(x)|$):** Za oba slučaja nagib trase ostaje unutar zadanih $\pm 0.5$ (maksimalni nagib je oko $0.42$, što znači da ograničenje nagiba nije aktivno).
+- **Donji graf (Zakrivljenost $|y''(x)|$):**  
+  - Za Slučaj A (plavo): zakrivljenost doseže vršne vrijednosti oko $0.45$, povremeno dotičući granicu $0.5$.
+  - Za Slučaj B (crveno): zakrivljenost **dugotrajno leži točno na gornjoj granici $0.20\,\mathrm{m}^{-1}$** duž dionice $x \in [4, 7]\,\mathrm{m}$. Ograničenje zakrivljenosti je **aktivno i zasićeno**, što dokazuje da je upravo kinematika vozila usko grlo koje poskupljuje trasu!
+
+---
+
+### Vodič za crtanje profila ceste na ploči pred ispitivačem (Korak po korak)
+
+Ako profesor Jokić zatraži: *"Skicirajte na ploči kako ograničenje druge derivacije mijenja profil nivelete i zašto to poskupljuje zemljane radove!"*, nacrtajte sljedeće:
+
+```
+  Visina y [m] ^
+               |                               Terenski greben
+             4 +------------------------------* h(10)=4.0
+               |                           .-'
+               |                 .---.    /  --.-.-. Niveleta B (b2=0.2)
+               |                /     \  /.-'        [Ispeglana, veliki nasip!]
+             2 +    .-.        /       \/
+               |   /   \      /         
+             1 +--*     \    /          
+               | h(0)=1  '--' Terenska depresija (x ~ 6m)
+               +----+---------+---------+------> Udaljenost x [m]
+               0    2         6         10
+```
+
+#### Korak 1: Crtanje koordinatnog sustava i rubnih točaka
+- Horizontalna os je stacionaža trase $x \in [0, 10]\,\mathrm{m}$.
+- Vertikalna os je nadmorska visina $y \in [0, 5]\,\mathrm{m}$.
+- Označite početnu točku $(0, 1.0)$ i završnu točku $(10, 4.0)$ — to su fiksirani Dirichletovi rubni uvjeti.
+
+#### Korak 2: Skiciranje prirodnog terena $h(x)$
+- Nacrtajte valoviti profil: počinje na $1.0\,\mathrm{m}$, lagano se uzdiže oko $x \approx 2\,\mathrm{m}$, zatim se spušta u uvalu na $x \approx 5-6\,\mathrm{m}$, i na kraju strmo raste do $4.0\,\mathrm{m}$.
+- Napišite uz krivulju: *"Prirodni reljef $h(x)$"*.
+
+#### Korak 3: Crtanje nivelete Slučaja A ($b_2 = 0.5$)
+- Povucite liniju koja vjerno prati uvalu i brežuljak, držeći se blizu terena.
+- Objasnite: *"Za $b_2 = 0.5$ zakrivljenost dopušta brzu promjenu nagiba. Niveleta ulazi u uvalu, pa je površina zemljanih radova minimalna ($J^* = 1.97$)."*
+
+#### Korak 4: Crtanje nivelete Slučaja B ($b_2 = 0.2$) i osjenčavanje nasipa
+- Pokažite kako za $b_2 = 0.2$ cesta ne smije imati oštar radijus.
+- Povucite znatno ravniju, položeniju liniju koja "preskače" uvalu na $x \approx 6\,\mathrm{m}$.
+- Osjenčajte prostor između nivelete B i prirodnog terena na $x \approx 6\,\mathrm{m}$.
+- Recite profesoru: *"Ovdje nastaje veliki nasip! Cesta 'lebdi' iznad uvale jer bi spuštanje u uvalu stvorilo preveliko centrifugalno ubrzanje za putnike. Upravo taj nasip povećava ukupni volumen za 25%."*
+
+#### Korak 5: Skiciranje grafa druge derivacije $|y''|$
+- Ispod glavnog grafa nacrtajte malu horizontalnu os za drugu derivaciju.
+- Povucite isprekidanu crtu na razini $b_2 = 0.2$.
+- Nacrtajte kako krivulja druge derivacije za slučaj B 'udara' u tu crtu i drži se horizontalno na njoj duž uvale.
+- Napišite: *"Zasićenje ograničenja (aktivna veza)"*.
+
+---
+
+### Govorni predložak pri crtanju na ploči:
+> *"Profesore, skica prikazuje ključni fizikalno-inženjerski konflikt u Zadatku 3.  
+> Funkcija cilja minimizira površinu zemljanih radova $\ell_1$-normom. Kada bismo gledali samo trošak iskopa i nasipa, niveleta bi točno pratila teren.  
+> Međutim, druga derivacija $y''(x)$ fizikalno predstavlja vertikalnu zakrivljenost ceste, koja pri brzini $v_0$ generira vertikalno centrifugalno ubrzanje na putnike $a_z = v_0^2 y''(x)$.  
+> Kada postrožimo zahtjev udobnosti s $b_2 = 0.5$ na $b_2 = 0.2\,\mathrm{m}^{-1}$ (Slučaj B), minimalni radijus vertikalnog zaokruženja povećava se s $2\,\mathrm{m}$ na $5\,\mathrm{m}$. Niveleta više ne smije naglo ponirati u uvalu na 6. metru trase, već je mora premostiti blagim lukom.  
+> Time nastaje masivan nasip, a ograničenje druge derivacije ostaje zasićeno duž čitave depresije terena. To povećava volumen zemljanih radova za čak 25% ($2.457\,\mathrm{m}^2$ naspram $1.966\,\mathrm{m}^2$), što je izravna cijena putničke udobnosti."*
 
 ---
 
@@ -1574,6 +2084,9 @@ To znači da je problem linearnog programiranja **degeneriran** (optimalna vrije
 2. **Pogrešan broj redaka u matrici ograničenja nejednakosti:** Student napiše da matrica ima $4N$ nejednakosti umjesto $6N$. Uvijek provjeriti zbroj: $2(N+1)$ za $\ell_1$ + $2N$ za nagib + $2(N-1)$ za zakrivljenost $= 6N$ redaka!
 3. **Tvrdnja da se na rijetkoj mreži dobiva točniji profil:** Ne razlikovati vrijednost funkcije cilja od kvalitete modela. Manji $J^*$ na rijetkoj mreži je numerički artefakt podcjenjivanja integrala pravokutnom formulom, a ne superiornost rješenja.
 
+
+
+\newpage
 
 ---
 
@@ -1772,9 +2285,71 @@ for kseg = 0:T-1
 end
 ```
 
-### Karakteristike odziva na Slici 5.1 (`fig4_1_open_loop_divergence.pdf`):
-- **Vremenski odziv:** Stanja $x_1(t)$ i $x_2(t)$ pokazuju oscilacije čija amplituda progresivno buja. Na $t = 20\,\mathrm{s}$ vršna vrijednost prelazi $7.0$.
-- **Fazni portret ($x_1$ vs. $x_2$):** Trajektorija tvori spiralu koja se **odmotava prema van**, demonstrirajući divergenciju otvorenog kruga.
+### Prikaz simulacije otvorenog kruga (Slika 5.1 seminara)
+
+![Divergencija otvorenog kruga sklopnog sustava: Vremenski odziv i odmotavajuća spirala faznog portreta](figures/fig4_1_open_loop_divergence.png)
+
+#### Detaljna dekonstrukcija elemenata grafa:
+1. **Lijevi graf — Vremenski odziv stanja $x_1(t)$ i $x_2(t)$:**
+   - Horizontalna os je vrijeme $t \in [0, 20]\,\mathrm{s}$.
+   - Vertikalna os je amplituda stanja.
+   - Prikazuje periodičke oscilacije koje u svakom koraku prespajanja (svake 2 sekunde) rastu za faktor $\rho(\Phi_{\mathrm{cikl}}) \approx 1.218$. Na $t = 20\,\mathrm{s}$ amplituda prelazi $\pm 7.0$ (eksponencijalna divergencija).
+2. **Desni graf — Fazni portret ($x_1$ vs. $x_2$):**
+   - Početni uvjet je $x(0) = [1, 0]^\mathsf{T}$ (zeleni kružić na osi $x_1$).
+   - Trajektorija tvori spiralu koja se **odmotava prema van** (centrifugalno širenje).
+   - Svaki prolazak kroz ravninu je na većem radijusu nego prethodni. Sustav je nedvojbeno nestabilan!
+
+---
+
+### Vodič za skiciranje faznog portreta sklopnog sustava na ploči pred ispitivačem
+
+Ako profesor Jokić zatraži: *"Skicirajte na ploči fazni portret ovog sustava i objasnite zašto dolazi do divergencije unatoč Hurwitzovim podsustavima!"*, postupite ovako:
+
+```
+            x2 ^
+               |        ^ / Trajektorija moda 2 (spljoštena duž x2)
+               |       / /
+               |      / /     Trajektorija moda 1 (izdužena duž x2)
+               |     | |     /
+          -----+-----+-------+-----> x1
+               |     | |   x(0)=[1, 0]
+               |      \ \   /
+               |       \ \ v
+               |        \ \
+```
+
+#### Korak 1: Crtanje koordinatnih osi fazne ravnine
+- Nacrtajte osi $x_1$ i $x_2$. Označite početnu točku $x(0) = [1, 0]^\mathsf{T}$ na pozitivnom dijelu osi $x_1$.
+
+#### Korak 2: Objašnjenje geometrije Moda 1 (Parni mod)
+- Matrica je $A_{\mathrm{parno}} = \begin{bmatrix} -1 & -\pi/6 \\ 3\pi/2 & -1 \end{bmatrix}$. Član ispod dijagonale ($3\pi/2 \approx 4.71$) znatno je veći od člana iznad ($-\pi/6 \approx -0.52$).
+- To znači da mod 1 snažno ubrzava stanje $x_2$: trajektorije su **izdužene duž vertikalne osi $x_2$**.
+- Kroz interval $t \in [0, 1]\,\mathrm{s}$, stanje rotira u smjeru kazaljke na satu za kut $\pi/2$ (četvrtinu kruga), uz faktor prigušenja $e^{-1}$, ali zbog asimetrije matrice izdužuje se duž osi $x_2$:
+  $$x(1) = \Phi_{\mathrm{parno}} x(0) = e^{-1} \begin{bmatrix} 0 \\ 3 \end{bmatrix} \approx \begin{bmatrix} 0 \\ 1.1036 \end{bmatrix}.$$
+- Nacrtajte luk od točke $(1, 0)$ do točke $(0, 1.10)$ na osi $x_2$.
+- Istaknite: *"Početna amplituda bila je $1.0$, a na kraju prvog moda stanje je $1.10$ — sustav je zapravo narastao!"*
+
+#### Korak 3: Objašnjenje geometrije Moda 2 (Neparni mod)
+- U trenutku $t = 1\,\mathrm{s}$ sustav prelazi u neparni mod: $A_{\mathrm{neparno}} = \begin{bmatrix} -1 & -3\pi/2 \\ \pi/6 & -1 \end{bmatrix}$.
+- Ovdje je gornji član $-3\pi/2$ velik, pa su trajektorije **izdužene duž horizontalne osi $x_1$**.
+- U sljedećoj sekundi ($t \in [1, 2]\,\mathrm{s}$), trajektorija rotira za još $\pi/2$ i završava na negativnom dijelu osi $x_1$:
+  $$x(2) = \Phi_{\mathrm{neparno}} x(1) = e^{-1} \begin{bmatrix} 0 & -3 \\ 1/3 & 0 \end{bmatrix} \begin{bmatrix} 0 \\ 3 e^{-1} \end{bmatrix} = e^{-2} \begin{bmatrix} -9 \\ 0 \end{bmatrix} \approx \begin{bmatrix} -1.218 \\ 0 \end{bmatrix}.$$
+- Nacrtajte luk od $(0, 1.10)$ do $(-1.22, 0)$ na negativnoj osi $x_1$.
+
+#### Korak 4: Crtanje odmotavajuće spirale
+- Pokažite da je nakon punog ciklusa ($2\,\mathrm{s}$) točka završila na udaljenosti $1.218$ od ishodišta, umjesto početnih $1.0$.
+- Nastavite crtati spiralu: u sljedećem krugu točka doseže $(-1.218) \times (-1.218) = 1.48$, zatim $1.81$, itd.
+- Nacrtajte spiralu koja se odmotava prema van.
+
+---
+
+### Govorni predložak pri crtanju na ploči:
+> *"Profesore, skica na ploči vizualizira mehanizam nestabilnosti.  
+> Oba moda zasebno imaju prigušenje $e^{-1 \cdot t}$, ali imaju različito orijentirane eliptičke trajektorije u faznoj ravnini.  
+> Parni mod je izdužen duž osi $x_2$ s faktorom rastezanja 3. Kroz prvu sekundu on zakreće točku $(1,0)$ na os $x_2$ i rasteže je na $3 e^{-1} \approx 1.10$.  
+> U tom trenutku skačemo u neparni mod koji je izdužen duž osi $x_1$ s faktorom rastezanja 3. On zakreće točku na os $x_1$ i ponovno je rasteže za faktor 3.  
+> Ukupni faktor rastezanja u jednom ciklusu je $3 \times 3 = 9$, dok je prirodno prigušenje samo $e^{-2} \approx 0.135$.  
+> Umnožak daje $9 e^{-2} \approx 1.218 > 1$. Prespajanje se događa u najgorim mogućim trenucima — točno kada je stanje poravnato s osi maksimalnog rastezanja svakog moda! To djeluje kao parametarska rezonancija koja pumpa energiju u sustav i uzrokuje spiralnu divergenciju otvorenog kruga."*
 
 ---
 
@@ -1811,6 +2386,9 @@ end
 2. **Pogrešan redoslijed množenja matrica prijelaza:** Pisanje $\Phi_{\mathrm{cikl}} = \Phi_{\mathrm{parno}} \Phi_{\mathrm{neparno}}$ umjesto $\Phi_{\mathrm{neparno}} \Phi_{\mathrm{parno}}$. Budući da sustav u prvom intervalu $t \in [0, 1)$ evoluira pod parnim modom, stanje na kraju ciklusa je $x(2) = \Phi_{\mathrm{neparno}} x(1) = \Phi_{\mathrm{neparno}} \Phi_{\mathrm{parno}} x(0)$. Matrice se primjenjuju s desna na lijevo!
 3. **Miješanje determinirane nestabilnosti s kaosom:** Nestabilnost u Zadatku 4b nije kaos niti slučajni šum, već determinirana eksponencijalna divergencija linearne strukture po dijelovima sa strogom stopom rasta od $1.218$ po ciklusu.
 
+
+
+\newpage
 
 ---
 
@@ -2036,10 +2614,74 @@ Usporedba ponašanja otvorenog i zatvorenog kruga (iz `task4_output.txt`):
   - $\|x(5)\| = 1.5176 \times 10^{-3}$
   - $\|x(20)\| = \mathbf{4.7232 \times 10^{-12}}$ (POTPUNO SMIRIVANJE U ISHODIŠTE).
 
-### Analiza Slike 5.2 (`fig4_2_closed_loop_stabilization.pdf`):
-1. **Vremenski odziv:** Stanja $x_1(t)$ i $x_2(t)$ te upravljački signal $u(t) = Kx(t)$ eksponencijalno trnu i unutar prvih nekoliko sekundi postaju praktički nula.
-2. **Fazni portret ($x_1$ vs. $x_2$):** Trajektorija zatvorenog kruga tvori spiralu koja se **munjevito uvija u ishodište**.
-3. **Elipsoidi Ljapunovljeve funkcije:** Prikazani su koncentrični elipsoidi $x^{\mathsf{T}} P x = c$. Trajektorija u svakom trenutku siječe elipsoide izvana prema unutra, što grafički dokazuje da je $\dot{V} < 0$ u svakoj točki prostora stanja.
+---
+
+### Prikaz simulacije zatvorenog kruga (Slika 5.2 seminara)
+
+![Stabilizacija sklopnog sustava pomoću stanjske povratne veze: Vremenski odzivi i kontrakcija Ljapunovljevog elipsoida u faznoj ravnini](figures/fig4_2_closed_loop_stabilization.png)
+
+#### Detaljna dekonstrukcija elemenata grafa:
+1. **Lijevi gornji graf — Vremenski odziv stanja $x_1(t)$ i $x_2(t)$:**
+   - Stanja eksponencijalno trnu prema nuli unutar svega 3–4 sekunde. Već na $t = 5\,\mathrm{s}$ amplituda je pala ispod $0.002$, a na $t = 20\,\mathrm{s}$ iznosi $10^{-12}$.
+2. **Lijevi donji graf — Upravljački signal $u(t) = Kx(t)$:**
+   - Upravljanje počinje s početnom vrijednošću $u(0) = k_1 x_1(0) + k_2 x_2(0) = -0.5739 \cdot 1.0 = -0.5739$.
+   - Upravljanje je glatko, bez zasićenja i munjevito konvergira u nulu kako se stanja smiruju.
+3. **Desni graf — Fazni portret s Ljapunovljevim elipsoidima:**
+   - Crveni koncentrični elipsoidi prikazuju nivo-krivulje zajedničke Ljapunovljeve funkcije $V(x) = x^{\mathsf{T}} P x = c$.
+   - Plava trajektorija počinje u točki $x(0) = [1, 0]^\mathsf{T}$ na vanjskom elipsoidu.
+   - **Ključni geometrijski uvid:** Trajektorija u svakoj točki i u oba moda presijeca crvene elipsoide **isključivo izvana prema unutra**! Nikada ne dolazi do tangiranja ili kretanja prema van. To vizualno dokazuje da je $\dot{V}(x) < 0$ u svakom trenutku.
+
+---
+
+### Vodič za crtanje Ljapunovljevog elipsoida na ploči pred ispitivačem
+
+Ako profesor Jokić zatraži: *"Nacrtajte na ploči Ljapunovljevu elipsu i objasnite kako ona garantira stabilnost sklopnog sustava!"*, izvedite sljedeće korake:
+
+```
+            x2 ^
+               |          .-'""'-.   Ljapunovljeva elipsa V(x)=c
+               |        .'   /|   '.  (x^T P x = c)
+               |       /    / |     \
+               |      ;    v  |      ;  Vektor toka x_dot
+               |      |    .  +      |  (ulazi u elipsu!)
+          -----+------+---+----------+-----> x1
+               |      |    \         |
+               |      ;     '.      ;
+               |       \      '-..-'
+               |        '.        .'
+               |          '-....-'
+```
+
+#### Korak 1: Crtanje koordinatnih osi i Ljapunovljeve elipse
+- Nacrtajte osi fazne ravnine $x_1$ i $x_2$.
+- Nacrtajte nagnutu elipsu sa središtem u ishodištu.
+- Napišite jednadžbu elipse: $V(x) = x^{\mathsf{T}} P x = c$.
+- Objasnite: *"Budući da je matrica $P \succ 0$ pozitivno definitna, skup $V(x) \leq c$ je kompaktna eliptička invarijantna domena u ravnini."*
+
+#### Korak 2: Crtanje vektora normale na elipsu
+- U proizvoljnoj točki $x$ na rubu elipse povucite vanjsku normalu.
+- Normala na nivo-krivulju je gradijent Ljapunovljeve funkcije: $\nabla V(x) = 2 P x$.
+- Nacrtajte strelicu normale koja pokazuje prema van (u smjeru rasta funkcije $V$).
+
+#### Korak 3: Crtanje vektora toka zatvorenog sustava $\dot{x}$
+- U istoj točki nacrtajte vektor brzine zatvorenog kruga: $\dot{x} = (A_i + BK) x$.
+- **Ključan detalj:** Vektor $\dot{x}$ mora pokazivati **prema unutrašnjosti elipse**!
+- Objasnite skalarni produkt:
+  $$\dot{V}(x) = \nabla V(x)^{\mathsf{T}} \dot{x} = (2 P x)^{\mathsf{T}} (A_i + BK) x = x^{\mathsf{T}} \left[ (A_i + BK)^{\mathsf{T}} P + P (A_i + BK) \right] x.$$
+- Recite profesoru: *"Zato što je LMI uvjetom osigurano da je matrica $(A_i + BK)^{\mathsf{T}} P + P (A_i + BK) \prec 0$, skalarni produkt normale i vektora brzine je uvijek strogo negativan ($\dot{V} < 0$). Kut između normale i toka je tupi kut ($\varphi > 90^\circ$)."*
+
+#### Korak 4: Crtanje spiralne trajektorije koja konvergira u ishodište
+- Pokažite kako trajektorija koja krene iz točke $x(0) = [1, 0]^\mathsf{T}$ monotono propada kroz sve manje i manje elipsoide razine $c_1 > c_2 > c_3 \dots \to 0$.
+- Zaključite: *"Budući da ista matrica $P$ zadovoljava LMI za oba moda, prespajanje više ne može 'pumpati' energiju. Kroz koje god modove sustav skakao, funkcija $V(x(t))$ monotono opada prema nuli, što jamči globalnu eksponencijalnu stabilnost."*
+
+---
+
+### Govorni predložak pri crtanju na ploči:
+> *"Profesore, skica na ploči sažima bit Ljapunovljeve teorije stabilnosti preko LMI-ja.  
+> U otvorenom krugu nismo imali zajedničku funkciju energije, pa je prespajanje širilo trajektoriju duž različitih osi rastezanja.  
+> Sintezom stanjske povratne veze $u = Kx$ pomoću YALMIP-a pronašli smo matricu $P \succ 0$ i vektor pojačanja $K = [-0.5739, -0.6124]$ koji istovremeno zadovoljavaju obje Ljapunovljeve matrične nejednakosti.  
+> Geometrijski, razinske krivulje funkcije $V(x) = x^{\mathsf{T}} P x$ čine familiju koncentričnih elipsi. Vektor brzine sustava $\dot{x}$ u svakom dinamičkom modu zatvara tupi kut s vanjskom normalom elipse $2Px$.  
+> To znači da trajektorija u svakom trenutku vremena probija elipsoide prema unutrašnjosti ($\dot{V} < 0$). Niti jedno prespajanje ne može povećati vrijednost funkcije $V$. Sustav ima zajamčenu eksponencijalnu stopu prigušenja od najmanje $\alpha = 0.2884\,\mathrm{s}^{-1}$ za bilo koje, pa čak i zlonamjerno prespajanje, dok u stvarnoj periodičkoj simulaciji konvergira još brže, sa spektralnim radijusom ciklusa od svega $0.0697$."*
 
 ---
 
@@ -2083,6 +2725,9 @@ Usporedba ponašanja otvorenog i zatvorenog kruga (iz `task4_output.txt`):
 2. **Postavljanje LMI-ja bez normalizacije:** Pokušaj rješavanja homogenog problema dopustivosti u YALMIP-u bez uvjeta $\mathcal{Q} \succeq I$. Solver može odlutati u numerički beskonačno velika ili beskonačno mala rješenja, što rezultira numeričkom nestabilnošću solvera (`Solver failed: ill-conditioned`).
 3. **Miješanje svojstvenih vrijednosti zatvorenih matrica s Ljapunovljevom stopom:** Tvrdnja da je stopa prigušenja jednaka $\min |\mathrm{Re}(\lambda(A_{\mathrm{cl}}))|$. Kao što je više puta naglašeno, svojstvene vrijednosti matrica ne govore ništa o brzini smirivanja sklopnog sustava — mjerodavna je isključivo poopćena svojstvena vrijednost para $(M_i, P)$ ili spektralni radijus monodromijske matrice!
 
+
+
+\newpage
 
 ---
 
@@ -2308,6 +2953,9 @@ U toj točki dodira jedna od koordinata je **točno jednaka nuli** ($x_1^* = 0$ 
 2. **Pogrešan redoslijed faktora u Schurovom komplementu:** Pisanje $B A^{-1} B^{\mathsf{T}}$ umjesto $B^{\mathsf{T}} A^{-1} B$. Ako je $A \in \mathbb{S}^n$ i $B \in \mathbb{R}^{n \times m}$, matrica $A^{-1}$ ima dimenziju $n \times n$. Kako bi umnožak bio dimenzija $m \times m$ (kao matrica $C$), mora se množiti $B^{\mathsf{T}} (m \times n)$ s $A^{-1} (n \times n)$ i $B (n \times m)$!
 3. **Miješanje LASSO i Ridge regresije:** Tvrdnja da Tikhonovljeva regularizacija izbacuje nepotrebne varijable. Tikhonovljeva regularizacija samo smanjuje njihove iznose (nikada ih ne postavlja na egzaktne nule). Isključivo $\ell_1$-norma (LASSO) provodi selekciju varijabli.
 
+
+
+\newpage
 
 ---
 
@@ -2548,7 +3196,3 @@ Kada profesor na obrani otvori seminar i pokaže prstom na sliku, student mora u
 1. **Govorite inženjerskim rječnikom:** Izbjegavajte laičke izraze poput *"točka se miče"* ili *"funkcija ide dolje"*. Koristite precizne termine: *"vektor stanja konvergira duž invarijantnog potprostora"*, *"gradijent cilja leži u stožcu vanjskih normala"*, *"narušena je dualna dopustivost"*.
 2. **Uvijek povežite formulu s fizikom:** Čim napišete Ljapunovljevu jednadžbu ili KKT uvjet, odmah dodajte fizikalno značenje: *"Ovo predstavlja ravnotežu reakcija veza"* ili *"Ovo dokazuje disipaciju energije duž trajektorija"*. Profesor Jokić izrazito cijeni inženjersku intuiciju iza matematičkog aparata.
 3. **Priznajte degeneraciju i konzervatizam kada postoje:** Ako vas profesor pita zašto nema iskopa i nasipa ili zašto je stopa $\alpha$ konzervativna, nemojte braniti neobranjivo! Odmah recite: *"LP je degeneriran i rješenje nije jedinstveno"* i *"Ocjena $\alpha$ vrijedi za proizvoljno prespajanje pa je prirodno konzervativnija od periodičkog ciklusa"*. To dokazuje najvišu razinu akademske zrelosti.
-
-
----
-

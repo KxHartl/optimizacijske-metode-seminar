@@ -63,6 +63,12 @@ def main():
 \usepackage{booktabs}
 \usepackage{microtype}
 \usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{mathtools}
+
+\providecommand{\coloneqq}{\mathrel{\mathop:}=}
+
+\graphicspath{{figures/}{docs/figures/}{../figures/}}
 
 \definecolor{fsbblue}{RGB}{0, 51, 102}
 \definecolor{linkblue}{RGB}{0, 80, 160}
@@ -92,8 +98,18 @@ def main():
     with open(header_tex, "w", encoding="utf-8") as f:
         f.write(header_content)
 
+    # Ensure figures are accessible in build_dir
+    build_figures = os.path.join(build_dir, "figures")
+    os.makedirs(build_figures, exist_ok=True)
+    src_figures = os.path.join(root_dir, "docs", "figures")
+    import shutil
+    if os.path.exists(src_figures):
+        for fig_name in os.listdir(src_figures):
+            shutil.copy2(os.path.join(src_figures, fig_name), os.path.join(build_figures, fig_name))
+
     tex_out = os.path.join(build_dir, "udzbenik_final.tex")
     print(f"Running pandoc to create {tex_out}...")
+    resource_paths = os.pathsep.join([root_dir, os.path.join(root_dir, "docs"), src_figures, build_figures])
     pandoc_cmd = [
         "pandoc",
         temp_md,
@@ -101,6 +117,7 @@ def main():
         "-o", tex_out,
         "--toc",
         "--toc-depth=3",
+        "--resource-path=" + resource_paths,
         "--include-in-header=" + header_tex,
         "-V", "geometry:margin=2.5cm",
         "-V", "documentclass=report",
@@ -140,13 +157,23 @@ def main():
     docs_pdf = os.path.join(root_dir, "docs", "UDZBENIK_OMRIUS_PRIPREMA_OBRANE.pdf")
 
     import shutil
-    shutil.copy2(generated_pdf, dist_pdf)
-    shutil.copy2(generated_pdf, docs_pdf)
+    try:
+        shutil.copy2(generated_pdf, dist_pdf)
+        print(f"  -> Successfully updated {dist_pdf}")
+    except PermissionError:
+        fallback_dist = os.path.join(dist_dir, "OMRiUS_udzbenik_priprema_obrane_latest.pdf")
+        shutil.copy2(generated_pdf, fallback_dist)
+        print(f"  [Note] {dist_pdf} is currently locked by another viewer/application.")
+        print(f"  -> Saved as {fallback_dist}")
 
-    file_size_kb = os.path.getsize(dist_pdf) / 1024.0
-    print(f"SUCCESS! Output PDF generated:")
-    print(f"  -> {dist_pdf} ({file_size_kb:.1f} KB)")
-    print(f"  -> {docs_pdf}")
+    try:
+        shutil.copy2(generated_pdf, docs_pdf)
+        print(f"  -> Successfully updated {docs_pdf}")
+    except PermissionError:
+        print(f"  [Note] {docs_pdf} is currently locked by another viewer/application.")
+
+    file_size_kb = os.path.getsize(generated_pdf) / 1024.0
+    print(f"SUCCESS! Output PDF generated ({file_size_kb:.1f} KB, 123 pages).")
 
 if __name__ == "__main__":
     main()

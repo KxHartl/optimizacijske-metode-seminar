@@ -14,8 +14,10 @@
 ## Trenutni fokus
 
 - [x] **Sveučilišni udžbenik i vodič za pripremu usmene obrane i ispita (rujan 2026.)**:
-  - Samostalan udžbenik od 10 poglavlja (`docs/textbook/` i master verzija `docs/UDZBENIK_OMRIUS_PRIPREMA_OBRANE.md`, preko 200 kB teksta).
-  - Obuhvaća first-principles matematičke izvode, predavanja 1-8, vježbe 1-5, zadatke 1-4 seminara v1.2, Schurov komplement, SOCP, regularizaciju, analizu svih 7 slika, 25 ispitnih pitanja i odgovora u 3 rečenice te 15 fatalnih zabluda.
+  - Samostalan udžbenik od 11 poglavlja (Poglavlja 0–10 u `docs/textbook/` i master verzija `docs/UDZBENIK_OMRIUS_PRIPREMA_OBRANE.md`, preko 250 kB teksta).
+  - **Poglavlje 0 (Matematički rječnik i govorni vodič)**: detaljno objašnjenje svih simbola od nule ($\mathbb{R}^n, \langle x, y \rangle, \coloneqq, \succeq, \succ$), fizikalna značenja, vodič za govorno izražavanje pred ispitivačem i 10 doslovnih modela rečenica.
+  - **Umetnute slike i vodiči za crtanje na ploči**: Umetnuto svih 7 slika seminara u visoko-kvalitetnom PNG formatu, uz detaljne dekonstrukcije elemenata i korak-po-korak vodiče s ASCII skicama i govornim predlošcima za crtanje na ploči (Zadatak 1 geometrija i nivo-elipse, Zadatak 2 robusna anvelopa i Monte Carlo, Zadatak 3 niveleta ceste i zasićenje zakrivljenosti, Zadatak 4 odmotavajuća spirala otvorenog kruga i Ljapunovljeva elipsoidna kontrakcija zatvorenog kruga).
+  - **Kompajliran PDF udžbenika**: `docs/UDZBENIK_OMRIUS_PRIPREMA_OBRANE.pdf` i `dist/v1.2/OMRiUS_udzbenik_priprema_obrane_latest.pdf` (123 stranice, 1.3 MB, akademski format report s dvo-stupanjskim TOC-om, fancyhdr i microtype).
 
 - [ ] Dubinska komparativna recenzija v1.2 prema izvornom zadatku i seminarima Matije i Ivana (plan potvrđen 2026-09-07).
   - Primarni artefakt: `dist/v1.2/OMRiUS_seminar_Kresimir_Hartl.pdf`; kopija u `for_validator` ima drugi SHA-256 i ne smatra se istom verzijom bez provjere.
