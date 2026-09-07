@@ -19,18 +19,15 @@ p*  = fval      = 60.606061
 lambda.ineqlin  = [12.242424; 0.000000]
 |x_qp - x_analiticki| = 7.155e-11
 
---- (e) Dualni problem (fmincon) ---
-exitflag        = 2
+--- (e) Dualni problem (quadprog na -theta(mu), uz mu >= 0) ---
+exitflag        = 1
 mu*             = [12.242424; 0.000000]
 d*  = theta(mu*)= 60.606061
-dualni procjep p* - d* = 9.237e-14
+dualni procjep p* - d* = 2.480e-10
 Slaterova tocka x = [7; 6]: g1 = -3.0000, g2 = -2.0000
 
 --- (f) Osjetljivost ---
 dp*/dv1 numericki = -12.242364,  -mu1* = -12.242424,  odstupanje = 5.99e-05
 dp*/dv2 numericki = 0.000000,  -mu2* = 0.000000,  odstupanje = 0.00e+00
-[Warning: Vectorized content might take a long time to create, or it might contain unexpected results. Set 'ContentType' to 'image' for
-better performance. <a href="matlab:warning('off', 'MATLAB:print:ContentTypeImageSuggested')">Click here</a> to not see this message
-again.] 
 
 Slika 2.1 izvezena.

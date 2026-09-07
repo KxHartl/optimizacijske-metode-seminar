@@ -3,6 +3,7 @@
 %  Sve brojke koje se pojavljuju u poglavlju 5 seminara ispisuje ova skripta.
 
 clear; close all; clc;
+warning('off', 'MATLAB:print:ContentTypeImageSuggested');
 addpath(fullfile(pwd, 'common'));   % skripte se pokrecu iz mape src
 config_plot();
 

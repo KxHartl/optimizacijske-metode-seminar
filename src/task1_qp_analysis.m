@@ -3,6 +3,7 @@
 %  Sve brojke koje se pojavljuju u poglavlju 2 seminara ispisuje ova skripta.
 
 clear; close all; clc;
+warning('off', 'MATLAB:print:ContentTypeImageSuggested');
 addpath(fullfile(pwd, 'common'));   % skripte se pokrecu iz mape src
 config_plot();
 
@@ -69,15 +70,17 @@ fprintf('p*  = fval      = %.6f\n', f_qp);
 fprintf('lambda.ineqlin  = [%.6f; %.6f]\n', lam_qp.ineqlin(1), lam_qp.ineqlin(2));
 fprintf('|x_qp - x_analiticki| = %.3e\n', norm(x_qp - x2));
 
-%% (e) Dualni problem - fmincon na -theta(mu)
-fprintf('\n--- (e) Dualni problem (fmincon) ---\n');
-Qi    = inv(Q);
-theta = @(mu) -0.5*mu'*(G*Qi*G')*mu + (-c'*Qi*G' - h')*mu - 0.5*c'*Qi*c;
-optf  = optimoptions('fmincon', 'Display', 'none', 'Algorithm', 'sqp', ...
-                     'OptimalityTolerance', 1e-12, 'ConstraintTolerance', 1e-12);
-[mu_d, negd, ef_d] = fmincon(@(mu) -theta(mu), [1;1], [], [], [], [], [0;0], [Inf;Inf], [], optf);
-assert(ef_d > 0, 'fmincon nije konvergirao (exitflag = %d).', ef_d);
-d_opt = -negd;
+%% (e) Dualni problem
+%  theta(mu) = -1/2*mu'*G*Q^-1*G'*mu + (-c'*Q^-1*G' - h')*mu - 1/2*c'*Q^-1*c
+%  max theta(mu) uz mu >= 0 je opet QP, pa se rjesava istom funkcijom quadprog.
+fprintf('\n--- (e) Dualni problem (quadprog na -theta(mu), uz mu >= 0) ---\n');
+Qi = inv(Q);
+Hd = G*Qi*G';  Hd = 0.5*(Hd + Hd');   % numericka simetrizacija
+fd = (c'*Qi*G' + h')';
+kd = 0.5*(c'*Qi*c);
+[mu_d, negd, ef_d] = quadprog(Hd, fd, [], [], [], [], [0;0], [], [], opts);
+assert(ef_d == 1, 'quadprog (dual) nije konvergirao (exitflag = %d).', ef_d);
+d_opt = -(negd + kd);
 fprintf('exitflag        = %d\n', ef_d);
 fprintf('mu*             = [%.6f; %.6f]\n', mu_d(1), mu_d(2));
 fprintf('d*  = theta(mu*)= %.6f\n', d_opt);
