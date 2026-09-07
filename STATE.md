@@ -8,7 +8,8 @@
 - **Student**: Krešimir Hartl
 - **Mentor**: Prof. dr. sc. Andrej Jokić
 - **LaTeX format**: FSB Seminar (`fsb-seminar`)
-- **Trenutna verzija**: v1.2 — `dist/v1.2/OMRiUS_seminar_Kresimir_Hartl.pdf`, 27 stranica
+- **Trenutna verzija**: v1.2 — `dist/v1.2/OMRiUS_seminar_Kresimir_Hartl.pdf`, 29 stranica
+  (naslovnica, 2 stranice skena zadatka, 26 stranica rada)
 
 ## Trenutni fokus
 
@@ -23,9 +24,7 @@
   - [x] MATLAB kod i stvarni ispis priloženi uz svaki zadatak.
   - [x] `for_validator/`, `docs/REVIEW.md`, `BENCHMARK_RESULTS.md` i `DEFENSE_QA_PACKAGE.md` sinkronizirani.
 
-## Preostalo prije predaje
-
-- [ ] **JMBAG** — `\authorid` u `docs/main.tex` je zamjenski tekst `0035 XXX XXX`.
+- [x] Sken izvornog zadatka umetnut odmah iza naslovnice; JMBAG uklonjen s naslovnice.
 
 ## Bilješke
 
@@ -46,3 +45,7 @@
 - **MATLAB R2025b gotcha**: u `-batch` načinu figure se crtaju prema tamnoj temi
   bez obzira na `Figure.Color`, pa `src/common/config_plot.m` eksplicitno
   postavlja sve boje na svijetle.
+- **Sken zadatka**: `docs/zadatak/zadatak_sken.pdf` je ravna kopija
+  `TASK/Zadatak_OMRiUS_Kresimir_Hartl.pdf` dobivena s `pdftocairo -pdf`.
+  Izvornik ruši `xdvipdfmx` (`pdf_link_obj(): passed invalid object`), pa se
+  uključuje kopija. `.gitignore` ima iznimku `!docs/zadatak/*.pdf`.

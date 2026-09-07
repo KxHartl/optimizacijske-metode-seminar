@@ -4,7 +4,7 @@
 > **Student:** Krešimir Hartl
 > **Mentor:** Prof. dr. sc. Andrej Jokić
 > **Ustanova:** Sveučilište u Zagrebu, Fakultet strojarstva i brodogradnje
-> **Verzija rada:** v1.2 (27 stranica)
+> **Verzija rada:** v1.2 (29 stranica: naslovnica, 2 stranice skena zadatka, 26 stranica rada)
 
 ---
 
@@ -21,7 +21,8 @@ for_validator/
 │   ├── main.tex
 │   ├── references.bib
 │   ├── chapters/                         5 poglavlja + zaključak
-│   └── figures/                          7 vektorskih PDF slika
+│   ├── figures/                          7 vektorskih PDF slika
+│   └── zadatak/                          sken zadatka koji se umeće iza naslovnice
 ├── 04_SOURCE_CODE/matlab/                MATLAB skripte (jedini izvor rezultata)
 │   ├── run_all.m                         pokreće sve i zapisuje ispis
 │   ├── task1_qp_analysis.m

@@ -39,6 +39,7 @@ docs/**/build/
 docs/**/*.pdf
 # ...ali slike koje main.tex ukljucuje su izvorni artefakti i moraju biti u repou
 !docs/figures/*.pdf
+!docs/zadatak/*.pdf
 
 # Generated PDFs in dist (built by CI or scripts)
 dist/**/*.pdf

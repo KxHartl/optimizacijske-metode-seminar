@@ -88,6 +88,9 @@
 % --- References ---
 \usepackage{cite}
 
+% --- Umetanje vanjskih PDF stranica (sken zadatka) ---
+\usepackage{pdfpages}
+
 % --- Hyperlinks ---
 \usepackage[hidelinks,unicode]{hyperref}
 
@@ -162,11 +165,15 @@
 \newcommand{\seminartitleshort}{OMRiUS — Seminarski rad}
 \newcommand{\professorname}{Prof. dr. sc. Andrej Jokić}
 \newcommand{\authorname}{Krešimir Hartl}
-\newcommand{\authorid}{0035\,XXX\,XXX}  % JMBAG / maticni broj
 \newcommand{\locationdate}{Zagreb, 2026.}
+% Sken izvornog teksta zadatka, umece se odmah iza naslovnice.
+\newcommand{\taskscan}{zadatak/zadatak_sken.pdf}
 
 % ============================================================
 \begin{document}
+
+% Sken zadatka je PDF 1.7; izlazna verzija mora biti barem tolika.
+\ifPDFTeX\else\special{pdf:minorversion 7}\fi
 
 % ---- TITLE PAGE ----
 \begin{titlepage}
@@ -181,8 +188,7 @@
   % Tabular: lijevo "Profesor:" / bold ime — desno "Student:" / bold ime
   \begin{tabular}{p{0.45\textwidth}>{\raggedleft\arraybackslash}p{0.45\textwidth}}
     \textmd{Profesor:} & \textmd{Student:} \\[0.3cm]
-    \textbf{\professorname} & \textbf{\authorname} \\[0.15cm]
-                            & \authorid
+    \textbf{\professorname} & \textbf{\authorname}
   \end{tabular}
   \vspace{1.5cm}
   \par
@@ -192,6 +198,12 @@
 % ---- FRONTMATTER (rimske stranice velikim slovima: I, II, III) ----
 \pagenumbering{Roman}
 \setcounter{page}{1}
+
+% ---- IZVORNI TEKST ZADATKA (sken, bez zaglavlja i paginacije) ----
+% pageanchor=false: umetnute stranice ne smiju stvarati hyperref sidra.
+\hypersetup{pageanchor=false}
+\includepdf[pages=-,fitpaper=true,pagecommand={\thispagestyle{empty}}]{\taskscan}
+\hypersetup{pageanchor=true}
 
 \tableofcontents
 \clearpage

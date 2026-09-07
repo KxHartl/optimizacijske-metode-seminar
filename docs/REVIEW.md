@@ -3,7 +3,7 @@
 > **Kolegij:** Optimizacijske metode u razvoju i upravljanju sustava (OMRiUS)
 > **Student:** Krešimir Hartl
 > **Mentor:** Prof. dr. sc. Andrej Jokić
-> **Opseg:** 27 stranica, 7 slika, 5 tablica, 4 reference
+> **Opseg:** 29 stranica (naslovnica + 2 stranice skena zadatka + 26 stranica rada), 7 slika, 5 tablica, 4 reference
 
 ---
 
@@ -53,7 +53,8 @@ Ključni rezultati:
 | Provjera | Naredba | Status |
 |---|---|---|
 | Sve skripte prolaze | `matlab -batch "cd src; run_all"` | prolazi |
-| Broj stranica $\leq 30$ | `pdfinfo dist/v1.2/*.pdf` | 27 |
+| Broj stranica $\leq 30$ | `pdfinfo dist/v1.2/*.pdf` | 29 |
+| Sken zadatka umetnut iza naslovnice | vizualno | str. 2–3 |
 | Nema spomena Pythona ni drugih alata | `grep -iE 'python\|cvxpy\|clarabel\|scipy\|highs' docs` | prazno |
 | Nema Markdown `**` u LaTeX-u | `grep -F '**' docs/chapters/*.tex` | prazno |
 | Nema pogrešnih termina | `grep -iE 'dupleks\|CQLF' docs` | prazno |
@@ -72,5 +73,8 @@ Ključni rezultati:
 - **Zajamčena stopa $\alpha = 0.288374\ \mathrm{s}^{-1}$ je konzervativna** jer
   vrijedi za proizvoljno prespajanje; pri zadanom periodičkom prespajanju stvarna
   je kontrakcija znatno brža.
-- **JMBAG na naslovnici je zamjenski tekst** (`\authorid` u `docs/main.tex`) i
-  treba ga zamijeniti stvarnim brojem prije predaje.
+- **Sken zadatka umeće se iz `docs/zadatak/zadatak_sken.pdf`**, a to je kopija
+  datoteke `TASK/Zadatak_OMRiUS_Kresimir_Hartl.pdf` propuštena kroz
+  `pdftocairo -pdf`. Izvornik u toj strukturi ruši `xdvipdfmx`
+  (`pdf_link_obj(): passed invalid object`); ravna kopija se uključuje bez greške.
+  Ako se sken zamijeni, kopiju treba regenerirati istom naredbom.
