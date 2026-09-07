@@ -69,10 +69,13 @@ stranice postoji indeks teksta svih 535 slajdova u
 
 ## Stanje
 
-| Dio | Status |
-|---|---|
-| Dio 0 (rječnik, alat, čitanje grafa) | gotovo |
-| Zadatak 1 (a–f + obrana) | gotovo |
-| Zadatak 2 (robusni QP) | tek treba |
-| Zadatak 3 (nivelacija ceste, LP) | tek treba |
-| Zadatak 4 (LMI stabilizacija) | tek treba |
+| Dio | Poglavlja | Status |
+|---|---|---|
+| Dio 0 — rječnik, alat, čitanje grafa | 4 | gotovo |
+| Zadatak 1 — QP, KKT, dualnost, osjetljivost | 9 | gotovo |
+| Zadatak 2 — robusni QP | 6 | gotovo |
+| Zadatak 3 — nivelacija ceste, LP | 6 | gotovo |
+| Zadatak 4 — LMI stabilizacija | 6 | gotovo |
+| Podsjetnik za dan obrane | 1 | gotovo |
+
+Ukupno 188 stranica, 49 doslovnih isječaka s predavanja i vježbi.

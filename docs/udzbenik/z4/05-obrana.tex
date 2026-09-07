@@ -1,0 +1,219 @@
+\chapter{Zadatak 4 --- priprema za obranu}
+\label{ch:z4-obrana}
+
+\section{Brojevi koje moraš znati napamet}
+\label{sec:z4o-brojevi}
+
+\begin{longtable}{@{}p{0.34\linewidth} p{0.30\linewidth} p{0.30\linewidth}@{}}
+\toprule
+\textbf{Veličina} & \textbf{Vrijednost} & \textbf{Napomena} \\
+\midrule
+\endhead
+$\lambda(A_{\mathrm{parno}}) = \lambda(A_{\mathrm{neparno}})$ & $-1 \pm j\tfrac{\pi}{2}$ & $\pi/2 = 1{,}570796$ \\
+$\det A_i$ & $1 + \tfrac{\pi^2}{4} \approx 3{,}467$ & $\tr A_i = -2$ \\
+Period titranja moda & $T = 2\pi/\omega = 4$ s & mod traje $1$ s $\Rightarrow$ $90^\circ$ \\
+Period prespajanja & $2$ s & ne $1$ s \\
+$\Phi_{\mathrm{parno}}$ & $e^{-1}\begin{bsmallmatrix} 0 & -1/3 \\ 3 & 0\end{bsmallmatrix}$ & $e^{-1} = 0{,}3679$ \\
+$\Phi_{\mathrm{cikl}}$ & $e^{-2}\begin{bsmallmatrix} -9 & 0 \\ 0 & -1/9\end{bsmallmatrix}$ & dijagonalna \\
+$\rho(\Phi_{\mathrm{cikl}})$ & $9e^{-2} = 1{,}218018$ & $> 1$: nestabilno \\
+$\det \Phi_{\mathrm{cikl}}$ & $e^{-4} = 0{,}018316$ & kontrola \\
+$\norm{x(20)}$ otvoreni krug & $7{,}19$ & \\
+$K$ & $[-3{,}424629,\ -0{,}104650]$ & \\
+$P$ & $\begin{bsmallmatrix} 0{,}8003 & 0{,}2174 \\ 0{,}2174 & 0{,}7633\end{bsmallmatrix}$ & $\lambda(P) = 0{,}5636,\ 1$ \\
+$\lambda_{\max}$ Ljapunov & $-0{,}910478$, $-0{,}329090$ & oba $< 0$ \\
+$\alpha$ & $0{,}288374\ \mathrm{s}^{-1}$ & predfaktor $1{,}3320$ \\
+$\rho(\Phi_{\mathrm{cikl}}^{\mathrm{zk}})$ & $0{,}069720$ & $\ll 1$ \\
+$\norm{x(20)}$ zatvoreni krug & $4{,}72\cdot10^{-12}$ & \\
+\bottomrule
+\end{longtable}
+
+\begin{izgovor}[Trik za pamćenje]
+Cijeli Zadatak 4 stane u \textbf{tri broja}: $\pi/2$, $3$ i $e^{-1}$.
+
+Frekvencija je $\pi/2$, pa mod u jednoj sekundi zakrene stanje za $90^\circ$.
+Nesimetrija matrica je faktor $3$ u jednom smjeru i $1/3$ u drugom. Prigušenje po
+sekundi je $e^{-1}$. Zakret uvijek pogodi ,,krivu`` os, pa se pojačanja
+pomnože: $3 \cdot 3 = 9$, a prigušenje daje samo $e^{-2}$. Otuda
+$\rho = 9e^{-2} = 1{,}218 > 1$.
+\end{izgovor}
+
+\section{Zadatak u pet rečenica}
+\label{sec:z4o-sazetak}
+
+\begin{izgovor}[Ako imaš samo minutu]
+,,Obje matrice modova imaju svojstvene vrijednosti minus jedan plus minus je pi
+kroz dva, dakle obje su Hurwitzove i svaki je mod zasebno stabilan.
+
+Ali sklopni sustav nije stabilan. Simulacija pokazuje rast, a dokaz je
+monodromijska matrica preko punog perioda od dvije sekunde: spektralni radijus je
+devet e na minus dva, dakle jedan zarez dva dva, veći od jedan.
+
+Za stabilizaciju sam tražio zajedničku kvadratnu Ljapunovljevu funkciju --- jednu
+matricu pe koja radi za oba moda --- jer prema Predavanju 7 to jamči
+eksponencijalnu stabilnost za bilo koji zakon prespajanja.
+
+Uvjet nije LMI zbog umnoška ka i pe, pa sam primijenio transformaciju kongruencije
+s pe inverz i supstituciju ku jednako pe inverz, ipsilon jednako ka pe inverz.
+Time sve postaje linearno i rješava se semidefinitnim programiranjem.
+
+Dobiveni regulator je ka jednako minus tri zarez četiri dva, minus nula zarez
+jedan nula pet. Provjerio sam ga uvrštavanjem u Ljapunovljeve nejednakosti ---
+obje najveće svojstvene vrijednosti su negativne --- i simulacijom, gdje norma
+stanja padne na deset na minus dvanaest.``
+\end{izgovor}
+
+\section{Pitanja koja se očekuju}
+\label{sec:z4o-pitanja}
+
+\begin{pitanje}{Kako je moguće da su oba moda stabilna, a sustav nije?}
+\textbf{Odgovor.} Zato što stabilnost svakog moda govori samo o ponašanju
+\emph{unutar} segmenta, a ne o tome što se događa na prijelazima. Svaki mod u
+jednoj sekundi zakrene stanje za $90^\circ$ i priguši ga faktorom $e^{-1}$. Ali
+matrice su nesimetrične: jedna os se rasteže trostruko, druga steže. Zakret od
+$90^\circ$ svaki put dovede stanje u onu os koju sljedeći mod rasteže. Dva koraka
+daju faktor $9$, a prigušenje samo $e^{-2} = 0{,}135$. Umnožak je $1{,}218 > 1$.
+
+Energija se, dakle, ubacuje u sustav na prijelazima. Formalno: svaki mod ima
+svoju Ljapunovljevu funkciju, ali te dvije funkcije nisu iste --- ono što pada za
+jedan mod može rasti za drugi.
+\end{pitanje}
+
+\begin{pitanje}{Zašto tražite \emph{zajedničku} Ljapunovljevu funkciju?}
+\textbf{Odgovor.} Jer je to jedini način da se zaključak ne oslanja na to
+\emph{kada} se prespaja. Ako ista funkcija $V(x) = x\trans Px$ pada za oba moda,
+onda pada uvijek, bez obzira koji je mod trenutno aktivan --- pa sustav
+konvergira za \emph{bilo koji} po dijelovima kontinuiran zakon prespajanja. To je
+upravo tvrdnja s Predavanja 7, slajd 15/37.
+
+Alternativa bi bila iskoristiti to što je prespajanje periodičko i tražiti
+$\rho(\Phi_{\mathrm{cikl}}) < 1$. To bi također radilo, ali samo za taj konkretni
+zakon prespajanja, i ne bi se moglo formulirati kao konveksan problem sinteze.
+\end{pitanje}
+
+\begin{pitanje}{Vrijedi li obrat --- ako nema zajedničke $P$, je li sustav nestabilan?}
+\textbf{Odgovor.} Ne. Kvadratna stabilnost je \emph{dovoljan}, ne nužan uvjet.
+Postoje sklopni sustavi koji su stabilni, a nemaju zajedničku \emph{kvadratnu}
+Ljapunovljevu funkciju --- za njih treba tražiti složeniju, na primjer po
+dijelovima kvadratnu ili polinomnu. Uvjet je konzervativan, ali je zauzvrat
+konveksan i rješiv.
+\end{pitanje}
+
+\begin{pitanje}{Zašto uvjet $(A+BK)\trans P + P(A+BK) \nd 0$ nije LMI?}
+\textbf{Odgovor.} Jer se pri raspisivanju pojavljuju članovi $K\trans B\trans P$
+i $PBK$, dakle umnošci dviju nepoznanica. LMI zahtijeva da izraz bude
+\emph{afin} u projektnim varijablama; ovaj je bilinearan. BMI je općenito
+nekonveksan problem.
+\end{pitanje}
+
+\begin{pitanje}{Zašto transformacija kongruencije ne mijenja predznak nejednakosti?}
+\textbf{Odgovor.} Jer za invertibilnu $T$ vrijedi $M \nd 0 \iff T\trans M T \nd 0$.
+Dokaz: za $z \neq 0$ stavi $w = Tz$; kako je $T$ invertibilna, $w \neq 0$, pa je
+$z\trans(T\trans M T)z = w\trans M w < 0$. Obrat s $T^{-1}$. Kod nas je
+$T = P^{-1}$, koja je invertibilna jer je $P \pd 0$, i simetrična jer je inverz
+simetrične matrice simetričan.
+\end{pitanje}
+
+\begin{pitanje}{Zašto ste umjesto strogih nejednakosti pisali $\mathcal{Q} \psd I$?}
+\textbf{Odgovor.} Numerički rješavači rade s nestrogim nejednakostima; da sam
+strogo naivno zamijenio nestrogim, dopustiv bi postao i trivijalni par
+$\mathcal{Q} = 0$, $Y = 0$, iz kojeg se $K$ ne može rekonstruirati. Sustav je
+homogen --- ako je $(\mathcal{Q}, Y)$ dopustiv, dopustiv je i
+$(t\mathcal{Q}, tY)$ uz \emph{isti} $K$ --- pa smijem slobodno skalirati i tražiti
+$\mathcal{Q} \psd I$ i $M_i \nsd -I$. Time je strogost osigurana, a rješenje
+netrivijalno.
+\end{pitanje}
+
+\begin{pitanje}{Je li vaš $K$ optimalan?}
+\textbf{Odgovor.} Nije, i ne tvrdim da jest. Ovo je problem \emph{dopustivosti} ---
+rješenja ima beskonačno mnogo. Kriterij $\min\norm{Y}_2$ služio je samo kao
+regularizacija, da se izabere jedan određen i ponovljiv par. Napominjem da
+minimizacija $\norm{Y}$ ne minimizira $\norm{K}$, jer je $K = Y\mathcal{Q}^{-1}$,
+pa između njih stoji $\mathcal{Q}^{-1}$, koja je i sama varijabla. Za regulator
+najmanje norme trebalo bi dodati ograničenje oblika
+$\begin{bsmallmatrix} \gamma I & Y \\ Y\trans & \mathcal{Q}\end{bsmallmatrix} \psd 0$
+uz $\mathcal{Q} \psd \eta I$, i minimizirati $\gamma$.
+\end{pitanje}
+
+\begin{pitanje}{Zašto regulator mijenja samo prvi redak matrice?}
+\textbf{Odgovor.} Jer je $B = [1,\ 0]\trans$, pa je
+$BK = \begin{bsmallmatrix} K_1 & K_2 \\ 0 & 0\end{bsmallmatrix}$ --- druga
+komponenta stanja nema izravan ulaz. Upravljivost se time ne gubi: par $(A, B)$
+je upravljiv jer je $\begin{bsmallmatrix} B & AB \end{bsmallmatrix}$ punog ranga,
+pa se preko sprege $x_2 \to u \to x_1 \to x_2$ ipak može utjecati na obje
+komponente.
+\end{pitanje}
+
+\begin{pitanje}{Zašto je zajamčena stopa $\alpha = 0{,}288$ mnogo manja od stvarne?}
+\textbf{Odgovor.} Jer ocjena vrijedi za \emph{proizvoljno} prespajanje --- mora
+pokriti i najgori mogući raspored, uključujući onaj koji nikad ne nastupi.
+Spektralni radijus monodromijske matrice zatvorenog kruga, $0{,}0697$, odgovara
+stopi oko $1{,}33\ \mathrm{s}^{-1}$, dakle otprilike četiri i pol puta bržoj, ali
+vrijedi samo za zadano periodičko prespajanje. Konzervativnost je cijena
+univerzalnosti.
+\end{pitanje}
+
+\begin{pitanje}{Zašto norma stanja privremeno raste iako $V$ pada?}
+\textbf{Odgovor.} Jer nivo-skupovi funkcije $V(x) = x\trans Px$ nisu kružnice
+nego \emph{elipse} --- $P$ nije višekratnik jedinične matrice. Trajektorija može
+prijeći na manju elipsu, a pritom se udaljiti od ishodišta, ako se kreće prema
+duljoj poluosi. Formalno je to sadržano u predfaktoru
+$\sqrt{\operatorname{cond}(P)} = 1{,}332$ u ocjeni: on dopušta porast norme do
+$33\%$ prije nego eksponencijala prevlada. Na slici se to vidi kao porast $x_2$
+do $0{,}64$ u prvoj polovici sekunde.
+\end{pitanje}
+
+\section{Popis zamki}
+\label{sec:z4o-zamke}
+
+\begin{longtable}{@{}p{0.05\linewidth} p{0.42\linewidth} p{0.47\linewidth}@{}}
+\toprule
+\textbf{\#} & \textbf{Zamka} & \textbf{Kako je izbjeći} \\
+\midrule
+\endhead
+1 & ,,Oba moda stabilna $\Rightarrow$ sustav stabilan`` & Fatalna. Pod a) stani na
+,,svaki mod zasebno``. \\[5pt]
+2 & Predznak umnoška izvandijagonalnih elemenata & Umnožak je $-\pi^2/4$; u
+karakterističnu jednadžbu ulazi s minusom (\S\ref{sec:z4-parni}). \\[5pt]
+3 & Period prespajanja shvaćen kao $1$ s & Puni ciklus je $2$ s --- parni pa
+neparni mod. \\[5pt]
+4 & \texttt{ode45} pušten kroz diskontinuitet & Integriraj segment po segment
+(\S\ref{sec:z4-kako-simulirati}). \\[5pt]
+5 & Simulacija predstavljena kao dokaz & Dokaz je $\rho(\Phi_{\mathrm{cikl}}) > 1$. \\[5pt]
+6 & Krivi poredak u $\Phi_{\mathrm{cikl}}$ & Prvo parni pa neparni znači
+$\Phi_{\mathrm{nep}}\Phi_{\mathrm{par}}$, zdesna nalijevo. \\[5pt]
+7 & Zasebna $P$ za svaki mod & Mora biti \emph{jedna zajednička}; to je cijela
+poanta. \\[5pt]
+8 & Pokušaj ,,dijeljenja s $P$`` & Jedina dopuštena operacija je kongruencija. \\[5pt]
+9 & Stroge nejednakosti predane rješavaču izravno & Trivijalno rješenje
+$\mathcal{Q} = 0$; treba normalizacija. \\[5pt]
+10 & Tvrdnja da $\min\norm{Y}$ daje najmanji $\norm{K}$ & Ne slijedi;
+$K = Y\mathcal{Q}^{-1}$ (\S\ref{sec:z4-kod}). \\[5pt]
+11 & Provjera stala na svojstvenim vrijednostima zatvorenog kruga & Nužan, ne
+dovoljan uvjet. \\[5pt]
+12 & Zaboravljeno da je rješenje nejedinstveno & Problem dopustivosti; reci
+,,jedno od beskonačno mnogo``. \\
+\bottomrule
+\end{longtable}
+
+\section{Veza s ostalim zadacima}
+\label{sec:z4o-veze}
+
+\begin{predznanje}
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Iz Zadatka 1} dolazi pozitivna definitnost. Ondje je bila
+        svojstvo Hesseove matrice i jamčila konveksnost; ovdje je svojstvo
+        Ljapunovljeve matrice $P$ i jamči da je $V$ prava mjera energije.
+        \emph{Isti pojam, druga uloga.}
+  \item \textbf{Iz Zadatka 2} dolazi redukcija na generatore konveksne ljuske.
+        Ondje su to bili vrhovi pravokutnika i osam nejednakosti; ovdje su to
+        dvije matrice modova i dvije matrične nejednakosti. \emph{Ista ideja, druga
+        razina.}
+  \item \textbf{Iz Zadatka 3} dolazi ideja reformulacije. Ondje je apsolutna
+        vrijednost pomoćnom varijablom postala par linearnih nejednakosti; ovdje
+        bilinearan uvjet supstitucijom postaje linearna matrična nejednakost.
+        \emph{Oba puta ključ je promjena varijabli, ne novi algoritam.}
+  \item \textbf{Hijerarhija klasa:} LP $\subset$ QP $\subset$ SOCP $\subset$ SDP.
+        Zadatak 3 je LP, Zadaci 1 i 2 su QP, Zadatak 4 je SDP. Sva četiri su
+        konveksna, i sva četiri se rješavaju metodama unutarnje točke.
+\end{itemize}
+\end{predznanje}

@@ -13,7 +13,7 @@
 
 ## Trenutni fokus
 
-- [ ] **Udžbenik v2 — LaTeX, vođen zadacima, s okvirima izvora** (`docs/udzbenik/`):
+- [x] **Udžbenik v2 — LaTeX, vođen zadacima, s okvirima izvora** (`docs/udzbenik/`):
   - Nastao jer Markdown verzija nije pokazivala **odakle koja tvrdnja dolazi** —
     pandoc daje samo obične citatne blokove, pa su slajdovi s predavanja, tekst
     zadatka i rješenje iz seminara izgledali identično.
@@ -22,10 +22,19 @@
     beamer overlayi razdvajaju), sivo = doslovni tekst zadatka sa skena,
     plavo = doslovni izvadak iz seminara v1.2, žuto = definicija ili formula.
     Sve ostalo je bez ispune, da četiri boje ostanu jedini glasan signal.
-  - **Gotovo**: Dio 0 (rječnik svakog simbola s izgovorom, računski alat, čitanje
-    i crtanje grafova) i Zadatak 1 u cijelosti (a–f + modul za obranu).
-    93 stranice, `dist/v1.2/OMRiUS_udzbenik_v2.pdf`.
-  - **Preostaje**: Zadaci 2, 3 i 4 po istom predlošku od devet koraka.
+  - **Gotovo u cijelosti**: Dio 0 (rječnik svakog simbola s izgovorom, računski
+    alat, čitanje i crtanje grafova), sva četiri zadatka po istom predlošku od
+    devet koraka, svaki s modulom za obranu, i završni podsjetnik za dan obrane.
+    **188 stranica**, `dist/v1.2/OMRiUS_udzbenik_v2.pdf`.
+  - **Provjereno programski**: 49 referenci na slajdove usporedbom s podnožjem
+    stvarnog slajda u PDF-u; 67 brojčanih tvrdnji prema `docs/code/task*_output.txt`;
+    log bez `Missing character`, `Undefined control sequence` i `Overfull`.
+  - **Zabilježene nijanse gdje seminar tvrdi više nego što je dokazano** (svaka s
+    formulacijom za obranu): porast `J*` s gušćom mrežom ima dva uzroka, a ne samo
+    kvadraturu, i dvije mreže nisu dokaz reda konvergencije (Z3); `min ||Y||` ne
+    daje regulator najmanje norme jer je `K = Y Q^-1` (Z4); umnožak
+    izvandijagonalnih elemenata je `-pi^2/4`, a u karakterističnu jednadžbu ulazi
+    s minusom (Z4).
   - Build: `python src/build_udzbenik.py` (Tectonic; sam renderira slike koje
     nedostaju). Slajdovi: `python src/extract_slides.py` iz manifesta u gitu;
     PNG-ovi su izvedeni i gitignorirani.

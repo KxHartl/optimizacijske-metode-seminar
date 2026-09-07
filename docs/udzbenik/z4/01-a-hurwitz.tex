@@ -1,0 +1,173 @@
+\chapter{Zadatak 4a --- jesu li modovi Hurwitzovi}
+\label{ch:z4-hurwitz}
+
+\section{Što se ovdje traži}
+
+Izračunati svojstvene vrijednosti obiju matrica i reći je li svaki mod zasebno
+stabilan.
+
+\begin{zadatak}{Zadatak 4, podzadatak a)}
+a) Jesu li matrice $A_{\mathrm{parno}}$ i $A_{\mathrm{neparno}}$ stabilne matrice
+(Hurwitzove matrice)? Odnosno, jesu li oba dinamička moda stabilna?
+\emph{(Napomena: ovo možete provjeriti izračunom svojstvenih vrijednosti ovih
+matrica.)}
+\end{zadatak}
+
+\begin{predznanje}
+\begin{itemize}[nosep,leftmargin=*]
+  \item Karakteristična jednadžba $2\times2$ matrice --- \S\ref{sec:svojstvene}.
+  \item Što znači Hurwitz --- \S\ref{sec:oznake-dinamika}.
+  \item Trag i determinanta --- \S\ref{sec:vektori-matrice}.
+\end{itemize}
+\end{predznanje}
+
+\begin{pojam}{Hurwitzova matrica}
+Kvadratna matrica $A$ je \textbf{Hurwitzova} ako sve njezine svojstvene
+vrijednosti imaju strogo negativan realni dio, $\Real \lambda_i < 0$. Za linearan
+vremenski invarijantan sustav $\dot{x} = Ax$ to je nužan i dovoljan uvjet
+asimptotske (i eksponencijalne) stabilnosti: rješenje je
+$x(t) = e^{At}x(0)$, a $e^{At} \to 0$ točno kad su svi $\Real \lambda_i < 0$.
+\end{pojam}
+
+\section{Izvod za parni mod}
+\label{sec:z4-parni}
+
+\begin{korak}[Karakteristična jednadžba, s predznacima]
+\begin{equation}
+A_{\mathrm{parno}} = \begin{bmatrix} -1 & -\tfrac{\pi}{6} \\[2pt] \tfrac{3\pi}{2} & -1 \end{bmatrix}
+\;\Longrightarrow\;
+\lambda I - A_{\mathrm{parno}} = \begin{bmatrix} \lambda + 1 & \tfrac{\pi}{6} \\[2pt] -\tfrac{3\pi}{2} & \lambda + 1 \end{bmatrix}.
+\end{equation}
+Determinanta je umnožak dijagonale minus umnožak antidijagonale:
+\begin{equation}
+\det(\lambda I - A_{\mathrm{parno}})
+= (\lambda+1)^2 - \left(\frac{\pi}{6}\right)\left(-\frac{3\pi}{2}\right)
+= (\lambda+1)^2 + \frac{\pi^2}{4} = 0 .
+\label{eq:z4-karakteristicna}
+\end{equation}
+Odatle
+\begin{equation}
+(\lambda + 1)^2 = -\frac{\pi^2}{4}
+\;\Longrightarrow\;
+\lambda + 1 = \pm j\frac{\pi}{2}
+\;\Longrightarrow\;
+\lambda_{1,2}(A_{\mathrm{parno}}) = -1 \pm j\frac{\pi}{2} = -1 \pm 1{,}570796\,j .
+\end{equation}
+\end{korak}
+
+\begin{zamka}[Zamka: predznak umnoška izvandijagonalnih elemenata]
+Ovdje je vrlo lako izgubiti predznak i zaključak i dalje ispadne točan --- pa se
+greška ne primijeti. Pazi:
+\begin{itemize}[nosep,leftmargin=*]
+  \item Izvandijagonalni elementi \emph{same matrice} $A_{\mathrm{parno}}$ su
+        $-\tfrac{\pi}{6}$ i $\tfrac{3\pi}{2}$; njihov umnožak je
+        $\boldsymbol{-\tfrac{\pi^2}{4}}$, dakle \emph{negativan}.
+  \item U karakterističnoj jednadžbi taj se umnožak \emph{oduzima}, pa
+        $-(-\tfrac{\pi^2}{4}) = +\tfrac{\pi^2}{4}$ --- odatle plus u
+        \eqref{eq:z4-karakteristicna}.
+\end{itemize}
+Reći ,,umnožak izvandijagonalnih elemenata je $+\pi^2/4$`` je netočno; točno je
+da je \emph{determinanta} matrice $A$ jednaka
+$\det A = (-1)(-1) - (-\tfrac{\pi}{6})(\tfrac{3\pi}{2}) = 1 + \tfrac{\pi^2}{4}$.
+Rezultat je isti, ali formulacija je ono što ispitivač sluša.
+\end{zamka}
+
+\begin{korak}[Kontrola preko traga i determinante]
+Za $2\times2$ matricu vrijedi $\lambda^2 - (\tr A)\lambda + \det A = 0$. Ovdje:
+\begin{equation}
+\tr A_{\mathrm{parno}} = -1 + (-1) = -2,
+\qquad
+\det A_{\mathrm{parno}} = 1 + \frac{\pi^2}{4} \approx 3{,}4674,
+\end{equation}
+pa je $\lambda^2 + 2\lambda + \bigl(1 + \tfrac{\pi^2}{4}\bigr) = 0$, što je
+identično \eqref{eq:z4-karakteristicna}. Uz to:
+\begin{itemize}[nosep,leftmargin=*]
+  \item $\lambda_1 + \lambda_2 = \tr A = -2$, a doista $(-1+j\tfrac{\pi}{2}) + (-1-j\tfrac{\pi}{2}) = -2$; \checkmark
+  \item $\lambda_1 \lambda_2 = \det A = 1 + \tfrac{\pi^2}{4}$, a doista
+        $(-1)^2 + (\tfrac{\pi}{2})^2 = 1 + \tfrac{\pi^2}{4}$. \checkmark
+\end{itemize}
+\end{korak}
+
+\section{Neparni mod: isti spektar}
+\label{sec:z4-neparni}
+
+\begin{korak}
+\begin{equation}
+A_{\mathrm{neparno}} = \begin{bmatrix} -1 & -\tfrac{3\pi}{2} \\[2pt] \tfrac{\pi}{6} & -1 \end{bmatrix}.
+\end{equation}
+Trag je opet $-2$, a determinanta
+\begin{equation}
+\det A_{\mathrm{neparno}} = 1 - \left(-\frac{3\pi}{2}\right)\left(\frac{\pi}{6}\right) = 1 + \frac{\pi^2}{4},
+\end{equation}
+dakle \emph{identična} onoj parnog moda --- jer su izvandijagonalni elementi samo
+zamijenili mjesta, a umnožak je komutativan. Karakteristična jednadžba je zato
+ista, pa je
+\begin{equation}
+\lambda_{1,2}(A_{\mathrm{neparno}}) = -1 \pm j\frac{\pi}{2}.
+\end{equation}
+\end{korak}
+
+\begin{formula}{Odgovor na podzadatak a)}
+\begin{equation}
+\lambda_{1,2}(A_{\mathrm{parno}}) = \lambda_{1,2}(A_{\mathrm{neparno}}) = -1 \pm j\frac{\pi}{2} .
+\end{equation}
+Realni dio svih svojstvenih vrijednosti je $-1 < 0$, pa su \textbf{obje matrice
+Hurwitzove} i svaki je mod \emph{zasebno} asimptotski stabilan.
+\end{formula}
+
+\begin{lstlisting}[style=outputstyle]
+--- (a) Stabilnost modova ---
+eig(A_parno)   = -1.000000 +1.570796i,  -1.000000 -1.570796i
+eig(A_neparno) = -1.000000 +1.570796i,  -1.000000 -1.570796i
+pi/2 = 1.570796 -> obje matrice su Hurwitzove (Re = -1 < 0)
+\end{lstlisting}
+
+\section{Što svojstvene vrijednosti fizikalno znače}
+\label{sec:z4-fizikalno}
+
+\begin{pojam}{Čitanje kompleksnog para $\sigma \pm j\omega$}
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Realni dio $\sigma = -1$} je brzina prigušenja: amplituda pada
+        kao $e^{-t}$, dakle na $37\%$ u jednoj sekundi.
+  \item \textbf{Imaginarni dio $\omega = \pi/2 \approx 1{,}571$ rad/s} je kružna
+        frekvencija titranja. Period je $T = 2\pi/\omega = 4$ s.
+  \item \textbf{Kompleksan par} znači da odziv \emph{oscilira} dok se gasi. U
+        prostoru stanja to je spirala prema ishodištu.
+\end{itemize}
+\end{pojam}
+
+\begin{korak}[Zašto je $\omega = \pi/2$ ovdje presudan]
+Period titranja svakog moda je $4$ s, a mod se drži $1$ s. U jednoj sekundi
+trajektorija dakle prijeđe točno \emph{četvrtinu} kruga, odnosno zakrene se za
+$90^\circ$. Za to vrijeme amplituda padne faktorom $e^{-1} \approx 0{,}368$.
+
+Ta dva učinka --- rotacija za $90^\circ$ i prigušenje za $e^{-1}$ --- međusobno se
+natječu. Podzadatak b) pokazat će da rotacija pobjeđuje: zakret od $90^\circ$
+uzastopno pogađa smjer u kojem drugi mod ima veliko pojačanje, pa se stanje
+između dva prespajanja pojača više nego što ga prigušenje uspije smanjiti.
+\end{korak}
+
+\begin{zamka}[Zamka: ,,oba su moda stabilna, dakle sustav je stabilan``]
+Ovo je \emph{fatalna} zamka cijelog Zadatka 4, i cijeli podzadatak b) postoji da
+je razotkrije. Hurwitzovost svakog moda zasebno \textbf{ne} povlači stabilnost
+sklopnog sustava. Odgovor pod a) mora glasiti ,,oba su moda zasebno stabilna``,
+i tu stati --- bez zaključka o sustavu.
+\end{zamka}
+
+\begin{izgovor}
+,,Karakteristična jednadžba parnog moda: determinanta od lambda i minus a jednaka
+je lambda plus jedan na kvadrat, minus umnožak izvandijagonalnih elemenata
+matrice lambda i minus a. Ti elementi su pi kroz šest i minus tri pi kroz dva, pa
+je njihov umnožak minus pi na kvadrat kroz četiri, i kad se oduzme, dobiva se
+plus pi na kvadrat kroz četiri.
+
+Dakle lambda plus jedan na kvadrat plus pi na kvadrat kroz četiri jednako nuli,
+odakle lambda jednako minus jedan plus minus je pi kroz dva.
+
+Za neparni mod izvandijagonalni elementi su samo zamijenili mjesta, umnožak je
+isti, pa je i spektar isti.
+
+Realni dio je minus jedan, dakle obje su matrice Hurwitzove i svaki je mod
+zasebno asimptotski stabilan. Naglasio bih da iz toga \emph{ne} slijedi da je
+sklopni sustav stabilan --- to provjeravam u sljedećem podzadatku.``
+\end{izgovor}

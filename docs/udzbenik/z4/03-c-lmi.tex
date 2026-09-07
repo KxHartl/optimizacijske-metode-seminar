@@ -1,0 +1,416 @@
+\chapter{Zadatak 4c --- sinteza regulatora pomoću LMI-ja}
+\label{ch:z4-lmi}
+
+\section{Što se ovdje traži}
+
+Naći matricu $K$ takvu da zatvoreni krug bude eksponencijalno stabilan
+\emph{unatoč} prespajanju --- dakle riješiti upravo onaj problem koji je
+podzadatak b) razotkrio.
+
+\begin{zadatak}{Zadatak 4, podzadatak c)}
+c) U sustavu (3), neka je matrica $B = \begin{bsmallmatrix} 1 \\ 0 \end{bsmallmatrix}$.
+Dizajnirajte statički regulator $u(t) = Kx(t)$ takav da je zatvoreni krug
+$\dot{x}(t) = (A(t) + BK)x(t)$ eksponencijalno stabilan, gdje je $A(t)$ zadana s
+(4). Simulirajte ovaj vremenski promjenjiv zatvorni sustav s početnim uvjetom
+$x(0) = \begin{bsmallmatrix} 1 \\ 0 \end{bsmallmatrix}$, prikažite $x(t)$ i
+prikažite trajektoriju sustava u prostoru stanja.
+\end{zadatak}
+
+\begin{predznanje}
+\begin{itemize}[nosep,leftmargin=*]
+  \item Zašto Hurwitzovost modova nije dovoljna --- Poglavlje~\ref{ch:z4-simulacija}.
+  \item Pozitivna definitnost i oznake $\pd$, $\nd$ --- \S\ref{sec:relacije}.
+  \item Konveksna ljuska --- \S\ref{sec:z2-ljuska}.
+  \item Inverz matrice --- \S\ref{sec:inverz}.
+\end{itemize}
+\end{predznanje}
+
+\section{Ljapunovljev uvjet za jedan LTI sustav}
+\label{sec:z4-ljapunov}
+
+\begin{izvor}{Predavanje 7 --- Dinamički sustavi, Ljapunov, disipativnost, slajd 5/37 (PDF str.~6)}
+\slajd[0.86]{p07-lti-stabilnost}
+
+\textbf{Transkripcija.} \emph{Stabilnost vremenski invarijantnih sustava.}
+Linearno vremenski invarijantan sustav $\dot{x}(t) = Ax(t)$ je eksponencijalno
+stabilan \textbf{ako i samo ako} postoji $P$ tako da vrijedi
+\[
+P \pd 0 \quad \text{i} \quad A\trans P + PA \nd 0 .
+\]
+Ekvivalentan zapis gornje dvije nejednakosti:
+$\begin{bsmallmatrix} -P & 0 \\ 0 & A\trans P + PA \end{bsmallmatrix} \nd 0$.
+Ovo je linearna matrična nejednadžba (LMI) u $P$!
+
+\textbf{Zašto je ovo baza cijelog podzadatka:} stabilnost se ovime prevodi iz
+pitanja o svojstvenim vrijednostima u pitanje o \emph{dopustivosti} skupa
+matričnih nejednakosti --- a to je konveksan problem koji rješavač može riješiti.
+Uočite ,,ako i samo ako``: uvjet nije samo dovoljan nego i nužan.
+\end{izvor}
+
+\begin{izvor}{Predavanje 7 --- slajd 6/37 (PDF str.~10)}
+\slajd[0.86]{p07-dokaz-trajektorije}
+
+\textbf{Transkripcija (dokaz ,,putem trajektorija``).} Zbog stroge nejednakosti
+$A\trans P + PA \nd 0$ postoji realan broj $\gamma > 0$ takav da vrijedi
+$A\trans P + PA \nsd -\gamma P$. Za proizvoljnu trajektoriju:
+\[
+x\trans(A\trans P + PA)x \leq -\gamma\, x\trans P x
+\;\Longrightarrow\;
+\frac{\dd}{\dd t}\bigl(x\trans P x\bigr) \leq -\gamma\, x\trans P x ,
+\]
+odnosno, uz $V(t) = x(t)\trans P x(t)$, imamo $\dot{V} \leq -\gamma V$, pa slijedi
+$V(t) \leq V(t_0)e^{-\gamma(t-t_0)}$. Uz poznate nejednakosti
+$\lambda_{\min}(P)\norm{x}^2 \leq x\trans P x \leq \lambda_{\max}(P)\norm{x}^2$
+slijedi
+\[
+\norm{x(t)} \leq \norm{x(t_0)}\sqrt{\frac{\lambda_{\max}(P)}{\lambda_{\min}(P)}}\;e^{-\frac{\gamma}{2}(t-t_0)} .
+\]
+
+\textbf{Odakle brojevi u našoj ocjeni.} Iz ovog izraza dolaze obje konstante koje
+će se pojaviti u provjeri: stopa $\alpha = \gamma/2$ i predfaktor
+$\sqrt{\lambda_{\max}(P)/\lambda_{\min}(P)} = \sqrt{\operatorname{cond}(P)}$.
+Kod nas će biti $\alpha = 0{,}288374$ i predfaktor $1{,}3320$.
+\end{izvor}
+
+\begin{izvor}{Predavanje 7 --- slajd 7/37 (PDF str.~11)}
+\slajd[0.86]{p07-nivo-skup}
+
+\textbf{Transkripcija.} Iz $A\trans P + PA \nd 0$, množenjem s $x\trans$ slijeva i
+$x$ zdesna:
+\[
+\dot{x}\trans P x + (Px)\trans \dot{x} < 0
+\quad\Longleftrightarrow\quad
+\dot{x}\trans \grad V(x) < 0, \qquad V(x) = x\trans P x, \ \grad V(x) = 2Px .
+\]
+Nivo-skup Ljapunovljeve funkcije $\{x \mid V(x) \leq c\}$ je \emph{invarijantan}
+skup trajektorija sustava (jednom kad trajektorija uđe u taj skup, stalno ostaje
+u njemu).
+
+\textbf{Ovo je slika koju treba imati u glavi.} Nivo-skupovi funkcije
+$V(x) = x\trans P x$ su elipse. Uvjet $\dot{V} < 0$ znači da trajektorija te
+elipse siječe \emph{uvijek prema unutra} --- nikad ne može izaći. Upravo to će se
+vidjeti na slici zatvorenog kruga.
+\end{izvor}
+
+\section{Kvadratna stabilnost: uvjet za \emph{skup} matrica}
+\label{sec:z4-kvadratna}
+
+\begin{izvor}{Predavanje 7 --- slajd 15/37 (PDF str.~25)}
+\slajd[0.86]{p07-kvadratna-stabilnost}
+
+\textbf{Transkripcija.} \emph{Robusna stabilnost, uvod.} Za zadani kompaktan
+(zatvoren i ograničen) skup $\mathcal{A} \subset \R^{n\times n}$, promotrimo skup
+dinamičkih sustava $\dot{x}(t) = Ax(t)$, $A \in \mathcal{A}$.
+
+Kažemo da je skup sustava zadan s $\mathcal{A}$ \textbf{kvadratno stabilan} ako
+postoji simetrična matrica $P$ takva da vrijedi
+\[
+P \pd 0, \qquad A\trans P + PA \nd 0 \quad \text{za sve } A \in \mathcal{A}.
+\]
+Funkcija $V(x) = x\trans P x$ je kvadratna Ljapunovljeva funkcija za sustave
+$\mathcal{A}$ (stoga naziv ,,kvadratna stabilnost``).
+\begin{itemize}[nosep,leftmargin=*]
+  \item Implicira da su sve matrice $A \in \mathcal{A}$ stabilne (Hurwitzove).
+  \item \emph{Implicira da za sve po dijelovima kontinuirane vremenski
+        promjenjive $A(t) \in \mathcal{A}$, vremenski promjenjiv sustav
+        $\dot{x}(t) = A(t)x(t)$ je eksponencijalno stabilan.}
+\end{itemize}
+
+\textbf{Druga natuknica je cijeli odgovor na Zadatak 4c.} Ključna riječ je
+\textbf{zajednička}: jedna te ista matrica $P$ mora raditi za \emph{sve} modove.
+Tada Ljapunovljeva funkcija pada bez obzira na to koji je mod trenutno aktivan,
+pa prespajanje ne može naškoditi --- niti se mora znati \emph{kada} se prespaja.
+Obrat ne vrijedi: postoje sklopni sustavi koji su stabilni, a nemaju zajedničku
+kvadratnu Ljapunovljevu funkciju.
+\end{izvor}
+
+\begin{izvor}{Predavanje 7 --- slajd 16/37 (PDF str.~26)}
+\slajd[0.86]{p07-konveksna-ljuska-lmi}
+
+\textbf{Transkripcija.} Ako skup $\mathcal{A}$ ima beskonačno puno elemenata,
+provjera kvadratne stabilnosti zahtijevala bi provjeru beskonačno puno LMI-jeva.
+\emph{Ključno pitanje analize robusnosti: kako reducirati problem na standardan
+LMI problem?}
+
+Neka je $\mathcal{A}$ konveksna ljuska konačnog skupa matrica
+$\{A_1, \dots, A_N\}$. \emph{Kvadratna stabilnost za konveksnu ljusku:} tada je
+skup $\mathcal{A}$ kvadratno stabilan \textbf{ako i samo ako} postoji simetrična
+$P$ takva da vrijedi
+\[
+P \pd 0, \qquad A_i\trans P + P A_i \nd 0 \quad \text{za sve } i = 1, \dots, N .
+\]
+
+\textbf{Ista ideja kao u Zadatku 2.} Ondje je beskonačan skup nejednakosti sveden
+na vrhove pravokutnika; ovdje je beskonačan skup LMI-jeva sveden na generatore
+konveksne ljuske. Kod nas je skup već konačan --- samo dvije matrice --- pa je
+redukcija trivijalna: dovoljne su dvije nejednakosti.
+\end{izvor}
+
+\begin{formula}{Uvjet kvadratne stabilnosti za naš zatvoreni krug}
+Uz $\mathcal{A} = \{A_{\mathrm{parno}} + BK,\ A_{\mathrm{neparno}} + BK\}$, tražimo
+simetričnu $P$ takvu da
+\begin{equation}
+P \pd 0, \qquad \bar{A}\trans P + P\bar{A} \nd 0 \quad \text{za sve } \bar{A} \in \mathcal{A}.
+\label{eq:z4-kvadratna}
+\end{equation}
+Tada je $V(x) = x\trans P x$ zajednička kvadratna Ljapunovljeva funkcija za oba
+moda, a sustav je eksponencijalno stabilan za \emph{svaki} po dijelovima
+kontinuiran izbor $\bar{A}(t) \in \mathcal{A}$ --- dakle i za zadani zakon
+prespajanja.
+\end{formula}
+
+\section{Problem: uvjet nije LMI}
+\label{sec:z4-nije-lmi}
+
+\begin{izvor}{Predavanje 6 --- QCP i SDP, slajd 17/30 (PDF str.~17)}
+\slajd[0.86]{p06-lmi-def}
+
+\textbf{Transkripcija.} \emph{Linearna matrična nejednakost:}
+\[
+F(x) = F_0 + x_1F_1 + \dots + x_nF_n \nd 0 .
+\]
+\begin{itemize}[nosep,leftmargin=*]
+  \item Vektor $x$ je vektor projektnih varijabli.
+  \item Matrice $F_0, F_1, \dots, F_n$ su simetrične ($F_i = F_i\trans$), pa je i
+        $F(x) = F(x)\trans$.
+  \item $F(x)$ je (matrična) \emph{afina} funkcija od projektnih varijabli ---
+        svaki element od $F(x)$ je afina funkcija od $x$.
+  \item $\nd 0$ znači negativno definitno: $z\trans F(x) z < 0$ za svaki $z \neq 0$
+        $\Leftrightarrow$ sve svojstvene vrijednosti od $F(x)$ su negativne
+        $\Leftrightarrow$ $\lambda_{\max}(F(x)) < 0$.
+\end{itemize}
+
+\textbf{Riječ ,,afina`` je ovdje sve.} LMI je linearna matrična nejednakost
+\emph{u projektnim varijablama}. Čim se u izrazu pojavi umnožak dviju
+nepoznanica, to više nije LMI --- i upravo se to događa u sljedećem koraku.
+\end{izvor}
+
+\begin{korak}[Zašto uvjet \eqref{eq:z4-kvadratna} nije LMI]
+Uvrštavanjem $\bar{A}_i = A_i + BK$:
+\begin{equation}
+(A_i + BK)\trans P + P(A_i + BK)
+= A_i\trans P + \underbrace{K\trans B\trans P}_{\text{umnožak } K \text{ i } P}
++ PA_i + \underbrace{PBK}_{\text{umnožak } P \text{ i } K} \nd 0 .
+\end{equation}
+Nepoznanice su $P$ \emph{i} $K$, a pojavljuju se pomnožene jedna s drugom. Izraz
+je \emph{bilinearan}, ne afin --- to je BMI (bilinearna matrična nejednakost), a
+ne LMI. BMI je općenito nekonveksan problem i rješavači ga ne rješavaju
+pouzdano.
+\end{korak}
+
+\section{Konveksifikacija: transformacija kongruencije}
+\label{sec:z4-kongruencija}
+
+\begin{izvor}{Predavanje 7 --- slajd 18/37 (PDF str.~32)}
+\slajd[0.86]{p07-sinteza}
+
+\textbf{Transkripcija.} \emph{Od analize do sinteze\dots{} ,,konveksifikacija``.}
+Primjer --- statička povratna sprega varijabli stanja. Sustav
+$\dot{x} = Ax + Bu$, regulator $u = Kx$; cilj: odrediti $K$ tako da je zatvoreni
+krug stabilan. Zatvoreni krug: $\dot{x} = (A + BK)x$.
+
+Uvjet stabilnosti zatvorenog kruga:
+$P \pd 0$, $(A+BK)\trans P + P(A+BK) \nd 0$, odnosno
+$P \pd 0$, $A\trans P + K\trans B\trans P + PA + PBK \nd 0$.
+\emph{Nije LMI zbog umnoška varijabli $K$ i $P$!}
+
+Nakon transformacije kongruencije s $P^{-1}$ (množenje slijeva s $(P^{-1})\trans$
+i zdesna s $P^{-1}$) imamo (uočite $(P^{-1})\trans = P^{-1}$):
+\[
+P^{-1} \pd 0, \qquad P^{-1}A\trans + P^{-1}K\trans B\trans + AP^{-1} + BKP^{-1} \nd 0 .
+\]
+Uz supstituciju $\mathcal{Q} = P^{-1}$, $Y = KP^{-1}$ imamo:
+\[
+\mathcal{Q} \pd 0, \qquad \mathcal{Q}A\trans + Y\trans B\trans + A\mathcal{Q} + BY \nd 0
+\qquad \textbf{LMI!}
+\]
+
+\textbf{Ovo je cijeli recept, doslovno.} Naš zadatak ga primjenjuje dvaput ---
+jednom za svaki mod --- s istom $\mathcal{Q}$ i istim $Y$.
+\end{izvor}
+
+\begin{korak}[Zašto transformacija kongruencije čuva predznak]
+Za invertibilnu $T$ i simetričnu $M$ vrijedi
+\begin{equation}
+M \nd 0 \iff T\trans M T \nd 0 .
+\end{equation}
+Dokaz je jedan redak: za proizvoljan $z \neq 0$ stavi $w = Tz$. Kako je $T$
+invertibilna, $w \neq 0$, pa iz $M \nd 0$ slijedi
+$z\trans (T\trans M T) z = w\trans M w < 0$. Obrat analogno, s $T^{-1}$.
+
+Kod nas je $T = P^{-1}$, koja je invertibilna (jer je $P \pd 0$) i simetrična
+(inverz simetrične matrice je simetričan), pa je $T\trans = T$. Množenje
+nejednakosti s $P^{-1}$ s obje strane, dakle, ne mijenja njezin smisao --- za
+razliku od množenja skalarom, gdje bi predznak bio problem.
+\end{korak}
+
+\begin{zamka}[Zamka: zašto se ne smije samo ,,podijeliti s $P$``]
+Matrična nejednakost $M \nd 0$ nije jednadžba i ne smije se dijeliti. Jedina
+dopuštena operacija koja čuva definitnost je kongruencija $M \mapsto T\trans M T$
+s invertibilnom $T$. Ako se pokuša ,,skratiti`` $P$, dobiva se nešto što više
+nije ekvivalentno polaznom uvjetu.
+\end{zamka}
+
+\begin{formula}{LMI za sintezu}
+\begin{equation}
+\mathcal{Q} \pd 0, \qquad
+A_i \mathcal{Q} + \mathcal{Q}A_i\trans + BY + Y\trans B\trans \nd 0,
+\qquad i \in \{\mathrm{parno},\ \mathrm{neparno}\},
+\label{eq:z4-lmi}
+\end{equation}
+u nepoznanicama $\mathcal{Q} \in \Sym{2}$ i $Y \in \R^{1\times2}$. Iz rješenja se
+rekonstruiraju
+\begin{equation}
+P = \mathcal{Q}^{-1}, \qquad K = Y P = Y\mathcal{Q}^{-1} .
+\label{eq:z4-rekonstrukcija}
+\end{equation}
+\end{formula}
+
+\begin{korak}[Broj nepoznanica]
+$\mathcal{Q}$ je simetrična $2\times2$, dakle tri nezavisna broja
+($q_{11}$, $q_{12}$, $q_{22}$); $Y$ je $1\times2$, dakle dva. Ukupno pet
+skalarnih nepoznanica, i tri matrične nejednakosti. Za usporedbu, izravno
+traženje $K$ (dva broja) i $P$ (tri broja) daje isti broj nepoznanica --- ali
+nekonveksan problem. Supstitucija ne smanjuje veličinu problema, nego mu mijenja
+\emph{klasu}.
+\end{korak}
+
+\begin{izvor}{Predavanje 6 --- QCP i SDP, slajd 20/30 (PDF str.~21)}
+\slajd[0.86]{p06-lmi-konveksnost}
+
+\textbf{Transkripcija.} Linearna matrična nejednadžba definira konveksna
+ograničenja na $x$: skup $\mathcal{F} \coloneqq \{x \mid F(x) \nd 0\}$ je
+konveksan skup. Isto vrijedi i za skupove s $\nsd$, $\pd$, $\psd$.
+\emph{Dokaz:} za $x_1, x_2 \in \mathcal{F}$ i $\alpha \in [0,1]$ vrijedi
+$F(\alpha x_1 + (1-\alpha)x_2) = \alpha F(x_1) + (1-\alpha)F(x_2) \nd 0$.
+Funkcija $x \mapsto \lambda_{\max}(F(x))$ je konveksna funkcija.
+
+\textbf{Zašto je to važno.} Ovo je razlog zbog kojeg se cijeli trud oko
+konveksifikacije isplati: skup dopustivih $(\mathcal{Q}, Y)$ je konveksan, pa je
+problem dopustivosti konveksan i rješavač ga rješava globalno --- nema lokalnih
+rješenja u kojima bi mogao zapeti.
+\end{izvor}
+
+\section{Normalizacija strogih nejednakosti}
+\label{sec:z4-normalizacija}
+
+\begin{zamka}[Problem: rješavači ne znaju stroge nejednakosti]
+Uvjeti \eqref{eq:z4-lmi} su \emph{strogi} ($\pd$, $\nd$), a numerički rješavači
+rade s nestrogim ($\psd$, $\nsd$). Ako se strogo naivno zamijeni nestrogim,
+dopustiv postaje i trivijalan par $\mathcal{Q} = 0$, $Y = 0$ --- iz kojeg se $K$
+ne može rekonstruirati, jer $\mathcal{Q}$ nije invertibilna.
+\end{zamka}
+
+\begin{korak}[Rješenje: iskoristiti homogenost]
+Sustav \eqref{eq:z4-lmi} je \textbf{homogen}: ako je $(\mathcal{Q}, Y)$ dopustiv,
+dopustiv je i $(t\mathcal{Q},\ tY)$ za svaki $t > 0$, a pripadni regulator je
+\emph{isti}:
+\begin{equation}
+K = (tY)(t\mathcal{Q})^{-1} = t Y \cdot \tfrac1t \mathcal{Q}^{-1} = Y\mathcal{Q}^{-1}.
+\end{equation}
+Rješenje se, dakle, smije proizvoljno skalirati. Iskoristi to i traži umjesto
+strogih nejednakosti \emph{usklađeni par} normalizacija:
+\begin{equation}
+\mathcal{Q} \psd I, \qquad
+A_i\mathcal{Q} + \mathcal{Q}A_i\trans + BY + Y\trans B\trans \nsd -I .
+\label{eq:z4-normalizirano}
+\end{equation}
+Ovo su nestroge nejednakosti, pa ih rješavač prihvaća, a implicira ih strogost:
+$\mathcal{Q} \psd I \Rightarrow \mathcal{Q} \pd 0$ i
+$M_i \nsd -I \Rightarrow M_i \nd 0$. Trivijalno rješenje je isključeno.
+\end{korak}
+
+\section{Kod i rezultat}
+\label{sec:z4-kod}
+
+\begin{seminar}{Seminar v1.2, §5.4 --- ,,(c) Sinteza regulatora pomoću LMI-ja``}
+Sustav je homogen: ako je $(\mathcal{Q}, Y)$ dopustiv, dopustiv je i
+$(t\mathcal{Q}, tY)$ za $t \geq 1$, uz isti $K$. Stroge nejednakosti se stoga
+numerički realiziraju usklađenim parom normalizacija $\mathcal{Q} \succeq I$ i
+$A_i \mathcal{Q} + \mathcal{Q}A_i^{\mathsf{T}} + BY + Y^{\mathsf{T}}B^{\mathsf{T}} \preceq -I$,
+a među dopustivim parovima bira se onaj s najmanjom normom $\|Y\|$. Problem se
+rješava u YALMIP-u rješavačem SDPT3.
+
+\begin{lstlisting}[style=matlabstyle]
+Qv = sdpvar(2, 2, 'symmetric');
+Yv = sdpvar(1, 2, 'full');
+F  = [Qv >= eye(2), ...
+      A_par*Qv + Qv*A_par' + B*Yv + Yv'*B' <= -eye(2), ...
+      A_nep*Qv + Qv*A_nep' + B*Yv + Yv'*B' <= -eye(2)];
+sol = optimize(F, norm(Yv, 2), sdpsettings('solver', 'sdpt3', 'verbose', 0));
+
+Qs = value(Qv);  Ys = value(Yv);
+P  = inv(Qs);    K  = Ys*P;
+\end{lstlisting}
+
+\begin{lstlisting}[style=outputstyle]
+status : Successfully solved (SDPT3)
+Q = [ 1.354304 -0.385757; -0.385757  1.420003]
+Y = [-4.597618  1.172472]
+P = [ 0.800314  0.217413;  0.217413  0.763286],  eig(P) = 0.563600, 1.000000
+K = [-3.424629 -0.104650]
+\end{lstlisting}
+\end{seminar}
+
+\begin{formula}{Rezultat sinteze}
+\begin{equation}
+P = \begin{bmatrix} 0{,}800314 & 0{,}217413 \\ 0{,}217413 & 0{,}763286 \end{bmatrix} \pd 0,
+\qquad
+K = \begin{bmatrix} -3{,}424629 & -0{,}104650 \end{bmatrix}.
+\label{eq:z4-rjesenje}
+\end{equation}
+\end{formula}
+
+\begin{zamka}[Nijansa: $\min\norm{Y}$ ne daje regulator najmanje norme]
+Seminar kaže da se izborom najmanje $\norm{Y}$ ,,dobiva regulator najmanjeg
+pojačanja``. To ne stoji: veza je $K = Y\mathcal{Q}^{-1}$, pa minimizacija
+$\norm{Y}$ ne minimizira $\norm{K}$ --- između njih stoji $\mathcal{Q}^{-1}$,
+koja je i sama varijabla. Rješavač smije smanjiti $\norm{Y}$ tako da istovremeno
+,,napuše`` $\mathcal{Q}$, čime $\norm{K}$ može ostati velik.
+
+Što ostaje istinito: dobiveni $K$ \emph{jest} valjan --- stabilizira zatvoreni
+krug, i to je provjereno u Poglavlju~\ref{ch:z4-provjera}. Netočna je samo
+dodatna tvrdnja o njegovoj optimalnosti.
+
+\textbf{Kako to reći na obrani:} ,,Kriterij $\min\norm{Y}_2$ služio je samo kao
+regularizacija --- da se među beskonačno mnogo dopustivih parova izabere jedan
+određen i ponovljiv. Ne tvrdim da je dobiveni $K$ najmanje norme; za to bi
+trebalo minimizirati $\norm{K}$ izravno, što uz $K = Y\mathcal{Q}^{-1}$ nije
+konveksno u $(\mathcal{Q}, Y)$, ili nametnuti dodatno ograničenje oblika
+$\mathcal{Q} \psd \eta I$ i $\begin{bsmallmatrix} \gamma I & Y \\ Y\trans & \mathcal{Q}\end{bsmallmatrix} \psd 0$.``
+\end{zamka}
+
+\begin{zamka}[Zamka: rješenje nije jedinstveno]
+Sustav \eqref{eq:z4-lmi} je problem \emph{dopustivosti}, ne optimizacije. Drugi
+rješavač, druga normalizacija ili drugi dodatni kriterij daju drugi $K$ koji
+također stabilizira zatvoreni krug. To nije mana --- to je svojstvo problema. Na
+obrani reci: ,,ovo je jedno od beskonačno mnogo dopustivih pojačanja; svi
+rezultati i sve slike u radu dobiveni su s ovim.``
+\end{zamka}
+
+\begin{izgovor}
+,,Traži se statički regulator koji stabilizira sustav unatoč prespajanju. Iz
+podzadatka b) znam da Hurwitzovost pojedinih modova nije dovoljna, pa tražim
+\emph{zajedničku} kvadratnu Ljapunovljevu funkciju --- jednu istu matricu pe koja
+radi za oba moda. Prema Predavanju 7, ako takva postoji, sustav je eksponencijalno
+stabilan za bilo koji zakon prespajanja, ne samo za zadani.
+
+Uvjet je pe veće od nule i a s crtom transponirano pe plus pe a s crtom manje od
+nule, za obje matrice zatvorenog kruga. Kad uvrstim a plus be ka, dobivam umnožak
+nepoznanica ka i pe --- to je bilinearna, ne linearna matrična nejednakost, i
+nije konveksno.
+
+Rješenje je transformacija kongruencije s pe inverz: množim s obje strane, što
+čuva predznak jer je pe inverz invertibilna i simetrična. Uz supstituciju ku
+jednako pe inverz i ipsilon jednako ka pe inverz, sve postaje linearno u ku i
+ipsilon --- dakle LMI.
+
+Stroge nejednakosti sam numerički realizirao normalizacijama ku veće ili jednako
+i, i izraz manji ili jednak minus i; to smijem jer je sustav homogen, pa
+skaliranje ne mijenja ka.
+
+Riješio sam u YALMIP-u sa SDPT3 i dobio ka jednako minus tri zarez četiri dva,
+minus nula zarez jedan nula. Napomenuo bih da je ovo problem dopustivosti, pa
+rješenje nije jedinstveno --- kriterij najmanje norme ipsilon služio je samo da
+se izabere jedan određen par, a ne kao tvrdnja o optimalnosti pojačanja.``
+\end{izgovor}

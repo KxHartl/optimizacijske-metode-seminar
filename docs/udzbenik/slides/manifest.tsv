@@ -46,3 +46,12 @@ p05-po-dijelovima-afina	05_LP_QP	27	-
 p05-simpleks	05_LP_QP	20	-
 v4-aproksimacija	Vjezbe 4	4	-
 v4-norme-lp	Vjezbe 4	5	-
+# --- Zadatak 4: Ljapunov, LMI, sinteza ---
+p06-lmi-def	06_QCP_SDP	17	-
+p06-lmi-konveksnost	06_QCP_SDP	21	-
+p07-lti-stabilnost	07_Dinamicki_sustavi_Ljapunov_disipativnost	6	-
+p07-dokaz-trajektorije	07_Dinamicki_sustavi_Ljapunov_disipativnost	10	-
+p07-nivo-skup	07_Dinamicki_sustavi_Ljapunov_disipativnost	11	-
+p07-kvadratna-stabilnost	07_Dinamicki_sustavi_Ljapunov_disipativnost	25	-
+p07-konveksna-ljuska-lmi	07_Dinamicki_sustavi_Ljapunov_disipativnost	26	-
+p07-sinteza	07_Dinamicki_sustavi_Ljapunov_disipativnost	32	-

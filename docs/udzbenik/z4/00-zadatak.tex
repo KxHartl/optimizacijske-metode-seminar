@@ -1,0 +1,129 @@
+\chapter{Zadatak 4 --- što je točno zadano}
+\label{ch:z4-zadatak}
+
+\section{Izvorni tekst, doslovno}
+\label{sec:z4-izvorni}
+
+\begin{zadatak}{Zadatak 4 (Robusna stabilizacija)}
+\skenzad[0.96]{z4-original}
+\end{zadatak}
+
+\subsection{Prijepis}
+
+\begin{zadatak}{Zadatak 4 --- prijepis}
+\textbf{Zadatak 4. (Robusna stabilizacija)} Promotrimo sljedeći vremenski
+promjenjiv sustav
+\begin{equation}
+\dot{x}(t) = A(t)x(t) + Bu(t) \tag{3}
+\end{equation}
+gdje je $x(t)$ varijabla stanja, a $u(t)$ je ulazni (upravljački) signal. Matrica
+$A(t)$ je vremenski promjenjiva ($t$ označava vrijeme) i to prema sljedećem
+pravilu:
+\begin{equation}
+A(t) = \begin{cases}
+A_{\mathrm{parno}} & \text{kad je } \lfloor t \rfloor \text{ paran broj} \\
+A_{\mathrm{neparno}} & \text{kad je } \lfloor t \rfloor \text{ neparan broj}
+\end{cases} \tag{4}
+\end{equation}
+gdje $\lfloor t \rfloor$ označava najveći cijeli broj koji je manji ili jednak
+$t$. Imamo:
+\begin{equation}
+A_{\mathrm{parno}} = \begin{bmatrix} -1 & -\tfrac{1}{6}\pi \\ \tfrac{3}{2}\pi & -1 \end{bmatrix},
+\qquad
+A_{\mathrm{neparno}} = \begin{bmatrix} -1 & -\tfrac{3}{2}\pi \\ \tfrac{1}{6}\pi & -1 \end{bmatrix}. \tag{5}
+\end{equation}
+Ovdje se u biti radi o hibridnom sustavu sa ,,skokovitom`` promjenom dinamike
+(\emph{switching}) u diskretnim vremenskim trenutcima. Između svaka dva trenutka
+u kojima se odvija ova skokovita promjena, sustav je linearan vremenski
+invarijantan. Kažemo da ovaj sustav ima dva dinamička moda.
+
+\begin{enumerate}[label=\alph*),leftmargin=*]
+  \item Jesu li matrice $A_{\mathrm{parno}}$ i $A_{\mathrm{neparno}}$ stabilne
+        matrice (Hurwitzove matrice)? Odnosno, jesu li oba dinamička moda
+        stabilna? \emph{(Napomena: ovo možete provjeriti izračunom svojstvenih
+        vrijednosti ovih matrica.)}
+  \item Simulirajte vremenski promjenjiv sustav (3) s početnim uvjetom
+        $x(0) = \begin{bsmallmatrix} 1 \\ 0 \end{bsmallmatrix}$, prikažite $x(t)$
+        (graf kako se varijable stanja mijenjaju s vremenom) i prikažite
+        trajektoriju sustava u prostoru stanja. Je li ovaj sustav stabilan?
+  \item U sustavu (3), neka je matrica
+        $B = \begin{bsmallmatrix} 1 \\ 0 \end{bsmallmatrix}$. Dizajnirajte
+        statički regulator $u(t) = Kx(t)$ takav da je zatvoreni krug
+        \begin{equation}
+          \dot{x}(t) = \bigl(A(t) + BK\bigr)x(t) \tag{6}
+        \end{equation}
+        eksponencijalno stabilan, gdje je $A(t)$ zadana s (4). Simulirajte ovaj
+        vremenski promjenjiv zatvorni sustav s početnim uvjetom
+        $x(0) = \begin{bsmallmatrix} 1 \\ 0 \end{bsmallmatrix}$, prikažite $x(t)$
+        i prikažite trajektoriju sustava u prostoru stanja.
+\end{enumerate}
+\end{zadatak}
+
+\section{Što u zadatku \emph{ne} piše}
+\label{sec:z4-nije-receno}
+
+\begin{longtable}{@{}p{0.36\linewidth} p{0.60\linewidth}@{}}
+\toprule
+\textbf{Što nije rečeno} & \textbf{Kako je protumačeno i zašto} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Što nije rečeno} & \textbf{Kako je protumačeno i zašto} \\
+\midrule
+\endhead
+Koliki je $B$ u podzadacima a) i b). & Zadaje se tek u c). U a) i b) je
+$u \equiv 0$, pa $B$ ni ne treba --- promatra se autonomni sustav
+$\dot{x} = A(t)x$. \\[6pt]
+\textbf{Kojom metodom} projektirati $K$. & Ne kaže se. Tražena je samo
+eksponencijalna stabilnost. Odabrana je zajednička kvadratna Ljapunovljeva
+funkcija i sinteza preko LMI-ja, po Predavanju 7 --- jedina metoda koja
+jamči stabilnost za \emph{svaki} zakon prespajanja, ne samo za zadani. \\[6pt]
+Koliko dugo simulirati. & Nije zadano. Uzeto je $t \in [0, 20]$ s: dovoljno da
+se u otvorenom krugu vidi rast, a u zatvorenom da norma padne ispod
+$10^{-11}$. \\[6pt]
+Kojim rješavačem. & Nije zadano. Simulacija po segmentima s \texttt{ode45}
+(unutar segmenta sustav je LTI), LMI s YALMIP-om i SDPT3. \\[6pt]
+Kako riješiti stroge nejednakosti numerički. & Rješavači rade s nestrogim
+nejednakostima. Uvedene su normalizacije $\mathcal{Q} \psd I$ i
+$M_i \nsd -I$; opravdanje je homogenost sustava
+(\S\ref{sec:z4-normalizacija}). \\[6pt]
+Koji $K$ odabrati među beskonačno mnogo dopustivih. & Sustav LMI-ja je problem
+\emph{dopustivosti}, ne optimizacije --- rješenja ima beskonačno mnogo. U
+seminaru se bira ono s najmanjom $\norm{Y}_2$. \\[6pt]
+Treba li dokazati nestabilnost u b). & Traži se samo ,,je li ovaj sustav
+stabilan``. Simulacija sugerira odgovor; u seminaru je dodan i dokaz preko
+monodromijske matrice, jer simulacija sama po sebi nije dokaz. \\
+\bottomrule
+\end{longtable}
+
+\begin{zamka}[Zamka: $\lfloor t \rfloor$ paran znači $t \in [0,1) \cup [2,3) \cup \dots$]
+Prespajanje se događa na \emph{cjelobrojnim sekundama}, a mod vrijedi na
+poluotvorenom intervalu. Za $t \in [0,1)$ je $\lfloor t \rfloor = 0$, paran, pa
+vrijedi $A_{\mathrm{parno}}$; za $t \in [1,2)$ je $\lfloor t \rfloor = 1$, pa
+vrijedi $A_{\mathrm{neparno}}$. Period prespajanja je dakle $2$ s, ne $1$ s --- to
+je bitno za monodromijsku matricu u \S\ref{sec:z4-monodromija}.
+\end{zamka}
+
+\begin{zamka}[Zamka: ovo nije ,,nesigurnost``, nego \emph{prespajanje}]
+Zadatak se zove ,,robusna stabilizacija``, ali $A(t)$ nije nepoznata konstanta
+unutar nekog skupa --- ona se stvarno \emph{mijenja u vremenu}, po poznatom
+zakonu. Razlika je ključna: kad bi $A$ bila nepoznata konstanta, dovoljno bi bilo
+da svaka pojedina matrica bude Hurwitzova. Kod prespajanja to nije dovoljno, kao
+što podzadatak b) i pokazuje.
+\end{zamka}
+
+\section{Karta poglavlja}
+\label{sec:z4-karta}
+
+\begin{longtable}{@{}p{0.07\linewidth} p{0.42\linewidth} p{0.45\linewidth}@{}}
+\toprule
+& \textbf{Podzadatak} & \textbf{Gdje je obrađen} \\
+\midrule
+\endhead
+a) & Hurwitzovost modova & Poglavlje~\ref{ch:z4-hurwitz} \\
+b) & Simulacija i (ne)stabilnost & Poglavlje~\ref{ch:z4-simulacija} \\
+c) & Sinteza regulatora preko LMI-ja & Poglavlje~\ref{ch:z4-lmi} \\
+--- & Provjera rješenja i simulacija zatvorenog kruga & Poglavlje~\ref{ch:z4-provjera} \\
+--- & Pitanja, zamke i modelski odgovori & Poglavlje~\ref{ch:z4-obrana} \\
+\bottomrule
+\end{longtable}

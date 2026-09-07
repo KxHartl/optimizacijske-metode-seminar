@@ -1,0 +1,136 @@
+\chapter{Podsjetnik za dan obrane}
+\label{ch:podsjetnik}
+
+Ovo je zadnje što treba pročitati --- ujutro, prije izlaska. Sve je izvedeno u
+prethodnim poglavljima; ovdje stoji samo ono što se pamti.
+
+\section{Cijeli seminar na jednoj stranici}
+\label{sec:pod-pregled}
+
+\begin{longtable}{@{}p{0.09\linewidth} p{0.24\linewidth} p{0.28\linewidth} p{0.31\linewidth}@{}}
+\toprule
+& \textbf{Klasa} & \textbf{Ključna ideja} & \textbf{Rezultat} \\
+\midrule
+\endhead
+\textbf{Z1} & QP & KKT uvjeti, $2^m$ kombinacija aktivnosti; dualnost i cijene u
+sjeni & $\xopt = (190/33,\ 140/33)$, $\popt = 2000/33$, $\muopt = (404/33,\ 0)$ \\[6pt]
+\textbf{Z2} & QP (robusni) & Supremum po pravokutniku postignut u vrhu $\Rightarrow$
+osam nejednakosti & $x_{\mathrm{rob}}^{\star} = (6{,}5,\ 179/34)$,
+$f = 84{,}624$, $+39{,}63\%$ \\[6pt]
+\textbf{Z3} & LP & $\ell_1$-norma pomoćnim varijablama postaje linearna;
+$6N$ nejednakosti & $J^{\star} = 1{,}9659$ (A) i $2{,}5060$ (B) pri $N = 100$ \\[6pt]
+\textbf{Z4} & SDP & Zajednička kvadratna Ljapunovljeva funkcija; kongruencija
+$\Rightarrow$ BMI postaje LMI & $K = [-3{,}4246,\ -0{,}1047]$,
+$\alpha = 0{,}2884\ \mathrm{s}^{-1}$ \\
+\bottomrule
+\end{longtable}
+
+\begin{pojam}{Hijerarhija klasa}
+\begin{equation}
+\text{LP} \subset \text{QP} \subset \text{SOCP} \subset \text{SDP}
+\end{equation}
+Zadatak 3 je LP, Zadaci 1 i 2 su QP, Zadatak 4 je SDP. Sva su četiri
+\textbf{konveksna}, sva se rješavaju metodama unutarnje točke, i za sva vrijedi da
+je svaki lokalni optimum ujedno globalni.
+\end{pojam}
+
+\section{Tri ideje koje se ponavljaju}
+\label{sec:pod-ideje}
+
+\begin{korak}[Ako zaboraviš sve ostalo, zapamti ovo troje]
+\begin{enumerate}[leftmargin=*]
+  \item \textbf{Reformulacija, ne novi algoritam.} Sva četiri zadatka rješavaju se
+        tako da se problem \emph{prepiše} u standardnu klasu, a onda preda
+        gotovom rješavaču. Apsolutna vrijednost $\to$ pomoćne varijable
+        (Z3); umnožak nepoznanica $\to$ supstitucija $Y = KP^{-1}$ (Z4);
+        beskonačno mnogo ograničenja $\to$ vrhovi (Z2).
+  \item \textbf{Beskonačno $\to$ konačno preko konveksne ljuske.} Linearna
+        funkcija po konveksnoj ljusci postiže ekstrem u generatoru. To vrijedi za
+        vrhove pravokutnika u Z2 i za matrice modova u Z4 (Predavanje 7, slajd
+        16/37). Ista rečenica, dvije primjene.
+  \item \textbf{Množitelji imaju značenje.} $\mu_i^{\star}$ nije samo broj koji
+        ispadne iz računa --- to je cijena $i$-tog ograničenja,
+        $\partial\popt/\partial v_i = -\mu_i^{\star}$. Nulti množitelj znači
+        neaktivno ograničenje, veliki množitelj znači ograničenje koje stvarno
+        veže.
+\end{enumerate}
+\end{korak}
+
+\section{Pet zamki koje se najskuplje plaćaju}
+\label{sec:pod-zamke}
+
+\begin{zamka}[1. ,,Oba moda stabilna, dakle sustav stabilan`` (Z4)]
+Najteža greška u cijelom seminaru. Hurwitzovost svakog moda \emph{ne} povlači
+stabilnost sklopnog sustava --- $\rho(\Phi_{\mathrm{cikl}}) = 9e^{-2} = 1{,}218 > 1$.
+Pod 4a stani na ,,svaki mod zasebno``.
+\end{zamka}
+
+\begin{zamka}[2. ,,Funkcija cilja je konveksna`` kao cijeli odgovor (Z1)]
+Pitanje je je li \emph{problem} konveksan. Odgovor mora pokriti i dopustivi skup,
+i spomenuti egzistenciju (koercivnost, jer je skup neograničen) i jedinstvenost
+(stroga konveksnost).
+\end{zamka}
+
+\begin{zamka}[3. Negativan množitelj shvaćen kao greška (Z1, Z2)]
+$\mu_j < 0$ je \emph{rezultat}, ne greška --- dokaz da ta kombinacija aktivnosti
+nije optimalna. Tako je odbačen i vrh dopustivog skupa u Z1 ($\mu_2 = -2{,}45$).
+\end{zamka}
+
+\begin{zamka}[4. Simulacija ili uzorak predstavljeni kao dokaz (Z2, Z4)]
+$0/100$ realizacija bez kršenja nije dokaz robusnosti --- dokaz su vršne
+nejednakosti. Rastuća simulacija nije dokaz nestabilnosti --- dokaz je spektralni
+radijus monodromijske matrice. Uvijek razdvoji \emph{ilustraciju} od
+\emph{dokaza}.
+\end{zamka}
+
+\begin{zamka}[5. Predznaci pri prebacivanju (svi zadaci)]
+$-x_1-x_2 \leq -10 \Leftrightarrow -x_1-x_2+10 \leq 0$ (Z1);
+$a_{11} \in [-1{,}15,\,-0{,}85]$, ne obrnuto (Z2); umnožak izvandijagonalnih
+elemenata je $-\pi^2/4$ i u karakterističnu jednadžbu ulazi s minusom (Z4).
+Kontrola je uvijek ista: uvrsti jednu poznatu točku i provjeri predznak.
+\end{zamka}
+
+\section{Što reći kad ne znaš}
+\label{sec:pod-ne-znam}
+
+\begin{izgovor}[Tri rečenice koje uvijek prolaze]
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Kad ne znaš odgovor:} ,,To nisam računao u radu. Mogu reći kako
+        bih pristupio: \dots`` --- pa navedi metodu. Iskren okvir vrijedi više od
+        pogađanja.
+  \item \textbf{Kad si nesiguran u pretpostavku:} ,,To zadatak ne propisuje, pa
+        sam uzeo \dots{} i to je pretpostavka koju sam naveo u radu.`` Razlika
+        između ,,zadano je`` i ,,pretpostavio sam`` je ono što se ocjenjuje.
+  \item \textbf{Kad ti se čini da je pitanje zamka:} ponovi definiciju prije
+        odgovora. ,,Kvadratna stabilnost znači da postoji \emph{jedna zajednička}
+        matrica $P$ za sve modove --- uz to, odgovor je \dots``
+\end{itemize}
+\end{izgovor}
+
+\section{Zadnja provjera prije izlaska}
+\label{sec:pod-checklist}
+
+\begin{predznanje}
+\begin{enumerate}[leftmargin=*]
+  \item Znaš li napamet $\xopt$, $\muopt$ i $\popt$ Zadatka 1? (Sve ima
+        nazivnik $33$.)
+  \item Znaš li objasniti zašto vrh dopustivog skupa \emph{nije} rješenje?
+  \item Možeš li nacrtati sliku Zadatka 1 iz glave, s dvjema antiparalelnim
+        strelicama?
+  \item Znaš li u jednom retku dokazati da je supremum po pravokutniku u vrhu?
+  \item Znaš li računicu $y(9) \geq 3{,}5$ nasuprot $h(9) = 2{,}70$, koja
+        objašnjava cijelu sliku Zadatka 3?
+  \item Znaš li zašto uvjet $(A+BK)\trans P + P(A+BK) \nd 0$ nije LMI, i što se s
+        tim radi?
+  \item Znaš li reći $\rho(\Phi_{\mathrm{cikl}}) = 9e^{-2} = 1{,}218 > 1$ i
+        objasniti odakle devetka?
+  \item Imaš li spremnu rečenicu za svaku pretpostavku koju si sam donio?
+\end{enumerate}
+\end{predznanje}
+
+\begin{izgovor}[Zadnja napomena]
+Ispitivač ne traži da si sve zapamtio. Traži da znaš \emph{odakle} što dolazi ---
+je li to bilo u zadatku, na predavanju, ili tvoja odluka. Cijeli je ovaj udžbenik
+napisan oko te razlike: siva boja za zadatak, crvena za predavanje, plava za tvoj
+rad. Ako na svako pitanje možeš reći kojom je bojom obojano, obrana je gotova.
+\end{izgovor}
