@@ -13,6 +13,10 @@
 
 ## Trenutni fokus
 
+- [x] **Sveučilišni udžbenik i vodič za pripremu usmene obrane i ispita (rujan 2026.)**:
+  - Samostalan udžbenik od 10 poglavlja (`docs/textbook/` i master verzija `docs/UDZBENIK_OMRIUS_PRIPREMA_OBRANE.md`, preko 200 kB teksta).
+  - Obuhvaća first-principles matematičke izvode, predavanja 1-8, vježbe 1-5, zadatke 1-4 seminara v1.2, Schurov komplement, SOCP, regularizaciju, analizu svih 7 slika, 25 ispitnih pitanja i odgovora u 3 rečenice te 15 fatalnih zabluda.
+
 - [ ] Dubinska komparativna recenzija v1.2 prema izvornom zadatku i seminarima Matije i Ivana (plan potvrđen 2026-09-07).
   - Primarni artefakt: `dist/v1.2/OMRiUS_seminar_Kresimir_Hartl.pdf`; kopija u `for_validator` ima drugi SHA-256 i ne smatra se istom verzijom bez provjere.
   - U tijeku: RAG indeksiranje Ivanova PDF-a, neovisna matematička provjera i usporedba podudarnosti; završni nalaz ide u `docs/REVIEW.md`.
