@@ -14,12 +14,12 @@ professor_title: "Prof. dr. sc."          # Titula (npr. "Prof. dr. sc.")
 professor_name: "Andrej Jokić"           # Ime i prezime profesora
 
 # --- Build & page limit ---
-max_pages: 45                # build skripta upozorava ako PDF premašuje N stranica
-dist_version: "v1.0"         # build piše PDF u dist/<dist_version>/ (npr. "v1.0" za predaju)
+max_pages: 30                # build skripta upozorava ako PDF premašuje N stranica
+dist_version: "v1.2"         # build piše PDF u dist/<dist_version>/ (npr. "v1.0" za predaju)
 
 # --- Opcijski popisi (latex_architect uključuje ako je true) ---
-include_lof: true           # \listoffigures
-include_lot: true           # \listoftables
+include_lof: false           # \listoffigures
+include_lot: false           # \listoftables
 
 # AgentBrain version used during bootstrap
 agentbrain_version: "2.2.0"
