@@ -41,7 +41,14 @@ Obje su strogo pozitivne, pa je $Q \succ 0$ i funkcija cilja je strogo konveksna
 \end{equation}
 presjek dvaju zatvorenih poluprostora, tj.\ zatvoren konveksan skup.
 
-Riječ je, dakle, o konveksnom optimizacijskom problemu. Kako je $Q \succ 0$, funkcija $f$ je koercivna ($f(x) \to \infty$ kada $\|x\| \to \infty$), a skup $\mathcal{F}$ je zatvoren i neprazan, pa minimum postoji; stroga konveksnost daje njegovu jedinstvenost. Za točku $x = [7, 6]^{\mathsf{T}}$ vrijedi $g_1(x) = -3 < 0$ i $g_2(x) = -2 < 0$, pa je Slaterov uvjet zadovoljen. Za konveksni problem sa Slaterovom točkom KKT uvjeti su nužni i dovoljni, a primarna i dualna optimalna vrijednost jednake su~\cite[str.~16--17]{jokic2025dualnost}.
+Riječ je, dakle, o konveksnom optimizacijskom problemu. Kako je \mbox{$Q \succ 0$}, funkcija $f$ je koercivna (\mbox{$f(x) \to \infty$} kada \mbox{$\|x\| \to \infty$}), a skup $\mathcal{F}$ je zatvoren i neprazan, pa minimum postoji; stroga konveksnost daje njegovu jedinstvenost.
+
+Za provjeru Slaterova uvjeta treba pronaći barem jednu strogo dopustivu točku, odnosno točku koja ne leži ni na jednoj granici ograničenja. Nejednakosti \mbox{$g_1(x)<0$} i \mbox{$g_2(x)<0$} ovdje su ekvivalentne uvjetima \mbox{$x_1+x_2>10$} i \mbox{$x_1-x_2<3$}. Točka \mbox{$x_{\mathrm{S}}=[7,6]^{\mathsf{T}}$} odabrana je jer njezine cjelobrojne koordinate očito zadovoljavaju oba uvjeta sa strogom rezervom. Doista,
+\begin{equation}
+g_1(x_{\mathrm{S}})=-7-6+10=-3<0, \qquad
+g_2(x_{\mathrm{S}})=7-6-3=-2<0.
+\end{equation}
+Budući da su oba ograničenja strogo zadovoljena, $x_{\mathrm{S}}$ je Slaterova točka, pa je Slaterov uvjet zadovoljen. Za konveksni problem sa Slaterovom točkom KKT uvjeti su nužni i dovoljni, a primarna i dualna optimalna vrijednost jednake su~\mbox{\cite[str.~16--17]{jokic2025dualnost}}.
 
 \subsection{(b) KKT uvjeti i njihovo rješavanje}
 
