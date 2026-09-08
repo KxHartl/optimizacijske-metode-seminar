@@ -10,7 +10,7 @@ function colors = config_plot()
     % for readers with color-vision deficiencies. Scripts obtain it as the
     % return value, while ColorOrder keeps future plots consistent.
     colors.blue       = [0.000 0.447 0.698];
-    colors.red        = [0.835 0.369 0.000];
+    colors.red        = [0.800 0.160 0.200];
     colors.green      = [0.000 0.620 0.451];
     colors.amber      = [0.902 0.624 0.000];
     colors.sky        = [0.337 0.706 0.914];
