@@ -33,16 +33,15 @@
 \setlength{\headheight}{16.5pt}
 \pagestyle{fancy}
 \fancyhf{}
-\renewcommand{\sectionmark}[1]{\markboth{\thesection.\ #1}{}}
 \fancyhead[C]{%
   \makebox[\headwidth]{%
-    \begin{minipage}[b]{0.38\headwidth}
-      \raggedright\fontsize{9}{10.5}\selectfont\itshape
+    \begin{minipage}[b]{0.22\headwidth}
+      \raggedright\small\itshape
       \nouppercase{\leftmark}
     \end{minipage}%
     \hfill
-    \begin{minipage}[b]{0.60\headwidth}
-      \raggedleft\fontsize{8.5}{10}\selectfont\itshape
+    \begin{minipage}[b]{0.76\headwidth}
+      \raggedleft\small\itshape
       \seminartitleshort
     \end{minipage}%
   }%
@@ -66,6 +65,19 @@
 \titleformat{\paragraph}[runin]
   {\normalfont\fontsize{12}{15}\itshape}
   {}{0em}{}[.]
+
+% Kratka lijeva oznaka: broj poglavlja i broj zadatka, bez dugog naslova.
+\renewcommand{\sectionmark}[1]{%
+  \ifcase\value{section}
+  \or\markboth{Uvod}{}%
+  \or\markboth{2. Zadatak 1}{}%
+  \or\markboth{3. Zadatak 2}{}%
+  \or\markboth{4. Zadatak 3}{}%
+  \or\markboth{5. Zadatak 4}{}%
+  \or\markboth{Zaključak}{}%
+  \else\markboth{\thesection.}{}%
+  \fi
+}
 
 % Svako poglavlje (\section) pocinje na novoj stranici.
 \newcommand{\sectionbreak}{\clearpage}
@@ -248,6 +260,7 @@
 
 % ---- LITERATURA ----
 \clearpage
+\markboth{Literatura}{}
 \bibliographystyle{unsrt}
 \bibliography{references}
 
