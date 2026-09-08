@@ -34,8 +34,19 @@
 \pagestyle{fancy}
 \fancyhf{}
 \renewcommand{\sectionmark}[1]{\markboth{\thesection.\ #1}{}}
-\fancyhead[L]{\small\itshape\nouppercase{\leftmark}}
-\fancyhead[R]{\small\itshape \seminartitleshort}
+\fancyhead[C]{%
+  \makebox[\headwidth]{%
+    \begin{minipage}[b]{0.38\headwidth}
+      \raggedright\fontsize{9}{10.5}\selectfont\itshape
+      \nouppercase{\leftmark}
+    \end{minipage}%
+    \hfill
+    \begin{minipage}[b]{0.60\headwidth}
+      \raggedleft\fontsize{8.5}{10}\selectfont\itshape
+      \seminartitleshort
+    \end{minipage}%
+  }%
+}
 \fancyfoot[L]{\small\itshape Krešimir Hartl — Fakultet strojarstva i brodogradnje}
 \fancyfoot[R]{\small\itshape\thepage}
 \renewcommand{\headrulewidth}{0.4pt}
@@ -178,7 +189,7 @@
 \newcommand{\facultyname}{FAKULTET STROJARSTVA I BRODOGRADNJE}
 \newcommand{\coursename}{OPTIMIZACIJSKE METODE U RAZVOJU I UPRAVLJANJU SUSTAVA}
 \newcommand{\seminartitle}{Optimizacijske metode u razvoju i upravljanju sustava}
-\newcommand{\seminartitleshort}{OMuRiUS — Seminarski rad}
+\newcommand{\seminartitleshort}{Optimizacijske metode u razvoju i upravljanju sustava}
 \newcommand{\professorname}{Prof. dr. sc. Andrej Jokić}
 \newcommand{\authorname}{Krešimir Hartl}
 \newcommand{\locationdate}{Zagreb, 2026.}

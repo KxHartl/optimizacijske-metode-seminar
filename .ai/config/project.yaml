@@ -9,7 +9,7 @@ brain_mode: "global"         # none | global
 author_name: "Krešimir Hartl"              # Ime i prezime studenta
 course_name: "OPTIMIZACIJSKE METODE U RAZVOJU I UPRAVLJANJU SUSTAVA" # Naziv kolegija (UPPERCASE u dokumentu)
 seminar_title: "Optimizacijske metode u razvoju i upravljanju sustava" # Puni naslov seminara
-seminar_title_short: "OMuRiUS — Seminarski rad" # Skraćeni naslov za header (max ~50 znakova)
+seminar_title_short: "Optimizacijske metode u razvoju i upravljanju sustava" # Puni naziv kolegija za header
 professor_title: "Prof. dr. sc."          # Titula (npr. "Prof. dr. sc.")
 professor_name: "Andrej Jokić"           # Ime i prezime profesora
 
