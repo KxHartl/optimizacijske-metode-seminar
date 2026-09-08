@@ -8,10 +8,20 @@
 - **Student**: Krešimir Hartl
 - **Mentor**: Prof. dr. sc. Andrej Jokić
 - **LaTeX format**: FSB Seminar (`fsb-seminar`)
-- **Trenutna verzija**: v1.6 — `dist/v1.6/OMRiUS_seminar_Kresimir_Hartl.pdf`, 30 fizičkih stranica
-  (naslovnica, 2 stranice skena zadatka, sadržaj i 26 numeriranih stranica seminara)
+- **Trenutna verzija**: v1.7 — `dist/v1.7/OMuRiUS_seminar_Kresimir_Hartl.pdf`, 32 fizičke stranice
+  (bez projektnog ograničenja broja stranica)
 
 ## Trenutni fokus
+
+- [x] **v1.7 — stilska i funkcionalna dorada za PDF predaju** (8. rujna 2026.):
+  - Uklonjena je tvrdnja o predaji izvornog koda i prošireno objašnjenje Slaterove
+    točke u Zadatku 1(a).
+  - Uvedena je dosljedna profesionalna paleta; robusni graf prikazuje svih 100
+    realizacija, a profili ceste jasno razlikuju mreže $N=20$ i $N=100$.
+  - Kratica kolegija standardizirana je na OMuRiUS. Zaglavlje prikazuje aktualni
+    zadatak/poglavlje, a podnožje autora i fakultet.
+  - Pojačana su pravila prijeloma formula, riječi, odlomaka i bibliografskih
+    jedinica; build nema Overfull/Underfull ni nedefinirane reference.
 
 - [x] **v1.6 — završna akademska i tehnička revizija** (8. rujna 2026.):
   - Zatvoreni su nalazi F01–F11 iz `docs/REVIEW.md`; tvrdnje o LMI kriteriju,
