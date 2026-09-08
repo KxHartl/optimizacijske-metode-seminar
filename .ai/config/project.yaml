@@ -1,4 +1,4 @@
-name: "OMRiUS-seminar"
+name: "OMuRiUS-seminar"
 type: "seminar"              # seminar | thesis | paper | homework
 latex_format: "fsb-seminar"  # fsb-seminar | fsb-thesis | fsb-paper
 brain_mode: "global"         # none | global
@@ -9,13 +9,13 @@ brain_mode: "global"         # none | global
 author_name: "Krešimir Hartl"              # Ime i prezime studenta
 course_name: "OPTIMIZACIJSKE METODE U RAZVOJU I UPRAVLJANJU SUSTAVA" # Naziv kolegija (UPPERCASE u dokumentu)
 seminar_title: "Optimizacijske metode u razvoju i upravljanju sustava" # Puni naslov seminara
-seminar_title_short: "OMRiUS — Seminarski rad" # Skraćeni naslov za header (max ~50 znakova)
+seminar_title_short: "OMuRiUS — Seminarski rad" # Skraćeni naslov za header (max ~50 znakova)
 professor_title: "Prof. dr. sc."          # Titula (npr. "Prof. dr. sc.")
 professor_name: "Andrej Jokić"           # Ime i prezime profesora
 
 # --- Build & page limit ---
-max_pages: 30                # build skripta upozorava ako PDF premašuje N stranica
-dist_version: "v1.6"         # build piše PDF u dist/<dist_version>/ (npr. "v1.0" za predaju)
+max_pages: 0                 # 0 = nema gornjeg ni donjeg ograničenja broja stranica
+dist_version: "v1.7"         # build piše PDF u dist/<dist_version>/ (npr. "v1.0" za predaju)
 
 # --- Opcijski popisi (latex_architect uključuje ako je true) ---
 include_lof: false           # \listoffigures

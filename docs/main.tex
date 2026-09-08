@@ -25,16 +25,18 @@
 % --- Layout ---
 \usepackage[top=2.5cm,bottom=2.5cm,left=2.5cm,right=2.5cm]{geometry}
 \usepackage{setspace}
+\usepackage{microtype}
 \onehalfspacing
 
 % --- Headers & Footers ---
 \usepackage{fancyhdr}
-\setlength{\headheight}{13.6pt}
+\setlength{\headheight}{16.5pt}
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[L]{\small\itshape \authorname}
+\renewcommand{\sectionmark}[1]{\markboth{\thesection.\ #1}{}}
+\fancyhead[L]{\small\itshape\nouppercase{\leftmark}}
 \fancyhead[R]{\small\itshape \seminartitleshort}
-\fancyfoot[L]{\small\itshape Fakultet strojarstva i brodogradnje}
+\fancyfoot[L]{\small\itshape Krešimir Hartl — Fakultet strojarstva i brodogradnje}
 \fancyfoot[R]{\small\itshape\thepage}
 \renewcommand{\headrulewidth}{0.4pt}
 \renewcommand{\footrulewidth}{0.4pt}
@@ -90,6 +92,9 @@
 
 % --- References ---
 \usepackage{cite}
+\usepackage{etoolbox}
+% Bibliografska jedinica ne smije ostati rascijepljena između dviju stranica.
+\AtBeginEnvironment{thebibliography}{\interlinepenalty=10000}
 
 % --- Umetanje vanjskih PDF stranica (sken zadatka) ---
 \usepackage{pdfpages}
@@ -151,12 +156,20 @@
 \setlength{\parindent}{1.25cm}
 \setlength{\parskip}{0pt}
 
-% --- Spriječavanje razdvajanja riječi (Justify bez hifenacije) ---
+% --- Stabilan prijelom teksta, formula i referenci ---
+% Bez hifenacije; microtype i umjereni emergency stretch čuvaju poravnanje
+% bez velikih međurječnih praznina i bez overfull redaka.
 \hyphenpenalty=10000
 \exhyphenpenalty=10000
-\tolerance=10000
+\binoppenalty=10000
+\relpenalty=10000
+\clubpenalty=10000
+\widowpenalty=10000
+\displaywidowpenalty=10000
+\brokenpenalty=10000
+\tolerance=3000
 \hbadness=10000
-\emergencystretch=\maxdimen
+\emergencystretch=2em
 
 % ============================================================
 % DOCUMENT METADATA — latex_architect popunjava iz project.yaml
@@ -165,7 +178,7 @@
 \newcommand{\facultyname}{FAKULTET STROJARSTVA I BRODOGRADNJE}
 \newcommand{\coursename}{OPTIMIZACIJSKE METODE U RAZVOJU I UPRAVLJANJU SUSTAVA}
 \newcommand{\seminartitle}{Optimizacijske metode u razvoju i upravljanju sustava}
-\newcommand{\seminartitleshort}{Seminarski rad — Optimizacijske metode u razvoju i upravljanju sustava}
+\newcommand{\seminartitleshort}{OMuRiUS — Seminarski rad}
 \newcommand{\professorname}{Prof. dr. sc. Andrej Jokić}
 \newcommand{\authorname}{Krešimir Hartl}
 \newcommand{\locationdate}{Zagreb, 2026.}
