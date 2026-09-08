@@ -11,6 +11,7 @@ function colors = config_plot()
     % return value, while ColorOrder keeps future plots consistent.
     colors.blue       = [0.000 0.447 0.698];
     colors.red        = [0.800 0.160 0.200];
+    colors.coral      = [0.940 0.400 0.420];
     colors.green      = [0.000 0.620 0.451];
     colors.amber      = [0.902 0.624 0.000];
     colors.sky        = [0.337 0.706 0.914];
