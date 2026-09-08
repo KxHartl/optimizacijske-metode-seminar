@@ -1,4 +1,41 @@
-# Dubinska komparativna recenzija seminara OMRiUS — v1.2
+# OMRiUS seminar review — v1.2 audit and v1.6 closure
+
+## 0. Final closure status for v1.6
+
+Closure date: 8 September 2026. Final artifact:
+`dist/v1.6/OMRiUS_seminar_Kresimir_Hartl.pdf`, 30 physical A4 pages,
+SHA-256 `799383ADB736880AC3A63E5BD5060512CEA98D62EE0376B63F5148A3F5E2AFB6`.
+
+All findings F01–F11 from the v1.2 audit are closed in v1.6. The table records
+what changed, why the new statement is defensible, and the direct check.
+
+| Finding | Status | v1.6 closure and verification |
+|---|---|---|
+| F01 | CLOSED | Minimizing $\lVert Y\rVert$ is described only as selecting one feasible normalized LMI solution. Since $K=Y\mathcal Q^{-1}$ and $\mathcal Q$ is also a variable, no minimum-gain claim remains. Checked in Task 4 text, MATLAB comments, and defense Q10. |
+| F02 | CLOSED | The $N=20$ versus $N=100$ comparison is limited to the two observed discrete optima. No convergence order, systematic quadrature bias, or single unproved cause is claimed. Checked against the four reproduced values in `docs/code/task3_output.txt`. |
+| F03 | CLOSED | The general coefficient interval is $[a^0-0.15|a^0|,\,a^0+0.15|a^0|]$, which has the correct ordering for negative nominal coefficients. Checked explicitly with $a^0=-1$. |
+| F04 | CLOSED | The true off-diagonal product is reported as $-\pi^2/4$; the positive $+\pi^2/4$ term in the characteristic polynomial is explained by the subtraction in the determinant. Direct symbolic expansion confirms the displayed polynomial. |
+| F05 | CLOSED | Geometric growth is stated for the assigned initial condition $x(0)=e_1$: $x(2k)=(-9e^{-2})^k e_1$. The text does not claim that every trajectory grows. The spectral-radius calculation still proves instability. |
+| F06 | CLOSED | The value-function sensitivity statement is explicitly local and conditioned on an unchanged active set. The $10^{-4}$ finite-difference check agrees with $-\mu^*$ within the printed residuals. |
+| F07 | CLOSED | The robust-QP figure shows 12 representative boundary pairs and one shaded robust feasible intersection, with the feasible side identified. All 100 sets are no longer individually shaded; `rng(42)` and the 54/100 and 0/100 counts are unchanged. |
+| F08 | CLOSED | The report states that the electronic attachment contains MATLAB sources in `src/` and literal outputs in `docs/code/`; the synchronized verification package contains the same files. No nonexistent printed appendix is promised. |
+| F09 | CLOSED | Version metadata, the 30-page PDF, `STATE.md`, and `for_validator/` are synchronized to v1.6. The validator PDF is byte-identical to the named final PDF. |
+| F10 | CLOSED | The historical comparison is retained only as review evidence. Matija's actual PDF contains the correct Task 1 result; the incorrect Markdown transcription is explicitly non-authoritative. No colleague report is used as a content source. |
+| F11 | CLOSED | The orphan before Figure 4.3 and the nearly empty conclusion page were removed. $J$ is consistently an area in m², $V=wJ$ a volume in m³, and the second divided difference carries m⁻¹. All 30 pages were rendered and visually checked. |
+
+Additional source check: all four bibliography entries point to locally available
+course PDFs in `data/sources/lectures/`; no inaccessible book citation remains.
+The final Tectonic build completed successfully, and its log contains no
+overfull/underfull box, undefined reference/citation, missing-character, or
+undefined-control-sequence warning. The original assignment and the normalized
+embedded scan render identically page by page at 72 dpi.
+
+The remainder of this document preserves the original v1.2 audit as historical
+evidence. Its open-status wording and page references describe v1.2, not v1.6.
+
+---
+
+## Historical v1.2 audit
 
 Datum: 7. rujna 2026. Autor rada: Krešimir Hartl. Predmet: usporedba s izvornim zadatkom, Matijinim i Ivanovim seminarom, uz neovisnu provjeru točnosti, potpunosti i prikaza.
 
