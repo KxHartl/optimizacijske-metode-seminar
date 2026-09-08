@@ -8,7 +8,7 @@
 - **Student**: Krešimir Hartl
 - **Mentor**: Prof. dr. sc. Andrej Jokić
 - **LaTeX format**: FSB Seminar (`fsb-seminar`)
-- **Trenutna verzija**: v1.7 — `dist/v1.7/OMuRiUS_seminar_Kresimir_Hartl.pdf`, 32 fizičke stranice
+- **Trenutna verzija**: v1.7 — `dist/v1.7/OMuRiUS_seminar_Kresimir_Hartl.pdf`, 31 fizička stranica
   (bez projektnog ograničenja broja stranica)
 
 ## Trenutni fokus
