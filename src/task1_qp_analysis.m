@@ -128,7 +128,7 @@ quiver(x2(1), x2(2), 1.7*G(2,1), 1.7*G(2,2), 0, 'LineWidth', 2.2, ...
        'LineStyle', '-', 'MaxHeadSize', 0.6, 'Color', colors.coral);
 text(x2(1)+0.15, x2(2)+2.3,  '\nabla f(x^*)',                 'FontSize', 11, 'Color', colors.dark);
 text(x2(1)-4.6,  x2(2)-3.6,  '\mu_1^*\nabla g_1(x^*)',        'FontSize', 11, 'Color', colors.sky);
-text(x2(1)+0.45, x2(2)-3.9,  '\nabla g_2(x^*),  \mu_2^* = 0', 'FontSize', 11, 'Color', colors.coral);
+text(x2(1)+2.1,  x2(2)-1.5,  '\nabla g_2(x^*),  \mu_2^* = 0', 'FontSize', 11, 'Color', colors.coral);
 text(x0(1)+0.2,  x0(2)+0.35, 'x^0',                           'FontSize', 11);
 text(x2(1)+0.25, x2(2)+0.35, 'x^*',                           'FontSize', 11);
 xlim([-2 11]); ylim([-2 11]); axis square;
