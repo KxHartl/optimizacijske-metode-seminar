@@ -4,7 +4,7 @@
 
 Za problem iz Zadatka 1 pretpostavlja se da koeficijenti $a_{ij}$ nisu točno poznati, nego da njihove stvarne vrijednosti leže u intervalu od $\pm 15\%$ oko nominalnih:
 \begin{equation}
-a_{ij} \in \left[ 0.85\, a_{ij}^0, \ 1.15\, a_{ij}^0 \right], \qquad i, j \in \{1, 2\}.
+a_{ij} \in \left[a_{ij}^0 - 0.15|a_{ij}^0|,\ a_{ij}^0 + 0.15|a_{ij}^0|\right], \qquad i, j \in \{1, 2\}.
 \label{eq:rob_interval}
 \end{equation}
 Uz nominalne vrijednosti $a_{11}^0 = a_{12}^0 = a_{22}^0 = -1$ i $a_{21}^0 = 1$ to daje
@@ -35,7 +35,7 @@ Skupovi $\mathcal{P}_i$ su poliedri, točnije konveksne ljuske svojih vrhova, $\
 \begin{equation}
 a^{\mathsf{T}} x = \sum_k \gamma_k \big(v_i^{(k)}\big)^{\mathsf{T}} x \leq \sum_k \gamma_k h_i = h_i .
 \end{equation}
-Obrat je očit jer su vrhovi elementi skupa $\mathcal{P}_i$. Zato je robusno ograničenje egzaktno ekvivalentno konačnom skupu nejednakosti u vrhovima~\cite{bental2009robust,jokic2024predavanja}:
+Obrat je neposredan jer su vrhovi elementi skupa $\mathcal{P}_i$. Zato je robusno ograničenje egzaktno ekvivalentno konačnom skupu nejednakosti u vrhovima~\cite[str.~13--14]{jokic2025robusno}:
 \begin{equation}
 \sup_{a_i \in \mathcal{P}_i} a_i^{\mathsf{T}} x \leq h_i
 \iff
@@ -71,7 +71,7 @@ Ako bi u optimumu bilo aktivno samo~\eqref{eq:rob_wc1}, rješenje bi bilo $x = [
 \begin{equation}
 1.15 (6.9073) - 0.85 (4.8574) - 3 = +0.8146 > 0,
 \end{equation}
-pa točka nije dopustiva za~\eqref{eq:rob_wc2}. Prema tome oba najgora ograničenja moraju biti aktivna. Iz sustava
+pa točka nije dopustiva za~\eqref{eq:rob_wc2}. Time je isključen kandidat s aktivnim samo prvim najgorim ograničenjem. Kao sljedeći kandidat uzima se sjecište granica obaju najgorih ograničenja. Iz sustava
 \begin{equation}
 \begin{cases} 0.85 x_1 + 0.85 x_2 = 10 \\ 1.15 x_1 - 0.85 x_2 = 3 \end{cases}
 \end{equation}
@@ -81,7 +81,7 @@ x_{\mathrm{rob}}^* = \begin{bmatrix} 13/2 \\ 179/34 \end{bmatrix} = \begin{bmatr
 f(x_{\mathrm{rob}}^*) = \frac{978253}{11560} = 84.623962.
 \label{eq:rob_rjesenje}
 \end{equation}
-Obje komponente su pozitivne, čime je početna pretpostavka potvrđena.
+Obje su komponente pozitivne, čime je početna pretpostavka potvrđena. Optimalnost kandidata slijedi tek iz provjere KKT uvjeta u nastavku.
 
 U toj točki gradijent funkcije cilja iznosi $\nabla f(x_{\mathrm{rob}}^*) = [13.420588,\ 16.108824]^{\mathsf{T}}$, a uvjet stacionarnosti uz dva aktivna vrha daje
 \begin{equation}
@@ -158,11 +158,11 @@ krsenja za x_rob* : 0 / 100
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.70\textwidth]{figures/fig2_1_robust_envelope_monte_carlo.pdf}
-    \caption{Granice ograničenja za 100 slučajnih realizacija koeficijenata (sivo), nominalne granice (crtkano), granice najgoreg slučaja (puna crta) te nominalni i robusni optimum.}
+    \caption{Dvanaest reprezentativnih realizacija iz uzorka od 100 (sivo), zasjenjeni robusni dopustivi presjek, nominalne granice (crtkano), granice najgoreg slučaja (puna crta) te nominalni i robusni optimum.}
     \label{fig:rob_realizacije}
 \end{figure}
 
-Na slici~\ref{fig:rob_realizacije} vidi se da nominalno rješenje $x_{\mathrm{nom}}^* = (5.757576,\ 4.242424)$ leži točno na nominalnoj granici prvog ograničenja, pa ga svaka realizacija koja tu granicu pomakne prema unutra izbacuje iz dopustivog skupa; u provedenom uzorku to se dogodilo u $54$ od $100$ realizacija. Robusno rješenje $x_{\mathrm{rob}}^*$ nije prekršilo nijednu realizaciju. Dopustivost za \emph{cijeli} skup nesigurnosti ne slijedi iz tog uzorka, nego iz zadovoljenja svih osam vršnih nejednakosti~\eqref{eq:rob_osam}, kako je pokazano u tablici~\ref{tab:rob_vrhovi}; slučajne realizacije samo ilustriraju taj rezultat.
+Na slici~\ref{fig:rob_realizacije} prikazano je $12$ reprezentativnih realizacija, dok statistika kršenja obuhvaća svih $100$. Zasjenjeno područje leži iznad obiju granica najgoreg slučaja i prikazuje njihov robusni dopustivi presjek. Nominalno rješenje $x_{\mathrm{nom}}^* = (5.757576,\ 4.242424)$ leži na nominalnoj granici prvog ograničenja. U provedenom uzorku prekršilo je ograničenja u $54$ od $100$ realizacija, dok robusno rješenje $x_{\mathrm{rob}}^*$ nije prekršilo nijednu. Dopustivost za \emph{cijeli} skup nesigurnosti ne slijedi iz uzorka, nego iz svih osam vršnih nejednakosti~\eqref{eq:rob_osam} provjerenih u tablici~\ref{tab:rob_vrhovi}.
 
 Usporedba s nominalnim rješenjem iz Zadatka 1 dana je u tablici~\ref{tab:rob_usporedba}. Zahtjev za dopustivošću pri svim realizacijama sužava dopustivi skup i pomiče optimum dalje od minimuma bez ograničenja, pa vrijednost funkcije cilja raste za $24.017901$, odnosno $39.63\%$.
 

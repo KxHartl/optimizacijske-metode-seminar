@@ -41,7 +41,7 @@ Obje su strogo pozitivne, pa je $Q \succ 0$ i funkcija cilja je strogo konveksna
 \end{equation}
 presjek dvaju zatvorenih poluprostora, tj.\ zatvoren konveksan skup.
 
-Riječ je, dakle, o konveksnom optimizacijskom problemu. Kako je $Q \succ 0$, funkcija $f$ je koercivna ($f(x) \to \infty$ kada $\|x\| \to \infty$), a skup $\mathcal{F}$ je zatvoren i neprazan, pa minimum postoji; stroga konveksnost daje njegovu jedinstvenost. Za točku $x = [7, 6]^{\mathsf{T}}$ vrijedi $g_1(x) = -3 < 0$ i $g_2(x) = -2 < 0$, pa je Slaterov uvjet zadovoljen. Prema tome su KKT uvjeti nužni i dovoljni za optimalnost i vrijedi jaka dualnost~\cite{boyd2004convex,jokic2024predavanja}.
+Riječ je, dakle, o konveksnom optimizacijskom problemu. Kako je $Q \succ 0$, funkcija $f$ je koercivna ($f(x) \to \infty$ kada $\|x\| \to \infty$), a skup $\mathcal{F}$ je zatvoren i neprazan, pa minimum postoji; stroga konveksnost daje njegovu jedinstvenost. Za točku $x = [7, 6]^{\mathsf{T}}$ vrijedi $g_1(x) = -3 < 0$ i $g_2(x) = -2 < 0$, pa je Slaterov uvjet zadovoljen. Za konveksni problem sa Slaterovom točkom KKT uvjeti su nužni i dovoljni, a primarna i dualna optimalna vrijednost jednake su~\cite[str.~16--17]{jokic2025dualnost}.
 
 \subsection{(b) KKT uvjeti i njihovo rješavanje}
 
@@ -244,7 +244,7 @@ Perturbacija desnih strana ograničenja uvodi se vektorom $v = [v_1, v_2]^{\math
 \begin{equation}
 p^*(v) = \min \left\{ \tfrac{1}{2} x^{\mathsf{T}} Q x + c^{\mathsf{T}} x \ \middle| \ Gx - h \leq v \right\},
 \end{equation}
-pri čemu $v_i$ odgovara pomaku desne strane $b_i$ $i$-tog ograničenja. Za konveksan problem sa zadovoljenim Slaterovim uvjetom vrijedi~\cite{boyd2004convex,jokic2024predavanja}
+pri čemu $v_i$ odgovara pomaku desne strane $b_i$ $i$-tog ograničenja. Za ovaj problem, lokalno oko neperturbirane desne strane i bez promjene aktivnog skupa, vrijedi~\cite[str.~34]{jokic2025dualnost}
 \begin{equation}
 \frac{\partial p^*}{\partial v_i}\bigg|_{v = 0} = -\mu_i^*.
 \label{eq:osjetljivost}

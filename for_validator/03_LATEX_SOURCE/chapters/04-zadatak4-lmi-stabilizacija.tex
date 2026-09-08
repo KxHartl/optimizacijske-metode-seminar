@@ -38,7 +38,7 @@ odakle je
 \begin{equation}
 \lambda_{1,2}(A_{\mathrm{parno}}) = -1 \pm j \frac{\pi}{2} = -1 \pm 1.570796\, j .
 \end{equation}
-Za neparni mod umnožak izvandijagonalnih elemenata jednak je istoj vrijednosti, $\frac{3\pi}{2} \cdot \frac{\pi}{6} = \frac{\pi^2}{4}$, pa je karakteristični polinom identičan, odnosno
+U oba je moda stvarni umnožak izvandijagonalnih elemenata jednak $-\pi^2/4$. U determinanti matrice $\lambda I-A_i$ taj se umnožak oduzima, pa karakteristični polinom sadrži pozitivan član $+\pi^2/4$ i jednak je za oba moda. Stoga
 \begin{equation}
 \lambda_{1,2}(A_{\mathrm{neparno}}) = -1 \pm j \frac{\pi}{2}.
 \end{equation}
@@ -88,7 +88,11 @@ uz $\det \Phi_{\mathrm{cikl}} = e^{-4} = 0.018316$, u skladu s $\det e^{A} = e^{
 \begin{equation}
 \rho(\Phi_{\mathrm{cikl}}) = 9 e^{-2} = 1.218018 > 1 .
 \end{equation}
-Stanje u trenucima $t_k = 2k$ zadovoljava $x(2(k+1)) = \Phi_{\mathrm{cikl}}\, x(2k)$, pa uz $\rho > 1$ norma stanja raste po geometrijskoj progresiji. Simulacija na slici~\ref{fig:otvoreni_krug} numerička je ilustracija tog zaključka.
+Stanje u trenucima $t_k = 2k$ zadovoljava $x(2(k+1)) = \Phi_{\mathrm{cikl}}x(2k)$. Za zadani početni uvjet $x(0)=e_1=[1,0]^{\mathsf{T}}$ zato vrijedi
+\begin{equation}
+x(2k)=(-9e^{-2})^k e_1, \qquad \|x(2k)\|=(9e^{-2})^k.
+\end{equation}
+Norma te trajektorije raste geometrijski, a $\rho(\Phi_{\mathrm{cikl}})>1$ dokazuje da ravnoteža sklopnog sustava nije stabilna. Slika~\ref{fig:otvoreni_krug} numerička je ilustracija upravo tog početnog uvjeta.
 
 \subsection{(c) Sinteza regulatora pomoću linearnih matričnih nejednakosti}
 
@@ -97,7 +101,7 @@ Traži se statički regulator $u(t) = Kx(t)$, $K \in \mathbb{R}^{1 \times 2}$, t
 \dot{x}(t) = \big(A(t) + BK\big) x(t)
 \label{eq:zatvoreni_krug}
 \end{equation}
-eksponencijalno stabilan. Označimo $\mathcal{A} = \{A_{\mathrm{parno}} + BK, \ A_{\mathrm{neparno}} + BK\}$. Prema pojmu kvadratne stabilnosti~\cite{boyd1994lmi,jokic2024predavanja}, ako postoji simetrična matrica $P$ takva da vrijedi
+eksponencijalno stabilan. Označimo $\mathcal{A} = \{A_{\mathrm{parno}} + BK, \ A_{\mathrm{neparno}} + BK\}$. Ako postoji simetrična matrica $P$ takva da vrijedi~\cite[str.~25--26]{jokic2025stabilnost}
 \begin{equation}
 P \succ 0, \qquad \bar{A}^{\mathsf{T}} P + P \bar{A} \prec 0 \quad \text{za sve } \bar{A} \in \mathcal{A},
 \label{eq:kvadratna_stabilnost}
@@ -112,7 +116,7 @@ Množenjem s lijeva i s desna matricom $P^{-1}$ (transformacija kongruencije, ko
 \begin{equation}
 \mathcal{Q} = P^{-1}, \qquad Y = K P^{-1}
 \end{equation}
-dobiva se sustav linearnih matričnih nejednakosti u varijablama $(\mathcal{Q}, Y)$:
+dobiva se sustav linearnih matričnih nejednakosti u varijablama $(\mathcal{Q}, Y)$~\cite[str.~32--33]{jokic2025stabilnost}:
 \begin{equation}
 \mathcal{Q} \succ 0, \qquad
 A_i \mathcal{Q} + \mathcal{Q} A_i^{\mathsf{T}} + B Y + Y^{\mathsf{T}} B^{\mathsf{T}} \prec 0,
@@ -121,7 +125,7 @@ A_i \mathcal{Q} + \mathcal{Q} A_i^{\mathsf{T}} + B Y + Y^{\mathsf{T}} B^{\mathsf
 \end{equation}
 Iz rješenja se rekonstruiraju $P = \mathcal{Q}^{-1}$ i $K = Y P$.
 
-Sustav~\eqref{eq:lmi_sinteza} je homogen: ako je $(\mathcal{Q}, Y)$ dopustiv, dopustiv je i $(t\mathcal{Q}, tY)$ za $t \geq 1$, uz isti $K$. Stroge nejednakosti se stoga numerički realiziraju usklađenim parom normalizacija $\mathcal{Q} \succeq I$ i $A_i \mathcal{Q} + \mathcal{Q} A_i^{\mathsf{T}} + BY + Y^{\mathsf{T}}B^{\mathsf{T}} \preceq -I$, a među dopustivim parovima bira se onaj s najmanjom normom $\|Y\|$, čime se dobiva regulator najmanjeg pojačanja. Problem se rješava u YALMIP-u rješavačem SDPT3.
+Sustav~\eqref{eq:lmi_sinteza} je homogen. Ako je $(\mathcal{Q}, Y)$ dopustiv, tada je dopustiv i $(t\mathcal{Q}, tY)$ za $t \geq 1$, uz isti $K$. Stroge nejednakosti numerički se realiziraju usklađenim normalizacijama $\mathcal{Q} \succeq I$ i $A_i \mathcal{Q} + \mathcal{Q} A_i^{\mathsf{T}} + BY + Y^{\mathsf{T}}B^{\mathsf{T}} \preceq -I$. Minimizacijom $\|Y\|$ bira se jedno dopustivo rješenje. Budući da je $K=Y\mathcal{Q}^{-1}$ i da je $\mathcal{Q}$ također optimizacijska varijabla, taj kriterij ne jamči najmanju normu pojačanja $K$. Problem se rješava u YALMIP-u rješavačem SDPT3.
 
 \begin{lstlisting}
 Qv = sdpvar(2, 2, 'symmetric');
@@ -159,10 +163,12 @@ A_{\mathrm{parno}} + BK = \begin{bmatrix} -4.424629 & -0.628249 \\ 4.712389 & -1
 A_{\mathrm{neparno}} + BK = \begin{bmatrix} -4.424629 & -4.817039 \\ 0.523599 & -1.000000 \end{bmatrix},
 \end{equation}
 sa svojstvenim vrijednostima
+{\small
 \begin{equation}
 \lambda(A_{\mathrm{parno}} + BK) = -2.712315 \pm 0.168908\, j, \qquad
-\lambda(A_{\mathrm{neparno}} + BK) = \{-3.352491,\ -2.072138\},
+\lambda(A_{\mathrm{neparno}} + BK) = \{-3.352491,\ -2.072138\}.
 \end{equation}
+}
 dakle oba su moda zatvorenog kruga Hurwitzova. To je nužan, ali ne i dovoljan uvjet; dokaz stabilnosti sklopnog sustava daje zajednička Ljapunovljeva funkcija. Njezina provjera:
 \begin{equation}
 \lambda_{\max}\big( (A_{\mathrm{parno}} + BK)^{\mathsf{T}} P + P (A_{\mathrm{parno}} + BK) \big) = -0.910478 < 0,
@@ -183,7 +189,7 @@ Zatvoreni krug simulira se istim postupkom kao u potpoglavlju (b), uz zamjenu $A
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.92\textwidth]{figures/fig4_2_closed_loop_stabilization.pdf}
-    \caption{Zatvoreni krug uz $x(0) = [1, 0]^{\mathsf{T}}$: vremenski odziv (lijevo) i trajektorija u prostoru stanja s nivo-elipsama $x^{\mathsf{T}} P x = c$ (desno).}
+    \caption{Prvih $8$ s odziva zatvorenog kruga uz $x(0) = [1, 0]^{\mathsf{T}}$: vremenski odziv (lijevo) i trajektorija u prostoru stanja s nivo-elipsama $x^{\mathsf{T}} P x = c$ (desno).}
     \label{fig:zatvoreni_krug}
 \end{figure}
 

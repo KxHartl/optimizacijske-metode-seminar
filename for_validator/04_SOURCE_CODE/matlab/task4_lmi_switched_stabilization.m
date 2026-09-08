@@ -42,7 +42,7 @@ fprintf('rho(Phi_cycle) = %.6f  > 1  -> sklopni sustav NIJE stabilan\n', rho);
 %% (c) LMI sinteza regulatora (YALMIP + SDPT3)
 % LMI je homogen u (Q, Y): ako je (Q, Y) dopustiv, dopustiv je i (tQ, tY), t > 0,
 % uz isti K = Y*Q^-1. Zato se stroge nejednakosti normiraju parom Q >= I,
-% M_i <= -I, a medju dopustivim parovima bira se onaj s najmanjim ||Y|| (najmanje pojacanje).
+% M_i <= -I, a minimizacijom ||Y|| bira se jedno dopustivo rjesenje.
 n = 2;  m = 1;
 Qv = sdpvar(n, n, 'symmetric');
 Yv = sdpvar(m, n, 'full');
