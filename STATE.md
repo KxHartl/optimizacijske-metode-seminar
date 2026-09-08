@@ -8,10 +8,29 @@
 - **Student**: Krešimir Hartl
 - **Mentor**: Prof. dr. sc. Andrej Jokić
 - **LaTeX format**: FSB Seminar (`fsb-seminar`)
-- **Trenutna verzija**: v1.2 — `dist/v1.2/OMRiUS_seminar_Kresimir_Hartl.pdf`, 31 stranica
-  (naslovnica, 2 stranice skena zadatka, 28 stranica rada)
+- **Trenutna verzija**: v1.6 — `dist/v1.6/OMRiUS_seminar_Kresimir_Hartl.pdf`, 30 fizičkih stranica
+  (naslovnica, 2 stranice skena zadatka, sadržaj i 26 numeriranih stranica seminara)
 
 ## Trenutni fokus
+
+- [x] **v1.6 — završna akademska i tehnička revizija** (8. rujna 2026.):
+  - Zatvoreni su nalazi F01–F11 iz `docs/REVIEW.md`; tvrdnje o LMI kriteriju,
+    profinjenju mreže, lokalnoj osjetljivosti, intervalima nesigurnosti,
+    izvandijagonalnom umnošku i rastu sklopnog sustava sada su ograničene na ono
+    što je izravno dokazano.
+  - Robusni QP prikazuje 12 reprezentativnih parova granica i jasno zasjenjen
+    robusni presjek; `rng(42)`, regulator i svi numerički rezultati ostali su
+    nepromijenjeni.
+  - MATLAB R2025b ponovno je izvršio `src/run_all.m` i prijenosnu kopiju u
+    `for_validator/`; oba pokretanja završila su bez pogreške. Referentni ispisi
+    ostaju u `docs/code/`.
+  - Bibliografija sadrži samo četiri provjerena lokalna nastavna PDF-a iz
+    `data/sources/lectures/`; uklonjeni su nedostupni knjižni izvori.
+  - Tectonic build daje 30-stranični A4 PDF; log nema `Overfull`, `Underfull`,
+    nedefinirane reference/citate, nedostajuće znakove ni nedefinirane naredbe.
+    Sve su stranice renderirane i vizualno pregledane.
+  - `for_validator/` je sinkroniziran s v1.6, uključujući PDF, LaTeX, MATLAB,
+    slike, ispise, benchmarke i paket pitanja za obranu.
 
 - [x] **Udžbenik v2 — LaTeX, vođen zadacima, s okvirima izvora** (`docs/udzbenik/`):
   - Nastao jer Markdown verzija nije pokazivala **odakle koja tvrdnja dolazi** —
@@ -74,15 +93,17 @@
   perturbacijski vektor `v`), Vježbe 4 ($\ell_1$-aproksimacija za Zadatak 3),
   Predavanje 7 (kvadratna stabilnost, `Q = P⁻¹`, `Y = KP⁻¹`), Predavanje 8
   (robusno optimiranje nad poliedarskim skupovima nesigurnosti).
-- **Zadatak 1**: naš rezultat `x* = (190/33, 140/33)` je točan; u tuđem seminaru
-  koji je poslužio kao usporedba (`data/sources/matija/`) rezultat
-  `(5.4762, 4.5238)` ne zadovoljava uvjet stacionarnosti — nije preuzet.
+- **Zadatak 1**: rezultat `x* = (190/33, 140/33)` je točan. Matijin stvarni PDF
+  daje isti točan rezultat; pogrešna vrijednost `(5.4762, 4.5238)` pojavljuje se
+  samo u starom Markdown prijepisu, koji nije autoritativan i nije sadržajni izvor.
 - **Zadatak 2**: Monte Carlo pod MATLAB-ovim `rng(42)` daje **54/100** kršenja za
   nominalnu točku (ne 57/100 kao u v1.0, gdje je brojka bila iz Pythona).
-- **Zadatak 3**: podjela `J*` na iskop i nasip nije jedinstvena — LP je
-  degeneriran, pa su ti stupci uklonjeni iz tablice.
+- **Zadatak 3**: službeni zadatak traži ukupni kriterij `J`; odvojeni iskop i
+  nasip nisu analizirani pa se o njihovoj jednoznačnosti ne iznosi tvrdnja.
+  `J` je površina [m²], a za širinu trase `w` volumen je `V=wJ` [m³].
 - **Zadatak 4**: LMI se rješava uz normalizaciju `Q ⪰ I`, `M_i ⪯ -I` i kriterij
-  `min ‖Y‖₂`, što daje `K = [-3.424629, -0.104650]`, `α = 0.288374 s⁻¹`.
+  `min ‖Y‖₂`, kojim se bira jedno dopustivo rješenje, a ne regulator najmanje
+  norme. Dobiva se `K = [-3.424629, -0.104650]`, `α = 0.288374 s⁻¹`.
 - **MATLAB R2025b gotcha**: u `-batch` načinu figure se crtaju prema tamnoj temi
   bez obzira na `Figure.Color`, pa `src/common/config_plot.m` eksplicitno
   postavlja sve boje na svijetle.
