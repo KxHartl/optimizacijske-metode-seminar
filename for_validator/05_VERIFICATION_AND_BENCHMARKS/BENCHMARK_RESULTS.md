@@ -3,7 +3,7 @@
 > **Kolegij:** Optimizacijske metode u razvoju i upravljanju sustava (OMRiUS)
 > **Student:** Krešimir Hartl
 > **Mentor:** Prof. dr. sc. Andrej Jokić
-> **Verzija rada:** v1.2
+> **Verzija rada:** v1.6
 
 ---
 
@@ -71,20 +71,22 @@ nesigurnosti slijedi iz osam vršnih nejednakosti.
 
 ## 4. Zadatak 3 — nivelacija ceste (LP)
 
-| Slučaj | $N$ | $\Delta x$ | $J^*$ [m²] | $\max\lvert\nabla y\rvert$ | $\max\lvert\nabla^2 y\rvert$ | varijable / nejed. | `exitflag` |
+| Slučaj | $N$ | $\Delta x$ | $J^*$ [m²] | $\max\lvert\nabla y\rvert$ | $\max\lvert\nabla^2 y\rvert$ [m⁻¹] | varijable / nejed. | `exitflag` |
 |---|---|---|---|---|---|---|---|
 | A | 20 | 0.50 | 1.916180 | 0.5000 | 0.5000 | 42 / 120 | 1 |
 | A | 100 | 0.10 | 1.965940 | 0.5000 | 0.5000 | 202 / 600 | 1 |
 | B | 20 | 0.50 | 2.453727 | 0.5000 | 0.2000 | 42 / 120 | 1 |
 | B | 100 | 0.10 | 2.506047 | 0.5000 | 0.2000 | 202 / 600 | 1 |
 
-Kriterij je $J = \Delta x \sum_i z_i$, dakle površina uzdužnog presjeka [m²] uz
-jediničnu širinu trase. Rast s $N$ (+2.60 % za A, +2.13 % za B) posljedica je
-pravokutne kvadrature koja na rijetkoj mreži podcjenjuje integral.
+Kriterij je $J = \Delta x \sum_i z_i$, dakle površina uzdužnog presjeka [m²]. Za
+trasu širine $w$ pripadni je volumen $V=wJ$ [m³]; pri $w=1\ \mathrm{m}$ brojčane
+su vrijednosti jednake, ali jedinice nisu. Pri prijelazu s $N=20$ na $N=100$
+$J^*$ raste za 2.60 % u slučaju A i 2.13 % u slučaju B. To je opažanje za dvije
+diskretne mreže, ne dokaz uzroka promjene, reda konvergencije ili predznaka
+pogreške prema kontinuiranom problemu.
 
-> **Napomena o degeneraciji:** razdvajanje $J^*$ na iskop i nasip **nije
-> jedinstveno** — LP ima više optimalnih rješenja s istim $J^*$, a različiti
-> rješavači daju različitu podjelu. Zato ti stupci nisu u radu.
+> **Opseg rezultata:** zadatak traži ukupni $J$; podjela na iskop i nasip nije
+> posebno analizirana, pa se o njezinoj jednoznačnosti ne donosi zaključak.
 
 ## 5. Zadatak 4 — sklopni sustav i LMI
 
@@ -97,7 +99,7 @@ pravokutne kvadrature koja na rijetkoj mreži podcjenjuje integral.
 | $\rho(\Phi_{\mathrm{cikl}})$ | $9e^{-2}$ | $1.218018 > 1$ |
 
 Sinteza (YALMIP + SDPT3, normalizacija $\mathcal{Q} \succeq I$,
-$A_i\mathcal{Q} + \mathcal{Q}A_i^{\mathsf{T}} + BY + Y^{\mathsf{T}}B^{\mathsf{T}} \preceq -I$, kriterij $\min \lVert Y \rVert_2$):
+$A_i\mathcal{Q} + \mathcal{Q}A_i^{\mathsf{T}} + BY + Y^{\mathsf{T}}B^{\mathsf{T}} \preceq -I$, kriterij $\min \lVert Y \rVert_2$ za odabir jednog dopustivog rješenja, ne za minimizaciju $\lVert K\rVert_2$):
 
 | Veličina | Vrijednost |
 |---|---|
@@ -112,7 +114,7 @@ $A_i\mathcal{Q} + \mathcal{Q}A_i^{\mathsf{T}} + BY + Y^{\mathsf{T}}B^{\mathsf{T}
 | $\rho(\Phi_{\mathrm{cikl}}^{\mathrm{zk}})$ | $0.069720 \ll 1$ |
 | $\alpha$ (iz $\dot V \leq -2\alpha V$) | $0.288374\ \mathrm{s}^{-1}$ |
 
-Simulacija (`ode45`, `RelTol` $10^{-9}$, po segmentima od 1 s):
+Simulacija za $x(0)=[1,0]^{\mathsf T}$ (`ode45`, `RelTol` $10^{-9}$, po segmentima od 1 s):
 otvoreni krug $\lVert x(20)\rVert = 7.1868$; zatvoreni krug
 $\lVert x(5)\rVert = 1.5176 \cdot 10^{-3}$, $\lVert x(20)\rVert = 4.7232 \cdot 10^{-12}$.
 

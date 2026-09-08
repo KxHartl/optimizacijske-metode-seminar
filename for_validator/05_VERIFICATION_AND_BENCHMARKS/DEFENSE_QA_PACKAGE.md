@@ -3,7 +3,7 @@
 > **Kolegij:** Optimizacijske metode u razvoju i upravljanju sustava (OMRiUS)
 > **Student:** Krešimir Hartl
 > **Mentor:** Prof. dr. sc. Andrej Jokić
-> **Verzija rada:** v1.2
+> **Verzija rada:** v1.6
 
 ---
 
@@ -20,10 +20,10 @@ je optimum na granici samo prvog ograničenja.
 ### 2. Zašto je perturbacija $b_2$ bez utjecaja na $p^*$?
 
 Jer je $g_2$ u optimumu neaktivno, $g_2(x^*) = -1.484848 < 0$, pa je iz uvjeta
-komplementarnosti $\mu_2^* = 0$, a iz teorema o osjetljivosti
-$\partial p^*/\partial v_2 = -\mu_2^* = 0$. To vrijedi lokalno: dok je pomak
-granice manji od rezerve $1.484848$, aktivni skup se ne mijenja i optimum ostaje
-isti. Pri većem pomaku $g_2$ bi postalo aktivno i derivacija više ne bi bila nula.
+komplementarnosti $\mu_2^* = 0$. Za ovaj problem lokalno, dok se aktivni skup ne
+promijeni, vrijedi $\partial p^*/\partial v_2 = -\mu_2^* = 0$. To nije globalna
+tvrdnja: dovoljno jako stezanje drugog ograničenja može aktivirati $g_2$, nakon
+čega ova lokalna derivacija više ne opisuje promjenu optimalne vrijednosti.
 
 ### 3. Zašto je robusni ekvivalent s 8 nejednakosti egzaktan, a ne konzervativan?
 
@@ -37,45 +37,47 @@ ne samo implikacija — nema relaksacijskog procjepa.
 
 ### 4. Kako znate da su u robusnom optimumu aktivna oba najgora ograničenja?
 
-Provjerom. Ako se pretpostavi da je aktivno samo najgore prvo ograničenje,
-rješenje je $x = (6.9073,\ 4.8574)$, a tada je
-$1.15 (6.9073) - 0.85 (4.8574) - 3 = +0.8146 > 0$, dakle točka nije dopustiva.
-Prema tome oba moraju biti aktivna, što daje $x_{\mathrm{rob}}^* = (6.5,\ 179/34)$.
-Pripadajući množitelji $(17.607439,\ 1.344118)$ strogo su pozitivni, a preostalih
-šest nejednakosti ima rezervu barem $1.5794$ — svi KKT uvjeti su zadovoljeni.
+KKT certifikatom za kandidat $x_{\mathrm{rob}}^* = (6.5,\ 179/34)$. Vršna
+ograničenja $k=1$ i $k=7$ aktivna su, preostalih šest ima rezervu barem $1.5794$,
+a množitelji aktivnih ograničenja $(17.607439,\ 1.344118)$ strogo su pozitivni i
+zadovoljavaju stacionarnost. Funkcija cilja strogo je konveksna, pa taj primarno i
+dualno dopustiv KKT kandidat jest jedinstveni globalni optimum. Dodatna provjera
+kandidata s aktivnim samo prvim najgorim ograničenjem daje kršenje drugoga od
+$+0.8146$; to objašnjava zašto taj aktivni skup otpada, ali samo po sebi nije dokaz
+da oba ograničenja moraju biti aktivna.
 
-### 5. Zašto $J^*$ **raste** kada se mreža profini s $N = 20$ na $N = 100$?
+### 5. Što zaključujete iz usporedbe mreža $N = 20$ i $N = 100$?
 
-Zato što je diskretni kriterij $J_{\mathrm{disc}} = \Delta x \sum_i |y_i - h_i|$
-pravokutna kvadratura po čvorovima. Na rijetkoj mreži odstupanje je uzorkovano u
-malo točaka i dio površine između čvorova izmiče sumi, pa je integral podcijenjen.
-Pogreška je reda $O(\Delta x)$, pa s pet puta gušćom mrežom vrijednost raste prema
-pravom integralu (+2.60 % za slučaj A, +2.13 % za B). Nije riječ o tome da je
-rješenje pri $N = 20$ bolje, nego da je kriterij tamo lošije aproksimiran.
+Samo opažanje za riješene diskretne probleme: $J^*$ raste za $2.60\%$ u slučaju A
+i za $2.13\%$ u slučaju B. Promjenom $N$ mijenjaju se i diskretizirana funkcija
+cilja i diskretizirana ograničenja, pa dvije mreže nisu dovoljne za određivanje
+uzroka promjene, reda konvergencije ni predznaka pogreške prema kontinuiranom
+problemu. Za jači zaključak bila bi potrebna zasebna studija konvergencije.
 
 ### 6. Zašto u tablici nema stupaca „iskop” i „nasip”?
 
-Jer ta podjela nije jedinstvena. Linearni program je degeneriran: postoji više
-optimalnih $y$ s istom vrijednošću $J^*$, ali različitom raspodjelom na iskop i
-nasip. Različiti rješavači daju različite parove koji zbrajanjem uvijek daju isti
-$J^*$. Navoditi te brojke značilo bi tvrditi nešto što rezultat ne određuje.
+Zadatak traži ukupni kriterij $J$, odnosno ukupnu površinu između nivelete i
+terena, a za širinu $w$ pripadni je volumen $V=wJ$. Razdvajanje rezultata na iskop
+i nasip nije traženo niti je u ovoj implementaciji posebno analizirano, pa se o
+njegovoj jednoznačnosti ne donosi zaključak.
 
 ### 7. Zašto sklopni sustav nije stabilan kada su obje matrice Hurwitzove?
 
-Hurwitzovost jamči konvergenciju samo ako sustav trajno ostane u jednom modu.
-Ovdje se dinamika mijenja svake sekunde, pa je mjerodavna matrica prijelaza preko
-punog perioda. Ona iznosi
+Hurwitzovost svake matrice jamči asimptotsku stabilnost odgovarajućeg zasebnog
+LTI moda, ali ne jamči stabilnost pri prespajanju. Za zadani periodički zakon
+mjerodavna je matrica prijelaza preko punog perioda:
 $\Phi_{\mathrm{cikl}} = e^{A_{\mathrm{neparno}}} e^{A_{\mathrm{parno}}} = e^{-2}\,\mathrm{diag}(-9,\ -1/9)$,
-sa spektralnim radijusom $\rho = 9e^{-2} = 1.218018 > 1$. Kako je
-$x(2(k+1)) = \Phi_{\mathrm{cikl}} x(2k)$, norma stanja u stroboskopskim točkama
-raste geometrijski, faktorom $1.218$ po ciklusu. Umnožak dviju matrica sa
-spektralnim radijusom manjim od jedan općenito ne mora imati spektralni radijus
-manji od jedan.
+sa spektralnim radijusom $\rho = 9e^{-2} = 1.218018 > 1$, što dokazuje
+nestabilnost. Za zadani početni uvjet $x(0)=e_1=[1,0]^{\mathsf T}$ vrijedi
+$x(2k)=(-9e^{-2})^k e_1$, pa upravo ta trajektorija u stroboskopskim točkama raste
+geometrijski faktorom $1.218018$ po ciklusu. Ne tvrdi se da raste svaka
+trajektorija.
 
 ### 8. Zašto Hurwitzovost zatvorenih modova nije dovoljna, nego treba LMI?
 
-Iz istog razloga zbog kojeg otvoreni krug nije stabilan: svojstvene vrijednosti
-pojedinih matrica ne govore ništa o prespajanju. Dokaz daje **zajednička**
+Iz istog razloga zbog kojeg otvoreni krug nije stabilan: Hurwitzovost pojedinih
+matrica potvrđuje stabilnost svakoga fiksnog moda, ali ne rješava pitanje
+stabilnosti pri prespajanju. Dokaz daje **zajednička**
 kvadratna Ljapunovljeva funkcija $V(x) = x^{\mathsf{T}} P x$ s istim $P$ za oba
 moda. Ako postoji $P \succ 0$ takav da je
 $(A_i + BK)^{\mathsf{T}} P + P (A_i + BK) \prec 0$ za oba $i$, tada $V$ pada duž
@@ -101,9 +103,11 @@ $(\mathcal{Q}, Y)$ dopustiv, dopustiv je i $(t\mathcal{Q}, tY)$ za $t \geq 1$, u
 isti $K$. Zato su stroge nejednakosti realizirane usklađenim parom normalizacija
 $\mathcal{Q} \succeq I$ i
 $A_i \mathcal{Q} + \mathcal{Q} A_i^{\mathsf{T}} + BY + Y^{\mathsf{T}} B^{\mathsf{T}} \preceq -I$,
-a među dopustivim parovima izabran je onaj s najmanjom normom $\lVert Y \rVert$,
-dakle regulator najmanjeg pojačanja. Drugi izbor normalizacije daje drugi
-stabilizirajući $K$; svi rezultati i sve slike u radu odgovaraju navedenom.
+a minimizacijom $\lVert Y \rVert$ izabrano je jedno dopustivo rješenje. Budući da
+je $K=Y\mathcal{Q}^{-1}$ i da je $\mathcal{Q}$ također optimizacijska varijabla,
+ovaj kriterij ne minimizira niti jamči najmanju normu $K$. Drugi izbor
+normalizacije ili rješavača može dati drugi stabilizirajući $K$; svi rezultati i
+sve slike u radu odgovaraju navedenom regulatoru.
 
 ### 11. Odakle stopa $\alpha = 0.288374\ \mathrm{s}^{-1}$?
 
@@ -126,3 +130,18 @@ a $\max_{\mu \geq 0} \theta(\mu)$ je minimizacija konveksne kvadratne funkcije u
 donju granicu $\mu \geq 0$. `quadprog` je za to namijenjen i vraća `exitflag = 1`;
 `fmincon` daje isto rješenje, ali završava na kriteriju duljine koraka
 (`exitflag = 2`).
+
+---
+
+## Promjene v1.6 za obranu
+
+| Nalaz | Što je promijenjeno | Zašto je sada točno | Kako se provjerava |
+|---|---|---|---|
+| F01 | $\min\lVert Y\rVert$ opisuje se kao odabir jednog dopustivog LMI rješenja, bez tvrdnje o najmanjoj normi $K$. | Vrijedi $K=Y\mathcal{Q}^{-1}$, a i $\mathcal{Q}$ je varijabla. | Usporediti kriterij i formulu za rekonstrukciju $K$; LMI reziduali ostaju negativni. |
+| F02 | Usporedba $N=20$ i $N=100$ ostaje brojčano opažanje. | Dvije mreže ne određuju uzrok, red konvergencije ni predznak pogreške kontinuiranog problema. | Reproducirati četiri vrijednosti $J^*$; za jači zaključak trebala bi dodatna mrežna studija. |
+| F03 | Interval koeficijenta zapisuje se s apsolutnom vrijednošću nominalnog koeficijenta. | Zapis $[a^0-0.15|a^0|,\ a^0+0.15|a^0|]$ ima ispravan poredak i kada je $a^0<0$. | Za $a^0=-1$ dobiva se $[-1.15,-0.85]$. |
+| F04 | Razdvojeni su stvarni izvandijagonalni umnožak $-\pi^2/4$ i pozitivni član $+\pi^2/4$ u polinomu. | U determinanti $\lambda I-A_i$ izvandijagonalni se umnožak oduzima. | Izravno izračunati $A_{12}A_{21}$ i $\det(\lambda I-A_i)$. |
+| F05 | Geometrijski rast vezan je uz zadani $x(0)=e_1$. | $\rho(\Phi_{\mathrm{cikl}})>1$ dokazuje nestabilnost, ali ne rast svake trajektorije. | Primijeniti dijagonalnu $\Phi_{\mathrm{cikl}}$ na $e_1$ i dobiti $\|x(2k)\|=(9e^{-2})^k$. |
+| F06 | Formula osjetljivosti izričito je lokalna i vrijedi bez promjene aktivnog skupa. | Dovoljno jako stezanje $g_2$ može promijeniti aktivni skup. | Za mali korak $10^{-4}$ numerička derivacija za $v_2$ ostaje nula; tvrdnja se ne ekstrapolira globalno. |
+| F07 | Graf razlikuje dopustive poluravnine i njihov robusni presjek bez sjenčanja svih 100 realizacija. | Čitatelj može očitati dopustivu stranu i robusno područje bez zatrpavanja. | Vizualno provjeriti strelice/oznake poluravnina, presjek i položaj oba optimuma. |
+| F11 | Usklađene su jedinice $J$ i $V=wJ$, dodana je $\mathrm{m}^{-1}$ uz drugu podijeljenu razliku te su popravljeni prijelomi stranica. | Površina i volumen više se ne poistovjećuju, a izvedena veličina ima navedenu jedinicu. | Provjeriti tablicu zadatka 3 i render svih stranica v1.6. |
