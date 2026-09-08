@@ -5,7 +5,7 @@
 clear; close all; clc;
 warning('off', 'MATLAB:print:ContentTypeImageSuggested');
 addpath(fullfile(pwd, 'common'));   % skripte se pokrecu iz mape src
-config_plot();
+colors = config_plot();
 
 %% 1. Nominalni podaci
 Q = [2.0, -0.3; -0.3, 4.0];
@@ -100,26 +100,26 @@ x_top = (0.85*12 + 3)/1.15;
 x_int = 13/2;
 y_int = 179/34;
 hFeas = patch([0, x_top, x_int, 0], [12, 12, y_int, 10/0.85], ...
-              [0.90 0.90 0.90], 'EdgeColor', 'none', 'FaceAlpha', 0.8);
+              colors.lightBlue, 'EdgeColor', 'none', 'FaceAlpha', 0.72);
 
-% Monte Carlo provjera i dalje koristi svih Nmc = 100 realizacija. Za citljiv
-% graf prikazuje se ravnomjerno odabran reprezentativni podskup od 12 uzoraka.
-plot_idx = unique(round(linspace(1, Nmc, 12)));
+% Draw every realization with a thin neutral line so the complete Monte Carlo
+% family remains visible without competing with the worst-case envelope.
+plot_idx = 1:Nmc;
 hMC = [];
 for k = plot_idx
     Gk = Gs(:,:,k);
     y1 = (h(1) - Gk(1,1)*t)/Gk(1,2);
     y2 = (h(2) - Gk(2,1)*t)/Gk(2,2);
-    p1 = plot(t, y1, '-', 'Color', [0.68 0.68 0.68], 'LineWidth', 0.55);
-    plot(t, y2, '-', 'Color', [0.68 0.68 0.68], 'LineWidth', 0.55);
+    p1 = plot(t, y1, '-', 'Color', [0.73 0.75 0.77], 'LineWidth', 0.28);
+    plot(t, y2, '-', 'Color', [0.73 0.75 0.77], 'LineWidth', 0.28);
     if isempty(hMC), hMC = p1; end
 end
-hNomB = plot(t, 10 - t, 'k--', 'LineWidth', 1.6);
-plot(t, t - 3, 'k--', 'LineWidth', 1.6);
-hRobB = plot(t, 10/0.85 - t, 'k-', 'LineWidth', 2.2);
-plot(t, (1.15*t - 3)/0.85, 'k-', 'LineWidth', 2.2);
-hNom  = plot(x_nom(1), x_nom(2), 'ko', 'MarkerSize', 9, 'MarkerFaceColor', 'w', 'LineWidth', 1.6);
-hRob  = plot(x_rob(1), x_rob(2), 'kp', 'MarkerSize', 16, 'MarkerFaceColor', 'k');
+hNomB = plot(t, 10 - t, '--', 'Color', colors.red, 'LineWidth', 1.5);
+plot(t, t - 3, '--', 'Color', colors.red, 'LineWidth', 1.5);
+hRobB = plot(t, 10/0.85 - t, '-', 'Color', colors.blue, 'LineWidth', 2.2);
+plot(t, (1.15*t - 3)/0.85, '-', 'Color', colors.blue, 'LineWidth', 2.2);
+hNom  = plot(x_nom(1), x_nom(2), 'o', 'Color', colors.red, 'MarkerSize', 9, 'MarkerFaceColor', 'w', 'LineWidth', 1.6);
+hRob  = plot(x_rob(1), x_rob(2), 'p', 'Color', colors.green, 'MarkerSize', 16, 'MarkerFaceColor', colors.green);
 text(x_nom(1)-1.7, x_nom(2)-0.5, 'x^*_{nom}', 'FontSize', 11);
 text(x_rob(1)+0.3, x_rob(2)+0.4, 'x^*_{rob}', 'FontSize', 11);
 text(1.0, 11.35, {'robusno dopustivo:', 'iznad obje najgore granice'}, ...
@@ -128,9 +128,10 @@ text(1.0, 11.35, {'robusno dopustivo:', 'iznad obje najgore granice'}, ...
 xlim([0 12]); ylim([0 12]); axis square;
 xlabel('x_1'); ylabel('x_2');
 legend([hFeas hMC hNomB hRobB hNom hRob], ...
-       {'robusni dopustivi presjek', '12 od 100 slucajnih realizacija', ...
+       {'robusni dopustivi presjek', 'svih 100 slucajnih realizacija', ...
         'nominalne granice', 'granice najgoreg slucaja', ...
         'nominalni optimum', 'robusni optimum'}, 'Location', 'northeast', 'FontSize', 9);
 exportgraphics(fg, fullfile(fig_dir(), 'fig2_1_robust_envelope_monte_carlo.pdf'), 'ContentType', 'vector');
+exportgraphics(fg, fullfile(fig_dir(), 'fig2_1_robust_envelope_monte_carlo.png'), 'Resolution', 220);
 close(fg);
 fprintf('\nSlika 3.1 izvezena.\n');

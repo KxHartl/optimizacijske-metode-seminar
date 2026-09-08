@@ -5,7 +5,7 @@
 clear; close all; clc;
 warning('off', 'MATLAB:print:ContentTypeImageSuggested');
 addpath(fullfile(pwd, 'common'));   % skripte se pokrecu iz mape src
-config_plot();
+colors = config_plot();
 
 L    = 10;
 hfun = @(x) 0.0053*x.^4 - 0.095*x.^3 + 0.48*x.^2 - 0.3*x + 1;
@@ -67,10 +67,19 @@ for pair = {[1 2 'A'], [3 4 'B']}
     hold on;
     xf = [res(k100).x; flipud(res(k100).x)];
     yf = [res(k100).y; flipud(res(k100).h)];
-    fill(xf, yf, [0.86 0.86 0.86], 'EdgeColor', 'none');
-    plot(res(k100).x, res(k100).h, 'k-',  'LineWidth', 2.0);
-    plot(res(k20).x,  res(k20).y,  'k:',  'LineWidth', 1.8);
-    plot(res(k100).x, res(k100).y, 'k--', 'LineWidth', 2.0);
+    fill(xf, yf, colors.lightGray, 'EdgeColor', 'none', 'FaceAlpha', 0.82);
+    % A subtle color band emphasizes the local difference between the grids.
+    y20i = interp1(res(k20).x, res(k20).y, res(k100).x, 'linear');
+    for jj = 1:numel(res(k100).x)-1
+        xb = res(k100).x(jj:jj+1);
+        yb20 = y20i(jj:jj+1); yb100 = res(k100).y(jj:jj+1);
+        if mean(yb20 - yb100) >= 0, bandColor = colors.blue; else, bandColor = colors.red; end
+        patch([xb; flipud(xb)], [yb20; flipud(yb100)], bandColor, ...
+              'EdgeColor', 'none', 'FaceAlpha', 0.18, 'HandleVisibility', 'off');
+    end
+    plot(res(k100).x, res(k100).h, '-', 'Color', colors.dark, 'LineWidth', 1.7);
+    plot(res(k20).x,  res(k20).y,  '-', 'Color', colors.blue, 'LineWidth', 1.15);
+    plot(res(k100).x, res(k100).y, '-', 'Color', colors.red,  'LineWidth', 1.15);
     xlabel('x [m]'); ylabel('visina [m]');
     legend({'iskop / nasip', 'teren h(x)', ...
             sprintf('niveleta y(x), N = 20  (J^* = %.4f m^2)',  res(k20).J), ...
@@ -79,6 +88,7 @@ for pair = {[1 2 'A'], [3 4 'B']}
     xlim([0 L]);
     fn = sprintf('fig3_%d_road_case_%s.pdf', 1 + (nm == 'B'), nm);
     exportgraphics(fg, fullfile(fig_dir(), fn), 'ContentType', 'vector');
+    exportgraphics(fg, fullfile(fig_dir(), strrep(fn, '.pdf', '.png')), 'Resolution', 220);
     close(fg);
 end
 

@@ -5,7 +5,7 @@
 clear; close all; clc;
 warning('off', 'MATLAB:print:ContentTypeImageSuggested');
 addpath(fullfile(pwd, 'common'));   % skripte se pokrecu iz mape src
-config_plot();
+colors = config_plot();
 
 %% 1. Podaci problema
 Q = [ 2.0, -0.3;
@@ -109,23 +109,23 @@ hold on;
 % dopustivi skup F (neomedjen; ovdje odrezan na prikazani okvir)
 Fx = [-1, 6.5, 11, 11, -1];
 Fy = [11, 3.5,  8, 11, 11];
-fill(Fx, Fy, [0.86 0.86 0.86], 'EdgeColor', 'none');
+fill(Fx, Fy, colors.lightBlue, 'EdgeColor', 'none', 'FaceAlpha', 0.72);
 % nivo-krivulje funkcije cilja
-contour(X1, X2, Z, 16, 'LineWidth', 0.7, 'LineColor', [0.50 0.50 0.50]);
+contour(X1, X2, Z, 16, 'LineWidth', 0.75, 'LineColor', colors.gray);
 % granice ogranicenja
 t = linspace(-2, 11, 200);
-plot(t, 10 - t,  'k-',  'LineWidth', 2.0);
-plot(t, t - 3,   'k-.', 'LineWidth', 2.0);
+plot(t, 10 - t,  '-',  'Color', colors.blue, 'LineWidth', 2.0);
+plot(t, t - 3,   '-.', 'Color', colors.red,  'LineWidth', 2.0);
 % tocke
-plot(x0(1), x0(2), 'ko', 'MarkerSize', 7, 'MarkerFaceColor', 'w', 'LineWidth', 1.2);
-plot(x2(1), x2(2), 'kp', 'MarkerSize', 15, 'MarkerFaceColor', 'k');
+plot(x0(1), x0(2), 'o', 'Color', colors.dark, 'MarkerSize', 7, 'MarkerFaceColor', 'w', 'LineWidth', 1.2);
+plot(x2(1), x2(2), 'p', 'Color', colors.green, 'MarkerSize', 15, 'MarkerFaceColor', colors.green);
 % gradijenti (duljine su graficki skalirane)
 sf = 0.22;
-quiver(x2(1), x2(2), sf*gradf(1), sf*gradf(2), 0, 'k',  'LineWidth', 2.2, 'MaxHeadSize', 0.5);
-quiver(x2(1), x2(2), sf*mu1*G(1,1), sf*mu1*G(1,2), 0, 'k', 'LineWidth', 2.2, ...
-       'LineStyle', '-', 'MaxHeadSize', 0.5, 'Color', [0.30 0.30 0.30]);
+quiver(x2(1), x2(2), sf*gradf(1), sf*gradf(2), 0, 'Color', colors.green, 'LineWidth', 2.2, 'MaxHeadSize', 0.5);
+quiver(x2(1), x2(2), sf*mu1*G(1,1), sf*mu1*G(1,2), 0, 'LineWidth', 2.2, ...
+       'LineStyle', '-', 'MaxHeadSize', 0.5, 'Color', colors.purple);
 quiver(x2(1), x2(2), 1.7*G(2,1), 1.7*G(2,2), 0, 'LineWidth', 1.8, ...
-       'LineStyle', '--', 'MaxHeadSize', 0.6, 'Color', [0.40 0.40 0.40]);
+       'LineStyle', '--', 'MaxHeadSize', 0.6, 'Color', colors.amber);
 text(x2(1)+0.15, x2(2)+2.3,  '\nabla f(x^*)',                 'FontSize', 11);
 text(x2(1)-4.6,  x2(2)-3.6,  '\mu_1^*\nabla g_1(x^*)',        'FontSize', 11);
 text(x2(1)+1.1,  x2(2)-1.9,  '\nabla g_2(x^*),  \mu_2^* = 0', 'FontSize', 11);
@@ -137,5 +137,6 @@ legend({'dopustivi skup F', 'nivo-krivulje f(x)', 'g_1(x) = 0', 'g_2(x) = 0', ..
         'x^0 (min. bez ogranicenja)', 'x^* (KKT tocka)'}, ...
        'Location', 'northeast', 'FontSize', 9);
 exportgraphics(fg, fullfile(fig_dir(), 'fig1_1_qp_primal_geometry.pdf'), 'ContentType', 'vector');
+exportgraphics(fg, fullfile(fig_dir(), 'fig1_1_qp_primal_geometry.png'), 'Resolution', 220);
 close(fg);
 fprintf('\nSlika 2.1 izvezena.\n');
