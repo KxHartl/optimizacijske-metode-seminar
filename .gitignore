@@ -64,3 +64,9 @@ TestRealm/
 # The manifests are tracked; run `python src/extract_slides.py` to regenerate.
 docs/udzbenik/slides/*.png
 docs/udzbenik/zadatak/*.png
+
+# Third-party material: kept locally, not published
+data/sources/ivan/*
+data/sources/matija/*
+data/sources/lectures/*
+data/processed/lectures_text_*/*.txt
