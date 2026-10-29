@@ -59,3 +59,7 @@ Build the paper with `.\.ai\scripts\helpers\build-docs.ps1` (Windows) or
 ---
 
 The repository was set up with the owner's [LiteRealm](https://github.com/KxHartl/LiteRealm) template.
+
+## License
+
+[Apache-2.0](LICENSE). It covers the author's own work in this repository. Third-party sources are listed, not included.
