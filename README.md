@@ -1,8 +1,8 @@
 # Optimization methods: QP, robust QP, LP road levelling and LMI stabilization
 
-**Optimizacijske metode u razvoju i upravljanju sustava – seminarski rad**
+**Optimizacijske metode u razvoju i upravljanju sustava**
 
-> Seminar paper – Optimization Methods in System Development and Control (Optimizacijske metode u razvoju i upravljanju sustava, OMRiUS), FSB, University of Zagreb, 2026
+> Seminar paper, Optimization Methods in System Development and Control, MSc in Mechatronics and Robotics, 3rd semester, FSB, University of Zagreb, 2026
 >
 > Student: **Krešimir Hartl** · Mentor: Prof. dr. sc. Andrej Jokić
 
@@ -18,7 +18,7 @@ paper comes from the console output of the scripts in `src/`.
 
 **Report:**
 [`for_validator/02_REPORT_PDF/OMRiUS_seminar_Kresimir_Hartl.pdf`](for_validator/02_REPORT_PDF/OMRiUS_seminar_Kresimir_Hartl.pdf)
-(Croatian)
+(Croatian, version 1.6)
 
 ---
 
@@ -38,7 +38,7 @@ paper comes from the console output of the scripts in `src/`.
 | [`src/`](src/) | MATLAB scripts `task1_qp_analysis.m` to `task4_lmi_switched_stabilization.m`, `run_all.m`, and Python scripts that build the study textbook |
 | [`docs/`](docs/) | LaTeX source of the paper (`main.tex`, `chapters/`, `figures/`), the scripts' console output in `code/`, and a study textbook for the oral defence (`udzbenik/`, `textbook/`) |
 | [`for_validator/`](for_validator/) | a self-contained package for independent checking: task, report PDF, LaTeX source, code and MATLAB output |
-| [`TASK/`](TASK/) | the assignment |
+| [`TASK/`](TASK/) | the assignment, as a scan and as Markdown |
 | [`data/`](data/) | course material and literature used while working |
 
 ## Run it
